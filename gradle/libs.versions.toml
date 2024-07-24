@@ -11,6 +11,10 @@ composeBom = "2023.08.00"
 jetbrainsKotlinJvm = "1.9.0"
 appcompat = "1.7.0"
 material = "1.12.0"
+serializationPlugin = "1.8.10"
+serialization = "1.5.1"
+retrofit = "2.9.0"
+sandwich = "2.0.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -29,10 +33,18 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+retrofit = { group = "com.squareup.retrofit2:retrofit", name="retrofit", version.ref = "retrofit"}
+retrofit-converter = { group = "com.squareup.retrofit2:converter-gson", name="retrofit-converter",version.ref = "retrofit"}
+sandwich = { group = "com.github.skydoves:sandwich", name="sandwich", version.ref = "sandwich"}
+sandwich-retrofit = { group = "com.github.skydoves:sandwich-retrofit", name="sandwich-retrofit", version.ref = "sandwich"}
+serialization = { group = "org.jetbrains.kotlinx:kotlinx-serialization-json", name="serialization", version.ref = "serialization"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-serialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serializationPlugin"}
 
+[bundles]
+retrofit = ["retrofit", "retrofit-converter", "sandwich", "sandwich-retrofit", "serialization"]
