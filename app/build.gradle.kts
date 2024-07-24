@@ -72,6 +72,9 @@ dependencies {
     implementation(libs.bundles.hilt.impl)
     kapt(libs.bundles.hilt.kapt)
 
+    //kakao
+    implementation(libs.bundles.kakao)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

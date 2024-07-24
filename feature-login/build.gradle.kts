@@ -51,6 +51,9 @@ dependencies {
     implementation(libs.bundles.hilt.impl)
     kapt(libs.bundles.hilt.kapt)
 
+    //kakao
+    implementation(libs.bundles.kakao)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

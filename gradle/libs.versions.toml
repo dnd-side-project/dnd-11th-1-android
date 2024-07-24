@@ -24,6 +24,7 @@ navigation = "2.7.7"
 hilt = "2.48.1"
 hiltViewModel = "1.0.0"
 hiltNavCompose = "1.0.0"
+kakao = "2.19.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -58,6 +59,12 @@ hilt-compiler = { group = "com.google.dagger:hilt-compiler", name="hilt-compiler
 hilt-android-compiler = { group = "com.google.dagger:hilt-android-compiler", name="hilt-android", version.ref="hilt"}
 hilt-navigation = { group = "androidx.hilt:hilt-navigation-compose", name="hilt-navigation", version.ref="hiltNavCompose"}
 hilt-viewmodel-compiler = { group = "androidx.hilt:hilt-compiler", name="hilt-viewmodel", version.ref="hiltViewModel"}
+kakao-all = { group = "com.kakao.sdk:v2-all", name="kakao-all", version.ref="kakao"}
+kakao-user = { group = "com.kakao.sdk:v2-all", name="kakao-user", version.ref="kakao"}
+kakao-talk = { group = "com.kakao.sdk:v2-all", name="kakao-talk", version.ref="kakao"}
+kakao-share= { group = "com.kakao.sdk:v2-all", name="kakao-share", version.ref="kakao"}
+kakao-freind = { group = "com.kakao.sdk:v2-all", name="kakao-friend", version.ref="kakao"}
+kakao-cert = { group = "com.kakao.sdk:v2-all", name="kakao-cert", version.ref="kakao"}
 
 
 [plugins]
@@ -75,3 +82,4 @@ sandwich = ["sandwich", "sandwich-retrofit"]
 coil = ["coil", "coil-compose"]
 hilt-impl = ["hilt-android", "hilt-compiler", "hilt-navigation"]
 hilt-kapt = ["hilt-viewmodel-compiler", "hilt-android-compiler"]
+kakao = ["kakao-all","kakao-cert","kakao-freind","kakao-share","kakao-talk","kakao-user"]
