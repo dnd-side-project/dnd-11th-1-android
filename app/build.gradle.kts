@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.service)
+    kotlin("kapt")
 }
 
 android {
@@ -66,6 +67,10 @@ dependencies {
 
     //navigation
     implementation(libs.navigation)
+
+    //hilt
+    implementation(libs.bundles.hilt.impl)
+    kapt(libs.bundles.hilt.kapt)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

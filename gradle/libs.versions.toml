@@ -17,10 +17,13 @@ retrofit = "2.9.0"
 sandwich = "2.0.8"
 coroutine = "1.9.0"
 coil = "2.7.0"
-google-service = "4.3.15"
+googleService = "4.3.15"
 firebaseBoM = "32.3.1"
 firebaseAnalytic = "22.0.2"
 navigation = "2.7.7"
+hilt = "2.48.1"
+hiltViewModel = "1.0.0"
+hiltNavCompose = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -50,6 +53,12 @@ coil-compose = { group = "io.coil-kt:coil-compose", name="coil-compose", version
 firebase-bom = { group = "com.gogole.firebase:firebase-bom", name="firebase", version.ref="firebaseBoM"}
 firebase-analytics = { group = "com.google.firebase:firebase-analytics-ktx", name="firebase-analytics", version.ref="firebaseAnalytic"}
 navigation = { group = "androidx.navigation:navigation-compose", name="navigation", version.ref="navigation"}
+hilt-android = { group = "com.google.dagger:hilt-android", name="hilt-android", version.ref="hilt"}
+hilt-compiler = { group = "com.google.dagger:hilt-compiler", name="hilt-compiler", version.ref="hilt"}
+hilt-android-compiler = { group = "com.google.dagger:hilt-android-compiler", name="hilt-android", version.ref="hilt"}
+hilt-navigation = { group = "androidx.hilt:hilt-navigation-compose", name="hilt-navigation", version.ref="hiltNavCompose"}
+hilt-viewmodel-compiler = { group = "androidx.hilt:hilt-compiler", name="hilt-viewmodel", version.ref="hiltViewModel"}
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -57,9 +66,12 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-serialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serializationPlugin"}
-google-service = { id = "com.google.gms.google-services", version.ref = "google-service"}
+google-service = { id = "com.google.gms.google-services", version.ref = "googleService"}
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt"}
 
 [bundles]
 retrofit = ["retrofit", "retrofit-converter", "serialization"]
 sandwich = ["sandwich", "sandwich-retrofit"]
 coil = ["coil", "coil-compose"]
+hilt-impl = ["hilt-android", "hilt-compiler", "hilt-navigation"]
+hilt-kapt = ["hilt-viewmodel-compiler", "hilt-android-compiler"]

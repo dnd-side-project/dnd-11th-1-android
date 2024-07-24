@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
+    kotlin("kapt")
 }
 
 android {
@@ -35,6 +36,10 @@ android {
 
 dependencies {
     implementation(project(":core-model"))
+
+    //hilt
+    implementation(libs.bundles.hilt.impl)
+    kapt(libs.bundles.hilt.kapt)
 
     //retrofit
     implementation(libs.bundles.retrofit)
