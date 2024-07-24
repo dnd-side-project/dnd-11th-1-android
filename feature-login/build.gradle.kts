@@ -32,6 +32,10 @@ android {
 }
 
 dependencies {
+    implementation(project(":core-model"))
+    implementation(project(":core-repository"))
+    implementation(project(":core-designsystem"))
+    implementation(project(":core-common"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
