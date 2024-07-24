@@ -35,6 +35,9 @@ android {
 dependencies {
     implementation(project(":core-model"))
 
+    //coil
+    implementation(libs.bundles.coil)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

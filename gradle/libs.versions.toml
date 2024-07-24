@@ -15,6 +15,12 @@ serializationPlugin = "1.8.10"
 serialization = "1.5.1"
 retrofit = "2.9.0"
 sandwich = "2.0.8"
+coroutine = "1.9.0"
+coil = "2.7.0"
+google-service = "4.3.15"
+firebaseBoM = "32.3.1"
+firebaseAnalytic = "22.0.2"
+navigation = "2.7.7"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -38,6 +44,12 @@ retrofit-converter = { group = "com.squareup.retrofit2:converter-gson", name="re
 sandwich = { group = "com.github.skydoves:sandwich", name="sandwich", version.ref = "sandwich"}
 sandwich-retrofit = { group = "com.github.skydoves:sandwich-retrofit", name="sandwich-retrofit", version.ref = "sandwich"}
 serialization = { group = "org.jetbrains.kotlinx:kotlinx-serialization-json", name="serialization", version.ref = "serialization"}
+coroutine = { group = "org.jetbrains.kotlinx:kotlinx-coroutines-core", name="coroutine", version.ref="coroutine"}
+coil = { group = "io.coil-kt:coil", name="coil", version.ref="coil"}
+coil-compose = { group = "io.coil-kt:coil-compose", name="coil-compose", version.ref="coil"}
+firebase-bom = { group = "com.gogole.firebase:firebase-bom", name="firebase", version.ref="firebaseBoM"}
+firebase-analytics = { group = "com.google.firebase:firebase-analytics-ktx", name="firebase-analytics", version.ref="firebaseAnalytic"}
+navigation = { group = "androidx.navigation:navigation-compose", name="navigation", version.ref="navigation"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -45,7 +57,9 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-serialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serializationPlugin"}
+google-service = { id = "com.google.gms.google-services", version.ref = "google-service"}
 
 [bundles]
 retrofit = ["retrofit", "retrofit-converter", "serialization"]
 sandwich = ["sandwich", "sandwich-retrofit"]
+coil = ["coil", "coil-compose"]

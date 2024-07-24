@@ -38,6 +38,12 @@ dependencies {
     implementation(project(":core-designsystem"))
     implementation(project(":core-common"))
 
+    //coroutine
+    implementation(libs.coroutine)
+
+    //coil
+    implementation(libs.bundles.coil)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
