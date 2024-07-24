@@ -47,4 +47,5 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-serialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serializationPlugin"}
 
 [bundles]
-retrofit = ["retrofit", "retrofit-converter", "sandwich", "sandwich-retrofit", "serialization"]
+retrofit = ["retrofit", "retrofit-converter", "serialization"]
+sandwich = ["sandwich", "sandwich-retrofit"]

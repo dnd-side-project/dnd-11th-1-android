@@ -36,6 +36,7 @@ dependencies {
     implementation(project(":core-model"))
     implementation(project(":core-network"))
 
+    implementation(libs.bundles.sandwich)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
