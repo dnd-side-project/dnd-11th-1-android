@@ -38,6 +38,9 @@ dependencies {
     implementation(libs.bundles.hilt.impl)
     kapt(libs.bundles.hilt.kapt)
 
+    //data store
+    implementation(libs.datastore)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

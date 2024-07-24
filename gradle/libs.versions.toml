@@ -25,6 +25,7 @@ hilt = "2.48.1"
 hiltViewModel = "1.0.0"
 hiltNavCompose = "1.0.0"
 kakao = "2.19.0"
+datastore = "1.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -65,7 +66,7 @@ kakao-talk = { group = "com.kakao.sdk:v2-all", name="kakao-talk", version.ref="k
 kakao-share= { group = "com.kakao.sdk:v2-all", name="kakao-share", version.ref="kakao"}
 kakao-freind = { group = "com.kakao.sdk:v2-all", name="kakao-friend", version.ref="kakao"}
 kakao-cert = { group = "com.kakao.sdk:v2-all", name="kakao-cert", version.ref="kakao"}
-
+datastore = { group = "androidx.datastore:datastore-preferences", name="datastore", version.ref="datastore"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
