@@ -36,6 +36,7 @@ android {
 dependencies {
     implementation(project(":core-model"))
     implementation(project(":core-network"))
+    implementation(project(":core-common"))
 
     //hilt
     implementation(libs.bundles.hilt.impl)
