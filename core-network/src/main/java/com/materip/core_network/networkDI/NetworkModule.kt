@@ -10,7 +10,6 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
-import com.materip.core_network.BuildConfig
 import com.materip.core_network.service.test.TestService
 
 @Module
