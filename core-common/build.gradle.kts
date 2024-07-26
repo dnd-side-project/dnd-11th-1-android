@@ -33,7 +33,8 @@ android {
 }
 
 dependencies {
-
+    //serializable
+    implementation(libs.serialization)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
