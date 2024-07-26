@@ -11,6 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.materip.matetrip.navigation.SetUpNavGraph
 import com.materip.matetrip.ui.theme.MatetripTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,7 +21,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MatetripTheme {
+                val navHost = rememberNavController()
 
+                SetUpNavGraph(
+                    navController = navHost,
+                    startDestination = "TMP_ROUTE"
+                )
             }
         }
     }

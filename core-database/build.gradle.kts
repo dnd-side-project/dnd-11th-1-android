@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.materip.core_datastore"
+    namespace = "com.materip.core_database"
     compileSdk = 34
 
     defaultConfig {
@@ -34,14 +34,13 @@ android {
 }
 
 dependencies {
-    implementation(project(":core-model"))
-    implementation(project(":core-network"))
-
     //hilt
     implementation(libs.bundles.hilt.impl)
     kapt(libs.bundles.hilt.kapt)
 
-    implementation(libs.bundles.sandwich)
+    //data store
+    implementation(libs.datastore)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

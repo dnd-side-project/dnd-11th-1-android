@@ -11,6 +11,21 @@ composeBom = "2023.08.00"
 jetbrainsKotlinJvm = "1.9.0"
 appcompat = "1.7.0"
 material = "1.12.0"
+serializationPlugin = "1.8.10"
+serialization = "1.5.1"
+retrofit = "2.9.0"
+sandwich = "2.0.8"
+coroutine = "1.9.0"
+coil = "2.7.0"
+googleService = "4.3.15"
+firebaseBoM = "32.3.1"
+firebaseAnalytic = "22.0.2"
+navigation = "2.7.7"
+hilt = "2.48.1"
+hiltViewModel = "1.0.0"
+hiltNavCompose = "1.0.0"
+kakao = "2.19.0"
+datastore = "1.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -29,10 +44,43 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+retrofit = { group = "com.squareup.retrofit2", name="retrofit", version.ref = "retrofit"}
+retrofit-converter = { group = "com.squareup.retrofit2", name="converter-gson",version.ref = "retrofit"}
+sandwich = { group = "com.github.skydoves", name="sandwich", version.ref = "sandwich"}
+sandwich-retrofit = { group = "com.github.skydoves", name="sandwich-retrofit", version.ref = "sandwich"}
+serialization = { group = "org.jetbrains.kotlinx", name="kotlinx-serialization-json", version.ref = "serialization"}
+coroutine = { group = "org.jetbrains.kotlinx", name="kotlinx-coroutines-core", version.ref="coroutine"}
+coil = { group = "io.coil-kt", name="coil", version.ref="coil"}
+coil-compose = { group = "io.coil-kt", name="coil-compose", version.ref="coil"}
+firebase-bom = { group = "com.gogole.firebase", name="firebase-bom", version.ref="firebaseBoM"}
+firebase-analytics = { group = "com.google.firebase", name="firebase-analytics-ktx", version.ref="firebaseAnalytic"}
+navigation = { group = "androidx.navigation", name="navigation-compose", version.ref="navigation"}
+hilt-android = { group = "com.google.dagger", name="hilt-android", version.ref="hilt"}
+hilt-compiler = { group = "com.google.dagger", name="hilt-compiler", version.ref="hilt"}
+hilt-android-compiler = { group = "com.google.dagger", name="hilt-android-compiler", version.ref="hilt"}
+hilt-navigation = { group = "androidx.hilt", name="hilt-navigation-compose", version.ref="hiltNavCompose"}
+hilt-viewmodel-compiler = { group = "androidx.hilt", name="hilt-compiler", version.ref="hiltViewModel"}
+kakao-all = { group = "com.kakao.sdk", name="v2-all", version.ref="kakao"}
+kakao-user = { group = "com.kakao.sdk", name="v2-user", version.ref="kakao"}
+kakao-talk = { group = "com.kakao.sdk", name="v2-talk", version.ref="kakao"}
+kakao-share= { group = "com.kakao.sdk", name="v2-share", version.ref="kakao"}
+kakao-freind = { group = "com.kakao.sdk", name="v2-friend", version.ref="kakao"}
+kakao-cert = { group = "com.kakao.sdk", name="v2-cert", version.ref="kakao"}
+datastore = { group = "androidx.datastore", name="datastore-preferences", version.ref="datastore"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-serialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serializationPlugin"}
+google-service = { id = "com.google.gms.google-services", version.ref = "googleService"}
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt"}
 
+[bundles]
+retrofit = ["retrofit", "retrofit-converter", "serialization"]
+sandwich = ["sandwich", "sandwich-retrofit"]
+coil = ["coil", "coil-compose"]
+hilt-impl = ["hilt-android", "hilt-compiler", "hilt-navigation"]
+hilt-kapt = ["hilt-viewmodel-compiler", "hilt-android-compiler"]
+kakao = ["kakao-all","kakao-cert","kakao-freind","kakao-share","kakao-talk","kakao-user"]

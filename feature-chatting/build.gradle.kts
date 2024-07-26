@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    kotlin("kapt")
 }
 
 android {
@@ -33,6 +34,23 @@ android {
 }
 
 dependencies {
+    implementation(project(":core-model"))
+    implementation(project(":core-repository"))
+    implementation(project(":core-designsystem"))
+    implementation(project(":core-common"))
+
+    //coroutine
+    implementation(libs.coroutine)
+
+    //coil
+    implementation(libs.bundles.coil)
+
+    //navigation
+    implementation(libs.navigation)
+
+    //hilt
+    implementation(libs.bundles.hilt.impl)
+    kapt(libs.bundles.hilt.kapt)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

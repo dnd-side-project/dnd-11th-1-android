@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.google.service)
+    kotlin("kapt")
 }
 
 android {
@@ -50,6 +52,28 @@ android {
 }
 
 dependencies {
+    implementation(project(":core-model"))
+    implementation(project(":core-designsystem"))
+    implementation(project(":core-repository"))
+    implementation(project(":feature-login"))
+    implementation(project(":feature-chatting"))
+    implementation(project(":feature-home"))
+    implementation(project(":feature-mypage"))
+    implementation(project(":feature-onboarding"))
+
+    //FCM
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+
+    //navigation
+    implementation(libs.navigation)
+
+    //hilt
+    implementation(libs.bundles.hilt.impl)
+    kapt(libs.bundles.hilt.kapt)
+
+    //kakao
+    implementation(libs.bundles.kakao)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
