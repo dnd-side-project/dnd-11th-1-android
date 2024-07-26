@@ -16,6 +16,6 @@ fun <T> Flow<T>.asResult(): Flow<Result<T>> = map<T, Result<T>> {Result.Success(
     .catch{ emit(Result.Error(it))}
 
 data class ResultResponse<T>(
-    val data: T? = null,
-    val error: ResponseError? = null
+    var data: T? = null,
+    var error: ResponseError? = null
 )
