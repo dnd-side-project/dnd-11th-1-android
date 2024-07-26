@@ -1,5 +1,6 @@
 package com.materip.core_network.service.test
 
+import com.materip.core_model.response.TestResponseDto
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.GET
 import retrofit2.http.POST
