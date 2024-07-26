@@ -42,6 +42,8 @@ dependencies {
     implementation(libs.bundles.hilt.impl)
     kapt(libs.bundles.hilt.kapt)
 
+    //serialization
+    implementation(libs.serialization)
     implementation(libs.bundles.sandwich)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
