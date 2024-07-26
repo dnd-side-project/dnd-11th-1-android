@@ -11,6 +11,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 import com.materip.core_network.BuildConfig
+import com.materip.core_network.service.test.TestService
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -25,5 +26,11 @@ object NetworkModule {
             .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideTestService(retrofit: Retrofit): TestService {
+        return retrofit.create(TestService::class.java)
     }
 }
