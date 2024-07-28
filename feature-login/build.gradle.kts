@@ -30,6 +30,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures{
+        compose = true
+    }
 }
 
 dependencies {
@@ -53,7 +56,7 @@ dependencies {
 
     //kakao
     implementation(libs.bundles.kakao)
-
+    implementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
