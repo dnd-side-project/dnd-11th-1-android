@@ -1,8 +1,15 @@
+import org.apache.tools.ant.property.LocalProperties
+import java.util.*
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.service)
     kotlin("kapt")
+}
+
+val localProperties = Properties().apply{
+    load(project.rootProject.file("./app/local.properties").inputStream())
 }
 
 android {
@@ -20,6 +27,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        buildConfigField("String", "NATIVE_APP_KEY", localProperties.getProperty("NATIVE_APP_KEY"))
     }
 
     buildTypes {
