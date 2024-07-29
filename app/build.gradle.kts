@@ -1,4 +1,3 @@
-import org.apache.tools.ant.property.LocalProperties
 import java.util.*
 
 plugins {
