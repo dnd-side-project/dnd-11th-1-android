@@ -3,8 +3,8 @@ import java.util.*
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.google.service)
-    kotlin("kapt")
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 val localProperties = Properties().apply{
@@ -26,7 +26,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-        buildConfigField("String", "NATIVE_APP_KEY", localProperties.getProperty("NATIVE_APP_KEY"))
+        buildConfigField("String", "NATIVE_APP_KEY", localProperties["NATIVE_APP_KEY"] as String)
+        manifestPlaceholders["REDIRECTION_PATH"] = localProperties["REDIRECTION_PATH"] as String
     }
 
     buildTypes {
@@ -39,22 +40,30 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "1.8"
     }
     buildFeatures {
         compose = true
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.2"
     }
     packaging {
         resources {
             excludes += "/META-INF/gradle/incremental.annotation.processors"
+        }
+    }
+    kapt{
+        correctErrorTypes = true
+    }
+    java{
+        toolchain{
+            languageVersion.set(JavaLanguageVersion.of(17))
         }
     }
 }
@@ -68,10 +77,6 @@ dependencies {
     implementation(project(":feature-home"))
     implementation(project(":feature-mypage"))
     implementation(project(":feature-onboarding"))
-
-    //FCM
-    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
-    implementation(libs.bundles.firebase)
 
     //navigation
     implementation(libs.navigation)

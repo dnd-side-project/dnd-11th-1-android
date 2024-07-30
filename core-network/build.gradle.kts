@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt.android)
-    kotlin("kapt")
+    alias(libs.plugins.kotlin.kapt)
 }
 
 val localProperties = Properties().apply{
@@ -50,7 +50,6 @@ dependencies {
 
     //hilt
     implementation(libs.hilt.android)
-    implementation(libs.hilt.compiler)
     kapt(libs.hilt.android.compiler)
 
     //retrofit

@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-    kotlin("kapt")
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -30,6 +31,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
+    }
+    composeOptions{
+        kotlinCompilerExtensionVersion="1.5.2"
     }
 }
 
