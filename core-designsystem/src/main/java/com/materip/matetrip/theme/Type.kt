@@ -20,13 +20,11 @@ package com.materip.matetrip.theme
  */
 
 import androidx.compose.material3.Typography
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.LineHeightStyle
-import androidx.compose.ui.text.style.LineHeightStyle.Alignment
-import androidx.compose.ui.text.style.LineHeightStyle.Trim
 import androidx.compose.ui.unit.sp
 import com.materip.core_designsystem.R
 
@@ -40,5 +38,13 @@ internal val MateTripTypography = Typography(
         fontWeight = FontWeight.Black,
         fontSize = 17.31.sp,
         lineHeight = 9.38.sp,
+    ),
+    // 온보딩 카드 타이포그래피
+    bodyMedium = TextStyle(
+        fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        color = Color(0xFFBEC3EF)
     )
 )
