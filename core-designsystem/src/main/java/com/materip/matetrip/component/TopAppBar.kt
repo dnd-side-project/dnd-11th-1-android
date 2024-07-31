@@ -96,7 +96,7 @@ fun ScrollContent(innerPadding: PaddingValues) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
     ) {
-        Text("Inner content를 위한 임시 컴포저블")
+        MateTripSearchBar()
     }
 }
 
