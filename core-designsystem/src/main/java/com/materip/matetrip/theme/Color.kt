@@ -5,4 +5,5 @@ package com.materip.matetrip.theme
  */
 // 컬러 지정 코드
 const val searchBarText = 0xFF939094
-const val onboardingCard = 0xFFEEF0FF
+const val SecondColor = 0xFFEEF0FF
+const val MainColor = 0xFF3553F2

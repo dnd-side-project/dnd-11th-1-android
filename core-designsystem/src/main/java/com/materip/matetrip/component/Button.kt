@@ -25,8 +25,7 @@ import com.materip.matetrip.theme.MateTripTypography
 
 @Composable
 fun MateTripButton(
-    navController: NavController,
-    onClickDestination: String,
+    onClick: () -> Unit,
     enabled: Boolean = false,
     buttonText: String
 ) {
@@ -34,7 +33,7 @@ fun MateTripButton(
     val textColor = if (enabled) Color.White else Color(0xFF939094)
 
     Button(
-        onClick = { navController.navigate(onClickDestination) },
+        onClick = onClick,
         enabled = enabled,
         shape = RoundedCornerShape(12.dp),
         modifier = Modifier.size(width = 300.dp, height = 54.dp),
@@ -54,23 +53,19 @@ fun MateTripButton(
 @Preview
 @Composable
 fun MateTripButtonPreview() {
-    val navController = rememberNavController()
-
     Column(
         modifier = Modifier
             .background(Color.White)
             .padding(16.dp)
     ) {
         MateTripButton(
-            navController = navController,
-            onClickDestination = "next_screen",
+            onClick = { },
             enabled = true,
             buttonText = "다음"
         )
         Spacer(modifier = Modifier.size(16.dp))
         MateTripButton(
-            navController = navController,
-            onClickDestination = "next_screen",
+            onClick = {},
             enabled = false,
             buttonText = "완료"
         )
