@@ -1,6 +1,8 @@
 package com.materip.core_network
 
+import android.view.PixelCopy.request
 import com.google.gson.GsonBuilder
+import com.materip.core_database.TokenManager
 import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -11,6 +13,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 import com.materip.core_network.service.test.TestService
+import kotlinx.coroutines.runBlocking
+import okhttp3.Interceptor
+import java.util.concurrent.TimeUnit
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -25,6 +30,30 @@ object NetworkModule {
             .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideOkHttpClient(headerInterceptor: Interceptor): OkHttpClient{
+        return OkHttpClient().newBuilder()
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .addInterceptor(headerInterceptor)
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideHeaderInterceptor(tokenManager: TokenManager): Interceptor{
+        val token = runBlocking{ tokenManager.getAuthTokenForHeader() }
+        return Interceptor{chain ->
+            with(chain){
+                val newRequest = request().newBuilder()
+                    .header("X-AUTH-TOKEN", "${token}")
+                    .build()
+                proceed(newRequest)
+            }
+        }
     }
 
     @Singleton
