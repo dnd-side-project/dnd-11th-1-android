@@ -36,20 +36,26 @@ class TokenManagerImpl @Inject constructor(
         private val KAKAO_ACCESS_TOKEN_KEY = stringPreferencesKey("KAKAO_ACCESS_TOKEN")
     }
     override suspend fun getAuthToken(): Flow<String?> = dataStore.data.map{it[AUTH_TOKEN_KEY]}
-
     override suspend fun getRefreshToken(): Flow<String?> = dataStore.data.map{it[REFRESH_TOKEN_KEY]}
-
     override suspend fun getKakaoAccessToken(): Flow<String?> = dataStore.data.map{it[KAKAO_ACCESS_TOKEN_KEY]}
-
     override suspend fun saveAuthToken(token: String) {
         dataStore.edit { it[AUTH_TOKEN_KEY] = token }
     }
-
     override suspend fun saveRefreshToken(token: String) {
         dataStore.edit { it[REFRESH_TOKEN_KEY] = token }
     }
-
     override suspend fun saveKakaoAccessToken(token: String) {
         dataStore.edit{it[KAKAO_ACCESS_TOKEN_KEY] = token}
+    }
+    override suspend fun deleteAuthToken(token: String) {
+        dataStore.edit{it.remove(AUTH_TOKEN_KEY)}
+    }
+
+    override suspend fun deleteRefreshToken(token: String) {
+        dataStore.edit{it.remove(REFRESH_TOKEN_KEY)}
+    }
+
+    override suspend fun deleteKakaoAccessToken(token: String) {
+        dataStore.edit{it.remove(KAKAO_ACCESS_TOKEN_KEY)}
     }
 }

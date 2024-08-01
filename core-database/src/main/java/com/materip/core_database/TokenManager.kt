@@ -9,4 +9,7 @@ interface TokenManager {
     suspend fun saveAuthToken(token: String)
     suspend fun saveRefreshToken(token: String)
     suspend fun saveKakaoAccessToken(token: String)
+    suspend fun deleteAuthToken(token: String)
+    suspend fun deleteRefreshToken(token: String)
+    suspend fun deleteKakaoAccessToken(token: String)
 }
