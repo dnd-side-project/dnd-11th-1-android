@@ -39,7 +39,6 @@ fun LoginRoute(
     viewModel: LoginViewModel = hiltViewModel()
 ){
     val context = LocalContext.current
-    Log.d("AUTH LOGIN TEST", "key hash : ${Utility.getKeyHash(context)}")
 
     LoginScreen(
         isLogin = viewModel.isLogin.collectAsStateWithLifecycle().value,
@@ -64,7 +63,8 @@ fun LoginScreen(
     ){
         Spacer(Modifier.height(54.dp))
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .height(80.dp)
                 .padding(horizontal = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -84,7 +84,8 @@ fun LoginScreen(
             )
         }
         CustomButton(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .height(54.dp),
             containerColor = Color.Yellow,
             shape = RoundedCornerShape(size = 10.dp),
