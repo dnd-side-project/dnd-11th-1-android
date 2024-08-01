@@ -46,5 +46,13 @@ internal val MateTripTypography = Typography(
         fontSize = 16.sp,
         lineHeight = 24.sp,
         color = Color(0xFFBEC3EF)
+    ),
+    // 버튼 타이포그래피
+    bodySmall = TextStyle(
+        fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        color = Color.White
     )
 )
