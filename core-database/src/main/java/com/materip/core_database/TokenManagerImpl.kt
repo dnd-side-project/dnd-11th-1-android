@@ -47,15 +47,15 @@ class TokenManagerImpl @Inject constructor(
     override suspend fun saveKakaoAccessToken(token: String) {
         dataStore.edit{it[KAKAO_ACCESS_TOKEN_KEY] = token}
     }
-    override suspend fun deleteAuthToken(token: String) {
+    override suspend fun deleteAuthToken() {
         dataStore.edit{it.remove(AUTH_TOKEN_KEY)}
     }
 
-    override suspend fun deleteRefreshToken(token: String) {
+    override suspend fun deleteRefreshToken() {
         dataStore.edit{it.remove(REFRESH_TOKEN_KEY)}
     }
 
-    override suspend fun deleteKakaoAccessToken(token: String) {
+    override suspend fun deleteKakaoAccessToken() {
         dataStore.edit{it.remove(KAKAO_ACCESS_TOKEN_KEY)}
     }
 }
