@@ -13,7 +13,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 val Context.datastore: DataStore<Preferences> by preferencesDataStore(
@@ -35,6 +38,13 @@ class TokenManagerImpl @Inject constructor(
         private val REFRESH_TOKEN_KEY = stringPreferencesKey("REMEMBERED_TOKEN")
         private val KAKAO_ACCESS_TOKEN_KEY = stringPreferencesKey("KAKAO_ACCESS_TOKEN")
     }
+    override suspend fun getAuthTokenForHeader(): String? {
+        val authToken = runBlocking{
+            getAuthToken().firstOrNull()
+        }
+        return authToken
+    }
+
     override suspend fun getAuthToken(): Flow<String?> = dataStore.data.map{it[AUTH_TOKEN_KEY]}
     override suspend fun getRefreshToken(): Flow<String?> = dataStore.data.map{it[REFRESH_TOKEN_KEY]}
     override suspend fun getKakaoAccessToken(): Flow<String?> = dataStore.data.map{it[KAKAO_ACCESS_TOKEN_KEY]}

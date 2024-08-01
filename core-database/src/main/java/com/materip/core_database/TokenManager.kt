@@ -3,6 +3,7 @@ package com.materip.core_database
 import kotlinx.coroutines.flow.Flow
 
 interface TokenManager {
+    suspend fun getAuthTokenForHeader(): String?
     suspend fun getAuthToken(): Flow<String?>
     suspend fun getRefreshToken(): Flow<String?>
     suspend fun getKakaoAccessToken(): Flow<String?>
