@@ -2,9 +2,7 @@ package com.materip.matetrip.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
@@ -20,7 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.materip.matetrip.icon.Icons.man_icon
-import com.materip.matetrip.theme.MateTripTypography
+import com.materip.matetrip.theme.MateTripTypographySet
 
 /**
  * Onboarding Card
@@ -34,7 +32,7 @@ fun OnboardingElevatedCard(
     onClick: () -> Unit // 선택된 카드의 상태관리는 부모 컴포저블에서 관리
 ) {
     val backgroundColor = if (isSelected) Color(0xFF3553F2) else Color(0xFFEEF0FF)
-    val textColor = if (isSelected) Color.White else MateTripTypography.bodyMedium.color
+    val textColor = if (isSelected) Color.White else MateTripTypographySet.onboardingCard.color
 
     Card(
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
@@ -48,7 +46,7 @@ fun OnboardingElevatedCard(
                 modifier = Modifier
                     .padding(top = 20.dp, start = 20.dp),
                 textAlign = TextAlign.Center,
-                style = MateTripTypography.bodyMedium.copy(color = textColor),
+                style = MateTripTypographySet.onboardingCard.copy(color = textColor),
             )
 
             Image(
