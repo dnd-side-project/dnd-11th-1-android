@@ -97,9 +97,7 @@ fun ScrollContent(innerPadding: PaddingValues) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
     ) {
-        MateTripSearchBar()
-        Spacer(modifier = Modifier.padding(16.dp))
-        ProgressIndicator()
+        // 여기에 스크롤 가능한 컨텐츠를 추가
     }
 }
 
