@@ -19,7 +19,6 @@ package com.materip.matetrip.theme
  * limitations under the License.
  */
 
-import androidx.compose.material3.Typography
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -31,28 +30,56 @@ import com.materip.core_designsystem.R
 /**
  * Now in Android typography.
  */
-internal val MateTripTypography = Typography(
+data class MateTripTypography(
+    val topBarTitle: TextStyle,
+    val onboardingCard: TextStyle,
+    val onboardingButton: TextStyle,
+    val onboardingTitle: TextStyle,
+    val onboardingMessage: TextStyle
+)
+
+val customFontFamily = FontFamily(
+    Font(R.font.helvetica_black),
+    Font(R.font.noto_sans_kr)
+)
+
+val MateTripTypographySet = MateTripTypography(
     // 홈화면 상단바 타이틀 타이포그래피
-    bodyLarge = TextStyle(
+    topBarTitle = TextStyle(
         fontFamily = FontFamily(Font(R.font.helvetica_black)),
         fontWeight = FontWeight.Black,
         fontSize = 17.31.sp,
         lineHeight = 9.38.sp,
     ),
     // 온보딩 카드 타이포그래피
-    bodyMedium = TextStyle(
+    onboardingCard = TextStyle(
         fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         color = Color(0xFFBEC3EF)
     ),
-    // 버튼 타이포그래피
-    bodySmall = TextStyle(
+    // 버튼 타이포그래피(온보딩, 홈 게시글 동행 신청)
+    onboardingButton = TextStyle(
         fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         lineHeight = 20.sp,
         color = Color.White
+    ),
+    // 온보딩 타이포그래피
+    onboardingTitle = TextStyle(
+        fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+        fontWeight = FontWeight.W700,
+        fontSize = 28.sp,
+        lineHeight = 40.54.sp,
+    ),
+    // 온보딩 메시지 타이포그래피
+    onboardingMessage = TextStyle(
+        fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+        fontWeight = FontWeight.W500,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        color = Color(0xFFAEAAAE)
     )
 )
