@@ -28,7 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.materip.matetrip.icon.Icons.notification_icon
-import com.materip.matetrip.theme.MateTripTypography
+import com.materip.matetrip.theme.MateTripTypographySet
 
 
 /**
@@ -54,7 +54,7 @@ fun MateTripTopAppBar() {
                     ) {
                         Text(
                             "MATE",
-                            style = MateTripTypography.bodyLarge
+                            style = MateTripTypographySet.topBarTitle
                         )
                         // 이미지 추가
                         Icon(
@@ -63,7 +63,7 @@ fun MateTripTopAppBar() {
                         )
                         Text(
                             "TRIP",
-                            style = MateTripTypography.bodyLarge
+                            style = MateTripTypographySet.topBarTitle
                         )
                     }
                 },
