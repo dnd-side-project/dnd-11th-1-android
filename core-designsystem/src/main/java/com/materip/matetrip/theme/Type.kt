@@ -35,7 +35,8 @@ data class MateTripTypography(
     val onboardingCard: TextStyle,
     val onboardingButton: TextStyle,
     val onboardingTitle: TextStyle,
-    val onboardingMessage: TextStyle
+    val onboardingMessage: TextStyle,
+    val homeTag: TextStyle
 )
 
 val customFontFamily = FontFamily(
@@ -80,6 +81,13 @@ val MateTripTypographySet = MateTripTypography(
         fontWeight = FontWeight.W500,
         fontSize = 14.sp,
         lineHeight = 20.sp,
-        color = Color(0xFFAEAAAE)
+        color = Color(Gray05)
+    ),
+    // 홈 태그 타이포그래피
+    homeTag = TextStyle(
+        fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+        fontWeight = FontWeight.W400,
+        fontSize = 12.sp,
+        lineHeight = 18.sp,
     )
 )
