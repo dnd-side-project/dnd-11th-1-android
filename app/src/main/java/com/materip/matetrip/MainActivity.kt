@@ -13,7 +13,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MatetripTheme {
-                MateTripTopAppBar()
+
             }
         }
     }
