@@ -1,11 +1,16 @@
 package com.materip.core_repository.repository.login_repository
 
+import com.materip.core_common.ResultResponse
 import com.materip.core_datastore.com.materip.core_datastore.login_datastore.LocalLoginDataStore
+import com.materip.core_datastore.com.materip.core_datastore.login_datastore.RemoteLoginDataStore
+import com.materip.core_model.request.LoginRequestDto
+import com.materip.core_model.response.LoginResponseDto
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class LoginRepositoryImpl @Inject constructor(
-    private val localLoginDataStore: LocalLoginDataStore
+    private val localLoginDataStore: LocalLoginDataStore,
+    private val remoteLoginDataStore: RemoteLoginDataStore
 ): LoginRepository{
     override suspend fun getAuthToken(): Flow<String?> {
         return localLoginDataStore.getAuthToken()
@@ -41,5 +46,9 @@ class LoginRepositoryImpl @Inject constructor(
 
     override suspend fun deleteKakaoToken() {
         localLoginDataStore.deleteKakaoAccessToken()
+    }
+
+    override suspend fun loginKakao(requestDto: LoginRequestDto): ResultResponse<LoginResponseDto> {
+        return remoteLoginDataStore.loginKakao(requestDto)
     }
 }
