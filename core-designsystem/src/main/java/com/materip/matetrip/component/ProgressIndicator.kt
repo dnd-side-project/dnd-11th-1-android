@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.materip.matetrip.theme.MainColor
+import com.materip.matetrip.theme.primary
 import com.materip.matetrip.theme.SecondColor
 import kotlinx.coroutines.launch
 
@@ -42,7 +42,7 @@ fun ProgressIndicator() {
         LinearProgressIndicator(
             progress = { currentProgress },
             modifier = Modifier.size(width = 300.dp, height = 8.dp),
-            color = Color(MainColor),
+            color = Color(primary),
             trackColor = Color(SecondColor),
             strokeCap = StrokeCap.Round,
         )

@@ -3,9 +3,7 @@ package com.materip.matetrip.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.materip.matetrip.theme.Gray11
-import com.materip.matetrip.theme.MainColor
+import com.materip.matetrip.theme.primary
 import com.materip.matetrip.theme.MateTripTypographySet
 
 
@@ -41,7 +39,7 @@ fun RegionTag(
     ) {
         items(regions) { region ->
             val isSelected = region == selectedRegion
-            val backgroundColor = if (isSelected) Color(MainColor) else Color.White
+            val backgroundColor = if (isSelected) Color(primary) else Color.White
             val textColor = if (isSelected) Color.White else Color(Gray11)
 
             Button(
