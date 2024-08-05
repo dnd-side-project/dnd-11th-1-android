@@ -3,6 +3,7 @@ package com.materip.core_network
 import android.view.PixelCopy.request
 import com.google.gson.GsonBuilder
 import com.materip.core_database.TokenManager
+import com.materip.core_network.service.test.LoginService
 import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -60,5 +61,11 @@ object NetworkModule {
     @Provides
     fun provideTestService(retrofit: Retrofit): TestService {
         return retrofit.create(TestService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideLoginService(retrofit: Retrofit): LoginService{
+        return retrofit.create(LoginService::class.java)
     }
 }
