@@ -5,7 +5,7 @@ import com.materip.core_common.ResultResponse
 import com.materip.core_model.request.LoginRequestDto
 import com.materip.core_model.response.LoginResponseDto
 import com.materip.core_network.service.test.LoginService
-import com.skydoves.sandwich.message
+import com.skydoves.sandwich.retrofit.apiMessage
 import com.skydoves.sandwich.suspendOnError
 import com.skydoves.sandwich.suspendOnSuccess
 import kotlinx.serialization.json.Json
@@ -17,7 +17,7 @@ class RemoteLoginDataStoreImpl @Inject constructor(
     override suspend fun loginKakao(requestDto: LoginRequestDto): ResultResponse<LoginResponseDto> {
         val result = ResultResponse<LoginResponseDto>()
         loginService.loginKakao(requestDto).suspendOnError{
-            result.error = Json.decodeFromString<ResponseError>(this.message())
+            result.error = Json.decodeFromString<ResponseError>("${this.apiMessage}")
         }.suspendOnSuccess{
             result.data = this.data
         }
