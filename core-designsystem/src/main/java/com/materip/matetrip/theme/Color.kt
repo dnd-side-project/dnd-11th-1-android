@@ -30,17 +30,6 @@ const val gray1 = 0xFFF4F4F4
 const val white = 0xFFFFFFFF
 
 
-
-
-
-
-
-
-
-
-
-
-
 const val searchBarText = 0xFF939094
 const val SecondColor = 0xFFEEF0FF
 const val Gray05 = 0xFFAEAAAE
