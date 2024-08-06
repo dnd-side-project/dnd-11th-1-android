@@ -72,6 +72,7 @@ class LoginViewModel @Inject constructor(
             loginRepository.saveKakaoAccessToken(kakaoToken)
             val requestDto = LoginRequestDto(provider = "KAKAO", accessToken = kakaoToken)
             val result = loginRepository.loginKakao(requestDto)
+            Log.d("API TEST", "result : ${result}")
             if (result.error != null) {
                 generalErrorState.update { Pair(true, result.error!!.message) }
                 return@launch
