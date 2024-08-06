@@ -21,9 +21,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.materip.matetrip.theme.Gray_11
-import com.materip.matetrip.theme.Primary
 import com.materip.matetrip.theme.MateTripTypographySet
-
+import com.materip.matetrip.theme.Primary
 
 @Composable
 fun RegionTag(
