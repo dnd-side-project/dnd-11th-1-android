@@ -96,7 +96,7 @@ val MateTripTypographySet = MateTripTypography(
         fontWeight = FontWeight.W500,
         fontSize = 14.sp,
         lineHeight = 20.sp,
-        color = Color(Gray05)
+        color = gray_05
     ),
     homeTag = TextStyle(
         fontFamily = customFontFamily.notoSansKr,
