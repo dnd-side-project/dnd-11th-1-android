@@ -59,9 +59,9 @@ data class CustomFontFamily(
 val customFontFamily = CustomFontFamily(
     helveticaBlack = FontFamily(Font(R.font.helvetica_black)),
     notoSansKr = FontFamily(Font(R.font.noto_sans_kr)),
-    robotoBold = FontFamily(Font(R.font.roboto_Bold)),
-    robotoMedium = FontFamily(Font(R.font.roboto_Medium)),
-    robotoRegular = FontFamily(Font(R.font.roboto_Regular)),
+    robotoBold = FontFamily(Font(R.font.roboto_bold)),
+    robotoMedium = FontFamily(Font(R.font.roboto_medium)),
+    robotoRegular = FontFamily(Font(R.font.roboto_regular)),
 )
 
 val MateTripTypographySet = MateTripTypography(
