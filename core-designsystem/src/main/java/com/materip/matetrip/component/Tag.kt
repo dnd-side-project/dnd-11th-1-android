@@ -20,8 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.materip.matetrip.theme.Gray11
-import com.materip.matetrip.theme.primary
+import com.materip.matetrip.theme.Gray_11
+import com.materip.matetrip.theme.Primary
 import com.materip.matetrip.theme.MateTripTypographySet
 
 
@@ -39,8 +39,8 @@ fun RegionTag(
     ) {
         items(regions) { region ->
             val isSelected = region == selectedRegion
-            val backgroundColor = if (isSelected) Color(primary) else Color.White
-            val textColor = if (isSelected) Color.White else Color(Gray11)
+            val backgroundColor = if (isSelected) Primary else Color.White
+            val textColor = if (isSelected) Color.White else Gray_11
 
             Button(
                 onClick = {
