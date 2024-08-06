@@ -40,6 +40,7 @@ android {
 
 dependencies {
     implementation(project(":core-model"))
+    implementation((project(":app")))
 
     //coil
     implementation(libs.bundles.coil)
