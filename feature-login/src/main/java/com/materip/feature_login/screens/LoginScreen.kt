@@ -57,8 +57,11 @@ fun LoginScreen(
     doLogin: () -> Unit,
     navOnBoarding: () -> Unit,
 ){
-    if ((errState as ErrorState.NoAuthError).generalError.first){
+    if (errState is ErrorState.NoAuthError && errState.generalError.first){
         /** Error 발생 >> Error 관련 dialog 사용하면 좋을 듯 */
+        Text(
+            text = errState.generalError.second!!
+        )
     } else {
         Column(
             modifier = Modifier
