@@ -70,6 +70,7 @@ dependencies {
 
     //hilt
     implementation(libs.bundles.hilt.impl)
+    implementation(libs.androidx.navigation.runtime.ktx)
     kapt(libs.bundles.hilt.kapt)
 
     //kakao
