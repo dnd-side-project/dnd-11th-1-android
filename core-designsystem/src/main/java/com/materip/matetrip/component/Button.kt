@@ -15,6 +15,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.materip.matetrip.theme.MateTripTypographySet
+import com.materip.matetrip.theme.ActivatedColor
+import com.materip.matetrip.theme.gray_06
+import com.materip.matetrip.theme.InactiveColor
 
 /**
  * MateTrip Button
@@ -27,23 +30,21 @@ fun MateTripButton(
     enabled: Boolean = false,
     buttonText: String
 ) {
-    val buttonColor = if (enabled) Color.Black else Color(0xFFDDDFEA)
-    val textColor = if (enabled) Color.White else Color(0xFF939094)
-
     Button(
         onClick = onClick,
         enabled = enabled,
         shape = RoundedCornerShape(12.dp),
         modifier = Modifier.size(width = 300.dp, height = 54.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = buttonColor,
-            contentColor = textColor
+            containerColor = ActivatedColor,
+            contentColor = Color.White,
+            disabledContainerColor = InactiveColor,
+            disabledContentColor = gray_06
         )
     ) {
         Text(
             text = buttonText,
-            style = MateTripTypographySet.onboardingButton,
-            color = textColor
+            style = MateTripTypographySet.headline06,
         )
     }
 }
