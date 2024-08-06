@@ -1,4 +1,4 @@
-package com.materip.core_network.service.test
+package com.materip.core_network.service.login
 
 import com.materip.core_model.request.LoginRequestDto
 import com.materip.core_model.response.LoginResponseDto
