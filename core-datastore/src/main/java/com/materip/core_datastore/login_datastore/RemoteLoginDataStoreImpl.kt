@@ -4,7 +4,7 @@ import com.materip.core_common.ResponseError
 import com.materip.core_common.ResultResponse
 import com.materip.core_model.request.LoginRequestDto
 import com.materip.core_model.response.LoginResponseDto
-import com.materip.core_network.service.test.LoginService
+import com.materip.core_network.service.login.LoginService
 import com.skydoves.sandwich.retrofit.apiMessage
 import com.skydoves.sandwich.suspendOnError
 import com.skydoves.sandwich.suspendOnSuccess
