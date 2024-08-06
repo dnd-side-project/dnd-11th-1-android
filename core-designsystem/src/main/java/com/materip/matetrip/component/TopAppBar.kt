@@ -6,30 +6,21 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.materip.matetrip.icon.Icons.notification_icon
-import com.materip.matetrip.navigation.Screen
-import com.materip.matetrip.theme.MateTripTypographySet
+import com.materip.matetrip.icon.Logo.splash_icon_02
+import com.materip.matetrip.theme.Primary
 
 
 /**
@@ -40,18 +31,17 @@ import com.materip.matetrip.theme.MateTripTypographySet
  */
 @Composable
 fun MateTripTopAppBar(
-    currentScreen: Screen,
-    canNavigateBack: Boolean,
-    navigateUp: () -> Unit = {},
+//    currentRoute: String,
+//    onNavigateUp: () -> Unit
 ) {
     TopAppBar(
-        title = {  },
+        title = { splash_icon_02 },
         actions = {
             IconButton(onClick = { /* 알림 설정 시 알림을 표시하기 */ }) {
                 Icon(
                     painter = painterResource(id = notification_icon),
                     contentDescription = "Localized description",
-                    tint = Color.Unspecified // 드로어블의 원래 색상을 사용
+                    tint = Primary
                 )
             }
         },
@@ -73,4 +63,13 @@ fun ScrollContent(innerPadding: PaddingValues) {
     ) {
         // 여기에 스크롤 가능한 컨텐츠를 추가
     }
+}
+
+@Preview
+@Composable
+fun MateTripTopAppBarPreview() {
+    MateTripTopAppBar(
+//        currentRoute = Screen.Home.route,
+//        onNavigateUp = { }
+    )
 }
