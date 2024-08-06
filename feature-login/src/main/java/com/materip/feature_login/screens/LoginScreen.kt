@@ -83,7 +83,7 @@ fun LoginScreen(
                 )
                 Image(
                     imageVector = Icons.Filled.AddCircle,
-                    contentDescription = "APP ICON" //app icon으로 대체
+                    contentDescription = "APP ICON" /** app icon으로 대체 */
                 )
                 Text(
                     text = "TRIP",
