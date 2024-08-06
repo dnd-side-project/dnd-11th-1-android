@@ -30,6 +30,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
+import com.materip.core_common.ErrorState
 import com.materip.core_designsystem.CustomButton
 import com.materip.feature_login.view_models.LoginViewModel
 
@@ -39,9 +40,11 @@ fun LoginRoute(
     viewModel: LoginViewModel = hiltViewModel()
 ){
     val context = LocalContext.current
+    val errState = viewModel.errorState.collectAsStateWithLifecycle()
 
     LoginScreen(
         isLogin = viewModel.isLogin.collectAsStateWithLifecycle().value,
+        errState = errState.value,
         doLogin = {viewModel.doLogin(context)},
         navOnBoarding = navOnBoarding
     )
@@ -50,51 +53,56 @@ fun LoginRoute(
 @Composable
 fun LoginScreen(
     isLogin: Boolean,
+    errState: ErrorState,
     doLogin: () -> Unit,
     navOnBoarding: () -> Unit,
 ){
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color.White)
-            .padding(horizontal = 35.dp, vertical = 60.dp),
-        verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        Spacer(Modifier.height(54.dp))
-        Row(
+    if ((errState as ErrorState.NoAuthError).generalError.first){
+        /** Error 발생 >> Error 관련 dialog 사용하면 좋을 듯 */
+    } else {
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(80.dp)
-                .padding(horizontal = 10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+                .fillMaxSize()
+                .background(color = Color.White)
+                .padding(horizontal = 35.dp, vertical = 60.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
         ){
-            Text(
-                text = "MATE",
-                fontSize = 36.sp
-            )
-            Image(
-                imageVector = Icons.Filled.AddCircle,
-                contentDescription = "APP ICON" //app icon으로 대체
-            )
-            Text(
-                text = "TRIP",
-                fontSize = 36.sp
+            Spacer(Modifier.height(54.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp)
+                    .padding(horizontal = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ){
+                Text(
+                    text = "MATE",
+                    fontSize = 36.sp
+                )
+                Image(
+                    imageVector = Icons.Filled.AddCircle,
+                    contentDescription = "APP ICON" //app icon으로 대체
+                )
+                Text(
+                    text = "TRIP",
+                    fontSize = 36.sp
+                )
+            }
+            CustomButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(54.dp),
+                containerColor = Color.Yellow,
+                shape = RoundedCornerShape(size = 10.dp),
+                text = "카카오 로그인",
+                textColor = Color.Black,
+                fontSize = 16.sp,
+                isEnabled = true,
+                onClick = doLogin
             )
         }
-        CustomButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(54.dp),
-            containerColor = Color.Yellow,
-            shape = RoundedCornerShape(size = 10.dp),
-            text = "카카오 로그인",
-            textColor = Color.Black,
-            fontSize = 16.sp,
-            isEnabled = true,
-            onClick = doLogin
-        )
     }
     LaunchedEffect(isLogin){
         if (isLogin){
@@ -108,6 +116,7 @@ fun LoginScreen(
 private fun UITest(){
     LoginScreen(
         doLogin = {},
+        errState = ErrorState.Loading,
         isLogin = false,
         navOnBoarding = {}
     )
