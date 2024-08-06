@@ -7,6 +7,14 @@ enum class OnboardingMessage(val title: String, val message: String) {
     ),
     MESSAGE_2(
         title = "여행 성향을\n선택해주세요!",
-        message = "여행 성향을 선택하면,\n더 나은 추천을 받을 수 있어요."
-    )
+        message = "여행 성향을 선택하면,\n나에게 딱 맞는 동행자를 추천해줘요."
+    ),
+    MESSAGE_3(
+        title = "여행 스타일을\n선택해주세요!",
+        message = "나의 여행 스타일을 선택하면,\n나에게 딱 맞는 동행자를 추천해줘요."
+    ),
+    MESSAGE_4(
+        title = "음식 취향을\n선택해주세요!",
+        message = "나의 여행스타일을 선택하면,\n나에게 딱 맞는 동행자를 추천해줘요."
+    ),
 }
