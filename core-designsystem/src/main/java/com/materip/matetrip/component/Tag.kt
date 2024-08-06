@@ -34,7 +34,7 @@ fun RegionTag(
 
     LazyRow(
         modifier = Modifier
-            .background(color = Color.LightGray) // preview에서 보려고 추가
+            .background(color = Color.LightGray) // preview에서 보려고 추가 사용 시 수정
             .padding(horizontal = 16.dp)
     ) {
         items(regions) { region ->
@@ -54,7 +54,9 @@ fun RegionTag(
                     .wrapContentHeight(align = Alignment.Top),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = backgroundColor,
-                    contentColor = textColor
+                    contentColor = textColor,
+                    disabledContainerColor = Color.White,
+                    disabledContentColor = Gray_11
                 )
             ) {
                 Text(
