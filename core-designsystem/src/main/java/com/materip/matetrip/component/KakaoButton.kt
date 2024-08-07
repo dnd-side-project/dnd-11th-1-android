@@ -45,7 +45,7 @@ fun KakaoButton(
 ){
     Button(
         modifier = modifier,
-        shape = RoundedCornerShape(size = 5.dp),
+        shape = RoundedCornerShape(size = 10.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = KakaoButtonColor
         ),
