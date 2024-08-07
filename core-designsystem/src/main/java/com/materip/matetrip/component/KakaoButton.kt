@@ -39,8 +39,6 @@ import com.materip.matetrip.theme.KakaoTextColor
 @Composable
 fun KakaoButton(
     modifier: Modifier = Modifier,
-
-
     onClick: () -> Unit,
 ){
     Button(
