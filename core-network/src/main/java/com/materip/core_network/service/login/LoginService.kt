@@ -3,10 +3,10 @@ package com.materip.core_network.service.login
 import com.materip.core_model.request.LoginRequestDto
 import com.materip.core_model.response.LoginResponseDto
 import com.skydoves.sandwich.ApiResponse
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.Body
+import retrofit2.http.POST
 
 interface LoginService {
-    @GET("/api/v1/auth/sign-in")
-    suspend fun loginKakao(@Query("loginRequest") loginRequestDto: LoginRequestDto): ApiResponse<LoginResponseDto>
+    @POST("/api/v1/auth/sign-in")
+    suspend fun loginKakao(@Body loginRequestDto: LoginRequestDto): ApiResponse<LoginResponseDto>
 }
