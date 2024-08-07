@@ -10,9 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,12 +17,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_common.ErrorState
+import com.materip.core_designsystem.R
 import com.materip.feature_login.view_models.LoginViewModel
 import com.materip.matetrip.component.KakaoButton
 
@@ -52,60 +54,69 @@ fun LoginScreen(
     doLogin: () -> Unit,
     navOnBoarding: () -> Unit,
 ){
+    LaunchedEffect(isLogin){
+        if (isLogin){
+            navOnBoarding()
+        }
+    }
     if (errState is ErrorState.NoAuthError && errState.generalError.first){
         /** Error 발생 >> Error 관련 dialog 사용하면 좋을 듯 */
         Text(
             text = errState.generalError.second!!
         )
     } else {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = Color.White)
-                .padding(horizontal = 35.dp, vertical = 60.dp),
-            verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
-            Spacer(Modifier.height(54.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(80.dp)
-                    .padding(horizontal = 10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ){
-                Text(
-                    text = "MATE",
-                    fontSize = 36.sp
-                )
-                Image(
-                    imageVector = Icons.Filled.AddCircle,
-                    contentDescription = "APP ICON" /** app icon으로 대체 */
-                )
-                Text(
-                    text = "TRIP",
-                    fontSize = 36.sp
-                )
-            }
-            KakaoButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(54.dp),
-                onClick = doLogin
-            )
-        }
-    }
-    LaunchedEffect(isLogin){
-        if (isLogin){
-            navOnBoarding()
-        }
+        LoginMainContent(doLogin = doLogin)
     }
 }
-
+@Composable
+private fun LoginMainContent(
+    doLogin: () -> Unit
+){
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.White)
+            .padding(horizontal = 35.dp, vertical = 60.dp),
+        verticalArrangement = Arrangement.SpaceBetween,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+        Spacer(Modifier.height(54.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(80.dp)
+                .padding(horizontal = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ){
+            Text(
+                text = "MATE",
+                fontSize = 36.sp,
+                fontFamily = FontFamily(Font(R.font.helvetica_black)),
+                fontWeight = FontWeight(900)
+            )
+            Image(
+                painter = painterResource(R.drawable.ic_app_main_logo),
+                contentDescription = "APP ICON" 
+            )
+            Text(
+                text = "TRIP",
+                fontSize = 36.sp,
+                fontFamily = FontFamily(Font(R.font.helvetica_black)),
+                fontWeight = FontWeight(900)
+            )
+        }
+        KakaoButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(54.dp),
+            onClick = doLogin
+        )
+    }
+}
 @Preview
 @Composable
-private fun UITest(){
+private fun LoginUITest(){
     LoginScreen(
         doLogin = {},
         errState = ErrorState.Loading,
