@@ -11,10 +11,11 @@ class HeaderInterceptor @Inject constructor(
 ): Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val token = runBlocking{
-            tokenManager.getAuthTokenForHeader() ?: ""
+            tokenManager.getAuthTokenForHeader()
         }
+        val bearerToken = if(token == null) "" else "Bearer ${token}"
         val newRequest = chain.request().newBuilder()
-            .addHeader("Authorization", "Bearer ${token}")
+            .addHeader("Authorization", bearerToken)
             .build()
         val response = chain.proceed(newRequest)
 
