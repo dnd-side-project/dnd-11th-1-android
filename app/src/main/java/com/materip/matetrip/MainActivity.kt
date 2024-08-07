@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, true)
 
         setContent {
-            val startDestination = LoginRoute.LoginRoute.name // auth token, refresh token 보유 시 Home 화면으로 이동
+            val startDestination = viewModel.getDestination()
 
             MatetripTheme {
                 val navHost = rememberNavController()
