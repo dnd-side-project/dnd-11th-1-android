@@ -21,7 +21,7 @@ class AuthAuthenticator @Inject constructor(
     override fun authenticate(route: Route?, response: Response): Request? {
         val originRequest = response.request
 
-        if (originRequest.header("X-AUTH_TOKEN").isNullOrEmpty()){
+        if (originRequest.header("Authorization").isNullOrEmpty()){
             return null
         }
         val refreshToken = runBlocking{
@@ -30,7 +30,7 @@ class AuthAuthenticator @Inject constructor(
         val refreshRequest = Request.Builder()
             .url(BuildConfig.BASE_URL)
             .post("".toRequestBody())
-            .addHeader("X-AUTH-TOKEN", "${refreshToken}")
+            .addHeader("Authorization", "Bearer ${refreshToken}")
             .build()
         val refreshResponse = OkHttpClient().newCall(refreshRequest).execute()
 
@@ -43,8 +43,8 @@ class AuthAuthenticator @Inject constructor(
                 tokenManager.saveAuthToken(newAccessToken)
             }
             val newRequest = originRequest.newBuilder()
-                .removeHeader("X-AUTH-TOKEN")
-                .addHeader("X-AUTH-TOKEN", newAccessToken)
+                .removeHeader("Authorization")
+                .addHeader("Authorization", newAccessToken)
                 .build()
             return newRequest
         } else {

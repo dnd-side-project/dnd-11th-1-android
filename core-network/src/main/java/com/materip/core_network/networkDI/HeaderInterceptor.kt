@@ -14,7 +14,7 @@ class HeaderInterceptor @Inject constructor(
             tokenManager.getAuthTokenForHeader() ?: ""
         }
         val newRequest = chain.request().newBuilder()
-            .addHeader("X-AUTH-HEADER", token)
+            .addHeader("Authorization", "Bearer ${token}")
             .build()
         val response = chain.proceed(newRequest)
 
