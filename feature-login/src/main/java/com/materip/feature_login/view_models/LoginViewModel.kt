@@ -16,9 +16,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -68,6 +65,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun postToken(kakaoToken: String){
+        Log.d("API TEST", "kakao token : ${kakaoToken}")
         viewModelScope.launch{
             loginRepository.saveKakaoAccessToken(kakaoToken)
             val requestDto = LoginRequestDto(provider = "KAKAO", accessToken = kakaoToken)
