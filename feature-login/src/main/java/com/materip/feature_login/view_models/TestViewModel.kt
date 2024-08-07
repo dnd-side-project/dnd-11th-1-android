@@ -1,14 +1,18 @@
 package com.materip.feature_login.view_models
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.materip.core_repository.repository.login_repository.LoginRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,9 +30,9 @@ class TestViewModel @Inject constructor(
     }
 
     private fun initAccessToken(){
-        viewModelScope.launch{
-            loginRepository.getAuthToken().collectLatest{
-                _accessToken.update{it}
+        runBlocking{
+            _accessToken.update {
+                loginRepository.getAuthToken().firstOrNull()
             }
         }
     }

@@ -2,7 +2,6 @@ package com.materip.feature_login.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
@@ -13,14 +12,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.feature_login.view_models.TestViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Composable
 fun ScreenTest(
-//    viewModel: TestViewModel = hiltViewModel()
+    viewModel: TestViewModel = hiltViewModel()
 ){
-//    val accessToken = viewModel.accessToken.collectAsStateWithLifecycle()
-//    val refreshToken = viewModel.refreshToken.collectAsStateWithLifecycle()
+    val accessToken = viewModel.accessToken.collectAsStateWithLifecycle()
+    val refreshToken = viewModel.refreshToken.collectAsStateWithLifecycle()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -31,8 +29,19 @@ fun ScreenTest(
         Text(
             text = "Login Success"
         )
-//        Text(
-//            text = "token : ${accessToken.value} / refresh ${refreshToken.value}"
-//        )
+        Test(
+            accessToken = accessToken.value,
+            refreshToken = refreshToken.value,
+        )
     }
+}
+
+@Composable
+private fun Test(
+    accessToken: String?,
+    refreshToken: String?
+){
+    Text(
+        text = "token : ${accessToken} / refreshToken: ${refreshToken}"
+    )
 }
