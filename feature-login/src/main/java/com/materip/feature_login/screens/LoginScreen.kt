@@ -77,7 +77,7 @@ private fun LoginMainContent(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color.White)
-            .padding(horizontal = 35.dp, vertical = 60.dp),
+            .padding(horizontal = 20.dp, vertical = 60.dp),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
