@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.TextUnit
 
 @Composable
-fun CustomButton(
+fun KakaoButton(
     modifier: Modifier = Modifier,
     containerColor: Color,
     shape: Shape,

@@ -1,6 +1,5 @@
 package com.materip.feature_login
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +16,6 @@ import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,12 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kakao.sdk.auth.model.OAuthToken
-import com.kakao.sdk.common.util.Utility
-import com.kakao.sdk.user.UserApiClient
 import com.materip.core_common.ErrorState
-import com.materip.core_designsystem.CustomButton
 import com.materip.feature_login.view_models.LoginViewModel
+import com.materip.matetrip.component.KakaoButton
 
 @Composable
 fun LoginRoute(
@@ -93,7 +88,7 @@ fun LoginScreen(
                     fontSize = 36.sp
                 )
             }
-            CustomButton(
+            KakaoButton(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(54.dp),
