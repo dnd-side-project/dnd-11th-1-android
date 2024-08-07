@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.materip.core_repository.repository.login_repository.LoginRepository
+import com.materip.core_repository.repository.test_repository.TestRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TestViewModel @Inject constructor(
-    private val loginRepository: LoginRepository
+    private val loginRepository: LoginRepository,
+    private val testRepository: TestRepository
 ): ViewModel(){
     private var _accessToken = MutableStateFlow<String?>(null)
     val accessToken get() = _accessToken.asStateFlow()
@@ -27,6 +29,7 @@ class TestViewModel @Inject constructor(
     init{
         initAccessToken()
         initRefreshToken()
+        doTest()
     }
 
     private fun initAccessToken(){
@@ -42,6 +45,13 @@ class TestViewModel @Inject constructor(
             loginRepository.getRefreshToken().collectLatest{
                 _refreshToken.update{it}
             }
+        }
+    }
+
+    private fun doTest(){
+        viewModelScope.launch{
+            val result = testRepository.getTest()
+            Log.d("API TEST", "RESULT : ${result}")
         }
     }
 }
