@@ -92,12 +92,6 @@ fun LoginScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(54.dp),
-                containerColor = Color.Yellow,
-                shape = RoundedCornerShape(size = 10.dp),
-                text = "카카오 로그인",
-                textColor = Color.Black,
-                fontSize = 16.sp,
-                isEnabled = true,
                 onClick = doLogin
             )
         }
