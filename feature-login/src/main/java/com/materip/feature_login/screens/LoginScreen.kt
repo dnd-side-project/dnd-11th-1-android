@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -95,10 +96,12 @@ private fun LoginMainContent(
                 fontFamily = FontFamily(Font(R.font.helvetica_black)),
                 fontWeight = FontWeight(900)
             )
+            Spacer(Modifier.width(8.dp))
             Image(
                 painter = painterResource(R.drawable.ic_app_main_logo),
                 contentDescription = "APP ICON" 
             )
+            Spacer(Modifier.width(8.dp))
             Text(
                 text = "TRIP",
                 fontSize = 36.sp,
