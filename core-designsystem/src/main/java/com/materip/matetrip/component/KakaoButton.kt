@@ -1,4 +1,4 @@
-package com.materip.core_designsystem
+package com.materip.matetrip.component
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
