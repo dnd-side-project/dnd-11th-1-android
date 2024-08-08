@@ -5,6 +5,8 @@ coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
+kotlinxCoroutinesAndroid = "1.9.0-RC"
+kotlinxCoroutinesBom = "1.9.0-RC"
 lifecycleRuntimeKtx = "2.8.3"
 activityCompose = "1.9.0"
 composeBom = "2024.02.02"
@@ -15,7 +17,7 @@ serializationPlugin = "1.8.10"
 serialization = "1.5.1"
 retrofit = "2.9.0"
 sandwich = "2.0.8"
-coroutine = "1.9.0"
+coroutine = "1.9.0-RC"
 coil = "2.7.0"
 googleService = "4.3.15"
 firebaseBoM = "32.3.1"
@@ -46,6 +48,8 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+kotlinx-coroutines-bom = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-bom", version.ref = "kotlinxCoroutinesBom" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 retrofit = { group = "com.squareup.retrofit2", name="retrofit", version.ref = "retrofit"}
 retrofit-converter = { group = "com.squareup.retrofit2", name="converter-gson",version.ref = "retrofit"}
