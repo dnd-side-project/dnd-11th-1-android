@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.materip.core_model.ui_model.SelectInterests
 import com.materip.core_model.ui_model.TripInterest
 import com.materip.matetrip.component.MateTripButton
 import com.materip.matetrip.component.OnboardingElevatedCard
@@ -37,14 +38,21 @@ import com.materip.matetrip.icon.Badges
 import com.materip.matetrip.theme.MateTripTypographySet
 import com.materip.matetrip.theme.MatetripColor
 import com.materip.matetrip.theme.OnboardingMessage
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 @Composable
 fun SelectTripInterestRoute(
+    userInfo: String?,
     onBackClick: () -> Unit,
+    onNextClick: (userInfo: String?, interests: String) -> Unit,
 ){
     SelectTripInterestScreen(
         onBackClick = onBackClick,
-        onNextClick = {a, b, c,d ->
+        onNextClick = {plan, money, place, speed ->
+            val tripInterests = listOf(plan, money, place, speed)
+            val tripInterestJson = Json.encodeToString(SelectInterests(tripInterests))
+            onNextClick(userInfo, tripInterestJson)
         }
     )
 }

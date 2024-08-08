@@ -27,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.materip.core_designsystem.R
+import com.materip.core_model.ui_model.SelectStyles
 import com.materip.core_model.ui_model.TripInterest
 import com.materip.core_model.ui_model.TripStyle
 import com.materip.matetrip.component.MateTripButton
@@ -36,15 +37,21 @@ import com.materip.matetrip.icon.Badges
 import com.materip.matetrip.theme.MateTripTypographySet
 import com.materip.matetrip.theme.MatetripColor
 import com.materip.matetrip.theme.OnboardingMessage
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 @Composable
 fun SelectTripStyleRoute(
-    onBackClick: () -> Unit
+    userInfo: String?,
+    tripInterests: String?,
+    onBackClick: () -> Unit,
+    onNextClick: (userInfo: String?, tripInterests: String?, tripStyles: String) -> Unit,
 ){
     SelectTripStyleScreen(
         onBackClick = onBackClick,
-        onNextClick = {
-
+        onNextClick = {tripStyles ->
+            val tripStylesJson = Json.encodeToString(SelectStyles(tripStyles))
+            onNextClick(userInfo, tripInterests, tripStylesJson)
         }
     )
 }

@@ -37,7 +37,13 @@ import com.materip.matetrip.theme.MatetripColor
 import com.materip.matetrip.theme.OnboardingMessage
 
 @Composable
-fun SelectFoodStyleRoute(){
+fun SelectFoodStyleRoute(
+    userInfo: String?,
+    tripInterests: String?,
+    tripStyles: String?,
+    onBackClick: () -> Unit,
+    onNextClick: () -> Unit
+){
     SelectFoodPreferenceScreen(
         onBackClick = {},
         onNextClick = {}

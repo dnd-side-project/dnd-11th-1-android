@@ -27,16 +27,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.materip.core_model.ui_model.Gender
 import com.materip.core_model.ui_model.InputKeyboardType
+import com.materip.core_model.ui_model.UserInfo
 import com.materip.matetrip.component.MateTripButton
 import com.materip.matetrip.component.OnboardingElevatedCard
 import com.materip.matetrip.component.ProgressIndicator
 import com.materip.matetrip.component.UnderlinedTextField
 import com.materip.matetrip.theme.MateTripTypographySet
 import com.materip.matetrip.theme.OnboardingMessage
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 @Composable
-fun InputUserInfoRoute(){
-
+fun InputUserInfoRoute(
+    navSelectTripInterest: (userInfo: String) -> Unit,
+){
+    InputUserInfoScreen(
+        onNextClick = { birthYear, gender ->
+            val userInfoJson = Json.encodeToString(UserInfo(birthYear, gender.name))
+            navSelectTripInterest(userInfoJson)
+        }
+    )
 }
 
 @Composable

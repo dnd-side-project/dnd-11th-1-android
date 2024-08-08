@@ -10,6 +10,9 @@ import com.materip.feature_login.navigation.navigateToTest
 import com.materip.feature_login.navigation.test
 import com.materip.feature_onboarding.navigation.inputUserInfo
 import com.materip.feature_onboarding.navigation.navigateToInputUserInfo
+import com.materip.feature_onboarding.navigation.navigateToSelectFoodPreference
+import com.materip.feature_onboarding.navigation.navigateToSelectTripInterest
+import com.materip.feature_onboarding.navigation.navigateToSelectTripStyle
 import com.materip.feature_onboarding.navigation.selectFoodPreference
 import com.materip.feature_onboarding.navigation.selectTripInterest
 import com.materip.feature_onboarding.navigation.selectTripStyle
@@ -26,10 +29,10 @@ fun SetUpNavGraph(
         /** feature-login */
         login(navOnBoarding = navController::navigateToInputUserInfo)
         test()
-        inputUserInfo()
-        selectTripStyle(onBackClick = navController::navigateToBack)
-        selectTripInterest(onBackClick = navController::navigateToBack)
-        selectFoodPreference()
+        inputUserInfo(navSelectTripInterest = navController::navigateToSelectTripInterest)
+        selectTripInterest(onBackClick = navController::navigateToBack, onNextClick = navController::navigateToSelectTripStyle)
+        selectTripStyle(onBackClick = navController::navigateToBack, onNextClick = navController::navigateToSelectFoodPreference)
+        selectFoodPreference(onBackClick = navController::navigateToBack)
     }
 }
 
