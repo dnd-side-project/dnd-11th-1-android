@@ -5,6 +5,7 @@ import com.materip.core_database.TokenManager
 import com.materip.core_network.networkDI.AuthAuthenticator
 import com.materip.core_network.networkDI.HeaderInterceptor
 import com.materip.core_network.service.login.LoginService
+import com.materip.core_network.service.onboarding.OnboardingService
 import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -66,5 +67,10 @@ object NetworkModule {
     @Provides
     fun provideLoginService(retrofit: Retrofit): LoginService {
         return retrofit.create(LoginService::class.java)
+    }
+    @Singleton
+    @Provides
+    fun provideOnboardingService(retrofit: Retrofit): OnboardingService {
+        return retrofit.create(OnboardingService::class.java)
     }
 }
