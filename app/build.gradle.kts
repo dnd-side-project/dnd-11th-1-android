@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.service)
+    alias(libs.plugins.hilt.android)
     kotlin("kapt")
 }
 
@@ -46,17 +47,19 @@ android {
     }
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/gradle/incremental.annotation.processors"
         }
     }
 }
 
 dependencies {
+    implementation(project(":core-common"))
     implementation(project(":core-model"))
+    implementation(project(":core-network"))
+    implementation(project(":core-datastore"))
     implementation(project(":core-designsystem"))
     implementation(project(":core-repository"))
     implementation(project(":feature-login"))
-    implementation(project(":feature-chatting"))
     implementation(project(":feature-home3"))
     implementation(project(":feature-mypage"))
     implementation(project(":feature-onboarding"))
