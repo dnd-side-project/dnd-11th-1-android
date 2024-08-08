@@ -9,7 +9,6 @@ pluginManagement {
         }
         mavenCentral()
         gradlePluginPortal()
-        maven { url = java.net.URI("https://devrepo.kakao.com/nexus/content/groups/public/") }
     }
 }
 dependencyResolutionManagement {
@@ -17,6 +16,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url = java.net.URI("https://devrepo.kakao.com/nexus/content/groups/public/")}
     }
 }
 
@@ -30,7 +30,6 @@ include(":core-repository")
 include(":core-common")
 include(":feature-login")
 include(":feature-onboarding")
-include(":feature-home")
 include(":feature-home3")
 include(":feature-mypage")
 include(":feature-chatting")
