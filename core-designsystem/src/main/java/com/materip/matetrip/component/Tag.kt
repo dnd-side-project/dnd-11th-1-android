@@ -1,6 +1,6 @@
 package com.materip.matetrip.component
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -26,15 +26,16 @@ import com.materip.matetrip.theme.Primary
 
 @Composable
 fun RegionTag(
-    regions: List<String>,
     onClick: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var selectedRegion by remember { mutableStateOf("전체") }
+    val regions = listOf("전체", "수도권", "경기도", "충청도", "강원도", "경상도", "전라도", "제주도", "해외")
 
     LazyRow(
-        modifier = Modifier
-            .background(color = Color.LightGray) // preview에서 보려고 추가 사용 시 수정
-            .padding(horizontal = 16.dp)
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, bottom = 18.dp),
     ) {
         items(regions) { region ->
             val isSelected = region == selectedRegion
@@ -46,6 +47,11 @@ fun RegionTag(
                     selectedRegion = region
                     onClick(region)
                 },
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 4.dp,
+                    pressedElevation = 6.dp,
+                    disabledElevation = 0.dp
+                ),
                 shape = RoundedCornerShape(28.dp),
                 modifier = Modifier
                     .height(36.dp)
@@ -56,7 +62,7 @@ fun RegionTag(
                     contentColor = textColor,
                     disabledContainerColor = Color.White,
                     disabledContentColor = Gray_11
-                )
+                ),
             ) {
                 Text(
                     text = region,
@@ -70,6 +76,5 @@ fun RegionTag(
 @Preview
 @Composable
 fun RegionTagPreview() {
-    val regions = listOf("전체", "수도권", "경기도", "충청도", "강원도", "경상도", "전라도", "제주도", "해외")
-    RegionTag(regions = regions, onClick = {})
+    RegionTag(onClick = {})
 }
