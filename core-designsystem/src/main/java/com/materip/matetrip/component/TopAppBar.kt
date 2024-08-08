@@ -2,16 +2,13 @@
 
 package com.materip.matetrip.component
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -44,9 +41,7 @@ import com.materip.matetrip.theme.Primary
 
 // 홈 화면의 상단바
 @Composable
-fun MateTripTopAppBar(
-    onNavigateUp: () -> Unit
-) {
+fun MateTripTopAppBar() {
     TopAppBar(
         title = {
             Icon(
@@ -144,9 +139,7 @@ fun MateTripTopAppBarPreview() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        MateTripTopAppBar(
-            onNavigateUp = { }
-        )
+        MateTripTopAppBar()
         Spacer(modifier = Modifier.size(16.dp))
         BackButtonWithTitleTopAppBar(
             screenTitle = "동행 모집하기",
