@@ -57,7 +57,7 @@ dependencies {
     implementation(project(":core-repository"))
     implementation(project(":feature-login"))
     implementation(project(":feature-chatting"))
-    implementation(project(":feature-home"))
+    implementation(project(":feature-home3"))
     implementation(project(":feature-mypage"))
     implementation(project(":feature-onboarding"))
 
