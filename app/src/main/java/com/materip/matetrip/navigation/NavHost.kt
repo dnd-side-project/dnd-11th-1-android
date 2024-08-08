@@ -8,15 +8,16 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.materip.feature_home.ui.FormScreen
+import com.materip.feature_home.ui.HomeScreen
+import com.materip.feature_home.ui.NotificationScreen
+import com.materip.feature_home.ui.PostScreen
+import com.materip.feature_home.ui.ProfileScreen
+import com.materip.feature_home.ui.ReviewScreen
 import com.materip.matetrip.component.BackButtonTopAppBar
 import com.materip.matetrip.component.BackButtonWithTitleTopAppBar
 import com.materip.matetrip.component.MateTripTopAppBar
-import com.materip.matetrip.ui.FormScreen
-import com.materip.matetrip.ui.HomeScreen
-import com.materip.matetrip.ui.NotificationScreen
-import com.materip.matetrip.ui.PostScreen
-import com.materip.matetrip.ui.ProfileScreen
-import com.materip.matetrip.ui.ReviewScreen
+
 
 @Composable
 fun SetUpNavGraph(
