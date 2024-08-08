@@ -26,6 +26,7 @@ import com.materip.matetrip.theme.MateTripTypographySet
 
 @Composable
 fun OnboardingElevatedCard(
+    modifier: Modifier = Modifier,
     text: String,
     icon: Int,
     isSelected: Boolean, // 선택된 카드인지 여부, 이후는 부모 컴포저블에서 관리
@@ -36,9 +37,7 @@ fun OnboardingElevatedCard(
 
     Card(
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
-        modifier = Modifier
-            .size(145.dp)
-            .clickable { onClick() }
+        modifier = modifier.clickable { onClick() }
     ) {
         Column {
             Text(
