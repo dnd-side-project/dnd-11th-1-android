@@ -107,7 +107,7 @@ fun SelectTripInterestScreen(
                         .aspectRatio(1f),
                     text = "계획적",
                     icon = Badges.planned_badge,
-                    iconSize = 30.dp,
+                    iconSize = 48.dp,
                     isSelected = planned == TripInterest.PLANNED,
                     tint = if(planned == TripInterest.PLANNED) Color.White else MatetripColor.Blue_01,
                     onClick = {planned = TripInterest.PLANNED}
@@ -119,7 +119,7 @@ fun SelectTripInterestScreen(
                         .aspectRatio(1f),
                     text = "무계획",
                     icon = Badges.unplanned_badge,
-                    iconSize = 30.dp,
+                    iconSize = 48.dp,
                     isSelected = planned == TripInterest.UNPLANNED,
                     tint = if(planned == TripInterest.UNPLANNED) Color.White else MatetripColor.Blue_01,
                     onClick = {planned = TripInterest.UNPLANNED}
@@ -135,7 +135,7 @@ fun SelectTripInterestScreen(
                         .aspectRatio(1f),
                     text = "공금",
                     icon = Badges.public_funds_badge,
-                    iconSize = 30.dp,
+                    iconSize = 48.dp,
                     isSelected = money == TripInterest.PUBLIC_MONEY,
                     tint = if(money == TripInterest.PUBLIC_MONEY) Color.White else MatetripColor.Blue_01,
                     onClick = {money = TripInterest.PUBLIC_MONEY}
@@ -147,7 +147,7 @@ fun SelectTripInterestScreen(
                         .aspectRatio(1f),
                     text = "더치페이",
                     icon = Badges.dutch_pay_badge,
-                    iconSize = 30.dp,
+                    iconSize = 48.dp,
                     isSelected = money == TripInterest.DUTCH_PAY,
                     tint = if(money == TripInterest.DUTCH_PAY) Color.White else MatetripColor.Blue_01,
                     onClick = {money = TripInterest.DUTCH_PAY}
@@ -163,7 +163,7 @@ fun SelectTripInterestScreen(
                         .aspectRatio(1f),
                     text = "찾아본 곳",
                     icon = Badges.place_badge,
-                    iconSize = 30.dp,
+                    iconSize = 48.dp,
                     isSelected = place == TripInterest.LOOKING_FOR,
                     tint = if(place == TripInterest.LOOKING_FOR) Color.White else MatetripColor.Blue_01,
                     onClick = {place = TripInterest.LOOKING_FOR}
@@ -175,7 +175,7 @@ fun SelectTripInterestScreen(
                         .aspectRatio(1f),
                     text = "끌리는 곳",
                     icon = Badges.attractive_badge,
-                    iconSize = 30.dp,
+                    iconSize = 48.dp,
                     isSelected = place == TripInterest.DRAWN_TO,
                     tint = if(place == TripInterest.DRAWN_TO) Color.White else MatetripColor.Blue_01,
                     onClick = {place = TripInterest.DRAWN_TO}
@@ -191,7 +191,7 @@ fun SelectTripInterestScreen(
                         .aspectRatio(1f),
                     text = "빨리빨리",
                     icon = Badges.rush_badge,
-                    iconSize = 30.dp,
+                    iconSize = 48.dp,
                     isSelected = speed == TripInterest.QUICKLY,
                     tint = if(speed == TripInterest.QUICKLY) Color.White else MatetripColor.Blue_01,
                     onClick = {speed = TripInterest.QUICKLY}
@@ -203,7 +203,7 @@ fun SelectTripInterestScreen(
                         .aspectRatio(1f),
                     text = "느긋하게",
                     icon = Badges.leisurely_badge,
-                    iconSize = 30.dp,
+                    iconSize = 48.dp,
                     isSelected = speed == TripInterest.LEISURELY,
                     tint = if(speed == TripInterest.LEISURELY) Color.White else MatetripColor.Blue_01,
                     onClick = {speed = TripInterest.LEISURELY}
