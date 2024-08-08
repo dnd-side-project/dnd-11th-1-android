@@ -1,8 +1,8 @@
-package com.materip.matetrip.ui
+package com.materip.feature_home.ui
 
 import androidx.compose.runtime.Composable
 
 @Composable
-fun FormScreen() {
+fun NotificationScreen() {
     // FormScreen implementation
 }

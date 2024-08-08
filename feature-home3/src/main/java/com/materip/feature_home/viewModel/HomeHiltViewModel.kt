@@ -1,4 +1,4 @@
-package com.materip.matetrip.viewModel
+package com.materip.feature_home.viewModel
 
 //@HiltViewModel
 //class HomeHiltViewModel @Inject constructor(
