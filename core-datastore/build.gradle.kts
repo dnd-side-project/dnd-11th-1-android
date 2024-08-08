@@ -1,7 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-    kotlin("kapt")
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -31,12 +33,16 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    composeOptions{
+        kotlinCompilerExtensionVersion="1.5.2"
+    }
 }
 
 dependencies {
     implementation(project(":core-model"))
     implementation(project(":core-network"))
     implementation(project(":core-common"))
+    implementation(project(":core-database"))
 
     //hilt
     implementation(libs.bundles.hilt.impl)

@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.materip.matetrip.component
 
 import androidx.compose.foundation.background
@@ -37,6 +35,7 @@ import com.materip.matetrip.theme.MateTripTypographySet
  * rememberTopAppBarState: 상단바의 상태를 기억하는 상태 객체
  * nestedScrollConnection: 상단바의 스크롤 동작을 제어하는 객체
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MateTripTopAppBar() {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())

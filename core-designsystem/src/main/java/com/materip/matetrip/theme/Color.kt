@@ -28,3 +28,7 @@ internal val Gray_04 = Color(0xFFCECECE)
 internal val Gray_03 = Color(0xFFE9E9E9)
 internal val Gray_02 = Color(0xFFF4F4F4)
 internal val Gray_01 = Color(0xFFFAFAFA)
+
+//kakao button
+internal val KakaoButtonColor = Color(0xFFF6DB4F)
+internal val KakaoTextColor = Color(0xFF382929)

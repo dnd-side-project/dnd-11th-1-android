@@ -1,8 +1,14 @@
+import java.util.*
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.google.service)
-    kotlin("kapt")
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.kotlin.kapt)
+}
+
+val localProperties = Properties().apply{
+    load(project.rootProject.file("./app/local.properties").inputStream())
 }
 
 android {
@@ -20,6 +26,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        buildConfigField("String", "NATIVE_APP_KEY", localProperties["NATIVE_APP_KEY"] as String)
+        manifestPlaceholders["REDIRECTION_PATH"] = localProperties["REDIRECTION_PATH"] as String
     }
 
     buildTypes {
@@ -32,21 +40,30 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.2"
     }
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/gradle/incremental.annotation.processors"
+        }
+    }
+    kapt{
+        correctErrorTypes = true
+    }
+    java{
+        toolchain{
+            languageVersion.set(JavaLanguageVersion.of(17))
         }
     }
 }
@@ -56,29 +73,20 @@ dependencies {
     implementation(project(":core-designsystem"))
     implementation(project(":core-repository"))
     implementation(project(":feature-login"))
-    implementation(project(":feature-chatting"))
     implementation(project(":feature-home"))
     implementation(project(":feature-mypage"))
     implementation(project(":feature-onboarding"))
 
-    //FCM
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.analytics)
-
-    //navigation
-    implementation(libs.navigation)
+    implementation(libs.navigation) //navigation
+    implementation(libs.bundles.kakao) //kakao
 
     //hilt
     implementation(libs.bundles.hilt.impl)
     kapt(libs.bundles.hilt.kapt)
 
-    //kakao
-    implementation(libs.bundles.kakao)
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
@@ -86,7 +94,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
