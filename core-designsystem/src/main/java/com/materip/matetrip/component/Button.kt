@@ -3,6 +3,7 @@ package com.materip.matetrip.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,13 +16,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.materip.matetrip.theme.MateTripTypographySet
-import com.materip.matetrip.theme.ActivatedColor
-import com.materip.matetrip.theme.Blue_04
-import com.materip.matetrip.theme.Gray_08
-import com.materip.matetrip.theme.Gray_10
-import com.materip.matetrip.theme.gray_06
-import com.materip.matetrip.theme.InactiveColor
-import com.materip.matetrip.theme.Primary
+import com.materip.matetrip.theme.MatetripColor.ActivatedColor
+import com.materip.matetrip.theme.MatetripColor.Blue_04
+import com.materip.matetrip.theme.MatetripColor.Gray_08
+import com.materip.matetrip.theme.MatetripColor.Gray_10
+import com.materip.matetrip.theme.MatetripColor.InactiveColor
+import com.materip.matetrip.theme.MatetripColor.Primary
+import com.materip.matetrip.theme.MatetripColor.gray_06
 
 /**
  * MateTrip Button
@@ -30,6 +31,7 @@ import com.materip.matetrip.theme.Primary
 
 @Composable
 fun MateTripButton(
+    modifier: Modifier = Modifier,
     onClick: () -> Unit,
     enabled: Boolean = false,
     buttonText: String
@@ -38,7 +40,7 @@ fun MateTripButton(
         onClick = onClick,
         enabled = enabled,
         shape = RoundedCornerShape(10.dp),
-        modifier = Modifier.size(width = 300.dp, height = 54.dp),
+        modifier = modifier.height(height = 54.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = ActivatedColor,
             contentColor = Color.White,
