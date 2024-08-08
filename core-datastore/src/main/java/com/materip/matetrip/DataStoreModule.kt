@@ -1,3 +1,5 @@
+package com.materip.matetrip
+
 import com.materip.core_datastore.test_datastore.TestDataStore
 import com.materip.core_datastore.test_datastore.TestDataStoreImpl
 import dagger.Binds
