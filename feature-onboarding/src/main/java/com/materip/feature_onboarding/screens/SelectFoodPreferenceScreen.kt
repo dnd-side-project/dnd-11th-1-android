@@ -17,7 +17,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -25,9 +27,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_designsystem.R
 import com.materip.core_model.ui_model.FoodPreference
 import com.materip.core_model.ui_model.TripInterest
+import com.materip.feature_onboarding.view_models.OnboardingViewModel
 import com.materip.matetrip.component.MateTripButton
 import com.materip.matetrip.component.OnboardingElevatedCard
 import com.materip.matetrip.component.ProgressIndicator
@@ -42,12 +47,19 @@ fun SelectFoodStyleRoute(
     tripInterests: String?,
     tripStyles: String?,
     onBackClick: () -> Unit,
-    onNextClick: () -> Unit
+    onNextClick: () -> Unit,
+    viewModel: OnboardingViewModel = hiltViewModel()
 ){
+    val isCompleted by viewModel.isDone.collectAsStateWithLifecycle()
     SelectFoodPreferenceScreen(
-        onBackClick = {},
-        onNextClick = {}
+        onBackClick = onBackClick,
+        onNextClick = { foodPreferences ->
+            viewModel.postOnboarding(userInfo, tripInterests, tripStyles, foodPreferences)
+        }
     )
+    LaunchedEffect(isCompleted){
+        if(isCompleted) onNextClick()
+    }
 }
 
 @Composable
@@ -84,7 +96,9 @@ fun SelectFoodPreferenceScreen(
         }
         Spacer(Modifier.height(20.dp))
         Column(
-            modifier = Modifier.weight(1f).verticalScroll(state = scrollState)
+            modifier = Modifier
+                .weight(1f)
+                .verticalScroll(state = scrollState)
         ){
             Text(
                 text = OnboardingMessage.MESSAGE_4.title,
