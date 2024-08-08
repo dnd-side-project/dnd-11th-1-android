@@ -27,6 +27,8 @@ hiltNavCompose = "1.0.0"
 kakao = "2.19.0"
 datastore = "1.1.1"
 navigationRuntimeKtx = "2.7.7"
+material3Android = "1.2.1"
+uiToolingPreviewAndroid = "1.6.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -53,7 +55,7 @@ serialization = { group = "org.jetbrains.kotlinx", name="kotlinx-serialization-j
 coroutine = { group = "org.jetbrains.kotlinx", name="kotlinx-coroutines-core", version.ref="coroutine"}
 coil = { group = "io.coil-kt", name="coil", version.ref="coil"}
 coil-compose = { group = "io.coil-kt", name="coil-compose", version.ref="coil"}
-firebase-bom = { group = "com.gogole.firebase", name="firebase-bom", version.ref="firebaseBoM"}
+firebase-bom = { group = "com.google.firebase", name="firebase-bom", version.ref="firebaseBoM"}
 firebase-analytics = { group = "com.google.firebase", name="firebase-analytics-ktx", version.ref="firebaseAnalytic"}
 navigation = { group = "androidx.navigation", name="navigation-compose", version.ref="navigation"}
 hilt-android = { group = "com.google.dagger", name="hilt-android", version.ref="hilt"}
@@ -69,6 +71,8 @@ kakao-freind = { group = "com.kakao.sdk", name="v2-friend", version.ref="kakao"}
 kakao-cert = { group = "com.kakao.sdk", name="v2-cert", version.ref="kakao"}
 datastore = { group = "androidx.datastore", name="datastore-preferences", version.ref="datastore"}
 androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
+androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
+androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
