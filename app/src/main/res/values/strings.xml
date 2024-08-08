@@ -10,5 +10,7 @@
     <string name="profile">Profile</string>">
     <string name="notification">Notification</string>">
     <string name="review">Review</string>">
+    <string name="setting">Setting</string>">
+    <string name="my_page">MyPage</string>">
 
 </resources>
