@@ -7,7 +7,7 @@ sealed interface ErrorState {
     data class AuthError(
         val invalidTokenError: Boolean,
         val notFoundTokenError: Boolean,
-        val generalError: Boolean
+        val generalError: Pair<Boolean, String?>
     ): ErrorState
     data object Loading: ErrorState
 }
