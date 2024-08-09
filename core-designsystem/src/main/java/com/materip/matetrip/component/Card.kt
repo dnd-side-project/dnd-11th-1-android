@@ -44,7 +44,6 @@ fun OnboardingElevatedCard(
 ) {
     val backgroundColor = if (isSelected) Color(0xFF3553F2) else Color(0xFFEEF0FF)
     val textColor = if (isSelected) Color.White else MateTripTypographySet.onboardingCard.color
-    val iconColor = if(tint == null) LocalContentColor.current else tint
 
     Card(
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
@@ -65,16 +64,28 @@ fun OnboardingElevatedCard(
                 modifier = Modifier.fillMaxWidth().padding(top = 20.dp, end = 16.dp, bottom = 16.dp),
                 horizontalArrangement = Arrangement.End
             ){
-                Icon(
-                    modifier = if(iconSize != null){
-                        Modifier.size(iconSize)
-                    } else {
-                        Modifier
-                    },
-                    painter = painterResource(id = icon),
-                    contentDescription = "$text 아이콘",
-                    tint = iconColor
-                )
+                if(tint != null){
+                    Icon(
+                        modifier = if(iconSize != null){
+                            Modifier.size(iconSize)
+                        } else {
+                            Modifier
+                        },
+                        painter = painterResource(id = icon),
+                        contentDescription = "$text 아이콘",
+                        tint = tint
+                    )
+                } else {
+                    Image(
+                        modifier = if(iconSize != null){
+                            Modifier.size(iconSize)
+                        } else {
+                            Modifier
+                        },
+                        painter = painterResource(id = icon),
+                        contentDescription = "$text 아이콘",
+                    )
+                }
             }
         }
     }
