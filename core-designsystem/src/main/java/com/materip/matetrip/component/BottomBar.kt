@@ -4,8 +4,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -21,9 +22,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.materip.matetrip.icon.Icons
+import com.materip.matetrip.theme.MateTripColors.Gray_06
+import com.materip.matetrip.theme.MateTripColors.Primary
 import com.materip.matetrip.theme.MateTripTypographySet
-import com.materip.matetrip.theme.Primary
-import com.materip.matetrip.theme.gray_06
 
 @Composable
 fun MateTripBottomBar(
@@ -35,8 +36,8 @@ fun MateTripBottomBar(
 
     BottomAppBar(
         modifier = Modifier
-            .width(360.dp)
-            .height(68.dp),
+            .fillMaxWidth()
+            .height(78.dp),
         containerColor = Color.White,
         contentPadding = PaddingValues(horizontal = 34.dp)
     ) {
@@ -48,7 +49,9 @@ fun MateTripBottomBar(
                 selectedTab = "home"
                 onHomeClick()
             },
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
+                .padding(top = 10.dp)
         )
         BottomBarItem(
             iconRes = Icons.my_page_icon,
@@ -58,7 +61,9 @@ fun MateTripBottomBar(
                 selectedTab = "my_page"
                 onMyPageClick()
             },
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
+                .padding(top = 10.dp)
         )
         BottomBarItem(
             iconRes = Icons.setting_icon,
@@ -68,7 +73,9 @@ fun MateTripBottomBar(
                 selectedTab = "setting"
                 onSettingClick()
             },
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
+                .padding(top = 10.dp)
         )
     }
 }
@@ -81,7 +88,7 @@ fun BottomBarItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val color = if (isSelected) Primary else gray_06
+    val color = if (isSelected) Primary else Gray_06
 
     Column(
         modifier = modifier,
