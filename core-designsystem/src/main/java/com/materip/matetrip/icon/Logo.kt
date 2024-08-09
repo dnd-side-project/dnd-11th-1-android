@@ -8,4 +8,5 @@ object Logo {
     val app_icon_60 = R.drawable.logo_60px
     val splash_icon_01 = R.drawable.splash_01
     val splash_icon_02 = R.drawable.splash_02
+    val sample_image = R.drawable.image
 }
