@@ -37,7 +37,6 @@ dependencies {
     implementation(project(":core-model"))
     implementation(project(":core-network"))
     implementation(project(":core-common"))
-    implementation(project(":core-repository"))
 
     //hilt
     implementation(libs.bundles.hilt.impl)
