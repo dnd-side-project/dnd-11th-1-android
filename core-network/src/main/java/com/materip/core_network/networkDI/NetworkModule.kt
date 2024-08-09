@@ -1,6 +1,8 @@
-package com.materip.core_network
+package com.materip.core_network.networkDI
 
 import com.google.gson.GsonBuilder
+import com.materip.core_network.BuildConfig
+import com.materip.core_network.service.BoardService
 import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -31,5 +33,11 @@ object NetworkModule {
     @Provides
     fun provideTestService(retrofit: Retrofit): TestService {
         return retrofit.create(TestService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBoardService(retrofit: Retrofit): BoardService {
+        return retrofit.create(BoardService::class.java)
     }
 }
