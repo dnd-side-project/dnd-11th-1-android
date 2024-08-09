@@ -80,21 +80,18 @@ fun MateTripHomeButton(
 
 // 홈 게시글 작성, 모집 연령, 성별 버튼
 @Composable
-fun FavoriteButton(
-    onClick: () -> Unit,
-    enabled: Boolean = false,
-    buttonText: String
+fun ToggleButton(
+    buttonText: String,
+    isSelected: Boolean,
+    onClick: () -> Unit
 ) {
     Button(
         onClick = onClick,
-        enabled = enabled,
         shape = RoundedCornerShape(7.dp),
         modifier = Modifier.size(width = 155.dp, height = 40.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Primary,
-            contentColor = Color.White,
-            disabledContainerColor = InactiveColor,
-            disabledContentColor = Gray_10
+            containerColor = if (isSelected) Primary else InactiveColor,
+            contentColor = if (isSelected) Color.White else Gray_10
         )
     ) {
         Text(
@@ -103,6 +100,7 @@ fun FavoriteButton(
         )
     }
 }
+
 
 // 거절, 수락
 @Composable
@@ -184,18 +182,6 @@ fun MateTripButtonPreview() {
             onClick = {},
             enabled = true,
             buttonText = "동행신청"
-        )
-        Spacer(modifier = Modifier.size(16.dp))
-        FavoriteButton(
-            onClick = {},
-            enabled = true,
-            buttonText = "동일 나이대"
-        )
-        Spacer(modifier = Modifier.size(16.dp))
-        FavoriteButton(
-            onClick = {},
-            enabled = false,
-            buttonText = "상관없음"
         )
         Spacer(modifier = Modifier.size(16.dp))
         AccessStatusButton(
