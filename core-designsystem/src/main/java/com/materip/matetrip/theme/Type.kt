@@ -7,6 +7,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.materip.core_designsystem.R
+import com.materip.matetrip.theme.MateTripColors.Gray_05
 
 /**
  * 메이트립 Android Typography
@@ -96,7 +97,7 @@ val MateTripTypographySet = MateTripTypography(
         fontWeight = FontWeight.W500,
         fontSize = 14.sp,
         lineHeight = 20.sp,
-        color = gray_05
+        color = Gray_05
     ),
     homeTag = TextStyle(
         fontFamily = customFontFamily.notoSansKr,

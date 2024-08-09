@@ -19,9 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.materip.matetrip.theme.MateTripColors.Gray_06
+import com.materip.matetrip.theme.MateTripColors.Primary
 import com.materip.matetrip.theme.MateTripTypographySet
-import com.materip.matetrip.theme.Primary
-import com.materip.matetrip.theme.gray_06
 
 /**
  * SearchBar/Container, Leading icon button, Supporting text
@@ -50,13 +50,13 @@ fun MateTripSearchBar() {
                     Icon(
                         imageVector = Icons.Default.Search,
                         contentDescription = "Search Icon",
-                        tint = if(active.value) Primary else gray_06
+                        tint = if(active.value) Primary else Gray_06
                     )
                 }
             },
             colors = SearchBarDefaults.colors(
                 containerColor = Color.White,
-                dividerColor = gray_06,
+                dividerColor = Gray_06,
             ),
             shadowElevation = 6.dp,
             content = {
@@ -68,10 +68,4 @@ fun MateTripSearchBar() {
             }
         )
     }
-}
-
-@Preview
-@Composable
-fun MateTripSearchBarPreview() {
-    MateTripSearchBar()
 }

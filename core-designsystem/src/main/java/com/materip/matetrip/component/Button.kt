@@ -14,14 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.materip.matetrip.theme.MateTripColors.ActivatedColor
+import com.materip.matetrip.theme.MateTripColors.Blue_04
+import com.materip.matetrip.theme.MateTripColors.Gray_06
+import com.materip.matetrip.theme.MateTripColors.Gray_08
+import com.materip.matetrip.theme.MateTripColors.Gray_10
+import com.materip.matetrip.theme.MateTripColors.InactiveColor
+import com.materip.matetrip.theme.MateTripColors.Primary
 import com.materip.matetrip.theme.MateTripTypographySet
-import com.materip.matetrip.theme.ActivatedColor
-import com.materip.matetrip.theme.Blue_04
-import com.materip.matetrip.theme.Gray_08
-import com.materip.matetrip.theme.Gray_10
-import com.materip.matetrip.theme.gray_06
-import com.materip.matetrip.theme.InactiveColor
-import com.materip.matetrip.theme.Primary
 
 /**
  * MateTrip Button
@@ -43,7 +43,7 @@ fun MateTripButton(
             containerColor = ActivatedColor,
             contentColor = Color.White,
             disabledContainerColor = InactiveColor,
-            disabledContentColor = gray_06
+            disabledContentColor = Gray_06
         )
     ) {
         Text(
@@ -68,7 +68,7 @@ fun MateTripHomeButton(
             containerColor = ActivatedColor,
             contentColor = Color.White,
             disabledContainerColor = InactiveColor,
-            disabledContentColor = gray_06
+            disabledContentColor = Gray_06
         )
     ) {
         Text(
@@ -120,7 +120,7 @@ fun AccessStatusButton(
             containerColor = ActivatedColor,
             contentColor = Color.White,
             disabledContainerColor = InactiveColor,
-            disabledContentColor = gray_06
+            disabledContentColor = Gray_06
         )
     ) {
         Text(

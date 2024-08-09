@@ -28,8 +28,8 @@ import androidx.compose.ui.unit.dp
 import com.materip.matetrip.icon.Icons
 import com.materip.matetrip.icon.Icons.notification_icon
 import com.materip.matetrip.icon.Logo.splash_icon_02
+import com.materip.matetrip.theme.MateTripColors.Primary
 import com.materip.matetrip.theme.MateTripTypographySet
-import com.materip.matetrip.theme.Primary
 
 
 /**

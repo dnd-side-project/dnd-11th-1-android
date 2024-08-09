@@ -19,8 +19,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.materip.matetrip.theme.Primary
-import com.materip.matetrip.theme.Blue_04
+import com.materip.matetrip.theme.MateTripColors.Blue_04
+import com.materip.matetrip.theme.MateTripColors.Primary
 import kotlinx.coroutines.launch
 
 /**
