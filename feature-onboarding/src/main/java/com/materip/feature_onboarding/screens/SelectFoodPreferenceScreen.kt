@@ -29,9 +29,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.materip.core_common.ErrorState
 import com.materip.core_designsystem.R
 import com.materip.core_model.ui_model.FoodPreference
-import com.materip.core_model.ui_model.TripInterest
 import com.materip.feature_onboarding.view_models.OnboardingViewModel
 import com.materip.matetrip.component.MateTripButton
 import com.materip.matetrip.component.OnboardingElevatedCard
@@ -51,7 +51,9 @@ fun SelectFoodStyleRoute(
     viewModel: OnboardingViewModel = hiltViewModel()
 ){
     val isCompleted by viewModel.isDone.collectAsStateWithLifecycle()
+    val errorState = viewModel.errorState.collectAsStateWithLifecycle()
     SelectFoodPreferenceScreen(
+        errorState = errorState.value,
         onBackClick = onBackClick,
         onNextClick = { foodPreferences ->
             viewModel.postOnboarding(userInfo, tripInterests, tripStyles, foodPreferences)
@@ -64,8 +66,27 @@ fun SelectFoodStyleRoute(
 
 @Composable
 fun SelectFoodPreferenceScreen(
+    errorState: ErrorState,
     onBackClick: () -> Unit,
     onNextClick: (List<FoodPreference>) -> Unit,
+){
+    if (errorState is ErrorState.AuthError && errorState.isInvalid()){
+        /** 에러 */
+        val message = if (errorState.invalidTokenError) "INVALIDE TOKEN" else if (errorState.notFoundTokenError) "NOT FOUND TOKEN" else errorState.generalError.second ?: "ERR STATE IS NULL"
+        Text(
+            text = message
+        )
+    } else {
+        SelectFoodPreferenceMainContent(
+            onBackClick = onBackClick,
+            onNextClick = onNextClick
+        )
+    }
+}
+@Composable
+private fun SelectFoodPreferenceMainContent(
+    onBackClick: () -> Unit,
+    onNextClick: (List<FoodPreference>) -> Unit
 ){
     val scrollState = rememberScrollState()
     val foodStyles = remember{ mutableStateListOf<FoodPreference>() }
@@ -284,6 +305,7 @@ fun SelectFoodPreferenceScreen(
 @Composable
 private fun SelectFoodStyleUiTest(){
     SelectFoodPreferenceScreen(
+        errorState = ErrorState.Loading,
         onBackClick = {},
         onNextClick = {}
     )
