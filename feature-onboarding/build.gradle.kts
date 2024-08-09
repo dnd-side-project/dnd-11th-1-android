@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -51,6 +52,7 @@ dependencies {
     implementation(libs.bundles.kakao) //kakao
     implementation(libs.bundles.ui) //ui
     implementation(libs.androidx.lifecycle) //lifecycle
+    implementation(libs.serialization) //serialization
     //hilt
     implementation(libs.bundles.hilt.impl)
     kapt(libs.bundles.hilt.kapt)

@@ -1,4 +1,4 @@
-package com.materip.core_datastore
+package com.materip.core_datastore.com.materip.core_datastore
 
 import com.materip.core_database.TokenManager
 import com.materip.core_database.TokenManagerImpl

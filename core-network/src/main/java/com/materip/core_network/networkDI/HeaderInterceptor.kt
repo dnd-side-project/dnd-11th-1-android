@@ -1,5 +1,6 @@
 package com.materip.core_network.networkDI
 
+import android.util.Log
 import com.materip.core_database.TokenManager
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -13,6 +14,7 @@ class HeaderInterceptor @Inject constructor(
         val token = runBlocking{
             tokenManager.getAuthTokenForHeader()
         }
+        Log.d("HEADER INTERCEPTOR", "token : ${token}")
         val bearerToken = if(token == null) "" else "Bearer ${token}"
         val newRequest = chain.request().newBuilder()
             .addHeader("Authorization", bearerToken)

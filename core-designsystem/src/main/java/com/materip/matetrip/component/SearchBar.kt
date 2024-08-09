@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.materip.matetrip.theme.gray_06
+import com.materip.matetrip.theme.MatetripColor.gray_06
 
 /**
  * SearchBar/Container, Leading icon button, Supporting text
