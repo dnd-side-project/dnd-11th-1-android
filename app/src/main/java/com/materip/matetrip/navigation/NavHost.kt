@@ -11,7 +11,7 @@ import androidx.navigation.compose.composable
 import com.materip.feature_home.ui.FormScreen
 import com.materip.feature_home.ui.HomeScreen
 import com.materip.feature_home.ui.NotificationScreen
-import com.materip.feature_home.ui.PostScreen
+import com.materip.feature_home.ui.PostBoardScreen
 import com.materip.feature_home.ui.ProfileScreen
 import com.materip.feature_home.ui.ReviewScreen
 import com.materip.matetrip.component.BackButtonTopAppBar
@@ -23,7 +23,7 @@ import com.materip.matetrip.component.MateTripTopAppBar
 fun SetUpNavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    startDestination: String = Screen.Home.route
+    startDestination: String = Screen.Post.route
 ) {
     NavHost(
         navController = navController,
@@ -36,7 +36,7 @@ fun SetUpNavGraph(
             HomeScreen()
         }
         composable(Screen.Post.route) {
-            PostScreen()
+            PostBoardScreen()
         }
         composable(Screen.Form.route) {
             FormScreen()
