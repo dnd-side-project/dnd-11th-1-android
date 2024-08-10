@@ -1,10 +1,12 @@
 package com.materip.matetrip.navigation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -23,12 +25,13 @@ import com.materip.matetrip.component.MateTripTopAppBar
 fun SetUpNavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    startDestination: String = Screen.Post.route
+    startDestination: String = Screen.Home.route
 ) {
     NavHost(
         navController = navController,
         startDestination = startDestination,
         modifier = modifier
+            .background(Color.White)
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
