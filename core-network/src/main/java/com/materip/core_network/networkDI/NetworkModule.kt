@@ -29,6 +29,12 @@ object NetworkModule {
             .build()
     }
 
+    @Provides
+    fun provideOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .build()
+    }
+
     @Singleton
     @Provides
     fun provideTestService(retrofit: Retrofit): TestService {
