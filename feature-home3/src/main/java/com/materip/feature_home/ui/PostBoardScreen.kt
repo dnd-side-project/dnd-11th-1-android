@@ -1,10 +1,15 @@
+@file:OptIn(ExperimentalLayoutApi::class)
+
 package com.materip.feature_home.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +19,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -25,16 +35,26 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.materip.feature_home.viewModel.HomeHiltViewModel
 import com.materip.feature_home.viewModel.HomeUiState
 import com.materip.matetrip.component.ToggleButton
+import com.materip.matetrip.icon.Icons.fold_icon
+import com.materip.matetrip.theme.MateTripColors.ActivatedColor
+import com.materip.matetrip.theme.MateTripColors.Blue_02
 import com.materip.matetrip.theme.MateTripColors.Blue_03
+import com.materip.matetrip.theme.MateTripColors.Blue_04
+import com.materip.matetrip.theme.MateTripColors.Devider
+import com.materip.matetrip.theme.MateTripColors.Gray_03
 import com.materip.matetrip.theme.MateTripColors.Gray_06
 import com.materip.matetrip.theme.MateTripColors.Gray_11
+import com.materip.matetrip.theme.MateTripColors.Primary
 import com.materip.matetrip.theme.MateTripTypographySet
+
 
 @Composable
 fun PostBoardScreen(
@@ -46,49 +66,99 @@ fun PostBoardScreen(
     var content by remember { mutableStateOf("") }
     var gender by remember { mutableStateOf("") }
     var age by remember { mutableStateOf("") }
+    var tagInput by remember { mutableStateOf("") }
+    var tags by remember { mutableStateOf(listOf<String>()) }
+    var selectedType by remember { mutableStateOf("") }
+    var selectedRegion by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(30.dp)
+            .padding(start = 20.dp, end = 20.dp),
+        verticalArrangement = Arrangement.spacedBy(30.dp)
     ) {
         // 카메라, 사진 가져오기 버튼
 
         // 제목 입력
         AccompanyTitleInput(
             title = title,
-            onTitleChange = { title = it }
+            onTitleChange = {
+                title = it
+                viewModel.updateTitle(it)
+            }
         )
+
         // 내용 입력
         AccompanyContentInput(
             content = content,
-            onContentChange = { content = it }
+            onContentChange = {
+                content = it
+                viewModel.updateContent(it)
+            }
         )
+
         // 태그 등록
+        AccompanyTagInput(
+            tagInput = tagInput,
+            onTagInputChange = { tagInput = it },
+            tags = tags,
+            onTagAdd = { newTag ->
+                if (newTag.isNotEmpty() && tags.size < 5 && !tags.contains(newTag)) {
+                    tags = tags + newTag
+                    tagInput = ""
+                    viewModel.updateTags(tags)
+                }
+            },
+            onTagRemove = { tagToRemove ->
+                tags = tags.filter { it != tagToRemove }
+                viewModel.updateTags(tags)
+            }
+        )
 
         // 여행 지역
+        AccompanyRegionButton(
+            selectedRegion = selectedRegion,
+            onRegionSelected = {
+                selectedRegion = it
+                viewModel.updateRegion(it)
+            }
+        )
 
         // 여행 일정
 
         // 동행 유형
+        AccompanyTypeButton(
+            selectedType = selectedType,
+            onTypeSelected = {
+                selectedType = it
+                viewModel.updateType(it)
+            }
+        )
 
         // 모집 인원
 
         // 모집 연령
         AccompanyAgeButton(
             selectedAge = age,
-            onAgeChange = { age = it }
+            onAgeChange = {
+                age = it
+                viewModel.updateAge(it)
+            }
         )
+
         // 모집 성별
         AccompanyGenderButton(
             selectedGender = gender,
-            onGenderChange = { gender = it }
+            onGenderChange = {
+                gender = it
+                viewModel.updateGender(it)
+            }
         )
 
         when (uiState) {
             is HomeUiState.Loading -> CircularProgressIndicator()
             is HomeUiState.Success -> Text("게시글이 성공적으로 작성되었습니다.")
-            is HomeUiState.Error -> Text("오류: ${(uiState as HomeUiState.Error).message}")
+            is HomeUiState.Error -> Text("오류: \${(uiState as HomeUiState.Error).message}")
             else -> {}
         }
     }
@@ -100,41 +170,44 @@ private fun AccompanyTitleInput(
     onTitleChange: (String) -> Unit
 ) {
     val isTitleEmpty = title.isEmpty()
-    Text(
-        text = "제목",
-        color = Gray_11,
-        modifier = Modifier.size(320.dp, 20.dp)
-    )
-    Spacer(modifier = Modifier.height(12.dp))
-    BasicTextField(
-        value = title,
-        onValueChange = onTitleChange,
-        modifier = Modifier
-            .width(320.dp)
-            .height(44.dp)
-            .border(
-                width = 1.dp,
-                color = Blue_03,
-                shape = RoundedCornerShape(10.dp)
-            )
-            .padding(12.dp),
-        textStyle = MateTripTypographySet.title04,
-        decorationBox = { innerTextField ->
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.CenterStart
-            ) {
-                if (isTitleEmpty) {
-                    Text(
-                        text = "제목을 입력해주세요.(최대 30자)",
-                        style = MateTripTypographySet.title04,
-                        color = Gray_06
-                    )
+    Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Text(
+            text = "제목",
+            color = Gray_11,
+            modifier = Modifier.size(320.dp, 20.dp)
+        )
+        BasicTextField(
+            value = title,
+            onValueChange = onTitleChange,
+            modifier = Modifier
+                .width(370.dp)
+                .height(44.dp)
+                .border(
+                    width = 1.dp,
+                    color = Blue_03,
+                    shape = RoundedCornerShape(10.dp)
+                )
+                .padding(12.dp),
+            textStyle = MateTripTypographySet.title04,
+            decorationBox = { innerTextField ->
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    if (isTitleEmpty) {
+                        Text(
+                            text = "제목을 입력해주세요.(최대 30자)",
+                            style = MateTripTypographySet.title04,
+                            color = Gray_06
+                        )
+                    }
+                    innerTextField()
                 }
-                innerTextField()
             }
-        }
-    )
+        )
+    }
 }
 
 @Composable
@@ -143,41 +216,44 @@ private fun AccompanyContentInput(
     onContentChange: (String) -> Unit
 ) {
     val isContentEmpty = content.isEmpty()
-    Text(
-        text = "내용",
-        color = Gray_11,
-        modifier = Modifier.size(320.dp, 20.dp)
-    )
-    Spacer(modifier = Modifier.height(12.dp))
-    BasicTextField(
-        value = content,
-        onValueChange = onContentChange,
-        modifier = Modifier
-            .width(320.dp)
-            .height(234.dp)
-            .border(
-                width = 1.dp,
-                color = Blue_03,
-                shape = RoundedCornerShape(10.dp)
-            )
-            .padding(12.dp),
-        textStyle = MateTripTypographySet.title04,
-        decorationBox = { innerTextField ->
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.TopStart
-            ) {
-                if (isContentEmpty) {
-                    Text(
-                        text = "동행 모집 내용을 작성해주세요.\n\n최대한 자세하게 작성해주시면 좋아요.\nex)구체적인 장소, 여행목적, 동행을 구하는 이유 등\n(최대 500자)",
-                        style = MateTripTypographySet.title04,
-                        color = Gray_06
-                    )
+    Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Text(
+            text = "내용",
+            color = Gray_11,
+            modifier = Modifier.size(320.dp, 20.dp)
+        )
+        BasicTextField(
+            value = content,
+            onValueChange = onContentChange,
+            modifier = Modifier
+                .width(370.dp)
+                .height(234.dp)
+                .border(
+                    width = 1.dp,
+                    color = Blue_03,
+                    shape = RoundedCornerShape(10.dp)
+                )
+                .padding(12.dp),
+            textStyle = MateTripTypographySet.title04,
+            decorationBox = { innerTextField ->
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.TopStart
+                ) {
+                    if (isContentEmpty) {
+                        Text(
+                            text = "동행 모집 내용을 작성해주세요.\n\n최대한 자세하게 작성해주시면 좋아요.\nex)구체적인 장소, 여행목적, 동행을 구하는 이유 등\n(최대 500자)",
+                            style = MateTripTypographySet.title04,
+                            color = Gray_06
+                        )
+                    }
+                    innerTextField()
                 }
-                innerTextField()
             }
-        }
-    )
+        )
+    }
 }
 
 @Composable
@@ -245,15 +321,323 @@ private fun AccompanyAgeButton(
     }
 }
 
+@Composable
+fun AccompanyTagInput(
+    tagInput: String,
+    onTagInputChange: (String) -> Unit,
+    tags: List<String>,
+    onTagAdd: (String) -> Unit,
+    onTagRemove: (String) -> Unit
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top),
+        horizontalAlignment = Alignment.Start,
+    ) {
+        Text(
+            text = "태그 등록",
+            color = Gray_11,
+            modifier = Modifier.size(320.dp, 20.dp)
+        )
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            // 태그 입력
+            BasicTextField(
+                value = tagInput,
+                onValueChange = onTagInputChange,
+                modifier = Modifier
+                    .width(330.dp)
+                    .height(20.dp),
+                textStyle = MateTripTypographySet.body04,
+                decorationBox = { innerTextField ->
+                    Box(
+                        contentAlignment = Alignment.CenterStart
+                    ) {
+                        if (tagInput.isEmpty()) {
+                            Text(
+                                text = "관심사와 키워드를 입력해주세요. (최대 5개)",
+                                style = MateTripTypographySet.body04,
+                                color = Gray_06
+                            )
+                        }
+                        innerTextField()
+                    }
+                }
+            )
+            Box(
+                modifier = Modifier
+                    .width(36.dp)
+                    .height(28.dp)
+                    .background(ActivatedColor, shape = RoundedCornerShape(6.dp))
+                    .clickable {
+                        if (tagInput.isNotEmpty() && tags.size < 5 && !tags.contains(tagInput)) {
+                            onTagAdd(tagInput)
+                        }
+                    }
+                    .padding(7.dp, 5.dp)
+            ) {
+                Text(
+                    text = "입력",
+                    style = MateTripTypographySet.title05,
+                    color = Color.White
+                )
+            }
+        }
+        // 구분선
+        SimpleDivider()
+        // 태그 목록
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            maxItemsInEachRow = Int.MAX_VALUE
+        ) {
+            tags.forEach { tag ->
+                Box(
+                    modifier = Modifier
+                        .height(28.dp)
+                        .background(Blue_04, shape = RoundedCornerShape(6.dp))
+                        .padding(12.dp, 4.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(text = "#$tag", style = MateTripTypographySet.body04)
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Icon(
+                            imageVector = Icons.Default.Clear,
+                            contentDescription = "Remove tag",
+                            modifier = Modifier
+                                .size(16.dp)
+                                .clickable { onTagRemove(tag) }
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun AccompanyTypeButton(
+    selectedType : String,
+    onTypeSelected: (String) -> Unit
+) {
+    var showDialog by remember { mutableStateOf(false) }
+    val options = listOf("동행 유형을 선택해주세요", "전체 동행", "부분 동행", "식사 동행", "투어 동행", "숙박 공유")
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top),
+        horizontalAlignment = Alignment.Start,
+    ) {
+        Text(
+            text = "동행 유형",
+            color = Gray_11,
+            modifier = Modifier.size(320.dp, 20.dp)
+        )
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            // 태그 입력
+            BasicTextField(
+                value = selectedType,
+                onValueChange = onTypeSelected,
+                modifier = Modifier
+                    .width(330.dp)
+                    .height(20.dp),
+                textStyle = MateTripTypographySet.body04,
+                decorationBox = { innerTextField ->
+                    Box(
+                        contentAlignment = Alignment.CenterStart
+                    ) {
+                        if (selectedType.isEmpty()) {
+                            Text(
+                                text = "동행 유형을 선택해주세요.",
+                                style = MateTripTypographySet.body04,
+                                color = Gray_06
+                            )
+                        }
+                        innerTextField()
+                    }
+                }
+            )
+            Icon(
+                painter = painterResource(fold_icon),
+                contentDescription = "Open dialog",
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable { showDialog = true }
+            )
+        }
+        // 구분선
+        SimpleDivider()
+    }
+    // 동행 목록
+    if (showDialog) {
+        CustomRadioButtonDialog(
+            options = options,
+            selectedOption = selectedType,
+            onOptionSelected = {
+                onTypeSelected(it)
+                showDialog = false
+            },
+            onDismissRequest = { showDialog = false }
+        )
+    }
+}
+
+@Composable
+fun AccompanyRegionButton(
+    selectedRegion : String,
+    onRegionSelected: (String) -> Unit
+) {
+    var showDialog by remember { mutableStateOf(false) }
+    val options = listOf("여행 지역을 선택해주세요", "서울", "경기·인천", "충청·대전·세종", "강원", "전라·광주", "경상·대구", "부산", "제주")
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top),
+        horizontalAlignment = Alignment.Start,
+    ) {
+        Text(
+            text = "여행 지역",
+            color = Gray_11,
+            modifier = Modifier.size(320.dp, 20.dp)
+        )
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            // 태그 입력
+            BasicTextField(
+                value = selectedRegion,
+                onValueChange = onRegionSelected,
+                modifier = Modifier
+                    .width(330.dp)
+                    .height(20.dp),
+                textStyle = MateTripTypographySet.body04,
+                decorationBox = { innerTextField ->
+                    Box(
+                        contentAlignment = Alignment.CenterStart
+                    ) {
+                        if (selectedRegion.isEmpty()) {
+                            Text(
+                                text = "동행 유형을 선택해주세요.",
+                                style = MateTripTypographySet.body04,
+                                color = Gray_06
+                            )
+                        }
+                        innerTextField()
+                    }
+                }
+            )
+            Icon(
+                painter = painterResource(fold_icon),
+                contentDescription = "Open dialog",
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable { showDialog = true }
+            )
+        }
+        // 구분선
+        SimpleDivider()
+    }
+    // 동행 목록
+    if (showDialog) {
+        CustomRadioButtonDialog(
+            options = options,
+            selectedOption = selectedRegion,
+            onOptionSelected = {
+                onRegionSelected(it)
+                showDialog = false
+            },
+            onDismissRequest = { showDialog = false }
+        )
+    }
+}
+
+@Composable
+fun CustomRadioButtonDialog(
+    options: List<String>,
+    selectedOption: String,
+    onOptionSelected: (String) -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    Dialog(onDismissRequest = onDismissRequest) {
+        Column(
+            modifier = Modifier
+                .width(320.dp)
+                .background(Color.White, shape = RoundedCornerShape(10.dp))
+                .padding(10.dp)
+        ) {
+            options.forEachIndexed { index, option ->
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(48.dp, Alignment.Start),
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .width(320.dp)
+                        .height(47.dp)
+                        .clickable { onOptionSelected(option) }
+                        .padding(start = 10.dp, top = 10.dp, end = 12.dp, bottom = 11.dp)
+                ) {
+                    OptionText(option)
+                    RadioButton(
+                        selected = option == selectedOption,
+                        onClick = { onOptionSelected(option) },
+                        colors = RadioButtonDefaults.colors(
+                            selectedColor = Primary,
+                            unselectedColor = Blue_02
+
+                        )
+                    )
+                }
+                if (index < options.size - 1) {
+                    SimpleDivider(Gray_03)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun SimpleDivider(
+    dividerColor: Color = Devider
+) {
+    Box(
+        modifier = Modifier
+            .padding(0.dp)
+            .width(370.dp)
+            .height(1.dp)
+            .background(dividerColor)
+    )
+}
+
+@Composable
+fun OptionText(text: String) {
+    Text(
+        text = text,
+        style = MateTripTypographySet.body02,
+        modifier = Modifier
+            .width(230.dp)
+            .height(26.dp),
+        color = Gray_11
+    )
+}
+
 @Preview
 @Composable
 fun PreviewPostScreen() {
-    Column(
-        modifier = Modifier
-            .background(Color.White)
-            .fillMaxSize()
-            .padding(20.dp)
-    ) {
-        // ui 확인용
-    }
+//    Column(
+//        modifier = Modifier
+//            .background(Color.White)
+//            .padding(16.dp)
+//    ) {
+//        var selectedOption by remember { mutableStateOf("") }
+//
+//        AccompanyTypeButton(
+//            selectedType = selectedOption,
+//            onTypeSelected = { selectedOption = it }
+//        )
+//    }
 }
