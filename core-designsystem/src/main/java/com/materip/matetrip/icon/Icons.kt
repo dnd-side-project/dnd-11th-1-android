@@ -24,4 +24,5 @@ object Icons {
     val setting_icon = R.drawable.setting_24px
     val minus_icon = R.drawable.tabler_minus
     val plus_icon = R.drawable.tabler_plus
+    val camera_icon = R.drawable.camera
 }

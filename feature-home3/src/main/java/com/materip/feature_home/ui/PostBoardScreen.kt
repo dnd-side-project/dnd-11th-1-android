@@ -25,7 +25,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -49,6 +48,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.materip.feature_home.intent.HomeIntent
 import com.materip.feature_home.state.HomeUiState
+import com.materip.feature_home.ui.component.ImagePicker
 import com.materip.feature_home.ui.component.TravelDateCalendar
 import com.materip.feature_home.viewModel.HomeHiltViewModel
 import com.materip.matetrip.component.ToggleButton
@@ -86,6 +86,7 @@ fun PostBoardScreen(
     var startDate by remember { mutableStateOf<LocalDate?>(null) }
     var endDate by remember { mutableStateOf<LocalDate?>(null) }
     var capacity by remember { mutableIntStateOf(2) }
+    var imageUris by remember { mutableStateOf(listOf<String>()) }
 
     Column(
         modifier = Modifier
@@ -94,6 +95,10 @@ fun PostBoardScreen(
         verticalArrangement = Arrangement.spacedBy(30.dp)
     ) {
         // 카메라, 사진 가져오기 버튼
+        ImagePicker(
+            imageUris = imageUris,
+            onImageUrisChange = { imageUris = it }
+        )
 
         // 제목 입력
         AccompanyTitleInput(
