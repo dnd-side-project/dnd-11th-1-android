@@ -22,4 +22,6 @@ object Icons {
     val review_icon = R.drawable.review_24px
     val search_icon = R.drawable.search_24px
     val setting_icon = R.drawable.setting_24px
+    val minus_icon = R.drawable.tabler_minus
+    val plus_icon = R.drawable.tabler_plus
 }
