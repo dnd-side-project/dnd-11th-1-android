@@ -2,6 +2,8 @@
 
 package com.materip.feature_home.ui
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -40,6 +42,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.materip.feature_home.ui.component.TravelDateCalendar
+import com.materip.feature_home.ui.component.TravelDateScreen
 import com.materip.feature_home.viewModel.HomeHiltViewModel
 import com.materip.feature_home.viewModel.HomeUiState
 import com.materip.matetrip.component.ToggleButton
@@ -54,8 +58,10 @@ import com.materip.matetrip.theme.MateTripColors.Gray_06
 import com.materip.matetrip.theme.MateTripColors.Gray_11
 import com.materip.matetrip.theme.MateTripColors.Primary
 import com.materip.matetrip.theme.MateTripTypographySet
+import java.time.LocalDate
 
 
+@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
 fun PostBoardScreen(
     viewModel: HomeHiltViewModel = hiltViewModel()
@@ -70,6 +76,8 @@ fun PostBoardScreen(
     var tags by remember { mutableStateOf(listOf<String>()) }
     var selectedType by remember { mutableStateOf("") }
     var selectedRegion by remember { mutableStateOf("") }
+    var startDate by remember { mutableStateOf<LocalDate?>(null) }
+    var endDate by remember { mutableStateOf<LocalDate?>(null) }
 
     Column(
         modifier = Modifier
@@ -125,6 +133,10 @@ fun PostBoardScreen(
         )
 
         // 여행 일정
+        TravelDateCalendar { start, end ->
+            startDate = start
+            endDate = end
+        }
 
         // 동행 유형
         AccompanyTypeButton(
@@ -628,16 +640,5 @@ fun OptionText(text: String) {
 @Preview
 @Composable
 fun PreviewPostScreen() {
-//    Column(
-//        modifier = Modifier
-//            .background(Color.White)
-//            .padding(16.dp)
-//    ) {
-//        var selectedOption by remember { mutableStateOf("") }
-//
-//        AccompanyTypeButton(
-//            selectedType = selectedOption,
-//            onTypeSelected = { selectedOption = it }
-//        )
-//    }
+
 }
