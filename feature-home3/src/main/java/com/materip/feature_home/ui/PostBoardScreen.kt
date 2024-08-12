@@ -4,6 +4,7 @@ package com.materip.feature_home.ui
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -23,14 +25,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -42,12 +47,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.materip.feature_home.intent.HomeIntent
+import com.materip.feature_home.state.HomeUiState
 import com.materip.feature_home.ui.component.TravelDateCalendar
-import com.materip.feature_home.ui.component.TravelDateScreen
 import com.materip.feature_home.viewModel.HomeHiltViewModel
-import com.materip.feature_home.viewModel.HomeUiState
 import com.materip.matetrip.component.ToggleButton
 import com.materip.matetrip.icon.Icons.fold_icon
+import com.materip.matetrip.icon.Icons.minus_icon
+import com.materip.matetrip.icon.Icons.plus_icon
 import com.materip.matetrip.theme.MateTripColors.ActivatedColor
 import com.materip.matetrip.theme.MateTripColors.Blue_02
 import com.materip.matetrip.theme.MateTripColors.Blue_03
@@ -78,6 +85,7 @@ fun PostBoardScreen(
     var selectedRegion by remember { mutableStateOf("") }
     var startDate by remember { mutableStateOf<LocalDate?>(null) }
     var endDate by remember { mutableStateOf<LocalDate?>(null) }
+    var capacity by remember { mutableIntStateOf(2) }
 
     Column(
         modifier = Modifier
@@ -92,7 +100,7 @@ fun PostBoardScreen(
             title = title,
             onTitleChange = {
                 title = it
-                viewModel.updateTitle(it)
+                viewModel.onIntent(HomeIntent.UpdateTitle(it))
             }
         )
 
@@ -101,7 +109,7 @@ fun PostBoardScreen(
             content = content,
             onContentChange = {
                 content = it
-                viewModel.updateContent(it)
+                viewModel.onIntent(HomeIntent.UpdateContent(it))
             }
         )
 
@@ -114,12 +122,12 @@ fun PostBoardScreen(
                 if (newTag.isNotEmpty() && tags.size < 5 && !tags.contains(newTag)) {
                     tags = tags + newTag
                     tagInput = ""
-                    viewModel.updateTags(tags)
+                    viewModel.onIntent(HomeIntent.UpdateTags(tags))
                 }
             },
             onTagRemove = { tagToRemove ->
                 tags = tags.filter { it != tagToRemove }
-                viewModel.updateTags(tags)
+                viewModel.onIntent(HomeIntent.UpdateTags(tags))
             }
         )
 
@@ -128,7 +136,7 @@ fun PostBoardScreen(
             selectedRegion = selectedRegion,
             onRegionSelected = {
                 selectedRegion = it
-                viewModel.updateRegion(it)
+                viewModel.onIntent(HomeIntent.UpdateRegion(it))
             }
         )
 
@@ -136,6 +144,8 @@ fun PostBoardScreen(
         TravelDateCalendar { start, end ->
             startDate = start
             endDate = end
+            viewModel.onIntent(HomeIntent.UpdateStartDate(start.toString()))
+            viewModel.onIntent(HomeIntent.UpdateEndDate(end.toString()))
         }
 
         // 동행 유형
@@ -143,18 +153,25 @@ fun PostBoardScreen(
             selectedType = selectedType,
             onTypeSelected = {
                 selectedType = it
-                viewModel.updateType(it)
+                viewModel.onIntent(HomeIntent.UpdateType(it))
             }
         )
 
         // 모집 인원
+        SetCapacity(
+            capacity = capacity,
+            onCapacityChange = { newCapacity ->
+                capacity = newCapacity
+                viewModel.onIntent(HomeIntent.UpdateCapacity(newCapacity))
+            }
+        )
 
         // 모집 연령
         AccompanyAgeButton(
             selectedAge = age,
             onAgeChange = {
                 age = it
-                viewModel.updateAge(it)
+                viewModel.onIntent(HomeIntent.UpdateAge(it))
             }
         )
 
@@ -163,7 +180,7 @@ fun PostBoardScreen(
             selectedGender = gender,
             onGenderChange = {
                 gender = it
-                viewModel.updateGender(it)
+                viewModel.onIntent(HomeIntent.UpdateGender(it))
             }
         )
 
@@ -188,7 +205,8 @@ private fun AccompanyTitleInput(
         Text(
             text = "제목",
             color = Gray_11,
-            modifier = Modifier.size(320.dp, 20.dp)
+            modifier = Modifier.size(320.dp, 20.dp),
+            style = MateTripTypographySet.title04
         )
         BasicTextField(
             value = title,
@@ -234,7 +252,8 @@ private fun AccompanyContentInput(
         Text(
             text = "내용",
             color = Gray_11,
-            modifier = Modifier.size(320.dp, 20.dp)
+            modifier = Modifier.size(320.dp, 20.dp),
+            style = MateTripTypographySet.title04
         )
         BasicTextField(
             value = content,
@@ -280,7 +299,8 @@ private fun AccompanyGenderButton(
         Text(
             text = "모집 성별",
             color = Gray_11,
-            modifier = Modifier.size(320.dp, 20.dp)
+            modifier = Modifier.size(320.dp, 20.dp),
+            style = MateTripTypographySet.title04
         )
         Row(
             horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
@@ -313,7 +333,8 @@ private fun AccompanyAgeButton(
         Text(
             text = "모집 연령",
             color = Gray_11,
-            modifier = Modifier.size(320.dp, 20.dp)
+            modifier = Modifier.size(320.dp, 20.dp),
+            style = MateTripTypographySet.title04
         )
         Row(
             horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
@@ -348,7 +369,8 @@ fun AccompanyTagInput(
         Text(
             text = "태그 등록",
             color = Gray_11,
-            modifier = Modifier.size(320.dp, 20.dp)
+            modifier = Modifier.size(320.dp, 20.dp),
+            style = MateTripTypographySet.title04
         )
         Row(
             horizontalArrangement = Arrangement.Start,
@@ -433,7 +455,7 @@ fun AccompanyTagInput(
 
 @Composable
 fun AccompanyTypeButton(
-    selectedType : String,
+    selectedType: String,
     onTypeSelected: (String) -> Unit
 ) {
     var showDialog by remember { mutableStateOf(false) }
@@ -446,7 +468,8 @@ fun AccompanyTypeButton(
         Text(
             text = "동행 유형",
             color = Gray_11,
-            modifier = Modifier.size(320.dp, 20.dp)
+            modifier = Modifier.size(320.dp, 20.dp),
+            style = MateTripTypographySet.title04
         )
         Row(
             horizontalArrangement = Arrangement.Start,
@@ -456,6 +479,7 @@ fun AccompanyTypeButton(
             BasicTextField(
                 value = selectedType,
                 onValueChange = onTypeSelected,
+                readOnly = true,
                 modifier = Modifier
                     .width(330.dp)
                     .height(20.dp),
@@ -502,11 +526,12 @@ fun AccompanyTypeButton(
 
 @Composable
 fun AccompanyRegionButton(
-    selectedRegion : String,
+    selectedRegion: String,
     onRegionSelected: (String) -> Unit
 ) {
     var showDialog by remember { mutableStateOf(false) }
-    val options = listOf("여행 지역을 선택해주세요", "서울", "경기·인천", "충청·대전·세종", "강원", "전라·광주", "경상·대구", "부산", "제주")
+    val options =
+        listOf("여행 지역을 선택해주세요", "서울", "경기·인천", "충청·대전·세종", "강원", "전라·광주", "경상·대구", "부산", "제주")
 
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top),
@@ -515,7 +540,8 @@ fun AccompanyRegionButton(
         Text(
             text = "여행 지역",
             color = Gray_11,
-            modifier = Modifier.size(320.dp, 20.dp)
+            modifier = Modifier.size(320.dp, 20.dp),
+            style = MateTripTypographySet.title04
         )
         Row(
             horizontalArrangement = Arrangement.Start,
@@ -525,6 +551,7 @@ fun AccompanyRegionButton(
             BasicTextField(
                 value = selectedRegion,
                 onValueChange = onRegionSelected,
+                readOnly = true,
                 modifier = Modifier
                     .width(330.dp)
                     .height(20.dp),
@@ -637,8 +664,88 @@ fun OptionText(text: String) {
     )
 }
 
+@Composable
+fun SetCapacity(
+    capacity: Int,
+    onCapacityChange: (Int) -> Unit
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top),
+        horizontalAlignment = Alignment.Start,
+    ) {
+        Text(
+            text = "모집 인원",
+            color = Gray_11,
+            modifier = Modifier.size(320.dp, 20.dp),
+            style = MateTripTypographySet.title04
+        )
+        Text(
+            text = "본인을 포함한 인원을 설정해주세요.  (최대 6명)",
+            style = MateTripTypographySet.body06,
+            modifier = Modifier.padding(bottom = 8.dp),
+            color = Gray_06
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            IconButton(
+                onClick = {
+                    if (capacity > 2) onCapacityChange(capacity - 1)
+                },
+                modifier = Modifier
+                    .width(24.dp)
+                    .height(24.dp)
+                    .background(
+                        color = Color(0xFFD9D9D9),
+                        shape = RoundedCornerShape(size = 12.dp)
+                    )
+                    .padding(3.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = minus_icon),
+                    contentDescription = "Minus icon"
+                )
+            }
+            Text(text = capacity.toString(), style = MateTripTypographySet.numberBold1)
+            IconButton(
+                onClick = {
+                    if (capacity < 6) onCapacityChange(capacity + 1)
+                },
+                modifier = Modifier
+                    .width(24.dp)
+                    .height(24.dp)
+                    .background(
+                        color = Color.Black,
+                        shape = RoundedCornerShape(size = 12.dp)
+                    )
+                    .padding(3.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = plus_icon),
+                    contentDescription = "Plus icon"
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        SimpleDivider(Gray_03)
+        Spacer(modifier = Modifier.height(20.dp))
+    }
+}
+
 @Preview
 @Composable
-fun PreviewPostScreen() {
-
+fun PreviewSetCapacity() {
+    Column(
+        modifier = Modifier
+            .background(Color.White)
+            .padding(top = 50.dp, end = 20.dp, start = 20.dp, bottom = 50.dp),
+        verticalArrangement = Arrangement.spacedBy(30.dp)
+    ) {
+        SetCapacity(
+            capacity = 2,
+            onCapacityChange = {}
+        )
+    }
 }
