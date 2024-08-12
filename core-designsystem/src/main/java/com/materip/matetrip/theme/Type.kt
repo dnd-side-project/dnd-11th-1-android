@@ -8,6 +8,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.materip.core_designsystem.R
 import com.materip.matetrip.theme.MateTripColors.Gray_05
+import com.materip.matetrip.theme.MateTripColors.Gray_11
 
 /**
  * 메이트립 Android Typography
@@ -250,10 +251,11 @@ val MateTripTypographySet = MateTripTypography(
         lineHeight = 20.sp,
     ),
     numberMedium3 = TextStyle(
-        fontFamily = customFontFamily.robotoMedium,
-        fontWeight = FontWeight.W500,
+        fontFamily = customFontFamily.robotoRegular,
+        fontWeight = FontWeight.W400,
         fontSize = 14.sp,
         lineHeight = 16.sp,
+        color = Gray_11
     ),
     numberRegular1 = TextStyle(
         fontFamily = customFontFamily.robotoRegular,
@@ -266,6 +268,7 @@ val MateTripTypographySet = MateTripTypography(
         fontWeight = FontWeight.W400,
         fontSize = 14.sp,
         lineHeight = 16.sp,
+        color = Gray_05
     ),
     numberRegular3 = TextStyle(
         fontFamily = customFontFamily.robotoRegular,

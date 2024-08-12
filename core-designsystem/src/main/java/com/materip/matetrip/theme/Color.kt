@@ -30,4 +30,7 @@ object MateTripColors {
     val Gray_02 = Color(0xFFF4F4F4)
     val Gray_01 = Color(0xFFFAFAFA)
     val Devider = Color(0xFF555555)
+
+    // Point Color
+    val Red_01 = Color(0xFFF03327)
 }
