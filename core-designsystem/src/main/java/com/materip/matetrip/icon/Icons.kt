@@ -25,4 +25,5 @@ object Icons {
     val minus_icon = R.drawable.tabler_minus
     val plus_icon = R.drawable.tabler_plus
     val camera_icon = R.drawable.camera
+    val dismiss_icon = R.drawable.dismiss
 }
