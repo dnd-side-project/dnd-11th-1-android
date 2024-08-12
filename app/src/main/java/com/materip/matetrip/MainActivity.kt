@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
                     floatingActionButton = {
                         if (currentRoute == Screen.Home.route) {
                             FabButton(
-                                navController = navController,
+                                onPostClick = { navController.navigate(Screen.Post.route) },
                                 modifier = Modifier.padding(end = 20.dp, bottom = 35.dp)
                             )
                         }

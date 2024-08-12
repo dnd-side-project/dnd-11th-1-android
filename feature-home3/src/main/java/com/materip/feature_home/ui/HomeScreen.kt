@@ -205,11 +205,11 @@ fun PostList(posts: List<CompanionPost>) {
 
 @Composable
 fun FabButton(
-    navController: NavController,
+    onPostClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     FloatingActionButton(
-        onClick = { navController.navigate("post") },
+        onClick = onPostClick,
         containerColor = Color.Transparent,
         contentColor = Color.Transparent,
         modifier = modifier
