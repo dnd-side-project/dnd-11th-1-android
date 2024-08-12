@@ -62,42 +62,53 @@ fun TravelDateCalendar(
     var startDate by remember { mutableStateOf<LocalDate?>(null) }
     var endDate by remember { mutableStateOf<LocalDate?>(null) }
 
-    Box(
-        modifier = Modifier
-            .size(320.dp, 298.dp)
-            .background(Blue_04)
-            .padding(top = 14.dp, bottom = 12.dp, start = 20.dp, end = 20.dp)
+    Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top),
+        horizontalAlignment = Alignment.Start,
     ) {
-        Column {
-            CalendarHeader(
-                currentMonth = currentMonth,
-                onPreviousClick = { currentMonth = currentMonth.minusMonths(1) },
-                onNextClick = { currentMonth = currentMonth.plusMonths(1) }
-            )
+        Text(
+            text = "여행 일정",
+            color = Gray_11,
+            modifier = Modifier.size(320.dp, 20.dp),
+            style = MateTripTypographySet.title04
+        )
+        Box(
+            modifier = Modifier
+                .size(370.dp, 338.dp)
+                .background(Blue_04)
+                .padding(top = 14.dp, bottom = 12.dp, start = 20.dp, end = 20.dp)
+        ) {
+            Column {
+                CalendarHeader(
+                    currentMonth = currentMonth,
+                    onPreviousClick = { currentMonth = currentMonth.minusMonths(1) },
+                    onNextClick = { currentMonth = currentMonth.plusMonths(1) }
+                )
 
-            DaysOfWeekHeader()
+                DaysOfWeekHeader()
 
-            CalendarDays(
-                currentMonth = currentMonth,
-                startDate = startDate,
-                endDate = endDate,
-                onDateSelected = { date ->
-                    if (date >= LocalDate.now()) {
-                        when {
-                            startDate == null || (endDate != null && date < startDate) -> {
-                                startDate = date
-                                endDate = null
+                CalendarDays(
+                    currentMonth = currentMonth,
+                    startDate = startDate,
+                    endDate = endDate,
+                    onDateSelected = { date ->
+                        if (date >= LocalDate.now()) {
+                            when {
+                                startDate == null || (endDate != null && date < startDate) -> {
+                                    startDate = date
+                                    endDate = null
+                                }
+                                date > startDate -> endDate = date
+                                else -> {
+                                    endDate = startDate
+                                    startDate = date
+                                }
                             }
-                            date > startDate -> endDate = date
-                            else -> {
-                                endDate = startDate
-                                startDate = date
-                            }
+                            onDateRangeSelected(startDate, endDate)
                         }
-                        onDateRangeSelected(startDate, endDate)
                     }
-                }
-            )
+                )
+            }
         }
     }
 }
