@@ -189,6 +189,8 @@ fun PostBoardScreen(
             }
         )
 
+        Spacer(modifier = Modifier.height(50.dp))
+
         when (uiState) {
             is HomeUiState.Loading -> CircularProgressIndicator()
             is HomeUiState.Success -> Text("게시글이 성공적으로 작성되었습니다.")

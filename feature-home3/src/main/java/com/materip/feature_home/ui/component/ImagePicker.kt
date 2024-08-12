@@ -32,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -42,6 +43,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.materip.matetrip.icon.Icons
 import com.materip.matetrip.icon.Icons.camera_icon
+import com.materip.matetrip.icon.Icons.dismiss_icon
 import com.materip.matetrip.theme.MateTripColors.Blue_04
 import com.materip.matetrip.theme.MateTripColors.Gray_11
 import com.materip.matetrip.theme.MateTripTypographySet
@@ -100,19 +102,43 @@ fun ImagePicker(
             }
         }
         imageUris.forEach { uri ->
-            val painter = rememberAsyncImagePainter(
-                ImageRequest.Builder(context)
-                    .data(uri)
-                    .build()
-            )
-            Image(
-                painter = painter,
-                contentDescription = "Selected Image",
+            Box(
                 modifier = Modifier
                     .size(60.dp)
-                    .background(color = Color.Transparent, shape = RoundedCornerShape(size = 10.dp)),
-                contentScale = ContentScale.Crop
-            )
+                    .background(color = Color.Transparent, shape = RoundedCornerShape(size = 10.dp))
+            ) {
+                val painter = rememberAsyncImagePainter(
+                    ImageRequest.Builder(context)
+                        .data(uri)
+                        .build()
+                )
+                Image(
+                    painter = painter,
+                    contentDescription = "Selected Image",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(size = 10.dp))
+                        .background(color = Color.Transparent),
+                    contentScale = ContentScale.Crop
+                )
+                IconButton(
+                    onClick = {
+                        onImageUrisChange(imageUris - uri)
+                        imageCount--
+                    },
+                    modifier = Modifier
+                        .padding(6.dp)
+                        .align(Alignment.TopEnd)
+                        .size(12.dp)
+                        .background(color = Color.Unspecified, shape = RoundedCornerShape(size = 8.dp))
+                ) {
+                    Icon(
+                        painter = painterResource(id = dismiss_icon),
+                        contentDescription = "Remove Image",
+                        tint = Color.Black
+                    )
+                }
+            }
         }
     }
 }
