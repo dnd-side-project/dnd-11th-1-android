@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SelectStyles(
-    val tripStyle: List<TripStyle>
+    val travelStyle: List<TravelStyle>
 )

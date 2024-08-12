@@ -1,6 +1,6 @@
 package com.materip.core_model.ui_model
 
-enum class TripStyle {
+enum class TravelStyle {
     RESTAURANT_TOUR, //맛집 탐방
     CAFE_TOUR, //카페 투어
     LIFE_SHOT, //인생샷

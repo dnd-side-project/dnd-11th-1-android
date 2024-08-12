@@ -1,6 +1,6 @@
 package com.materip.core_model.ui_model
 
-enum class TripInterest {
+enum class TravelInterest {
     PLANNED, //계획적
     UNPLANNED, //무계획
     PUBLIC_MONEY, //공금
