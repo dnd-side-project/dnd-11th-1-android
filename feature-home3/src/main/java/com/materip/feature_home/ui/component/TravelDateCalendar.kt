@@ -2,6 +2,7 @@ package com.materip.feature_home.ui.component
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,6 +34,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -138,7 +141,6 @@ fun DaysOfWeekHeader() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
 fun CalendarDays(
     currentMonth: YearMonth,
@@ -163,27 +165,54 @@ fun CalendarDays(
         items(daysInMonth.size) { index ->
             val day = index + 1
             val date = currentMonth.atDay(day)
-            val isSelected = startDate != null && endDate != null && date in startDate..endDate
-            val isRangeStart = date == startDate
-            val isRangeEnd = date == endDate
             val isPastDate = date < today
             val isSunday = date.dayOfWeek == DayOfWeek.SUNDAY
+
+            val isInRange = startDate != null && endDate != null && date in startDate..endDate
+            val isRangeStart = date == startDate
+            val isRangeEnd = date == endDate
+            val isInMiddleRange = isInRange && !isRangeStart && !isRangeEnd
 
             Box(
                 modifier = Modifier
                     .padding(top = 7.dp)
                     .size(34.dp)
-                    .clip(if (isRangeStart || isRangeEnd) CircleShape else RoundedCornerShape(0.dp))
-                    .background(
-                        when {
-                            isRangeStart || isRangeEnd -> Primary
-                            isSelected -> Blue_02
-                            else -> Color.Transparent
-                        }
-                    )
                     .clickable(enabled = !isPastDate) { onDateSelected(date) },
                 contentAlignment = Alignment.Center
             ) {
+                if (isInRange) {
+                    Canvas(modifier = Modifier.fillMaxSize()) {
+                        if (isRangeStart) {
+                            drawRect(
+                                color = Blue_02, // Light Blue color
+                                topLeft = Offset(size.width / 2, 0f),
+                                size = Size(size.width / 2, size.height)
+                            )
+                        } else if (isRangeEnd) {
+                            drawRect(
+                                color = Blue_02, // Light Blue color
+                                topLeft = Offset(0f, 0f),
+                                size = Size(size.width / 2, size.height)
+                            )
+                        } else if (isInMiddleRange) {
+                            drawRect(
+                                color = Blue_02, // Light Blue color
+                                topLeft = Offset(0f, 0f),
+                                size = Size(size.width, size.height)
+                            )
+                        }
+                    }
+                }
+                // 선택된 날짜들 강조
+                if (isRangeStart || isRangeEnd) {
+                    Box(
+                        modifier = Modifier
+                            .size(34.dp)
+                            .clip(CircleShape)
+                            .background(Primary)
+                    )
+                }
+
                 Text(
                     text = day.toString(),
                     style = MateTripTypographySet.numberMedium3,
@@ -200,6 +229,70 @@ fun CalendarDays(
         }
     }
 }
+
+
+//@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+//@Composable
+//fun CalendarDays(
+//    currentMonth: YearMonth,
+//    startDate: LocalDate?,
+//    endDate: LocalDate?,
+//    onDateSelected: (LocalDate) -> Unit
+//) {
+//    val firstDayOfMonth = currentMonth.atDay(1)
+//    val lastDayOfMonth = currentMonth.atEndOfMonth()
+//    val daysInMonth = (1..lastDayOfMonth.dayOfMonth).toList()
+//    val firstDayOfWeek = firstDayOfMonth.dayOfWeek.value % 7
+//    val today = LocalDate.now()
+//
+//    LazyVerticalGrid(
+//        columns = GridCells.Fixed(7),
+//        modifier = Modifier.fillMaxSize()
+//    ) {
+//        items(firstDayOfWeek) {
+//            Box(modifier = Modifier.size(34.dp))
+//        }
+//
+//        items(daysInMonth.size) { index ->
+//            val day = index + 1
+//            val date = currentMonth.atDay(day)
+//            val isSelected = startDate != null && endDate != null && date in startDate..endDate
+//            val isRangeStart = date == startDate
+//            val isRangeEnd = date == endDate
+//            val isPastDate = date < today
+//            val isSunday = date.dayOfWeek == DayOfWeek.SUNDAY
+//
+//            Box(
+//                modifier = Modifier
+//                    .padding(top = 7.dp)
+//                    .size(34.dp)
+//                    .clip(if (isRangeStart || isRangeEnd) CircleShape else RoundedCornerShape(0.dp))
+//                    .background(
+//                        when {
+//                            isRangeStart || isRangeEnd -> Primary
+//                            isSelected -> Blue_02
+//                            else -> Color.Transparent
+//                        }
+//                    )
+//                    .clickable(enabled = !isPastDate) { onDateSelected(date) },
+//                contentAlignment = Alignment.Center
+//            ) {
+//                Text(
+//                    text = day.toString(),
+//                    style = MateTripTypographySet.numberMedium3,
+//                    color = when {
+//                        isRangeStart || isRangeEnd -> Color.White
+//                        isPastDate -> Gray_05
+//                        isSunday -> Red_01
+//                        else -> Gray_11
+//                    },
+//                    textAlign = TextAlign.Center,
+//                    modifier = Modifier.align(Alignment.Center)
+//                )
+//            }
+//        }
+//    }
+//}
 
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
