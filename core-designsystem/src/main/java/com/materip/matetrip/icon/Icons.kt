@@ -21,4 +21,5 @@ object Icons {
     val place_icon = R.drawable.place_24px
     val review_icon = R.drawable.review_24px
     val search_icon = R.drawable.search_24px
+    val camera_icon = R.drawable.ic_camera
 }
