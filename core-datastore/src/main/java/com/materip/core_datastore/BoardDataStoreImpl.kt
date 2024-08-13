@@ -2,8 +2,9 @@ package com.materip.core_datastore
 
 import com.materip.core_common.ResponseError
 import com.materip.core_common.ResultResponse
-import com.materip.core_model.BoardRequestDto
-import com.materip.core_model.BoardResponseDto
+import com.materip.core_model.accompany_board.BoardRequestDto
+import com.materip.core_model.accompany_board.BoardResponseDto
+import com.materip.core_model.accompany_board.id.GetBoardDetailDto
 import com.materip.core_network.service.BoardService
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.suspendOnError
@@ -30,6 +31,16 @@ class BoardDataStoreImpl @Inject constructor(
         boardService.postBoard(board).suspendOnSuccess{
             result.data = this.data
         }.suspendOnError{
+            result.error = Json.decodeFromString<ResponseError>(this.message())
+        }
+        return result
+    }
+
+    override suspend fun getBoardDetail(id: Int): ResultResponse<GetBoardDetailDto> {
+        val result = ResultResponse<GetBoardDetailDto>()
+        boardService.getBoardDetail(id).suspendOnSuccess {
+            result.data = this.data
+        }.suspendOnError {
             result.error = Json.decodeFromString<ResponseError>(this.message())
         }
         return result
