@@ -12,7 +12,7 @@ interface BoardService {
     @GET("/api/v1/accompany/boards")
     suspend fun getBoard(
         @Query("page") page: Int = 0,
-        @Query("size") size: Int = 0
+        @Query("size") size: Int = 1
     ): ApiResponse<BoardResponseDto>
 
     @POST("/api/v1/accompany/boards")
