@@ -102,6 +102,7 @@ private fun TagList(
         CustomClickableTag(
             tagName = "동행 기록",
             fontSize = 14.sp,
+            shape = RoundedCornerShape(size = 60.dp),
             selectedTextColor = Color.White,
             notSelectedTextColor = MatetripColor.gray_06,
             isSelected = selectedTag == TravelHistoryTag.RECORD,
@@ -113,6 +114,7 @@ private fun TagList(
         CustomClickableTag(
             tagName = "보낸 동행 신청서",
             fontSize = 14.sp,
+            shape = RoundedCornerShape(size = 60.dp),
             selectedTextColor = Color.White,
             notSelectedTextColor = MatetripColor.gray_06,
             isSelected = selectedTag == TravelHistoryTag.SEND_APPLICATION,
@@ -124,6 +126,7 @@ private fun TagList(
         CustomClickableTag(
             tagName = "받은 동행 신청서",
             fontSize = 14.sp,
+            shape = RoundedCornerShape(size = 60.dp),
             selectedTextColor = Color.White,
             notSelectedTextColor = MatetripColor.gray_06,
             isSelected = selectedTag == TravelHistoryTag.RECEIVE_APPLICATION,

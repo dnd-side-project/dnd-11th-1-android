@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -149,20 +151,34 @@ fun ProfileTag(
 fun CustomClickableTag(
     modifier: Modifier = Modifier,
     tagName: String,
+    shape: Shape,
     fontSize: TextUnit,
     selectedTextColor: Color,
     notSelectedTextColor: Color,
     isSelected: Boolean,
     selectedColor: Color,
     notSelectedColor: Color,
+    trailingIcon: Int? = null,
+    selectedIconTint: Color = Color.Transparent,
+    notSelectedIconTint: Color = Color.Transparent,
     onClick: () -> Unit,
 ){
-    Box(
-        modifier = modifier.background(color = if(isSelected) selectedColor else notSelectedColor, shape = RoundedCornerShape(size = 60.dp))
+    Row(
+        modifier = modifier.background(color = if(isSelected) selectedColor else notSelectedColor, shape = shape)
             .clickable{onClick()}
             .padding(horizontal = 8.dp, vertical = 5.dp),
-        contentAlignment = Alignment.Center
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ){
+        if(trailingIcon != null){
+            Icon(
+                modifier = Modifier.size(16.dp),
+                painter = painterResource(trailingIcon),
+                tint = if(isSelected) selectedIconTint else notSelectedIconTint,
+                contentDescription = "Trailing Icon"
+            )
+            Spacer(Modifier.width(10.dp))
+        }
         Text(
             text = tagName,
             fontSize = fontSize,
