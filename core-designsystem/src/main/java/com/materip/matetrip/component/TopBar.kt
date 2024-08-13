@@ -1,12 +1,22 @@
 package com.materip.matetrip.component
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -19,7 +29,9 @@ fun TempTopBar(
     title: String
 ){
     Row(
-        modifier = Modifier.fillMaxWidth().height(50.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp),
         verticalAlignment = Alignment.CenterVertically
     ){
         Text(
@@ -28,5 +40,51 @@ fun TempTopBar(
             fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
             fontWeight = FontWeight(900)
         )
+    }
+}
+
+@Composable
+fun NormalTopBar(
+    title: String,
+    onBackClick: () -> Unit,
+    onClick: () -> Unit,
+){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        IconButton(
+            modifier = Modifier.size(24.dp),
+            onClick = onBackClick
+        ) {
+            Icon(
+                modifier = Modifier.fillMaxSize(),
+                painter = painterResource(R.drawable.arrow_back_24px),
+                contentDescription = "Back Button"
+            )
+        }
+        Spacer(Modifier.weight(1f))
+        Text(
+            text = title,
+            fontSize = 16.sp,
+            fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+            fontWeight = FontWeight(500)
+        )
+        Spacer(Modifier.weight(1f))
+        Row(
+            modifier = Modifier.width(40.dp).height(30.dp)
+                .clickable{onClick()},
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "확인",
+                fontSize = 14.sp,
+                fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                fontWeight = FontWeight(400)
+            )
+        }
     }
 }
