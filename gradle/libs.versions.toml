@@ -6,11 +6,25 @@ junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.3"
+lifecycleCompose = "2.6.0"
 activityCompose = "1.9.0"
-composeBom = "2023.08.00"
 jetbrainsKotlinJvm = "1.9.0"
 appcompat = "1.7.0"
+androidUI = "1.6.8"
 material = "1.12.0"
+material3 = "1.2.1"
+serializationPlugin = "1.8.10"
+serialization = "1.5.1"
+retrofit = "2.9.0"
+sandwich = "2.0.8"
+coroutine = "1.8.0"
+coil = "2.7.0"
+navigation = "2.7.7"
+hilt = "2.48.1"
+hiltNavCompose = "1.2.0"
+kakao = "2.20.0"
+datastore = "1.1.1"
+kapt = "1.8.10"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -18,21 +32,51 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-lifecycle = {group = "androidx.lifecycle", name="lifecycle-runtime-compose", version.ref="lifecycleCompose"}
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
-androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
-androidx-ui = { group = "androidx.compose.ui", name = "ui" }
-androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
-androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui", version.ref="androidUI"}
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics", version.ref="androidUI" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref="androidUI" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref="androidUI" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref="androidUI" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref="androidUI" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref="material3"}
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+retrofit = { group = "com.squareup.retrofit2", name="retrofit", version.ref = "retrofit"}
+retrofit-converter = { group = "com.squareup.retrofit2", name="converter-gson",version.ref = "retrofit"}
+sandwich = { group = "com.github.skydoves", name="sandwich", version.ref = "sandwich"}
+sandwich-retrofit = { group = "com.github.skydoves", name="sandwich-retrofit", version.ref = "sandwich"}
+serialization = { group = "org.jetbrains.kotlinx", name="kotlinx-serialization-json", version.ref = "serialization"}
+coroutine = { group = "org.jetbrains.kotlinx", name="kotlinx-coroutines-core", version.ref="coroutine"}
+coil = { group = "io.coil-kt", name="coil", version.ref="coil"}
+coil-compose = { group = "io.coil-kt", name="coil-compose", version.ref="coil"}
+navigation = { group = "androidx.navigation", name="navigation-compose", version.ref="navigation"}
+hilt-android = { group = "com.google.dagger", name="hilt-android", version.ref="hilt"}
+hilt-android-compiler = { group = "com.google.dagger", name="hilt-android-compiler", version.ref="hilt"}
+hilt-navigation = { group = "androidx.hilt", name="hilt-navigation-compose", version.ref="hiltNavCompose"}
+kakao-all = { group = "com.kakao.sdk", name="v2-all", version.ref="kakao"}
+kakao-user = { group = "com.kakao.sdk", name="v2-user", version.ref="kakao"}
+kakao-talk = { group = "com.kakao.sdk", name="v2-talk", version.ref="kakao"}
+kakao-share= { group = "com.kakao.sdk", name="v2-share", version.ref="kakao"}
+kakao-freind = { group = "com.kakao.sdk", name="v2-friend", version.ref="kakao"}
+kakao-cert = { group = "com.kakao.sdk", name="v2-cert", version.ref="kakao"}
+datastore = { group = "androidx.datastore", name="datastore-preferences", version.ref="datastore"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-serialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serializationPlugin"}
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt"}
+kotlin-kapt = {id="org.jetbrains.kotlin.kapt", version.ref="kapt"}
 
+[bundles]
+retrofit = ["retrofit", "retrofit-converter", "serialization"]
+sandwich = ["sandwich", "sandwich-retrofit"]
+coil = ["coil", "coil-compose"]
+hilt-impl = ["hilt-android", "hilt-navigation"]
+hilt-kapt = ["hilt-android-compiler"]
+kakao = ["kakao-all","kakao-cert","kakao-freind","kakao-share","kakao-talk","kakao-user"]
+ui = ["androidx-ui", "androidx-ui-graphics", "androidx-ui-tooling", "androidx-ui-tooling-preview", "androidx-material3", "material"]

@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -9,7 +11,6 @@ android {
 
     defaultConfig {
         minSdk = 26
-        targetSdk = 34
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -30,9 +31,29 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    composeOptions{
+        kotlinCompilerExtensionVersion = "1.5.2"
+    }
+    buildFeatures{
+        compose = true
+    }
 }
 
 dependencies {
+    implementation(project(":core-model"))
+    implementation(project(":core-repository"))
+    implementation(project(":core-designsystem"))
+    implementation(project(":core-common"))
+
+    implementation(libs.coroutine) //coroutine
+    implementation(libs.bundles.coil) //coil
+    implementation(libs.navigation) //navigation
+    implementation(libs.bundles.kakao) //kakao
+    implementation(libs.bundles.ui) //ui
+    implementation(libs.androidx.lifecycle) //lifecycle
+    //hilt
+    implementation(libs.bundles.hilt.impl)
+    kapt(libs.bundles.hilt.kapt)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
