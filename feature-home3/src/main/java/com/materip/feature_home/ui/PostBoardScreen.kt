@@ -2,6 +2,7 @@
 
 package com.materip.feature_home.ui
 
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
@@ -67,7 +68,7 @@ import com.materip.matetrip.theme.MateTripColors.Primary
 import com.materip.matetrip.theme.MateTripTypographySet
 import java.time.LocalDate
 
-
+@SuppressLint("UnrememberedMutableState")
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
 fun PostBoardScreen(
@@ -97,7 +98,10 @@ fun PostBoardScreen(
         // 카메라, 사진 가져오기 버튼
         ImagePicker(
             imageUris = imageUris,
-            onImageUrisChange = { imageUris = it }
+            onImageUrisChange = {
+                imageUris = it
+                viewModel.onIntent(HomeIntent.UpdateImageUris(it))
+            }
         )
 
         // 제목 입력
@@ -127,12 +131,12 @@ fun PostBoardScreen(
                 if (newTag.isNotEmpty() && tags.size < 5 && !tags.contains(newTag)) {
                     tags = tags + newTag
                     tagInput = ""
-                    viewModel.onIntent(HomeIntent.UpdateTags(tags))
+                    viewModel.onIntent(HomeIntent.UpdateTagNames(tags))
                 }
             },
             onTagRemove = { tagToRemove ->
                 tags = tags.filter { it != tagToRemove }
-                viewModel.onIntent(HomeIntent.UpdateTags(tags))
+                viewModel.onIntent(HomeIntent.UpdateTagNames(tags))
             }
         )
 
@@ -158,7 +162,7 @@ fun PostBoardScreen(
             selectedType = selectedType,
             onTypeSelected = {
                 selectedType = it
-                viewModel.onIntent(HomeIntent.UpdateType(it))
+                viewModel.onIntent(HomeIntent.UpdateCategory(it))
             }
         )
 
