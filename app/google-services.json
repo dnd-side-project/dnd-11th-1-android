@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "670879867345",
+    "project_id": "dnd11-mate-trip",
+    "storage_bucket": "dnd11-mate-trip.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:670879867345:android:75a626fca2fcdea61300f0",
+        "android_client_info": {
+          "package_name": "com.materip.matetrip"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5fj9md5SnCQmNu7qvpxA9bJj8aLvuA7U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
