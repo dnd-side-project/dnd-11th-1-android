@@ -81,7 +81,8 @@ fun EditProfileScreen(){
         NormalTopBar(
             title = "프로필 수정",
             onBackClick = { /** 뒤로 가기 */ },
-            onClick = { /** 수정 완료 */ }
+            onClick = { /** 수정 완료 */ },
+            menuText = "확인"
         )
         Column(
             modifier = Modifier
@@ -810,6 +811,7 @@ private fun MyImages(pictures: List<String>){
                     size = 60.dp,
                     imageUrl = picture,
                     backgroundColor = MatetripColor.icon_loading_color,
+                    isEnabledClose = true,
                     onCloseClick = { /** 사진 삭제 */ }
                 )
             }
