@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.materip.core_designsystem.R
+import com.materip.matetrip.icon.Icons
 
 @Composable
 fun TempTopBar(
@@ -46,13 +47,16 @@ fun TempTopBar(
 @Composable
 fun NormalTopBar(
     title: String,
+    navIcon: Int = Icons.arrow_back_icon,
+    menuIcon: Int? = null,
+    menuText: String? = null,
     onBackClick: () -> Unit,
     onClick: () -> Unit,
 ){
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp),
+            .height(60.dp),
         verticalAlignment = Alignment.CenterVertically
     ){
         IconButton(
@@ -61,7 +65,7 @@ fun NormalTopBar(
         ) {
             Icon(
                 modifier = Modifier.fillMaxSize(),
-                painter = painterResource(R.drawable.arrow_back_24px),
+                painter = painterResource(navIcon),
                 contentDescription = "Back Button"
             )
         }
@@ -74,17 +78,34 @@ fun NormalTopBar(
         )
         Spacer(Modifier.weight(1f))
         Row(
-            modifier = Modifier.width(40.dp).height(30.dp)
-                .clickable{onClick()},
+            modifier = Modifier
+                .width(40.dp)
+                .height(30.dp)
+                .clickable { onClick() },
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "확인",
-                fontSize = 14.sp,
-                fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
-                fontWeight = FontWeight(400)
-            )
+            if(menuText != null){
+                Text(
+                    text = "확인",
+                    fontSize = 14.sp,
+                    fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                    fontWeight = FontWeight(400)
+                )
+            } else if (menuIcon != null){
+                IconButton(
+                    modifier = Modifier.size(24.dp),
+                    onClick = onClick
+                ){
+                    Icon(
+                        modifier = Modifier.fillMaxSize(),
+                        painter = painterResource(menuIcon),
+                        contentDescription = "Menu Icon"
+                    )
+                }
+            } else {
+                Spacer(Modifier.width(24.dp))
+            }
         }
     }
 }
