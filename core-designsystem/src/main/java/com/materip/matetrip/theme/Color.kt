@@ -39,4 +39,7 @@ object MatetripColor{
     val level_2_color = Color(0xFFDA5010)
     val level_3_color = Color(0xFFE3148D)
     val level_4_color = Color(0xFF532BF0)
+
+    val icon_color = Color(0xFF222222)
+    val icon_loading_color = Color(0xFFBBBBBB)
 }
