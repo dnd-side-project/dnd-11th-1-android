@@ -9,6 +9,7 @@ object Badges {
 
     // 소셜 뱃지
     val instagram_badge = R.drawable.instagram_24px
+    val instagram_outlined_badge = R.drawable.ic_instagram_outlined
     val kakaotalk_badge = R.drawable.icon_kakaotalk_20px
     val sms_badge = R.drawable.icon_sms_20px
 
