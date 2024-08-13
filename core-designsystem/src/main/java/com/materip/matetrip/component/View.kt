@@ -62,6 +62,7 @@ fun ImageLoadView(
     shape: Shape,
     size: Dp,
     imageUrl: String,
+    isEnabledClose: Boolean = false,
     onCloseClick: () -> Unit,
 ){
     Box(
@@ -79,20 +80,22 @@ fun ImageLoadView(
             placeholder = painterResource(R.drawable.ic_app_logo_loading),
             error = painterResource(R.drawable.ic_app_logo_loading)
         )
-        Box(
-            modifier = Modifier.fillMaxSize()
-                .padding(top = 6.dp, end = 6.dp),
-            contentAlignment = Alignment.TopEnd
-        ){
-            IconButton(
-                modifier = Modifier.size(12.dp),
-                onClick = onCloseClick
+        if(isEnabledClose){
+            Box(
+                modifier = Modifier.fillMaxSize()
+                    .padding(top = 6.dp, end = 6.dp),
+                contentAlignment = Alignment.TopEnd
             ){
-                Icon(
-                    modifier = Modifier.fillMaxSize(),
-                    painter = painterResource(Icons.close_icon),
-                    contentDescription = "Close Button"
-                )
+                IconButton(
+                    modifier = Modifier.size(12.dp),
+                    onClick = onCloseClick
+                ){
+                    Icon(
+                        modifier = Modifier.fillMaxSize(),
+                        painter = painterResource(Icons.close_icon),
+                        contentDescription = "Close Button"
+                    )
+                }
             }
         }
     }
