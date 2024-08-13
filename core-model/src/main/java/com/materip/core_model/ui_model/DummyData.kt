@@ -30,3 +30,8 @@ data class TempHumanDescClass(
     val authenticatorType: String,
     val images: List<String>
 )
+
+data class QuizClass(
+    var title: String,
+    var answer: String,
+)
