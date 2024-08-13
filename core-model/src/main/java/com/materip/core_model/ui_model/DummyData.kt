@@ -16,3 +16,17 @@ data class TempTravelPost(
     val startDate: String,
     val endDate: String,
 )
+
+data class TempHumanDescClass(
+    val nickname: String,
+    val level: Int,
+    val profileUrl: String,
+    val interests: List<String>,
+    val styles: List<String>,
+    val foodPreferences: List<String>,
+    val age: String,
+    val gender: String,
+    val introduction: String,
+    val authenticatorType: String,
+    val images: List<String>
+)
