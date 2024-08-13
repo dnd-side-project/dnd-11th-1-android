@@ -2,7 +2,7 @@ package com.materip.feature_home.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.materip.core_model.BoardRequestDto
+import com.materip.core_model.accompany_board.BoardRequestDto
 import com.materip.core_repository.repository.BoardRepository
 import com.materip.feature_home.intent.HomeIntent
 import com.materip.feature_home.state.HomeUiState
@@ -106,18 +106,18 @@ class HomeHiltViewModel @Inject constructor(
     }
 
     fun toBoardRequestDto(): BoardRequestDto {
-    return BoardRequestDto(
-        title = _title.value,
-        content = _content.value,
-        tagNames = _tagNames.value,
-        region = _region.value,
-        startDate = _startDate.value,
-        endDate = _endDate.value,
-        category = _category.value,
-        preferredAge = _preferredAge.value,
-        preferredGender = _preferredGender.value,
-        capacity = _capacity.value,
-        imageUrls = _imageUris.value
-    )
-}
+        return BoardRequestDto(
+            title = _title.value,
+            content = _content.value,
+            tagNames = _tagNames.value,
+            region = _region.value,
+            startDate = _startDate.value,
+            endDate = _endDate.value,
+            category = _category.value,
+            preferredAge = _preferredAge.value,
+            preferredGender = _preferredGender.value,
+            capacity = _capacity.value,
+            imageUrls = _imageUris.value
+        )
+    }
 }
