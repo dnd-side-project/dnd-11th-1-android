@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SelectInterests(
-    val tripInterest: List<TripInterest>
+    val travelInterest: List<TravelInterest>
 )
