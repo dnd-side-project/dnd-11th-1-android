@@ -1,7 +1,8 @@
-package com.materip.core_model
+package com.materip.core_model.accompany_board
 
 import kotlinx.serialization.Serializable
 
+// 동행글 생성 BoardRequestDto
 @Serializable
 data class BoardRequestDto(
     val title: String,

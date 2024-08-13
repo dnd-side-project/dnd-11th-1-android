@@ -1,7 +1,8 @@
-package com.materip.core_model
+package com.materip.core_model.accompany_board
 
 import kotlinx.serialization.Serializable
 
+// 동행글 목록 조회 Data
 @Serializable
 data class Data(
     val boardId: Int,
