@@ -2,14 +2,12 @@
 
 package com.materip.matetrip.component
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -18,12 +16,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.materip.matetrip.icon.Icons
 import com.materip.matetrip.icon.Icons.notification_icon
@@ -66,14 +64,12 @@ fun MateTripTopAppBar() {
     )
 }
 
-// 다른 화면의 상단바
 @Composable
 fun BackButtonWithTitleTopAppBar(
     screenTitle: String,
-    onNavigateUp: () -> Unit
+    onNavigateUp: () -> Unit,
+    onPostClick: () -> Unit,
 ) {
-    val shouldShowActions = true // 임시 조건식에 따라 액션 버튼을 표시할지 여부를 결정
-
     CenterAlignedTopAppBar(
         title = {
             Text(
@@ -92,14 +88,19 @@ fun BackButtonWithTitleTopAppBar(
             }
         },
         actions = {
-            if (shouldShowActions) {
-                Row(
-                    modifier = Modifier.padding(end = 16.dp),
+            Row(
+                modifier = Modifier.padding(end = 16.dp),
+            ) {
+                Button(
+                    onClick = onPostClick,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Transparent,
+                        contentColor = Color.Transparent
+                    )
                 ) {
-                    ClickableText(
-                        text = AnnotatedString("게시"),
-                        style = MateTripTypographySet.body04,
-                        onClick = { /* 텍스트 클릭 시 동작 */ }
+                    Text(
+                        text = "게시",
+                        style = MateTripTypographySet.body04
                     )
                 }
             }
@@ -129,26 +130,4 @@ fun BackButtonTopAppBar(onNavigateUp: () -> Unit) {
             containerColor = Color.White
         )
     )
-}
-
-@Preview
-@Composable
-fun MateTripTopAppBarPreview() {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        MateTripTopAppBar()
-        Spacer(modifier = Modifier.size(16.dp))
-        BackButtonWithTitleTopAppBar(
-            screenTitle = "동행 모집하기",
-            onNavigateUp = { }
-        )
-        Spacer(modifier = Modifier.size(16.dp))
-
-        BackButtonTopAppBar(
-            onNavigateUp = { }
-        )
-    }
 }
