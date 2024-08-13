@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.materip.feature_home.ui.FormScreen
 import com.materip.feature_home.ui.HomeScreen
+import com.materip.feature_home.ui.NavigateToPostScreen
 import com.materip.feature_home.ui.NotificationScreen
 import com.materip.feature_home.ui.PostBoardScreen
 import com.materip.feature_home.ui.ProfileScreen
@@ -30,7 +31,7 @@ import com.materip.matetrip.component.MateTripTopAppBar
 fun SetUpNavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    startDestination: String = Screen.Post.route
+    startDestination: String = Screen.NavigateToPost.route
 ) {
     NavHost(
         navController = navController,
@@ -40,21 +41,41 @@ fun SetUpNavGraph(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
+        // 로그인
+
+        // 온보딩
+
+        // 홈
         composable(Screen.Home.route) {
             HomeScreen()
         }
+
+        // 홈_게시글 작성_디폴트
         composable(Screen.Post.route) {
             PostBoardScreen()
         }
+
+        // 홈_게시글 진입
+        composable(Screen.NavigateToPost.route) {
+             NavigateToPostScreen()
+        }
+
+        // 게시글_동행 신청
         composable(Screen.Form.route) {
             FormScreen()
         }
+
+        // 게시글_프로필 자세히 보기
         composable(Screen.Profile.route) {
             ProfileScreen()
         }
+
+        // 홈_알림_디폴트
         composable(Screen.Notification.route) {
             NotificationScreen()
         }
+
+        // 동행 후기 작성
         composable(Screen.Review.route) {
             ReviewScreen()
         }
@@ -73,12 +94,15 @@ fun GetTopBar(
         Screen.OnBoarding.route -> {
             BackButtonTopAppBar(onNavigateUp = { navController.navigateUp() } )
         }
-        else -> {
+        Screen.Post.route -> {
             BackButtonWithTitleTopAppBar(
                 screenTitle = "동행 모집하기",
                 onNavigateUp = { navController.navigateUp() },
                 onPostClick =  { viewModel.createPost(viewModel.toBoardRequestDto()) }
             )
+        }
+        else -> {
+            BackButtonTopAppBar(onNavigateUp = { navController.navigateUp() } )
         }
     }
 }
