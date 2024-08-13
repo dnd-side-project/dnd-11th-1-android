@@ -64,10 +64,6 @@ dependencies {
     implementation(project(":feature-mypage"))
     implementation(project(":feature-onboarding"))
 
-    //FCM
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.analytics)
-
     //navigation
     implementation(libs.navigation)
 
