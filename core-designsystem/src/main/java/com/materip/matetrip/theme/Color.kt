@@ -34,4 +34,9 @@ object MatetripColor{
     //kakao button
     val KakaoButtonColor = Color(0xFFF6DB4F)
     val KakaoTextColor = Color(0xFF382929)
+
+    val level_1_color = Color(0xFF72A311)
+    val level_2_color = Color(0xFFDA5010)
+    val level_3_color = Color(0xFFE3148D)
+    val level_4_color = Color(0xFF532BF0)
 }
