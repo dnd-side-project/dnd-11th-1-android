@@ -22,27 +22,29 @@ class HomeHiltViewModel @Inject constructor(
 
     private val _title = MutableStateFlow("")
     private val _content = MutableStateFlow("")
-    private val _tags = MutableStateFlow(listOf<String>())
-    private val _gender = MutableStateFlow("")
-    private val _age = MutableStateFlow("")
-    private val _type = MutableStateFlow("")
+    private val _tagNames = MutableStateFlow(listOf<String>())
+    private val _preferredGender = MutableStateFlow("")
+    private val _preferredAge = MutableStateFlow("")
+    private val _category = MutableStateFlow("")
     private val _region = MutableStateFlow("")
     private val _startDate = MutableStateFlow("")
     private val _endDate = MutableStateFlow("")
     private val _capacity = MutableStateFlow(2)
+    private val _imageUris = MutableStateFlow(listOf<String>())
 
     fun onIntent(intent: HomeIntent) {
         when (intent) {
             is HomeIntent.UpdateTitle -> updateTitle(intent.title)
             is HomeIntent.UpdateContent -> updateContent(intent.content)
-            is HomeIntent.UpdateTags -> updateTags(intent.tags)
+            is HomeIntent.UpdateTagNames -> updateTags(intent.tagNames)
             is HomeIntent.UpdateRegion -> updateRegion(intent.region)
             is HomeIntent.UpdateStartDate -> updateStartDate(intent.startDate)
             is HomeIntent.UpdateEndDate -> updateEndDate(intent.endDate)
-            is HomeIntent.UpdateType -> updateType(intent.type)
-            is HomeIntent.UpdateAge -> updateAge(intent.age)
-            is HomeIntent.UpdateGender -> updateGender(intent.gender)
+            is HomeIntent.UpdateCategory -> updateType(intent.category)
+            is HomeIntent.UpdateAge -> updateAge(intent.preferredAge)
+            is HomeIntent.UpdateGender -> updateGender(intent.preferredGender)
             is HomeIntent.UpdateCapacity -> updateCapacity(intent.capacity)
+            is HomeIntent.UpdateImageUris -> updateImageUris(intent.imageUris)
         }
     }
 
@@ -56,19 +58,19 @@ class HomeHiltViewModel @Inject constructor(
     }
 
     private fun updateTags(newTags: List<String>) {
-        _tags.value = newTags
+        _tagNames.value = newTags
     }
 
     private fun updateGender(newGender: String) {
-        _gender.value = newGender
+        _preferredGender.value = newGender
     }
 
     private fun updateAge(newAge: String) {
-        _age.value = newAge
+        _preferredAge.value = newAge
     }
 
     private fun updateType(newType: String) {
-        _type.value = newType
+        _category.value = newType
     }
 
     private fun updateRegion(newRegion: String) {
@@ -87,6 +89,10 @@ class HomeHiltViewModel @Inject constructor(
         _capacity.value = newCapacity
     }
 
+    private fun updateImageUris(newImageUris: List<String>) {
+        _imageUris.value = newImageUris
+    }
+
     fun createPost(boardRequestDto: BoardRequestDto) {
         viewModelScope.launch {
             _uiState.value = HomeUiState.Loading
@@ -98,4 +104,20 @@ class HomeHiltViewModel @Inject constructor(
             }
         }
     }
+
+    fun toBoardRequestDto(): BoardRequestDto {
+    return BoardRequestDto(
+        title = _title.value,
+        content = _content.value,
+        tagNames = _tagNames.value,
+        region = _region.value,
+        startDate = _startDate.value,
+        endDate = _endDate.value,
+        category = _category.value,
+        preferredAge = _preferredAge.value,
+        preferredGender = _preferredGender.value,
+        capacity = _capacity.value,
+        imageUrls = _imageUris.value
+    )
+}
 }
