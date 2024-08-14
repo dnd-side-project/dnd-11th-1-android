@@ -50,5 +50,6 @@ data class ReviewDescClass(
     val nickname: String,
     val age: String,
     val gender: String,
-    val content: String
+    val content: String,
+    val images: List<String> = emptyList(),
 )
