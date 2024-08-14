@@ -15,7 +15,7 @@ data class BoardInfo(
     val endDate: String, // 여행 종료 날짜
     val headCount: Int,  // 동행원 수
     val capacity: Int, // 최대 인원 수
-    val category: String, // 여행 카테고리
+    val category: List<String>, // 여행 카테고리
     val preferredAge: String, // 동행 선호 나이
     val preferredGender: String, // 동행 선호 성별
 )
