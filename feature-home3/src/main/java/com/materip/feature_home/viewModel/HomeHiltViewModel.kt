@@ -20,6 +20,9 @@ class HomeHiltViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Initial)
     val uiState: StateFlow<HomeUiState> = _uiState
 
+    private val _createdBoardId = MutableStateFlow<Int?>(null)
+    val createdBoardId: StateFlow<Int?> = _createdBoardId
+
     private val _title = MutableStateFlow("")
     private val _content = MutableStateFlow("")
     private val _tagNames = MutableStateFlow(listOf<String>())
@@ -45,6 +48,7 @@ class HomeHiltViewModel @Inject constructor(
             is HomeIntent.UpdateGender -> updateGender(intent.preferredGender)
             is HomeIntent.UpdateCapacity -> updateCapacity(intent.capacity)
             is HomeIntent.UpdateImageUris -> updateImageUris(intent.imageUris)
+            is HomeIntent.LoadBoardDetail -> loadBoardDetail(intent.boardId)
         }
     }
 
@@ -95,12 +99,16 @@ class HomeHiltViewModel @Inject constructor(
 
     fun createPost(boardRequestDto: BoardRequestDto) {
         viewModelScope.launch {
-            _uiState.value = HomeUiState.Loading
-            val result = boardRepository.postBoard(boardRequestDto)
-            _uiState.value = if (result.data != null) {
-                HomeUiState.Success
+            _uiState.value = HomeUiState.Loading // 서버와의 통신 시작을 알림
+
+            val result = boardRepository.postBoard(boardRequestDto) // 서버에 BoardRequestDto 전송
+            val boardIdDto = result.data // 로컬 변수로 할당
+
+            _uiState.value = if (boardIdDto != null) {
+                _createdBoardId.value = boardIdDto.boardId // 서버로부터 받은 boardId를 저장
+                HomeUiState.SuccessPost // UI에 성공 상태 알림
             } else {
-                HomeUiState.Error(result.error?.errMsg ?: "게시글 작성에 실패했습니다.")
+                HomeUiState.Error(result.error?.errMsg ?: "게시글 작성에 실패했습니다.") // 에러 시 UI에 알림
             }
         }
     }
@@ -119,5 +127,20 @@ class HomeHiltViewModel @Inject constructor(
             capacity = _capacity.value,
             imageUrls = _imageUris.value
         )
+    }
+
+    private fun loadBoardDetail(boardId: Int) {
+        viewModelScope.launch {
+            _uiState.value = HomeUiState.Loading
+
+            val result = boardRepository.getBoardDetail(boardId)
+            val boardDetail = result.data
+
+            _uiState.value = if (boardDetail != null) {
+                HomeUiState.SuccessLoad(boardDetail)
+            } else {
+                HomeUiState.Error(result.error?.errMsg ?: "게시글 상세 정보를 불러오는데 실패했습니다.")
+            }
+        }
     }
 }
