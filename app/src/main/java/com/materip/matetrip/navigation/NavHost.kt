@@ -11,8 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.materip.feature_home.ui.FormScreen
 import com.materip.feature_home.ui.HomeScreen
 import com.materip.feature_home.ui.NavigateToPostScreen
@@ -31,7 +33,7 @@ import com.materip.matetrip.component.MateTripTopAppBar
 fun SetUpNavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    startDestination: String = Screen.NavigateToPost.route
+    startDestination: String = Screen.Post.route
 ) {
     NavHost(
         navController = navController,
@@ -52,12 +54,22 @@ fun SetUpNavGraph(
 
         // 홈_게시글 작성_디폴트
         composable(Screen.Post.route) {
-            PostBoardScreen()
+            PostBoardScreen(
+                navController = navController
+            )
         }
 
         // 홈_게시글 진입
-        composable(Screen.NavigateToPost.route) {
-             NavigateToPostScreen()
+        composable(
+            route = Screen.NavigateToPost.route + "/{boardId}",
+            arguments = listOf(navArgument("boardId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val boardId = backStackEntry.arguments?.getInt("boardId") ?: 0
+            NavigateToPostScreen(
+                boardId = boardId,
+                onNavigateToForm = { navController.navigate(Screen.Form.route) },
+                onNavigateToProfile = { navController.navigate(Screen.Profile.route) }
+            )
         }
 
         // 게시글_동행 신청
@@ -98,7 +110,10 @@ fun GetTopBar(
             BackButtonWithTitleTopAppBar(
                 screenTitle = "동행 모집하기",
                 onNavigateUp = { navController.navigateUp() },
-                onPostClick =  { viewModel.createPost(viewModel.toBoardRequestDto()) }
+                onPostClick =  {
+                    val boardIdDto = viewModel.createPost(viewModel.toBoardRequestDto())
+                    navController.navigate(Screen.NavigateToPost.route + "/${boardIdDto.boardId}")
+                }
             )
         }
         else -> {
