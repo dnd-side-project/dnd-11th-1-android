@@ -62,4 +62,7 @@ object Badges {
 
     // FAB 아이콘
     val fab_add_badge = R.drawable.button_fab
+
+    //배경 badge
+    val background_badge = R.drawable.ic_background_design_badge
 }
