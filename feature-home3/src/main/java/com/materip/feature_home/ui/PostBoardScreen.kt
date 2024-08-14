@@ -33,6 +33,7 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -47,6 +48,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.materip.feature_home.intent.HomeIntent
 import com.materip.feature_home.state.HomeUiState
 import com.materip.feature_home.ui.component.ImagePicker
@@ -72,9 +74,11 @@ import java.time.LocalDate
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
 fun PostBoardScreen(
-    viewModel: HomeHiltViewModel = hiltViewModel()
+    viewModel: HomeHiltViewModel = hiltViewModel(),
+    navController: NavController
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val createdBoardId by viewModel.createdBoardId.collectAsState()
 
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
@@ -88,6 +92,13 @@ fun PostBoardScreen(
     var endDate by remember { mutableStateOf<LocalDate?>(null) }
     var capacity by remember { mutableIntStateOf(2) }
     var imageUris by remember { mutableStateOf(listOf<String>()) }
+
+    // 여기가 아니라 게시버튼(상단바에 전달하기)
+    LaunchedEffect(createdBoardId) {
+        createdBoardId?.let { boardId ->
+            navController.navigate("navigateToPost/$boardId")
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -197,7 +208,7 @@ fun PostBoardScreen(
 
         when (uiState) {
             is HomeUiState.Loading -> CircularProgressIndicator()
-            is HomeUiState.Success -> Text("게시글이 성공적으로 작성되었습니다.")
+            is HomeUiState.SuccessPost -> Text("게시글이 성공적으로 작성되었습니다.")
             is HomeUiState.Error -> Text("오류: \${(uiState as HomeUiState.Error).message}")
             else -> {}
         }
