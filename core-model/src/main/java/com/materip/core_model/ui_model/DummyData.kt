@@ -53,3 +53,14 @@ data class ReviewDescClass(
     val content: String,
     val images: List<String> = emptyList(),
 )
+
+data class SendApplicationClass(
+    val nickname: String,
+    val age: String,
+    val gender: String,
+    val profileUrl: String,
+    val tags: List<String>,
+    val application: String,
+    val snsLink: String,
+    val myNickname: String
+)
