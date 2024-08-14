@@ -81,7 +81,10 @@ fun NavGraphBuilder.myPageGraph(
             )
         }
         composable(route = MyPageRoute.SendApplicationRoute.name){
-            SendApplicationRoute()
+            SendApplicationRoute(
+                navBack = navBack,
+                navProfileDescription = navProfileDescription
+            )
         }
     }
 }
