@@ -12,4 +12,5 @@ sealed class HomeIntent {
     data class UpdateGender(val preferredGender: String) : HomeIntent()
     data class UpdateCapacity(val capacity: Int) : HomeIntent()
     data class UpdateImageUris(val imageUris: List<String>) : HomeIntent()
+    data class LoadBoardDetail(val boardId: Int) : HomeIntent()
 }
