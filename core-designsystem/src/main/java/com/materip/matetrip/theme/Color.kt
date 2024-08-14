@@ -43,4 +43,7 @@ object MatetripColor{
 
     val icon_color = Color(0xFF222222)
     val icon_loading_color = Color(0xFFBBBBBB)
+
+    //divider color
+    val divider_color = Color(0xFFEEEEEE)
 }
