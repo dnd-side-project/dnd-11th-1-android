@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ProfileInfo(
     val nickname: String,
+    val profileImageUrl: String,
     val provider: String,
     val birthYear: Int,
     val gender: String,
