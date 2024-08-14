@@ -49,12 +49,16 @@ import com.materip.matetrip.icon.Icons
 import com.materip.matetrip.theme.MatetripColor
 
 @Composable
-fun ProfileDescriptionRoute(){
-    ProfileDescriptionScreen()
+fun ProfileDescriptionRoute(
+    navBack: () -> Unit
+){
+    ProfileDescriptionScreen(navBack = navBack)
 }
 
 @Composable
-fun ProfileDescriptionScreen(){
+fun ProfileDescriptionScreen(
+    navBack: () -> Unit,
+){
     val scrollState = rememberScrollState()
     val dummyData = TempHumanDescClass(
         nickname = "닉네임닉네임",
@@ -104,7 +108,7 @@ fun ProfileDescriptionScreen(){
             title = "",
             navIcon = Icons.close_icon,
             onBackClick = {},
-            onClick = {/** 닫기 */}
+            onClick = navBack
         )
         Spacer(Modifier.height(10.dp))
         Column(
@@ -427,5 +431,5 @@ private fun MyImageInfo(images: List<String>){
 @Composable
 @Preview
 private fun ProfileDescriptionUITest(){
-    ProfileDescriptionScreen()
+    ProfileDescriptionScreen(navBack = {})
 }

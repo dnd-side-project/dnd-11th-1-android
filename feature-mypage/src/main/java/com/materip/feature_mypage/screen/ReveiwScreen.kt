@@ -28,12 +28,16 @@ import com.materip.matetrip.component.NormalTopBar
 import com.materip.matetrip.component.ReviewItem
 
 @Composable
-fun ReviewRoute(){
-    ReviewScreen()
+fun ReviewRoute(
+    navBack: () -> Unit,
+){
+    ReviewScreen(navBack = navBack)
 }
 
 @Composable
-fun ReviewScreen(){
+fun ReviewScreen(
+    navBack: () -> Unit,
+){
     val dummyReview = ReviewClass(
         totalCount = 14,
         review = listOf(
@@ -88,5 +92,5 @@ fun ReviewScreen(){
 @Preview
 @Composable
 private fun ReviewUiTest(){
-    ReviewScreen()
+    ReviewScreen(navBack = {})
 }

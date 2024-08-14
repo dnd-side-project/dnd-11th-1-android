@@ -41,12 +41,14 @@ import com.materip.matetrip.icon.Icons
 import com.materip.matetrip.theme.MatetripColor
 
 @Composable
-fun Quiz100Route() {
-    Quiz100Screen()
+fun Quiz100Route(
+    navBack: () -> Unit,
+) {
+    Quiz100Screen(navBack = navBack)
 }
 
 @Composable
-fun Quiz100Screen(){
+fun Quiz100Screen(navBack: () -> Unit){
     var isEditable by remember{mutableStateOf(false)}
     val dummyQuiz = remember{
         mutableStateListOf(
@@ -76,7 +78,7 @@ fun Quiz100Screen(){
             menuText = if(isEditable) "삭제" else "편집",
             menuTextColor = MatetripColor.gray_06,
             titleFontWeight = FontWeight(700),
-            onBackClick = { /** 뒤로가기 */ },
+            onBackClick = navBack,
             onClick = {
                 if(isEditable){
                     dummyQuiz.removeAll(removeQuiz)
@@ -198,5 +200,5 @@ private fun ReadOnlyQuiz(
 @Preview
 @Composable
 private fun Quiz100UITest(){
-    Quiz100Screen()
+    Quiz100Screen(navBack = {})
 }

@@ -51,7 +51,9 @@ import com.materip.matetrip.icon.Icons
 import com.materip.matetrip.theme.MatetripColor
 
 @Composable
-fun TravelHistoryContent(){
+fun TravelHistoryContent(
+    navSendApplication: () -> Unit,
+){
     var selectedTag by remember{mutableStateOf(TravelHistoryTag.RECORD)}
     val dummyData = listOf(
         TempTravelPost(
@@ -82,7 +84,8 @@ fun TravelHistoryContent(){
         )
         TravelHistoryTag.SEND_APPLICATION -> {
             SendTravelApplication(
-                applications = dummyData /** dummy data */
+                applications = dummyData, /** dummy data */
+                navSendApplication = navSendApplication
             )
         }
         TravelHistoryTag.RECEIVE_APPLICATION -> {
@@ -175,7 +178,10 @@ private fun TravelHistories(records: List<TempTravelPost>){
 }
 
 @Composable
-private fun SendTravelApplication(applications: List<TempTravelPost>){
+private fun SendTravelApplication(
+    applications: List<TempTravelPost>,
+    navSendApplication: () -> Unit
+){
     if(applications.isEmpty()){
         NoDataContent(message = "나와 맞는 동행자에게\n동행 신청서를 보내 보세요.")
     } else {
@@ -202,7 +208,7 @@ private fun SendTravelApplication(applications: List<TempTravelPost>){
                     fontSize = 14.sp,
                     btnColor = MatetripColor.Blue_04,
                     textColor = MatetripColor.Gray_08,
-                    onClick = { /** 신청서 자세히 보기 navigation */ }
+                    onClick = navSendApplication
                 )
             }
         }

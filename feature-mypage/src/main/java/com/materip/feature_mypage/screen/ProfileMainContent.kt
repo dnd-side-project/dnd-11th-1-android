@@ -49,6 +49,10 @@ import com.materip.matetrip.icon.Icons
 fun ProfileMainContent(
     profileInfo: String,
     profileTags: List<String>,
+    navEditProfile: () -> Unit,
+    navProfileDescription: () -> Unit,
+    navQuiz100: () -> Unit,
+    navPreview: () -> Unit
 ){
     val scrollState = rememberScrollState()
 
@@ -131,7 +135,7 @@ fun ProfileMainContent(
                     colors = ButtonDefaults.outlinedButtonColors(
                         containerColor = Color.White,
                     ),
-                    onClick = { /** 프로필 수정 화면으로 navigation */ }
+                    onClick = navEditProfile
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -193,7 +197,7 @@ fun ProfileMainContent(
             ){
                 if (profileInfo.isEmpty()){
                     Text(
-                        text = "프로필을 수정해서 나를 표현해 보세요", /** 프로필로 나를 표현 */
+                        text = "프로필을 수정해서 나를 표현해 보세요",
                         fontSize = 14.sp,
                         fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                         fontWeight = FontWeight(500),
@@ -208,7 +212,7 @@ fun ProfileMainContent(
                     )
                 } else {
                     Text(
-                        text = "고즈넉한 분위기를 좋아합니다\nMBTI F인 분과 함께 힐링하고 싶어요", /** 프로필로 나를 표현 */
+                        text = "고즈넉한 분위기를 좋아합니다\nMBTI F인 분과 함께 힐링하고 싶어요", /** introduction  */
                         fontSize = 14.sp,
                         fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                         fontWeight = FontWeight(400),
@@ -234,7 +238,7 @@ fun ProfileMainContent(
                 textColor = MatetripColor.Gray_08,
                 fontSize = 12.sp,
                 btnColor = MatetripColor.Gray_02,
-                onClick = { /** 자세히 보기 (navigation) */ }
+                onClick = navProfileDescription
             )
         }
         Spacer(Modifier.height(20.dp))
@@ -242,7 +246,7 @@ fun ProfileMainContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(110.dp),
-            onClick = { /** 백문 백답으로 이동 */ },
+            onClick = navQuiz100,
             shape = RoundedCornerShape(size = 10.dp),
         ) {
             Image(
@@ -268,7 +272,7 @@ fun ProfileMainContent(
             )
             IconButton(
                 modifier = Modifier.size(24.dp),
-                onClick = { /** 백문백답 챌린지 navigation */ }
+                onClick = navQuiz100
             ) {
                 Icon(
                     modifier = Modifier.fillMaxSize(),
@@ -294,7 +298,7 @@ fun ProfileMainContent(
             )
             IconButton(
                 modifier = Modifier.size(24.dp),
-                onClick = { /** 동행 후기 navigation */ }
+                onClick = navPreview
             ) {
                 Icon(
                     modifier = Modifier.fillMaxSize(),

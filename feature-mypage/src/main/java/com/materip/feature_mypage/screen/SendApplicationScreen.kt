@@ -49,12 +49,21 @@ import com.materip.matetrip.icon.Icons
 import com.materip.matetrip.theme.MatetripColor
 
 @Composable
-fun SendApplicationRoute(){
-    SendApplicationScreen()
+fun SendApplicationRoute(
+    navBack: () -> Unit,
+    navProfileDescription: () -> Unit
+){
+    SendApplicationScreen(
+        navBack = navBack,
+        navProfileDescription = navProfileDescription
+    )
 }
 
 @Composable
-fun SendApplicationScreen(){
+fun SendApplicationScreen(
+    navBack: () -> Unit,
+    navProfileDescription: () -> Unit
+){
     val scrollState = rememberScrollState()
     val dummyData = SendApplicationClass(
         nickname = "닉네임",
@@ -103,7 +112,7 @@ fun SendApplicationScreen(){
         NormalTopBar(
             title = "보낸 신청서",
             titleFontWeight = FontWeight(700),
-            onBackClick = {/** 뒤로가기 navigation */},
+            onBackClick = navBack,
             onClick = {/* 미사용 */}
         )
         Spacer(Modifier.height(10.dp))
@@ -124,7 +133,8 @@ fun SendApplicationScreen(){
                 age = dummyData.age,
                 gender = dummyData.gender,
                 imageUrl = dummyData.profileUrl,
-                tags = dummyData.tags
+                tags = dummyData.tags,
+                navProfileDescription = navProfileDescription
             )
             Spacer(Modifier.height(14.dp))
             Column(
@@ -206,7 +216,8 @@ private fun ProfileView(
     age: String,
     gender: String,
     imageUrl: String,
-    tags: List<String>
+    tags: List<String>,
+    navProfileDescription: () -> Unit
 ){
     Column(
         modifier = Modifier
@@ -257,7 +268,7 @@ private fun ProfileView(
                 Spacer(Modifier.width(4.dp))
                 IconButton(
                     modifier = Modifier.size(12.dp),
-                    onClick = {/** profile 자세히 보기로 navigation */}
+                    onClick = navProfileDescription
                 ) {
                     Icon(
                         modifier = Modifier.fillMaxSize(),
@@ -292,5 +303,8 @@ private fun ProfileView(
 @Composable
 @Preview
 private fun SendApplicationUITest(){
-    SendApplicationScreen()
+    SendApplicationScreen(
+        navBack = {},
+        navProfileDescription = {}
+    )
 }

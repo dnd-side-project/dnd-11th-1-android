@@ -29,18 +29,37 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.materip.core_model.ui_model.MyPageTab
+import com.materip.core_model.ui_model.SendApplicationClass
 import com.materip.core_model.ui_model.TravelInterest
 import com.materip.core_model.ui_model.TravelStyle
 import com.materip.matetrip.component.TempTopBar
 import com.materip.matetrip.theme.MatetripColor
 
 @Composable
-fun MyPageRoute(){
-    MyPageScreen()
+fun MyPageRoute(
+    navEditProfile: () -> Unit,
+    navProfileDescription: () -> Unit,
+    navQuiz100: () -> Unit,
+    navPreview: () -> Unit,
+    navSendApplication: () -> Unit
+){
+    MyPageScreen(
+        navEditProfile = navEditProfile,
+        navProfileDescription = navProfileDescription,
+        navQuiz100 = navQuiz100,
+        navPreview = navPreview,
+        navSendApplication = navSendApplication
+    )
 }
 
 @Composable
-fun MyPageScreen(){
+fun MyPageScreen(
+    navEditProfile: () -> Unit,
+    navProfileDescription: () -> Unit,
+    navQuiz100: () -> Unit,
+    navPreview: () -> Unit,
+    navSendApplication: () -> Unit,
+){
     var selectedTab by remember{mutableStateOf(MyPageTab.Profile)}
     Column(
         modifier = Modifier
@@ -55,7 +74,14 @@ fun MyPageScreen(){
             onTabChange = {selectedTab = it}
         )
         Spacer(Modifier.height(20.dp))
-        CustomPagerContent(selectedTab = selectedTab)
+        CustomPagerContent(
+            selectedTab = selectedTab,
+            navEditProfile = navEditProfile,
+            navProfileDescription = navProfileDescription,
+            navQuiz100 = navQuiz100,
+            navPreview = navPreview,
+            navSendApplication = navSendApplication
+        )
     }
 }
 @Composable
@@ -142,7 +168,12 @@ fun CustomPager(
 }
 @Composable
 fun CustomPagerContent(
-    selectedTab: MyPageTab
+    selectedTab: MyPageTab,
+    navEditProfile: () -> Unit,
+    navProfileDescription: () -> Unit,
+    navQuiz100: () -> Unit,
+    navPreview: () -> Unit,
+    navSendApplication: () -> Unit
 ){
     Column(
         modifier = Modifier
@@ -151,6 +182,10 @@ fun CustomPagerContent(
         when(selectedTab){
             MyPageTab.Profile -> {
                 ProfileMainContent(
+                    navEditProfile = navEditProfile,
+                    navProfileDescription = navProfileDescription,
+                    navQuiz100 = navQuiz100,
+                    navPreview = navPreview,
                     profileInfo = "테스트입니당",
                     profileTags = listOf(
                         TravelStyle.RESTAURANT_TOUR.name,
@@ -164,12 +199,20 @@ fun CustomPagerContent(
                 )
             }
             MyPageTab.TravelPost -> TravelPostContent()
-            MyPageTab.TravelHistory -> TravelHistoryContent()
+            MyPageTab.TravelHistory -> TravelHistoryContent(
+                navSendApplication = navSendApplication
+            )
         }
     }
 }
 @Preview
 @Composable
 private fun MyPageUITest(){
-    MyPageScreen()
+    MyPageScreen(
+        navPreview = {},
+        navProfileDescription = {},
+        navQuiz100 = {},
+        navEditProfile = {},
+        navSendApplication = {}
+    )
 }

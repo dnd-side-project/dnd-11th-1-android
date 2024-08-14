@@ -33,12 +33,27 @@ import com.materip.matetrip.component.ReviewItem
 import com.materip.matetrip.icon.Icons
 
 @Composable
-fun PreviewRoute(){
-    PreviewScreen()
+fun PreviewRoute(
+    navBack: () -> Unit,
+    navReview: () -> Unit,
+    navReviewList: () -> Unit,
+    navReviewDescription: () -> Unit,
+){
+    PreviewScreen(
+        navBack = navBack,
+        navReview = navReview,
+        navReviewList = navReviewList,
+        navReviewDescription = navReviewDescription
+    )
 }
 
 @Composable
-fun PreviewScreen(){
+fun PreviewScreen(
+    navBack: () -> Unit,
+    navReview: () -> Unit,
+    navReviewList: () -> Unit,
+    navReviewDescription: () -> Unit,
+){
     val dummyReview = ReviewClass(
         totalCount = 14,
         review = listOf(
@@ -91,18 +106,28 @@ fun PreviewScreen(){
         NormalTopBar(
             title = "동행후기",
             titleFontWeight = FontWeight(700),
-            onBackClick = {/** 뒤로가기 */},
+            onBackClick = navBack,
             onClick = {/* 미사용 */}
         )
         Spacer(Modifier.height(10.dp))
-        ReviewFeedback(dummyReview)
+        ReviewFeedback(
+            dummyReview = dummyReview,
+            navReview = navReview
+        )
         Spacer(Modifier.height(40.dp))
-        ReviewFeedbackDesc(dummyReviewDesc)
+        ReviewFeedbackDesc(
+            dummyReviewDesc = dummyReviewDesc,
+            navReviewList = navReviewList,
+            navReviewDescription = navReviewDescription
+        )
     }
 }
 
 @Composable
-fun ReviewFeedback(dummyReview: ReviewClass){
+fun ReviewFeedback(
+    dummyReview: ReviewClass,
+    navReview: () -> Unit
+){
     Column(
         modifier = Modifier.fillMaxWidth()
     ){
@@ -130,7 +155,7 @@ fun ReviewFeedback(dummyReview: ReviewClass){
             }
             IconButton(
                 modifier = Modifier.size(24.dp),
-                onClick = { /** 어딘가로 navigation */ }
+                onClick = navReview
             ) {
                 Icon(
                     modifier = Modifier.fillMaxSize(),
@@ -150,7 +175,11 @@ fun ReviewFeedback(dummyReview: ReviewClass){
 }
 
 @Composable
-fun ReviewFeedbackDesc(dummyReviewDesc: List<ReviewDescClass>){
+fun ReviewFeedbackDesc(
+    dummyReviewDesc: List<ReviewDescClass>,
+    navReviewList: () -> Unit,
+    navReviewDescription: () -> Unit
+){
     Column(
         modifier = Modifier.fillMaxWidth()
     ){
@@ -178,7 +207,7 @@ fun ReviewFeedbackDesc(dummyReviewDesc: List<ReviewDescClass>){
             }
             IconButton(
                 modifier = Modifier.size(24.dp),
-                onClick = { /** 받은 동행 후기 navigation */ }
+                onClick = navReviewList
             ) {
                 Icon(
                     modifier = Modifier.fillMaxSize(),
@@ -199,7 +228,7 @@ fun ReviewFeedbackDesc(dummyReviewDesc: List<ReviewDescClass>){
                 age = it.age,
                 gender = it.gender,
                 content = it.content,
-                onClick = {/** 상세 후기 navigation */}
+                onClick = navReviewDescription
             )
             if(dummyReviewDesc.indexOf(it) != dummyReviewDesc.lastIndex){
                 Spacer(Modifier.height(10.dp))
@@ -211,5 +240,10 @@ fun ReviewFeedbackDesc(dummyReviewDesc: List<ReviewDescClass>){
 @Preview
 @Composable
 private fun PreviewUITest(){
-    PreviewScreen()
+    PreviewScreen(
+        navBack = {},
+        navReview = {},
+        navReviewDescription = {},
+        navReviewList = {}
+    )
 }

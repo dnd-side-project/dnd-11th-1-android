@@ -56,12 +56,12 @@ import com.materip.matetrip.icon.Icons
 import com.materip.matetrip.theme.MatetripColor
 
 @Composable
-fun EditProfileRoute(){
-    EditProfileScreen()
+fun EditProfileRoute(navBack: () -> Unit){
+    EditProfileScreen(navBack = navBack)
 }
 
 @Composable
-fun EditProfileScreen(){
+fun EditProfileScreen(navBack: () -> Unit){
     val scrollState = rememberScrollState()
     var name by remember{mutableStateOf("찬란한 바닷가")} /** initial nickname */
     var introduction by remember{mutableStateOf("")}
@@ -76,8 +76,11 @@ fun EditProfileScreen(){
     ){
         NormalTopBar(
             title = "프로필 수정",
-            onBackClick = { /** 뒤로 가기 */ },
-            onClick = { /** 수정 완료 */ },
+            onBackClick = navBack,
+            onClick = {
+                /** 수정 완료 api */
+                navBack()
+            },
             menuText = "확인"
         )
         Column(
@@ -862,5 +865,5 @@ private fun MyImages(pictures: List<String>){
 @Preview
 @Composable
 private fun EditProfileUITest(){
-    EditProfileScreen()
+    EditProfileScreen(navBack = {  })
 }

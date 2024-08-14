@@ -28,12 +28,21 @@ import com.materip.matetrip.component.NormalTopBar
 import com.materip.matetrip.component.ReviewDescItem
 
 @Composable
-fun ReviewListRoute(){
-    ReviewListScreen()
+fun ReviewListRoute(
+    navBack: () -> Unit,
+    navReviewDescription: () -> Unit,
+){
+    ReviewListScreen(
+        navBack = navBack,
+        navReviewDescription = navReviewDescription
+    )
 }
 
 @Composable
-fun ReviewListScreen(){
+fun ReviewListScreen(
+    navBack: () -> Unit,
+    navReviewDescription: () -> Unit,
+){
     val dummyReviewDesc = listOf(
         ReviewDescClass(
             destination = "부산",
@@ -89,7 +98,7 @@ fun ReviewListScreen(){
         NormalTopBar(
             title = "받은 동행 후기",
             titleFontWeight = FontWeight(700),
-            onBackClick = {/** 뒤로 가기 */},
+            onBackClick = navBack,
             onClick = {/* 미사용 */}
         )
         Spacer(Modifier.height(10.dp))
@@ -113,7 +122,7 @@ fun ReviewListScreen(){
                     age = review.age,
                     gender = review.gender,
                     content = review.content,
-                    onClick = {/** 상세 후기 navigation */}
+                    onClick = navReviewDescription
                 )
             }
         }
@@ -123,5 +132,8 @@ fun ReviewListScreen(){
 @Preview
 @Composable
 fun ReviewListUITest(){
-    ReviewListScreen()
+    ReviewListScreen(
+        navBack = {},
+        navReviewDescription = {}
+    )
 }

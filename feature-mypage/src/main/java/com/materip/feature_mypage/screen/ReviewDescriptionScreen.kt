@@ -47,12 +47,12 @@ import com.materip.matetrip.icon.Badges
 import com.materip.matetrip.theme.MatetripColor
 
 @Composable
-fun ReviewDescriptionRoute(){
-    ReviewDescriptionScreen()
+fun ReviewDescriptionRoute(navBack: () -> Unit){
+    ReviewDescriptionScreen(navBack = navBack)
 }
 
 @Composable
-fun ReviewDescriptionScreen(){
+fun ReviewDescriptionScreen(navBack: () -> Unit){
     val scrollState = rememberScrollState()
     val dummyData = ReviewDescClass(
         destination = "부산",
@@ -265,5 +265,5 @@ private fun TagList(tags: List<String>){
 @Preview
 @Composable
 fun ReviewDescriptionUITest(){
-    ReviewDescriptionScreen()
+    ReviewDescriptionScreen(navBack = {})
 }

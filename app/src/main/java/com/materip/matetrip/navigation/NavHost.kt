@@ -8,6 +8,15 @@ import androidx.navigation.compose.composable
 import com.materip.feature_login.navigation.login
 import com.materip.feature_login.navigation.navigateToTest
 import com.materip.feature_login.navigation.test
+import com.materip.feature_mypage.navigation.myPageGraph
+import com.materip.feature_mypage.navigation.navigateToEditProfile
+import com.materip.feature_mypage.navigation.navigateToPreview
+import com.materip.feature_mypage.navigation.navigateToProfileDescription
+import com.materip.feature_mypage.navigation.navigateToQuiz100
+import com.materip.feature_mypage.navigation.navigateToReview
+import com.materip.feature_mypage.navigation.navigateToReviewDescription
+import com.materip.feature_mypage.navigation.navigateToReviewList
+import com.materip.feature_mypage.navigation.navigateToSendApplication
 import com.materip.feature_onboarding.navigation.inputUserInfo
 import com.materip.feature_onboarding.navigation.navigateToInputUserInfo
 import com.materip.feature_onboarding.navigation.navigateToSelectFoodPreference
@@ -33,6 +42,19 @@ fun SetUpNavGraph(
         selectTripInterest(onBackClick = navController::navigateToBack, onNextClick = navController::navigateToSelectTripStyle)
         selectTripStyle(onBackClick = navController::navigateToBack, onNextClick = navController::navigateToSelectFoodPreference)
         selectFoodPreference(onBackClick = navController::navigateToBack)
+
+        /** my-page module */
+        myPageGraph(
+            navBack = navController::navigateToBack,
+            navEditProfile = navController::navigateToEditProfile,
+            navPreview = navController::navigateToPreview,
+            navProfileDescription = navController::navigateToProfileDescription,
+            navQuiz100 = navController::navigateToQuiz100,
+            navSendApplication = navController::navigateToSendApplication,
+            navReview = navController::navigateToReview,
+            navReviewList = navController::navigateToReviewList,
+            navReviewDescription = navController::navigateToReviewDescription
+        )
     }
 }
 
