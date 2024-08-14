@@ -46,4 +46,7 @@ object MatetripColor{
 
     //divider color
     val divider_color = Color(0xFFEEEEEE)
+
+    //dialog
+    val no_text_color = Color(0xFF555555)
 }
