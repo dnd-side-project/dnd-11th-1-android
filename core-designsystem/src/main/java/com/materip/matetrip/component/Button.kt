@@ -177,7 +177,8 @@ fun CustomButton(
     fontSize: TextUnit,
     textColor: Color = Color.Black,
     btnColor: Color,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    isEnabled: Boolean = true,
 ){
     Button(
         modifier = modifier,
@@ -185,6 +186,7 @@ fun CustomButton(
             containerColor = btnColor
         ),
         shape = shape,
+        enabled = isEnabled,
         onClick = onClick
     ) {
         Row(
