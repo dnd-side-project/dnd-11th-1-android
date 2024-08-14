@@ -20,12 +20,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -50,7 +54,10 @@ import com.materip.feature_home.R
 import com.materip.feature_home.intent.HomeIntent
 import com.materip.feature_home.state.HomeUiState
 import com.materip.feature_home.viewModel.HomeHiltViewModel
+import com.materip.matetrip.component.MateTripHomeButton
+import com.materip.matetrip.icon.Badges.profile_default_badge
 import com.materip.matetrip.icon.Icons.date_icon
+import com.materip.matetrip.icon.Icons.enter_24_icon
 import com.materip.matetrip.icon.Icons.gender_icon
 import com.materip.matetrip.icon.Icons.party_icon
 import com.materip.matetrip.icon.Icons.place_icon
@@ -59,17 +66,19 @@ import com.materip.matetrip.theme.MateTripColors.Blue_04
 import com.materip.matetrip.theme.MateTripColors.Gray_02
 import com.materip.matetrip.theme.MateTripColors.Gray_10
 import com.materip.matetrip.theme.MateTripColors.Gray_11
+import com.materip.matetrip.theme.MateTripColors.Gray_12
 import com.materip.matetrip.theme.MateTripColors.Primary
 import com.materip.matetrip.theme.MateTripTypographySet
 
 @Composable
 fun NavigateToPostScreen(
     boardId: Int,
-    viewModel: HomeHiltViewModel = hiltViewModel()
+    viewModel: HomeHiltViewModel = hiltViewModel(),
+    onNavigateToForm: () -> Unit,
+    onNavigateToProfile: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    // 게시글 상세 정보를 로드하는 인텐트 처리
     LaunchedEffect(boardId) {
         viewModel.onIntent(HomeIntent.LoadBoardDetail(boardId))
     }
@@ -82,34 +91,31 @@ fun NavigateToPostScreen(
         is HomeUiState.SuccessLoad -> {
             val boardInfo = (uiState as HomeUiState.SuccessLoad).boardDetail.boardInfo
             val profileInfo = (uiState as HomeUiState.SuccessLoad).boardDetail.profileInfo
-            // BoardInfo.imageUris를 보여주는 UI (이미지 보기)
+
             ShowImageList(imageUris = boardInfo.imageUris)
 
-            // GetBoardDetailDto.profileInfo.nickname, birthYear, gender, 프로필 이미지를 보여주는 UI (프로필 미리보기)
             ShowUserProfile(
                 nickname = profileInfo.nickname,
                 birthYear = profileInfo.birthYear,
-                gender = profileInfo.gender
+                gender = profileInfo.gender,
+                profileImageUrl = profileInfo.profileImageUrl,
+                onNavigateToProfile = onNavigateToProfile
             )
 
-            // BoardInfo.title, content, tagNames를 보여주는 UI (게시글 제목, 내용, 태그)
             ShowUserBoardInfo(
                 title = boardInfo.title,
                 content = boardInfo.content,
                 tagNames = boardInfo.tagNames
             )
 
-            // BoardInfo.region, startDate, endDate를 보여주는 UI (동행 일정)
             ShowSchedule(
                 region = boardInfo.region,
                 startDate = boardInfo.startDate,
                 endDate = boardInfo.endDate
             )
 
-            // BoardInfo.category를 보여주는 UI (동행 유형)
             ShowCategory(category = boardInfo.category)
 
-            // BoardInfo.preferredAge, preferredGender를 보여주는 UI (선호 동행자)
             ShowPreferredPerson(
                 preferredAge = boardInfo.preferredAge,
                 preferredGender = boardInfo.preferredGender,
@@ -117,8 +123,21 @@ fun NavigateToPostScreen(
                 userGender = profileInfo.gender
             )
 
-            // BoardInfo.headCount, capacity를 보여주는 UI (모집 인원)
              ShowRecruitment(boardInfo.headCount, boardInfo.capacity)
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, end = 20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                MateTripHomeButton(
+                    buttonText = "동행 신청",
+                    enabled = true,
+                    onClick = { onNavigateToForm() }
+                )
+                Spacer(modifier = Modifier.height(30.dp))
+            }
         }
 
         is HomeUiState.Error -> {
@@ -129,26 +148,77 @@ fun NavigateToPostScreen(
     }
 }
 
-// TODO: ProfileInfo API 수정 중, 디자인 컴포넌트도 요청한 상태, 완료되면 작업하기
 @Composable
 fun ShowUserProfile(
+    profileImageUrl: String,
     nickname: String,
     birthYear: Int,
-    gender: String
+    gender: String,
+    onNavigateToProfile: () -> Unit
 ) {
-    Row {
-        // 소셜 프로필 이미지를 받아오기
+    val ageCategory = calculateAgeCategory(birthYear)
 
-        Column {
-            // 닉네임 받아오기
-
-            // 나이를 받아와서 범주형으로 보여주기
-
-            // 성별 보여주기
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(78.dp)
+            .padding(start = 20.dp, end = 20.dp, top = 15.dp, bottom = 20.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
+    ) {
+        Box(
+            modifier = Modifier
+                .size(38.dp)
+                .background(shape = CircleShape, color = Blue_04)
+        ) {
+            if (profileImageUrl.isEmpty()) {
+                Image(
+                    painter = painterResource(id = profile_default_badge),
+                    contentDescription = "프로필 기본 이미지",
+                )
+            } else {
+                SubcomposeAsyncImage(
+                    model = profileImageUrl,
+                    contentDescription = "Network Image",
+                    contentScale = ContentScale.Crop
+                )
+            }
         }
 
-        // 해당하는 유저의 프로필 상세 화면으로 이동하기
+        Column(
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(text = nickname, style = MateTripTypographySet.title04)
+            Text(
+                text = "$ageCategory · $gender",
+                style = MateTripTypographySet.body05, color = Gray_12
+            )
+        }
+
+        Box(
+            modifier = Modifier.weight(1f),
+            contentAlignment = Alignment.CenterEnd
+        ) {
+            IconButton(
+                onClick = onNavigateToProfile,
+                modifier = Modifier
+                    .padding(top = 7.dp)
+                    .size(24.dp)
+            ) {
+                Icon(
+                    painter = painterResource(id = enter_24_icon),
+                    contentDescription = "프로필 상세 화면으로 이동"
+                )
+            }
+        }
     }
+
+    HorizontalDivider(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp),
+        color = Color(0xFFEEEEEE)
+    )
 }
 
 
@@ -374,7 +444,7 @@ fun ShowPreferredPerson(
     val ageCategory = calculateAgeCategory(birthYear)
 
     Column(
-        modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 20.dp),
+        modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 50.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(text = "선호 동행자", style = MateTripTypographySet.headline05)
@@ -431,7 +501,36 @@ fun calculateAgeCategory(birthYear: Int): String {
 
 @Composable
 fun ShowRecruitment(headCount: Int, capacity: Int) {
-    TODO("Not yet implemented")
+    Column(
+        modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 50.dp, bottom = 40.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top),
+            horizontalAlignment = Alignment.Start,
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(240.dp, Alignment.CenterHorizontally),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(text = "모집 인원", style = MateTripTypographySet.headline05)
+                Box(
+                    modifier = Modifier
+                        .width(41.dp)
+                        .height(24.dp)
+                        .background(color = Blue_04, shape = RoundedCornerShape(size = 54.dp))
+                        .padding(start = 10.dp, top = 4.dp, end = 10.dp, bottom = 4.dp),
+                ) {
+                    Text(
+                        text = "$headCount/$capacity",
+                        style = MateTripTypographySet.numberRegular3,
+                        color = Color(0xFF555555),
+                        fontWeight = FontWeight(500)
+                    )
+                }
+            }
+        }
+    }
 }
 
 
@@ -441,28 +540,59 @@ fun NavigateToPostScreenPreview() {
     val imageList = List(5) { R.drawable.default_image.toString() }
     val category = listOf("전체동행", "부분동행", "식사동행")
 
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxHeight()
             .background(Color.White),
     ) {
-        ShowImageList(imageUris = imageList)
-        ShowUserBoardInfo(
-            title = "광안리 초필살돼지껍데기 가실 분 구해요!",
-            content = "광안리에서 초필살돼지껍데이 먹고 바로 앞에 해수욕장에서 서로 인생샷 남길 사람 구해요!",
-            tagNames = listOf("#광안리", "#초필살돼지껍데기", "#인생샷")
-        )
-        ShowSchedule(
-            region = "부산",
-            startDate = "2024.07.21",
-            endDate = "2024.07.23"
-        )
-        ShowCategory(category)
-        ShowPreferredPerson(
-            preferredAge = "20대",
-            preferredGender = "상관없음",
-            birthYear = 2003,
-            userGender = "남성"
-        )
+        item { ShowImageList(imageUris = imageList) }
+        item {
+            ShowUserProfile(
+                nickname = "한산한 개구리",
+                birthYear = 2003,
+                gender = "남성",
+                profileImageUrl = "",
+                onNavigateToProfile = { }
+            )
+        }
+        item {
+            ShowUserBoardInfo(
+                title = "광안리 초필살돼지껍데기 가실 분 구해요!",
+                content = "광안리에서 초필살돼지껍데이 먹고 바로 앞에 해수욕장에서 서로 인생샷 남길 사람 구해요!",
+                tagNames = listOf("#광안리", "#초필살돼지껍데기", "#인생샷")
+            )
+        }
+        item {
+            ShowSchedule(
+                region = "부산",
+                startDate = "2024.07.21",
+                endDate = "2024.07.23"
+            )
+        }
+        item { ShowCategory(category) }
+        item {
+            ShowPreferredPerson(
+                preferredAge = "20대",
+                preferredGender = "상관없음",
+                birthYear = 2003,
+                userGender = "남성"
+            )
+        }
+        item { ShowRecruitment(headCount = 1, capacity = 4) }
+        item {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, end = 20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                MateTripHomeButton(
+                    buttonText = "동행 신청",
+                    enabled = true,
+                    onClick = {  }
+                )
+                Spacer(modifier = Modifier.height(30.dp))
+            }
+        }
     }
 }
