@@ -35,3 +35,20 @@ data class QuizClass(
     var title: String,
     var answer: String,
 )
+
+data class ReviewClass(
+    val totalCount: Int,
+    val review: List<Pair<Int, String>>
+)
+
+data class ReviewDescClass(
+    val destination: String,
+    val period: String,
+    val startDate: String,
+    val endDate: String,
+    val profileUrl: String,
+    val nickname: String,
+    val age: String,
+    val gender: String,
+    val content: String
+)
