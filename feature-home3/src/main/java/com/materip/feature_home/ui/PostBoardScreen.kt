@@ -173,7 +173,7 @@ fun PostBoardScreen(
             selectedType = selectedType,
             onTypeSelected = {
                 selectedType = it
-                viewModel.onIntent(HomeIntent.UpdateCategory(it))
+                viewModel.onIntent(HomeIntent.UpdateCategory(listOf(it)))
             }
         )
 
