@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -185,6 +186,26 @@ fun CustomClickableTag(
             fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
             fontWeight = FontWeight(500),
             color = if(isSelected) selectedTextColor else notSelectedTextColor
+        )
+    }
+}
+
+@Composable
+fun NormalTag(
+    modifier: Modifier,
+    tagName: String,
+    shape: Shape,
+    color: Color,
+    textStyle: TextStyle
+){
+    Row(
+        modifier = modifier
+            .background(color = color, shape = shape)
+            .padding(10.dp)
+    ){
+        Text(
+            text = tagName,
+            style = textStyle
         )
     }
 }
