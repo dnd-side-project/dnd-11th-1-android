@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalLayoutApi::class)
+
 package com.materip.feature_home.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -5,7 +7,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,6 +22,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,6 +50,8 @@ import com.materip.feature_home.state.HomeUiState
 import com.materip.feature_home.viewModel.HomeHiltViewModel
 import com.materip.matetrip.icon.Logo
 import com.materip.matetrip.theme.MateTripColors.Blue_04
+import com.materip.matetrip.theme.MateTripColors.Gray_10
+import com.materip.matetrip.theme.MateTripTypographySet
 
 @Composable
 fun NavigateToPostScreen(
@@ -56,17 +66,29 @@ fun NavigateToPostScreen(
     }
 
     when (uiState) {
-        is HomeUiState.Loading ->  {
+        is HomeUiState.Loading -> {
             CircularProgressIndicator()
         }
+
         is HomeUiState.SuccessLoad -> {
             val boardInfo = (uiState as HomeUiState.SuccessLoad).boardDetail.boardInfo
+            val profileInfo = (uiState as HomeUiState.SuccessLoad).boardDetail.profileInfo
             // BoardInfo.imageUris를 보여주는 UI (이미지 보기)
             ShowImageList(imageUris = boardInfo.imageUris)
 
-            // GetBoardDetailDto.profileInfo.nickname, birthYear, gender를 보여주는 UI (프로필 미리보기)
+            // GetBoardDetailDto.profileInfo.nickname, birthYear, gender, 프로필 이미지를 보여주는 UI (프로필 미리보기)
+            ShowUserProfile(
+                nickname = profileInfo.nickname,
+                birthYear = profileInfo.birthYear,
+                gender = profileInfo.gender
+            )
 
             // BoardInfo.title, content, tagNames를 보여주는 UI (게시글 제목, 내용, 태그)
+            ShowUserBoardInfo(
+                title = boardInfo.title,
+                content = boardInfo.content,
+                tagNames = boardInfo.tagNames
+            )
 
             // BoardInfo.region, startDate, endDate를 보여주는 UI (동행 일정)
 
@@ -80,7 +102,30 @@ fun NavigateToPostScreen(
         is HomeUiState.Error -> {
             Text("오류: \\${(uiState as HomeUiState.Error).message}")
         }
+
         else -> {}
+    }
+}
+
+// TODO: ProfileInfo API 수정 중, 디자인 컴포넌트도 요청한 상태, 완료되면 작업하기
+@Composable
+fun ShowUserProfile(
+    nickname: String,
+    birthYear: Int,
+    gender: String
+) {
+    Row {
+        // 소셜 프로필 이미지를 받아오기
+
+        Column {
+            // 닉네임 받아오기
+
+            // 나이를 받아와서 범주형으로 보여주기
+
+            // 성별 보여주기
+        }
+
+        // 해당하는 유저의 프로필 상세 화면으로 이동하기
     }
 }
 
@@ -123,12 +168,14 @@ fun ShowImageList(imageUris: List<String>) {
                                 modifier = Modifier.align(Alignment.Center)
                             )
                         }
+
                         is AsyncImagePainter.State.Error -> {
                             Text(
                                 text = "Error loading image",
                                 modifier = Modifier.align(Alignment.Center)
                             )
                         }
+
                         else -> SubcomposeAsyncImageContent()
                     }
                 }
@@ -167,12 +214,70 @@ fun ShowImageList(imageUris: List<String>) {
     }
 }
 
+@Composable
+fun ShowUserBoardInfo(
+    title: String,
+    content: String,
+    tagNames: List<String>
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 20.dp, start = 20.dp, bottom = 30.dp, end = 20.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Text(
+            text = title,
+            style = MateTripTypographySet.headline05
+        )
+
+        Text(
+            text = content,
+            style = MateTripTypographySet.body04,
+            color = Gray_10
+        )
+
+        FlowRow(
+            modifier = Modifier.padding(top = 24.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
+            verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top)
+        ) {
+            tagNames.forEach { tagName ->
+                Box(
+                    modifier = Modifier
+                        .height(28.dp)
+                        .background(color = Blue_04, shape = RoundedCornerShape(size = 6.dp))
+                        .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp)
+                ) {
+                    Text(
+                        text = tagName,
+                        style = MateTripTypographySet.body04,
+                        color = Gray_10
+                    )
+                }
+            }
+        }
+        Spacer(modifier = Modifier.height(50.dp))
+    }
+}
+
 
 @Preview
 @Composable
 fun NavigateToPostScreenPreview() {
     val imageList = List(5) { Logo.sample_image.toString() }
-    ShowImageList(
-        imageUris = imageList
-    )
+    Column(
+        modifier = Modifier
+            .fillMaxHeight()
+            .background(Color.White),
+    ) {
+        ShowImageList(
+            imageUris = imageList
+        )
+        ShowUserBoardInfo(
+            title = "광안리 초필살돼지껍데기 가실 분 구해요!",
+            content = "광안리에서 초필살돼지껍데이 먹고 바로 앞에 해수욕장에서 서로 인생샷 남길 사람 구해요!",
+            tagNames = listOf("#광안리", "#초필살돼지껍데기", "#인생샷", "#인생샷")
+        )
+    }
 }
