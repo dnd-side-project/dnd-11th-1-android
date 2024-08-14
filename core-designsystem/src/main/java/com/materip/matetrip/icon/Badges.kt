@@ -61,4 +61,7 @@ object Badges {
 
     // FAB 아이콘
     val fab_add_badge = R.drawable.button_fab
+
+    // 프로필 이미지 기본값
+    val profile_default_badge = R.drawable.profile_default
 }
