@@ -25,9 +25,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -37,7 +35,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -49,12 +46,10 @@ import androidx.compose.ui.unit.sp
 import com.materip.core_model.ui_model.FoodPreference
 import com.materip.core_model.ui_model.Gender
 import com.materip.core_model.ui_model.TravelStyle
-import com.materip.feature_mypage.R
 import com.materip.matetrip.component.CustomClickableTag
 import com.materip.matetrip.component.ImageLoadView
 import com.materip.matetrip.component.NormalTopBar
 import com.materip.matetrip.component.SelectableDialog
-import com.materip.matetrip.component.Spinner
 import com.materip.matetrip.component.UnderlinedTextField
 import com.materip.matetrip.icon.Badges
 import com.materip.matetrip.icon.Icons
