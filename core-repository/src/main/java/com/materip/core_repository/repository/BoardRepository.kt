@@ -4,11 +4,12 @@ package com.materip.core_repository.repository
 import com.materip.core_common.ResultResponse
 import com.materip.core_model.accompany_board.BoardRequestDto
 import com.materip.core_model.accompany_board.BoardResponseDto
+import com.materip.core_model.accompany_board.id.BoardIdDto
 import com.materip.core_model.accompany_board.id.GetBoardDetailDto
 
 // 게시글 생성 메서드를 정의
 interface BoardRepository {
     suspend fun getBoard(): ResultResponse<BoardResponseDto>
-    suspend fun postBoard(board: BoardRequestDto): ResultResponse<BoardRequestDto>
+    suspend fun postBoard(board: BoardRequestDto): ResultResponse<BoardIdDto>
     suspend fun getBoardDetail(id: Int): ResultResponse<GetBoardDetailDto>
 }
