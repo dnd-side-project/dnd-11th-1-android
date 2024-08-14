@@ -3,6 +3,7 @@ package com.materip.feature_home.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.materip.core_model.accompany_board.BoardRequestDto
+import com.materip.core_model.accompany_board.id.BoardIdDto
 import com.materip.core_repository.repository.BoardRepository
 import com.materip.feature_home.intent.HomeIntent
 import com.materip.feature_home.state.HomeUiState
@@ -97,7 +98,7 @@ class HomeHiltViewModel @Inject constructor(
         _imageUris.value = newImageUris
     }
 
-    fun createPost(boardRequestDto: BoardRequestDto) {
+    fun createPost(boardRequestDto: BoardRequestDto): BoardIdDto {
         viewModelScope.launch {
             _uiState.value = HomeUiState.Loading // 서버와의 통신 시작을 알림
 
@@ -111,6 +112,7 @@ class HomeHiltViewModel @Inject constructor(
                 HomeUiState.Error(result.error?.errMsg ?: "게시글 작성에 실패했습니다.") // 에러 시 UI에 알림
             }
         }
+        return BoardIdDto(boardId = _createdBoardId.value ?: 0)
     }
 
     fun toBoardRequestDto(): BoardRequestDto {
