@@ -51,11 +51,14 @@ import com.materip.feature_home.intent.HomeIntent
 import com.materip.feature_home.state.HomeUiState
 import com.materip.feature_home.viewModel.HomeHiltViewModel
 import com.materip.matetrip.icon.Icons.date_icon
+import com.materip.matetrip.icon.Icons.gender_icon
+import com.materip.matetrip.icon.Icons.party_icon
 import com.materip.matetrip.icon.Icons.place_icon
-import com.materip.matetrip.icon.Logo
 import com.materip.matetrip.theme.MateTripColors.Blue_03
 import com.materip.matetrip.theme.MateTripColors.Blue_04
+import com.materip.matetrip.theme.MateTripColors.Gray_02
 import com.materip.matetrip.theme.MateTripColors.Gray_10
+import com.materip.matetrip.theme.MateTripColors.Gray_11
 import com.materip.matetrip.theme.MateTripColors.Primary
 import com.materip.matetrip.theme.MateTripTypographySet
 
@@ -97,12 +100,25 @@ fun NavigateToPostScreen(
             )
 
             // BoardInfo.region, startDate, endDate를 보여주는 UI (동행 일정)
+            ShowSchedule(
+                region = boardInfo.region,
+                startDate = boardInfo.startDate,
+                endDate = boardInfo.endDate
+            )
 
             // BoardInfo.category를 보여주는 UI (동행 유형)
+            ShowCategory(category = boardInfo.category)
 
             // BoardInfo.preferredAge, preferredGender를 보여주는 UI (선호 동행자)
+            ShowPreferredPerson(
+                preferredAge = boardInfo.preferredAge,
+                preferredGender = boardInfo.preferredGender,
+                birthYear = profileInfo.birthYear,
+                userGender = profileInfo.gender
+            )
 
             // BoardInfo.headCount, capacity를 보여주는 UI (모집 인원)
+             ShowRecruitment(boardInfo.headCount, boardInfo.capacity)
         }
 
         is HomeUiState.Error -> {
@@ -319,19 +335,118 @@ fun ShowSchedule(
     }
 }
 
+@Composable
+fun ShowCategory(category: List<String>) {
+    Column(
+        modifier = Modifier.padding(top = 50.dp, start = 20.dp, end = 20.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Text(text = "동행 유형", style = MateTripTypographySet.headline05)
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
+            verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top),
+        ) {
+            category.forEach { category ->
+                Box(
+                    modifier = Modifier
+                        .height(28.dp)
+                        .background(color = Gray_02, shape = RoundedCornerShape(size = 6.dp))
+                        .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp)
+                ) {
+                    Text(
+                        text = category,
+                        style = MateTripTypographySet.body04,
+                        color = Gray_11
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ShowPreferredPerson(
+    preferredAge: String,
+    preferredGender: String,
+    birthYear: Int,
+    userGender: String
+) {
+    val ageCategory = calculateAgeCategory(birthYear)
+
+    Column(
+        modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 20.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Text(text = "선호 동행자", style = MateTripTypographySet.headline05)
+        Column(
+            verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top),
+            horizontalAlignment = Alignment.Start,
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    painter = painterResource(id = party_icon),
+                    contentDescription = "선호하는 동행자 나이",
+                    tint = Primary
+                )
+                if (preferredAge == "상관없음") {
+                    Text(text = preferredAge, style = MateTripTypographySet.title03)
+                } else {
+                    Text(text = ageCategory, style = MateTripTypographySet.title03)
+                }
+            }
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    painter = painterResource(id = gender_icon),
+                    contentDescription = "선호하는 동행자 성별",
+                    tint = Primary
+                )
+                if (preferredGender == "상관없음") {
+                    Text(text = preferredGender, style = MateTripTypographySet.title03)
+                } else {
+                    Text(text = userGender, style = MateTripTypographySet.title03)
+                }
+            }
+        }
+    }
+}
+
+fun calculateAgeCategory(birthYear: Int): String {
+    val currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
+    val age = currentYear - birthYear
+    return when (age) {
+        in 10..19 -> "10대"
+        in 20..29 -> "20대"
+        in 30..39 -> "30대"
+        in 40..49 -> "40대"
+        in 50..59 -> "50대"
+        else -> "기타"
+    }
+}
+
+@Composable
+fun ShowRecruitment(headCount: Int, capacity: Int) {
+    TODO("Not yet implemented")
+}
+
 
 @Preview
 @Composable
 fun NavigateToPostScreenPreview() {
-    val imageList = List(5) { Logo.sample_image.toString() }
+    val imageList = List(5) { R.drawable.default_image.toString() }
+    val category = listOf("전체동행", "부분동행", "식사동행")
+
     Column(
         modifier = Modifier
             .fillMaxHeight()
             .background(Color.White),
     ) {
-        ShowImageList(
-            imageUris = imageList
-        )
+        ShowImageList(imageUris = imageList)
         ShowUserBoardInfo(
             title = "광안리 초필살돼지껍데기 가실 분 구해요!",
             content = "광안리에서 초필살돼지껍데이 먹고 바로 앞에 해수욕장에서 서로 인생샷 남길 사람 구해요!",
@@ -341,6 +456,13 @@ fun NavigateToPostScreenPreview() {
             region = "부산",
             startDate = "2024.07.21",
             endDate = "2024.07.23"
+        )
+        ShowCategory(category)
+        ShowPreferredPerson(
+            preferredAge = "20대",
+            preferredGender = "상관없음",
+            birthYear = 2003,
+            userGender = "남성"
         )
     }
 }
