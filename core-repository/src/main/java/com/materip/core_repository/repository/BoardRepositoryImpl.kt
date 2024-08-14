@@ -4,6 +4,7 @@ import com.materip.core_common.ResultResponse
 import com.materip.core_datastore.BoardDataStore
 import com.materip.core_model.accompany_board.BoardRequestDto
 import com.materip.core_model.accompany_board.BoardResponseDto
+import com.materip.core_model.accompany_board.id.BoardIdDto
 import com.materip.core_model.accompany_board.id.GetBoardDetailDto
 import javax.inject.Inject
 
@@ -14,7 +15,7 @@ class BoardRepositoryImpl @Inject constructor(
         return boardDataStore.getBoard()
     }
 
-    override suspend fun postBoard(board: BoardRequestDto): ResultResponse<BoardRequestDto> {
+    override suspend fun postBoard(board: BoardRequestDto): ResultResponse<BoardIdDto> {
         return boardDataStore.postBoard(board)
     }
 
