@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -41,6 +42,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -394,5 +396,121 @@ fun QuizEditItem(
                 contentDescription = "Radio Button"
             )
         }
+    }
+}
+
+@Composable
+fun ReviewDescItem(
+    destination: String,
+    period: String,
+    startDate: String,
+    endDate: String,
+    profileUrl: String,
+    nickname: String,
+    age: String,
+    gender: String,
+    content: String
+){
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(width = 1.dp, color = MatetripColor.Blue_03, shape = RoundedCornerShape(10.dp))
+            .padding(14.dp)
+    ){
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Row(
+                modifier = Modifier
+                    .height(28.dp)
+                    .background(color = MatetripColor.Primary, shape = RoundedCornerShape(5.dp))
+                    .padding(horizontal = 10.dp, vertical = 5.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ){
+                Text(
+                    text = destination,
+                    fontSize = 12.sp,
+                    fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                    fontWeight = FontWeight(500),
+                    color = Color.White
+                )
+            }
+            Spacer(Modifier.width(10.dp))
+            Row(
+                modifier = Modifier
+                    .height(28.dp)
+                    .background(color = MatetripColor.Blue_04, shape = RoundedCornerShape(5.dp))
+                    .padding(horizontal = 10.dp, vertical = 5.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ){
+                Text(
+                    text = period,
+                    fontSize = 12.sp,
+                    fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                    fontWeight = FontWeight(500),
+                    color = MatetripColor.Gray_11
+                )
+            }
+            Spacer(Modifier.weight(1f))
+            Text(
+                text = "${startDate} - ${endDate}",
+                fontSize = 12.sp,
+                fontFamily = FontFamily(Font(R.font.roboto_medium)),
+                fontWeight = FontWeight(400),
+                color = MatetripColor.gray_06
+            )
+        }
+        Spacer(Modifier.height(13.dp))
+        HorizontalDivider(Modifier.fillMaxWidth(), thickness = 1.dp, color = MatetripColor.Blue_03)
+        Spacer(Modifier.height(13.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ){
+            CircleImageView(
+                size = 40.dp,
+                imageUrl = profileUrl
+            )
+            Spacer(Modifier.width(10.dp))
+            Column(
+                verticalArrangement = Arrangement.SpaceBetween
+            ){
+                Text(
+                    text = nickname,
+                    fontSize = 14.sp,
+                    fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                    fontWeight = FontWeight(500)
+                )
+                Text(
+                    text = "${age} · ${gender}",
+                    fontSize = 12.sp,
+                    fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                    fontWeight = FontWeight(400),
+                    color = MatetripColor.Gray_12
+                )
+            }
+        }
+        Spacer(Modifier.height(14.dp))
+        Text(
+            text = content,
+            fontSize = 14.sp,
+            fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+            fontWeight = FontWeight(400),
+            color = MatetripColor.Gray_07,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
+        )
+        Spacer(Modifier.height(14.dp))
+        CustomButton(
+            modifier = Modifier.fillMaxWidth().height(36.dp),
+            shape = RoundedCornerShape(size = 8.dp),
+            btnText = "상세 후기 보기",
+            fontSize = 12.sp,
+            textColor = MatetripColor.Gray_08,
+            btnColor = MatetripColor.Gray_02,
+            onClick = {/** 상세 후기 보기 navigation */}
+        )
     }
 }
