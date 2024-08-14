@@ -53,6 +53,7 @@ import com.materip.feature_mypage.R
 import com.materip.matetrip.component.CustomClickableTag
 import com.materip.matetrip.component.ImageLoadView
 import com.materip.matetrip.component.NormalTopBar
+import com.materip.matetrip.component.SelectableDialog
 import com.materip.matetrip.component.Spinner
 import com.materip.matetrip.component.UnderlinedTextField
 import com.materip.matetrip.icon.Badges
@@ -124,10 +125,12 @@ fun EditProfileScreen(){
             )
             Spacer(Modifier.height(40.dp))
             BirthAndGenderEdit(
-                birth = birth,
-                onBirthUpdate = {birth = it},
-                gender = gender,
-                onGenderUpdate = {gender = it}
+                birth = birth.toString(),
+                onBirthUpdate = {birth = it.toInt()},
+                gender = if(gender == Gender.FEMALE) "여성" else "남성",
+                onGenderUpdate = {
+                    gender = if(it == "여성") Gender.FEMALE else Gender.MALE
+                }
             )
             Spacer(Modifier.height(40.dp))
             TravelInterestEdit(
@@ -230,14 +233,32 @@ private fun MyIntroductionEdit(
 
 @Composable
 private fun BirthAndGenderEdit(
-    birth: Int,
-    onBirthUpdate: (Int) -> Unit,
-    gender: Gender,
-    onGenderUpdate: (Gender) -> Unit,
+    birth: String,
+    onBirthUpdate: (String) -> Unit,
+    gender: String,
+    onGenderUpdate: (String) -> Unit,
 ){
-    val configuration = LocalConfiguration.current
-    val menuWidth = configuration.screenWidthDp.dp - 40.dp - 40.dp
-    val birthRange = (1950..2024).toList()
+    val birthRange = (1950..2024).toMutableList().map{it.toString()}.toMutableList().apply{
+        this.add(0, "출생연도 선택")
+    }
+    val genderRange = listOf("성별", "남성", "여성")
+    var isBirthDialogOpen by remember{mutableStateOf(false)}
+    var isGenderDialogOpen by remember{mutableStateOf(false)}
+    if(isBirthDialogOpen){
+        SelectableDialog(
+            value = birth,
+            onValueChange = onBirthUpdate,
+            options = birthRange,
+            onDismissRequest = {isBirthDialogOpen = false}
+        )
+    } else if (isGenderDialogOpen){
+        SelectableDialog(
+            value = gender,
+            onValueChange = onGenderUpdate,
+            options = genderRange,
+            onDismissRequest = {isGenderDialogOpen = false}
+        )
+    }
     Row(
         modifier = Modifier.fillMaxWidth()
     ){
@@ -252,13 +273,25 @@ private fun BirthAndGenderEdit(
                 color = MatetripColor.Gray_11
             )
             Spacer(Modifier.height(10.dp))
-            Spinner(
-                modifier = Modifier.fillMaxWidth(),
-                menuWidth = menuWidth / 2,
-                value = birth,
-                onValueChange = { onBirthUpdate(it as Int) },
-                options = birthRange
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { isBirthDialogOpen = true },
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ){
+                Text(
+                    text = birth.toString(),
+                    fontSize = 16.sp,
+                    fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.roboto_medium)),
+                    fontWeight = FontWeight(500),
+                    color = MatetripColor.Gray_10
+                )
+                Icon(
+                    painter = painterResource(Icons.fold_icon),
+                    contentDescription = "Fold Icon"
+                )
+            }
         }
         Spacer(Modifier.width(40.dp))
         Column(
@@ -272,13 +305,25 @@ private fun BirthAndGenderEdit(
                 color = MatetripColor.Gray_11
             )
             Spacer(Modifier.height(10.dp))
-            Spinner(
-                modifier = Modifier.fillMaxWidth(),
-                menuWidth = menuWidth / 2,
-                value = if(gender == Gender.MALE) "남성" else "여성",
-                onValueChange = { onGenderUpdate(it as Gender) },
-                options = listOf(Gender.MALE, Gender.FEMALE)
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { isGenderDialogOpen = true },
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ){
+                Text(
+                    text = gender,
+                    fontSize = 16.sp,
+                    fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.roboto_medium)),
+                    fontWeight = FontWeight(500),
+                    color = MatetripColor.Gray_10
+                )
+                Icon(
+                    painter = painterResource(Icons.fold_icon),
+                    contentDescription = "Fold Icon"
+                )
+            }
         }
     }
 }
