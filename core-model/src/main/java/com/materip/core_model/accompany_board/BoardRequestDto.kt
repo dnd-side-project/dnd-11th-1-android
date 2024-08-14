@@ -11,7 +11,7 @@ data class BoardRequestDto(
     val startDate: String,
     val endDate: String,
     val capacity: Int,
-    val category: String,
+    val category: List<String>,
     val preferredAge: String,
     val preferredGender: String,
     val imageUrls: List<String>,
