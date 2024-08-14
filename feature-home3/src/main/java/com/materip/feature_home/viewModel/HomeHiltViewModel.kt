@@ -28,7 +28,7 @@ class HomeHiltViewModel @Inject constructor(
     private val _tagNames = MutableStateFlow(listOf<String>())
     private val _preferredGender = MutableStateFlow("")
     private val _preferredAge = MutableStateFlow("")
-    private val _category = MutableStateFlow("")
+    private val _category = MutableStateFlow(listOf<String>())
     private val _region = MutableStateFlow("")
     private val _startDate = MutableStateFlow("")
     private val _endDate = MutableStateFlow("")
@@ -43,7 +43,7 @@ class HomeHiltViewModel @Inject constructor(
             is HomeIntent.UpdateRegion -> updateRegion(intent.region)
             is HomeIntent.UpdateStartDate -> updateStartDate(intent.startDate)
             is HomeIntent.UpdateEndDate -> updateEndDate(intent.endDate)
-            is HomeIntent.UpdateCategory -> updateType(intent.category)
+            is HomeIntent.UpdateCategory -> updateCategory(intent.category)
             is HomeIntent.UpdateAge -> updateAge(intent.preferredAge)
             is HomeIntent.UpdateGender -> updateGender(intent.preferredGender)
             is HomeIntent.UpdateCapacity -> updateCapacity(intent.capacity)
@@ -73,8 +73,8 @@ class HomeHiltViewModel @Inject constructor(
         _preferredAge.value = newAge
     }
 
-    private fun updateType(newType: String) {
-        _category.value = newType
+    private fun updateCategory(newCategory: List<String>) {
+        _category.value = newCategory
     }
 
     private fun updateRegion(newRegion: String) {
