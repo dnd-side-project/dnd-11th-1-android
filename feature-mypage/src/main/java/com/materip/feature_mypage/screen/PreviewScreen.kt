@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -23,7 +22,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,15 +31,14 @@ import com.materip.matetrip.component.NormalTopBar
 import com.materip.matetrip.component.ReviewDescItem
 import com.materip.matetrip.component.ReviewItem
 import com.materip.matetrip.icon.Icons
-import com.materip.matetrip.theme.MatetripColor
 
 @Composable
-fun ReviewRoute(){
-    ReviewScreen()
+fun PreviewRoute(){
+    PreviewScreen()
 }
 
 @Composable
-fun ReviewScreen(){
+fun PreviewScreen(){
     val dummyReview = ReviewClass(
         totalCount = 14,
         review = listOf(
@@ -212,6 +209,6 @@ fun ReviewFeedbackDesc(dummyReviewDesc: List<ReviewDescClass>){
 
 @Preview
 @Composable
-private fun ReviewUITest(){
-    ReviewScreen()
+private fun PreviewUITest(){
+    PreviewScreen()
 }
