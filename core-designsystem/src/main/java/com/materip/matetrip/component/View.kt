@@ -410,7 +410,8 @@ fun ReviewDescItem(
     nickname: String,
     age: String,
     gender: String,
-    content: String
+    content: String,
+    onClick: () -> Unit,
 ){
     Column(
         modifier = Modifier
@@ -511,7 +512,7 @@ fun ReviewDescItem(
             fontSize = 12.sp,
             textColor = MatetripColor.Gray_08,
             btnColor = MatetripColor.Gray_02,
-            onClick = {/** 상세 후기 보기 navigation */}
+            onClick = onClick
         )
     }
 }

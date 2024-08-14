@@ -198,7 +198,8 @@ fun ReviewFeedbackDesc(dummyReviewDesc: List<ReviewDescClass>){
                 nickname = it.nickname,
                 age = it.age,
                 gender = it.gender,
-                content = it.content
+                content = it.content,
+                onClick = {/** 상세 후기 navigation */}
             )
             if(dummyReviewDesc.indexOf(it) != dummyReviewDesc.lastIndex){
                 Spacer(Modifier.height(10.dp))
