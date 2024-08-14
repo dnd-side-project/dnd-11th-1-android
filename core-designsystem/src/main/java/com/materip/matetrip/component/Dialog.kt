@@ -5,6 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -15,9 +17,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +36,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -90,6 +95,96 @@ fun SelectableDialog(
                     }
                 }
                 if(options.indexOf(option) != options.lastIndex){HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = MatetripColor.divider_color)}
+            }
+        }
+    }
+}
+
+@Composable
+fun ConfirmationDialog(
+    dialogMsg: String,
+    onOkClick: () -> Unit,
+    onDismissRequest: () -> Unit
+){
+    val configuration = LocalConfiguration.current
+    val dialogWidth = configuration.screenWidthDp.dp - 40.dp
+    Dialog(
+        onDismissRequest = onDismissRequest
+    ) {
+        Column(
+            modifier = Modifier
+                .width(dialogWidth)
+                .background(color = Color.White, shape = RoundedCornerShape(10.dp))
+                .padding(top = 30.dp, bottom = 12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 33.dp),
+                text = dialogMsg,
+                fontSize = 16.sp,
+                fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                fontWeight = FontWeight(500)
+            )
+            Spacer(Modifier.height(30.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(54.dp)
+                    .padding(horizontal = 12.dp)
+            ){
+                TextButton(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    onClick = onDismissRequest,
+                    colors = ButtonDefaults.textButtonColors(
+                        containerColor = MatetripColor.divider_color,
+                    ),
+                    shape = RoundedCornerShape(size = 10.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ){
+                        Text(
+                            text = "아니오",
+                            fontSize = 14.sp,
+                            fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                            fontWeight = FontWeight(500),
+                            color = MatetripColor.no_text_color,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+                Spacer(Modifier.width(10.dp))
+                TextButton(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    onClick = {
+                        onOkClick()
+                        onDismissRequest()
+                    },
+                    colors = ButtonDefaults.textButtonColors(
+                        containerColor = Color.Black,
+                    ),
+                    shape = RoundedCornerShape(size = 10.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ){
+                        Text(
+                            text = "예",
+                            fontSize = 14.sp,
+                            fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                            fontWeight = FontWeight(500),
+                            color = Color.White
+                        )
+                    }
+                }
             }
         }
     }
