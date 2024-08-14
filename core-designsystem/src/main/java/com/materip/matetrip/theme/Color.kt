@@ -19,6 +19,7 @@ object MatetripColor{
     val InactiveColor = Color(0xFFDDDFEA)
 
     // Typography Color
+    val Gray_12 = Color(0xFF797979)
     val Gray_11 = Color(0xFF1C1B1F)
     val Gray_10 = Color(0xFF313033)
     val Gray_09 = Color(0xFF484649)
