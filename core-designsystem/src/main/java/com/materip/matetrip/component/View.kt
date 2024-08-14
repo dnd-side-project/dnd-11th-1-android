@@ -42,6 +42,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -512,5 +513,45 @@ fun ReviewDescItem(
             btnColor = MatetripColor.Gray_02,
             onClick = {/** 상세 후기 보기 navigation */}
         )
+    }
+}
+
+@Composable
+fun ReviewItem(
+    review: Pair<Int, String>
+){
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        Icon(
+            modifier = Modifier.size(32.dp),
+            painter = painterResource(Icons.review_tag_icon),
+            tint = MatetripColor.Blue_02,
+            contentDescription = "Review Tag"
+        )
+        Text(
+            modifier = Modifier.width(30.dp),
+            text = review.first.toString(),
+            fontSize = 16.sp,
+            fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.roboto_medium)),
+            fontWeight = FontWeight(700),
+            color = MatetripColor.Gray_11,
+            textAlign = TextAlign.Center
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = MatetripColor.Blue_04, shape = RoundedCornerShape(8.dp))
+                .padding(horizontal = 12.dp, vertical = 10.dp)
+        ){
+            Text(
+                text = review.second,
+                fontSize = 14.sp,
+                fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
+                fontWeight = FontWeight(500),
+                color = MatetripColor.Gray_11
+            )
+        }
     }
 }
