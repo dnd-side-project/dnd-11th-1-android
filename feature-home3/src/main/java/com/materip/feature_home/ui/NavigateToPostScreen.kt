@@ -5,6 +5,7 @@ package com.materip.feature_home.ui
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -48,9 +50,13 @@ import com.materip.feature_home.R
 import com.materip.feature_home.intent.HomeIntent
 import com.materip.feature_home.state.HomeUiState
 import com.materip.feature_home.viewModel.HomeHiltViewModel
+import com.materip.matetrip.icon.Icons.date_icon
+import com.materip.matetrip.icon.Icons.place_icon
 import com.materip.matetrip.icon.Logo
+import com.materip.matetrip.theme.MateTripColors.Blue_03
 import com.materip.matetrip.theme.MateTripColors.Blue_04
 import com.materip.matetrip.theme.MateTripColors.Gray_10
+import com.materip.matetrip.theme.MateTripColors.Primary
 import com.materip.matetrip.theme.MateTripTypographySet
 
 @Composable
@@ -223,7 +229,7 @@ fun ShowUserBoardInfo(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 20.dp, start = 20.dp, bottom = 30.dp, end = 20.dp),
+            .padding(top = 20.dp, start = 20.dp, end = 20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         Text(
@@ -261,6 +267,58 @@ fun ShowUserBoardInfo(
     }
 }
 
+@Composable
+fun ShowSchedule(
+    region: String,
+    startDate: String,
+    endDate: String
+) {
+    Column(
+        modifier = Modifier.padding(start = 20.dp, end = 20.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Text(text = "동행 일정", style = MateTripTypographySet.headline05)
+        Box(
+            modifier = Modifier
+                .border(width = 1.dp, color = Blue_03, shape = RoundedCornerShape(size = 10.dp))
+                .height(86.dp)
+                .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 16.dp)
+                .width(320.dp)
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top),
+                horizontalAlignment = Alignment.Start,
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        painter = painterResource(id = place_icon),
+                        contentDescription = "동행 장소",
+                        tint = Primary
+                    )
+                    Text(text = region, style = MateTripTypographySet.title03)
+                }
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        painter = painterResource(id = date_icon),
+                        contentDescription = "동행 날짜",
+                        tint = Primary
+                    )
+                    Text(
+                        text = "$startDate - $endDate",
+                        style = MateTripTypographySet.numberMedium2
+                    )
+                }
+            }
+        }
+    }
+}
+
 
 @Preview
 @Composable
@@ -277,7 +335,12 @@ fun NavigateToPostScreenPreview() {
         ShowUserBoardInfo(
             title = "광안리 초필살돼지껍데기 가실 분 구해요!",
             content = "광안리에서 초필살돼지껍데이 먹고 바로 앞에 해수욕장에서 서로 인생샷 남길 사람 구해요!",
-            tagNames = listOf("#광안리", "#초필살돼지껍데기", "#인생샷", "#인생샷")
+            tagNames = listOf("#광안리", "#초필살돼지껍데기", "#인생샷")
+        )
+        ShowSchedule(
+            region = "부산",
+            startDate = "2024.07.21",
+            endDate = "2024.07.23"
         )
     }
 }
