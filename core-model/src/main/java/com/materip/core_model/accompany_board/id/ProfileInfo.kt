@@ -12,4 +12,4 @@ data class ProfileInfo(
     val travelPreferences: List<String>,
     val travelStyles: List<String>,
     val foodPreferences: List<String>
-    )
+)
