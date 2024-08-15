@@ -121,31 +121,49 @@ fun LevelInfoDialog(
         else -> Pair(MatetripColor.level_4_color, "베테랑 메이트")
     }
     val nextLevelText = buildAnnotatedString {
-        withStyle(style = SpanStyle(color = nextLevelInfo.first)){
-            append(nextLevelInfo.second)
-        }
-        withStyle(style = SpanStyle(color = Color.Black)){
-            append("까지 한 발자국 남았어요")
+        if(currentLevel != 4) {
+            withStyle(style = SpanStyle(color = nextLevelInfo.first)){
+                append(nextLevelInfo.second)
+            }
+            withStyle(style = SpanStyle(color = Color.Black)){
+                append("까지 한 발자국 남았어요")
+            }
+        } else {
+            withStyle(style = SpanStyle(color = Color.Black)){
+                append("메이트님은 저희가 선정한\n")
+            }
+            withStyle(style = SpanStyle(color = MatetripColor.level_4_color)){
+                append("가장 신뢰도 높은 메이트")
+            }
+            withStyle(style = SpanStyle(color = Color.Black)){
+                append("에요!")
+            }
         }
     }
     val nextLevelDescText = buildAnnotatedString {
-        withStyle(style = SpanStyle(color = MatetripColor.Primary)){
-            append("동행 후기")
-        }
-        withStyle(style = SpanStyle(color = MatetripColor.gray_06)){
-            append("를 작성하고 다음 레벨로 진급해서\n더욱")
-        }
-        withStyle(style = SpanStyle(color = MatetripColor.Primary)){
-            append("신뢰도 있는 메이트")
-        }
-        withStyle(style = SpanStyle(color = MatetripColor.gray_06)){
-            append("가 되어 보세요 :)")
+        if (currentLevel != 4){
+            withStyle(style = SpanStyle(color = MatetripColor.Primary)){
+                append("동행 후기")
+            }
+            withStyle(style = SpanStyle(color = MatetripColor.gray_06)){
+                append("를 작성하고 다음 레벨로 진급해서\n더욱")
+            }
+            withStyle(style = SpanStyle(color = MatetripColor.Primary)){
+                append("신뢰도 있는 메이트")
+            }
+            withStyle(style = SpanStyle(color = MatetripColor.gray_06)){
+                append("가 되어 보세요 :)")
+            }
+        } else {
+            withStyle(style = SpanStyle(color = MatetripColor.gray_06)){
+                append("자부심을 가져도 좋아요 :)")
+            }
         }
     }
     Dialog(onDismissRequest = onDismissRequest) {
         Column(
             modifier = Modifier
-                .height(358.dp)
+                .heightIn(400.dp)
                 .width(284.dp)
                 .background(color = Color.White, shape = RoundedCornerShape(size = 10.dp))
                 .padding(horizontal = 14.dp)
@@ -211,7 +229,7 @@ fun LevelInfoDialog(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(36.dp)
+                    .height(50.dp)
             ){
                 Row(
                     modifier = Modifier
@@ -248,7 +266,8 @@ fun LevelInfoDialog(
                 Row(
                     modifier = Modifier
                         .weight(1f)
-                        .fillMaxHeight(),
+                        .fillMaxHeight()
+                        .padding(start = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ){
                     Image(
@@ -289,7 +308,7 @@ fun LevelInfoDialog(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(36.dp)
+                    .height(50.dp)
             ){
                 Row(
                     modifier = Modifier
@@ -326,7 +345,8 @@ fun LevelInfoDialog(
                 Row(
                     modifier = Modifier
                         .weight(1f)
-                        .fillMaxHeight(),
+                        .fillMaxHeight()
+                        .padding(start = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ){
                     Image(
