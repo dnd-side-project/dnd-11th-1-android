@@ -2,6 +2,7 @@ package com.materip.core_network.service
 
 import com.materip.core_model.accompany_board.BoardRequestDto
 import com.materip.core_model.accompany_board.BoardResponseDto
+import com.materip.core_model.accompany_board.id.BoardIdDto
 import com.materip.core_model.accompany_board.id.GetBoardDetailDto
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.Body
@@ -20,7 +21,7 @@ interface BoardService {
 
     // 동행글 생성
     @POST("/api/v1/accompany/boards")
-    suspend fun postBoard(@Body board: BoardRequestDto): ApiResponse<BoardRequestDto>
+    suspend fun postBoard(@Body board: BoardRequestDto): ApiResponse<BoardIdDto>
 
     // 동행글 상세 조회
     @GET("/api/v1/accompany/boards/{id}")
