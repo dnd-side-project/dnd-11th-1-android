@@ -22,6 +22,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,17 +32,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.materip.core_designsystem.R
+import com.materip.matetrip.icon.Badges
 import com.materip.matetrip.icon.Icons
 import com.materip.matetrip.theme.MatetripColor
 
@@ -95,6 +99,262 @@ fun SelectableDialog(
                     }
                 }
                 if(options.indexOf(option) != options.lastIndex){HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = MatetripColor.divider_color)}
+            }
+        }
+    }
+}
+
+@Composable
+fun LevelInfoDialog(
+    currentLevel: Int,
+    onDismissRequest: () -> Unit,
+){
+    val currentLevelInfo = when(currentLevel){
+        1 -> Triple(MatetripColor.level_1_color, Badges.level_1_badge, "새싹 메이트")
+        2 -> Triple(MatetripColor.level_2_color, Badges.level_2_badge, "우수 메이트")
+        3 -> Triple(MatetripColor.level_3_color, Badges.level_3_badge, "열정 메이트")
+        else -> Triple(MatetripColor.level_4_color, Badges.level_4_badge, "베테랑 메이트")
+    }
+    val nextLevelInfo = when(currentLevel + 1){
+        2 -> Pair(MatetripColor.level_2_color, "우수 메이트")
+        3 -> Pair(MatetripColor.level_3_color, "열정 메이트")
+        else -> Pair(MatetripColor.level_4_color, "베테랑 메이트")
+    }
+    val nextLevelText = buildAnnotatedString {
+        withStyle(style = SpanStyle(color = nextLevelInfo.first)){
+            append(nextLevelInfo.second)
+        }
+        withStyle(style = SpanStyle(color = Color.Black)){
+            append("까지 한 발자국 남았어요")
+        }
+    }
+    val nextLevelDescText = buildAnnotatedString {
+        withStyle(style = SpanStyle(color = MatetripColor.Primary)){
+            append("동행 후기")
+        }
+        withStyle(style = SpanStyle(color = MatetripColor.gray_06)){
+            append("를 작성하고 다음 레벨로 진급해서\n더욱")
+        }
+        withStyle(style = SpanStyle(color = MatetripColor.Primary)){
+            append("신뢰도 있는 메이트")
+        }
+        withStyle(style = SpanStyle(color = MatetripColor.gray_06)){
+            append("가 되어 보세요 :)")
+        }
+    }
+    Dialog(onDismissRequest = onDismissRequest) {
+        Column(
+            modifier = Modifier
+                .height(358.dp)
+                .width(284.dp)
+                .background(color = Color.White, shape = RoundedCornerShape(size = 10.dp))
+                .dropShadow(shape = RoundedCornerShape(size = 10.dp), color = Color(0x32000000), blur = 2.dp, offsetY = 2.dp)
+                .padding(horizontal = 14.dp)
+                .padding(top = 14.dp, bottom = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(18.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Image(
+                    modifier = Modifier.size(16.dp),
+                    painter = painterResource(Badges.question_badge),
+                    contentDescription = "Question Mark"
+                )
+                Spacer(Modifier.width(10.dp))
+                Text(
+                    text = "메잍 레벨",
+                    fontSize = 12.sp,
+                    fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                    fontWeight = FontWeight(500),
+                    color = MatetripColor.Gray_08
+                )
+            }
+            Spacer(Modifier.height(20.dp))
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ){
+                Image(
+                    modifier = Modifier.size(38.dp),
+                    painter = painterResource(currentLevelInfo.second),
+                    contentDescription = "Level Badge"
+                )
+                Spacer(Modifier.height(10.dp))
+                Text(
+                    text = currentLevelInfo.third,
+                    fontSize = 14.sp,
+                    fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                    fontWeight = FontWeight(500),
+                    color = currentLevelInfo.first
+                )
+            }
+            Spacer(Modifier.height(20.dp))
+            Text(
+                text = nextLevelText,
+                fontSize = 16.sp,
+                fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                fontWeight = FontWeight(700)
+            )
+            Spacer(Modifier.height(12.dp))
+            Text(
+                text = nextLevelDescText,
+                fontSize = 12.sp,
+                fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                fontWeight = FontWeight(500),
+                textAlign = TextAlign.Center
+            )
+            Spacer(Modifier.height(34.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(36.dp)
+            ){
+                Row(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Image(
+                        modifier = Modifier.size(24.dp),
+                        painter = painterResource(Badges.level_1_badge),
+                        contentDescription = "Level 1 Badge"
+                    )
+                    Spacer(Modifier.width(12.dp))
+                    Column(
+                        modifier = Modifier.fillMaxHeight()
+                    ){
+                        Text(
+                            text = "새싹 메이트",
+                            fontSize = 12.sp,
+                            fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                            fontWeight = FontWeight(500),
+                            color = MatetripColor.level_1_color
+                        )
+                        Text(
+                            text = "일반 회원",
+                            fontSize = 12.sp,
+                            fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                            fontWeight = FontWeight(400),
+                            color = MatetripColor.Gray_07
+                        )
+                    }
+                }
+                VerticalDivider(Modifier.fillMaxHeight(), color = MatetripColor.divider_color)
+                Row(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Image(
+                        modifier = Modifier.size(24.dp),
+                        painter = painterResource(Badges.level_2_badge),
+                        contentDescription = "Level 1 Badge"
+                    )
+                    Spacer(Modifier.width(12.dp))
+                    Column(
+                        modifier = Modifier.fillMaxHeight()
+                    ){
+                        Text(
+                            text = "우수 메이트",
+                            fontSize = 12.sp,
+                            fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                            fontWeight = FontWeight(500),
+                            color = MatetripColor.level_2_color
+                        )
+                        Text(
+                            text = "후기 1개 이상",
+                            fontSize = 12.sp,
+                            fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                            fontWeight = FontWeight(400),
+                            color = MatetripColor.Gray_07
+                        )
+                    }
+                }
+            }
+            Spacer(Modifier.height(10.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ){
+                HorizontalDivider(Modifier.weight(1f), color = MatetripColor.divider_color)
+                Spacer(Modifier.width(32.dp))
+                HorizontalDivider(Modifier.weight(1f), color = MatetripColor.divider_color)
+            }
+            Spacer(Modifier.height(10.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(36.dp)
+            ){
+                Row(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Image(
+                        modifier = Modifier.size(24.dp),
+                        painter = painterResource(Badges.level_3_badge),
+                        contentDescription = "Level 3 Badge"
+                    )
+                    Spacer(Modifier.width(12.dp))
+                    Column(
+                        modifier = Modifier.fillMaxHeight()
+                    ){
+                        Text(
+                            text = "열정 메이트",
+                            fontSize = 12.sp,
+                            fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                            fontWeight = FontWeight(500),
+                            color = MatetripColor.level_3_color
+                        )
+                        Text(
+                            text = "후기 3개 이상",
+                            fontSize = 12.sp,
+                            fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                            fontWeight = FontWeight(400),
+                            color = MatetripColor.Gray_07
+                        )
+                    }
+                }
+                VerticalDivider(Modifier.fillMaxHeight(), color = MatetripColor.divider_color)
+                Row(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Image(
+                        modifier = Modifier.size(24.dp),
+                        painter = painterResource(Badges.level_4_badge),
+                        contentDescription = "Level 4 Badge"
+                    )
+                    Spacer(Modifier.width(12.dp))
+                    Column(
+                        modifier = Modifier.fillMaxHeight()
+                    ){
+                        Text(
+                            text = "베테랑 메이트",
+                            fontSize = 12.sp,
+                            fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                            fontWeight = FontWeight(500),
+                            color = MatetripColor.level_4_color
+                        )
+                        Text(
+                            text = "후기 5개 이상",
+                            fontSize = 12.sp,
+                            fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                            fontWeight = FontWeight(400),
+                            color = MatetripColor.Gray_07
+                        )
+                    }
+                }
             }
         }
     }
