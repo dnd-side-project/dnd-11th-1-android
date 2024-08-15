@@ -130,14 +130,14 @@ fun TravelPostItem(
 ){
     Row(
         modifier = modifier
-            .height(115.dp)
             .border(
                 width = 1.dp,
                 color = MatetripColor.Blue_03,
                 shape = RoundedCornerShape(size = 10.dp)
             )
             .clickable { onClick() }
-            .padding(horizontal = 14.dp, vertical = 15.5.dp)
+            .padding(horizontal = 14.dp, vertical = 15.5.dp),
+        verticalAlignment = Alignment.CenterVertically
     ){
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -145,35 +145,45 @@ fun TravelPostItem(
         ){
             Column {
                 Row{
-                    Text(
+                    Row(
                         modifier = Modifier
                             .height(27.dp)
                             .background(
                                 color = MatetripColor.Primary,
                                 shape = RoundedCornerShape(size = 6.dp)
                             )
-                            .padding(horizontal = 10.dp, vertical = 5.dp),
-                        text = destination,
-                        fontSize = 12.sp,
-                        color = Color.White,
-                        fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
-                        fontWeight = FontWeight(500)
-                    )
+                            .padding(horizontal = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ){
+                        Text(
+                            text = destination,
+                            fontSize = 12.sp,
+                            color = Color.White,
+                            fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                            fontWeight = FontWeight(500)
+                        )
+                    }
                     Spacer(Modifier.width(10.dp))
-                    Text(
+                    Row(
                         modifier = Modifier
                             .height(27.dp)
                             .background(
                                 color = MatetripColor.Blue_04,
                                 shape = RoundedCornerShape(size = 6.dp)
                             )
-                            .padding(horizontal = 10.dp, vertical = 5.dp),
-                        text = period,
-                        fontSize = 12.sp,
-                        color = Color.Black,
-                        fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
-                        fontWeight = FontWeight(500)
-                    )
+                            .padding(horizontal = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ){
+                        Text(
+                            text = period,
+                            fontSize = 12.sp,
+                            color = Color.Black,
+                            fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                            fontWeight = FontWeight(500)
+                        )
+                    }
                 }
                 Spacer(Modifier.height(12.dp))
                 Text(
@@ -193,7 +203,8 @@ fun TravelPostItem(
             AsyncImage(
                 modifier = Modifier
                     .size(84.dp)
-                    .clip(RoundedCornerShape(size = 10.dp)),
+                    .clip(RoundedCornerShape(size = 10.dp))
+                    .background(color = MatetripColor.loading_color, shape = RoundedCornerShape(size = 10.dp)),
                 contentScale = ContentScale.Crop,
                 model = postImage,
                 contentDescription = "Post Image",
