@@ -78,7 +78,6 @@ fun PostBoardScreen(
     navController: NavController
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val createdBoardId by viewModel.createdBoardId.collectAsState()
 
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
@@ -92,13 +91,6 @@ fun PostBoardScreen(
     var endDate by remember { mutableStateOf<LocalDate?>(null) }
     var capacity by remember { mutableIntStateOf(2) }
     var imageUris by remember { mutableStateOf(listOf<String>()) }
-
-    // 여기가 아니라 게시버튼(상단바에 전달하기)
-    LaunchedEffect(createdBoardId) {
-        createdBoardId?.let { boardId ->
-            navController.navigate("navigateToPost/$boardId")
-        }
-    }
 
     Column(
         modifier = Modifier
