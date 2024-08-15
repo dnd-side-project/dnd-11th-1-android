@@ -6,6 +6,7 @@ import com.materip.core_network.networkDI.AuthAuthenticator
 import com.materip.core_network.networkDI.HeaderInterceptor
 import com.materip.core_network.service.login.LoginService
 import com.materip.core_network.service.onboarding.OnboardingService
+import com.materip.core_network.service.profile.ProfileService
 import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -72,5 +73,10 @@ object NetworkModule {
     @Provides
     fun provideOnboardingService(retrofit: Retrofit): OnboardingService {
         return retrofit.create(OnboardingService::class.java)
+    }
+    @Singleton
+    @Provides
+    fun provideProfileService(retrofit: Retrofit): ProfileService{
+        return retrofit.create(ProfileService::class.java)
     }
 }
