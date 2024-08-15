@@ -10,6 +10,7 @@ import com.materip.feature_login.navigation.navigateToTest
 import com.materip.feature_login.navigation.test
 import com.materip.feature_mypage.navigation.myPageGraph
 import com.materip.feature_mypage.navigation.navigateToEditProfile
+import com.materip.feature_mypage.navigation.navigateToMyPageGraph
 import com.materip.feature_mypage.navigation.navigateToPreview
 import com.materip.feature_mypage.navigation.navigateToProfileDescription
 import com.materip.feature_mypage.navigation.navigateToQuiz100
@@ -36,12 +37,18 @@ fun SetUpNavGraph(
         startDestination = startDestination
     ){
         /** feature-login */
-        login(navOnBoarding = navController::navigateToInputUserInfo)
+        login(
+            navOnBoarding = navController::navigateToInputUserInfo,
+            navMyPage = navController::navigateToMyPageGraph
+        )
         test()
         inputUserInfo(navSelectTripInterest = navController::navigateToSelectTripInterest)
         selectTripInterest(onBackClick = navController::navigateToBack, onNextClick = navController::navigateToSelectTripStyle)
         selectTripStyle(onBackClick = navController::navigateToBack, onNextClick = navController::navigateToSelectFoodPreference)
-        selectFoodPreference(onBackClick = navController::navigateToBack)
+        selectFoodPreference(
+            onBackClick = navController::navigateToBack,
+            navMyPage = navController::navigateToMyPageGraph
+        )
 
         /** my-page module */
         myPageGraph(
