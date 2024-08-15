@@ -11,6 +11,7 @@ import com.kakao.sdk.user.UserApiClient
 import com.materip.core_common.ErrorState
 import com.materip.core_model.request.LoginRequestDto
 import com.materip.core_repository.repository.login_repository.LoginRepository
+import com.materip.core_repository.repository.onboarding_repository.OnboardingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,14 +21,18 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginRepository: LoginRepository
+    private val loginRepository: LoginRepository,
+    private val onboardingRepository: OnboardingRepository
 ) : ViewModel() {
     private val _isLogin = MutableStateFlow<Boolean>(false)
     val isLogin get() = _isLogin.asStateFlow()
+    private val _isOnboardingCompleted = MutableStateFlow<Boolean>(false)
+    val isOnboardingCompleted get() = _isOnboardingCompleted.asStateFlow()
 
     private val generalErrorState = MutableStateFlow<Pair<Boolean, String>>(Pair(false, ""))
     val errorState : StateFlow<ErrorState> = generalErrorState.mapLatest{
@@ -77,6 +82,12 @@ class LoginViewModel @Inject constructor(
             }
             loginRepository.saveAuthToken(result.data!!.accessToken)
             loginRepository.saveRefreshToken(result.data!!.refreshToken)
+            val onboardingResult = onboardingRepository.isOnboardingCompleted()
+            if(onboardingResult.error != null) {
+                generalErrorState.update{Pair(true, result.error!!.message)}
+                return@launch
+            }
+            _isOnboardingCompleted.update{onboardingResult.data!!}
             _isLogin.update{ true }
         }
     }
