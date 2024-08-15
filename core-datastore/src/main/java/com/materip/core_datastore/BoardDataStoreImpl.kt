@@ -4,6 +4,7 @@ import com.materip.core_common.ResponseError
 import com.materip.core_common.ResultResponse
 import com.materip.core_model.accompany_board.BoardRequestDto
 import com.materip.core_model.accompany_board.BoardResponseDto
+import com.materip.core_model.accompany_board.id.BoardIdDto
 import com.materip.core_model.accompany_board.id.GetBoardDetailDto
 import com.materip.core_network.service.BoardService
 import com.skydoves.sandwich.message
@@ -26,8 +27,8 @@ class BoardDataStoreImpl @Inject constructor(
         return result
     }
 
-    override suspend fun postBoard(board: BoardRequestDto): ResultResponse<BoardRequestDto> {
-        val result = ResultResponse<BoardRequestDto>()
+    override suspend fun postBoard(board: BoardRequestDto): ResultResponse<BoardIdDto> {
+        val result = ResultResponse<BoardIdDto>()
         boardService.postBoard(board).suspendOnSuccess{
             result.data = this.data
         }.suspendOnError{
