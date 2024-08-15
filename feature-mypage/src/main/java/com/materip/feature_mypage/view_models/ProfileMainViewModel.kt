@@ -23,7 +23,6 @@ import javax.inject.Inject
 class ProfileMainViewModel @Inject constructor(
     private val getProfileUseCase: GetProfileUseCase
 ): ViewModel() {
-
     private val invalidTokenError = MutableStateFlow<Boolean>(false)
     private val notFoundTokenError = MutableStateFlow<Boolean>(false)
     private val generalError = MutableStateFlow<Pair<Boolean, String?>>(Pair(false, null))
@@ -41,7 +40,6 @@ class ProfileMainViewModel @Inject constructor(
     val uiState: StateFlow<ProfileMainUiState> = errorState.map {
         if (it is ErrorState.AuthError && it.isInvalid()){throw Exception("")}
         val result = getProfileUseCase()
-        Log.d("MATETRIP API TEST", "result : ${result}")
         if (result.error != null){
             when(result.error!!.status){
                 401 -> notFoundTokenError.update{true}
