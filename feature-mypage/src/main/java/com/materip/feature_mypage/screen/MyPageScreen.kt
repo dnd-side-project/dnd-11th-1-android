@@ -186,16 +186,6 @@ fun CustomPagerContent(
                     navProfileDescription = navProfileDescription,
                     navQuiz100 = navQuiz100,
                     navPreview = navPreview,
-                    profileInfo = "테스트입니당",
-                    profileTags = listOf(
-                        TravelStyle.RESTAURANT_TOUR.name,
-                        TravelInterest.LOOKING_FOR.name,
-                        TravelStyle.ACTIVITY.name,
-                        TravelStyle.DRIVE.name,
-                        TravelStyle.HEALING.name,
-                        TravelStyle.CULTURE_AND_ARTS.name,
-                        TravelStyle.PACKAGE_TOUR.name
-                    )
                 )
             }
             MyPageTab.TravelPost -> TravelPostContent()
