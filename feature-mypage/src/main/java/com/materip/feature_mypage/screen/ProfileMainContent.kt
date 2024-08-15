@@ -39,9 +39,14 @@ import com.materip.matetrip.component.ProfileTag
 import com.materip.matetrip.icon.Badges
 import com.materip.matetrip.theme.MatetripColor
 import androidx.compose.material3.Text
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.graphics.Color
+import com.materip.matetrip.component.LevelInfoDialog
 import com.materip.matetrip.icon.Icons
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -55,9 +60,18 @@ fun ProfileMainContent(
     navPreview: () -> Unit
 ){
     val scrollState = rememberScrollState()
+    val currentLevel = 1
+    var isLevelInfoOpen by remember{mutableStateOf(false)}
 
+    if(isLevelInfoOpen){
+        LevelInfoDialog(
+            currentLevel = currentLevel,
+            onDismissRequest = {isLevelInfoOpen = false}
+        )
+    }
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .verticalScroll(state = scrollState)
     ){
         Column(
@@ -95,7 +109,7 @@ fun ProfileMainContent(
                         Spacer(Modifier.width(4.dp))
                         IconButton(
                             modifier = Modifier.size(16.dp),
-                            onClick = { /** 도움말? 상호작용 */ }
+                            onClick = {isLevelInfoOpen = true}
                         ) {
                             Image(
                                 modifier = Modifier.fillMaxSize(),
