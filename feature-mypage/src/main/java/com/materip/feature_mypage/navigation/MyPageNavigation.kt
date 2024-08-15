@@ -15,6 +15,7 @@ import com.materip.feature_mypage.screen.ReviewListRoute
 import com.materip.feature_mypage.screen.ReviewRoute
 import com.materip.feature_mypage.screen.SendApplicationRoute
 
+fun NavController.navigateToMyPageGraph() = navigate(MyPageRoute.MyPageGraph.name)
 fun NavController.navigateToMyPage() = navigate(MyPageRoute.MyPageRoute.name)
 fun NavController.navigateToEditProfile() = navigate(MyPageRoute.EditProfileRoute.name)
 fun NavController.navigateToProfileDescription() = navigate(MyPageRoute.ProfileDescriptionRoute.name)
