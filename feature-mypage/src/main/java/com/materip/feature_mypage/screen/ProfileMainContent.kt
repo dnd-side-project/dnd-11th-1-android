@@ -47,9 +47,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.PlatformTextStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_common.ErrorState
+import com.materip.core_model.ui_model.MatetripGrade
 import com.materip.feature_mypage.view_models.ProfileMainUiState
 import com.materip.feature_mypage.view_models.ProfileMainViewModel
 import com.materip.matetrip.component.LevelInfoDialog
@@ -94,7 +98,7 @@ fun ProfileMainTab(
                 profileImg = user.profileImageUrl,
                 nickname = user.nickname,
                 level = 1, /** 받을 수 있게 */
-                age = user.birthYear.toString(),
+                age = uiState.getAge(),
                 gender = user.gender,
                 introduction = user.description,
                 tags = uiState.getTags(),
@@ -122,7 +126,7 @@ private fun ProfileMainContent(
     level: Int,
     age: String,
     gender: String,
-    introduction: String,
+    introduction: String?,
     tags: List<String>,
     navEditProfile: () -> Unit,
     navProfileDescription: () -> Unit,
@@ -131,6 +135,12 @@ private fun ProfileMainContent(
 ){
     val scrollState = rememberScrollState()
     var isLevelInfoOpen by remember{mutableStateOf(false)}
+    val grade = when(level){
+        1 -> MatetripGrade.level_1
+        2 -> MatetripGrade.level_2
+        3 -> MatetripGrade.level_3
+        else -> MatetripGrade.level_4
+    }
 
     if(isLevelInfoOpen){
         LevelInfoDialog(
@@ -160,7 +170,7 @@ private fun ProfileMainContent(
             ){
                 CircleImageView(
                     size = 60.dp,
-                    imageUrl = "" /** image profile 받아야 함 */
+                    imageUrl = profileImg
                 )
                 Spacer(Modifier.width(13.dp))
                 Column{
@@ -169,11 +179,17 @@ private fun ProfileMainContent(
                         verticalAlignment = Alignment.CenterVertically
                     ){
                         Text(
-                            text = "새싹 메이트", /** 등급 text */
-                            fontSize = 12.sp,
-                            fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
-                            fontWeight = FontWeight(500),
-                            color = MatetripColor.level_1_color /** 등급에 따른 색 변경 */
+                            text = grade.gradeKoName,
+                            style = TextStyle(
+                                fontSize = 12.sp,
+                                fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
+                                fontWeight = FontWeight(500),
+                                color = grade.color as Color,
+                                textAlign = TextAlign.Justify,
+                                platformStyle = PlatformTextStyle(
+                                    includeFontPadding = false
+                                )
+                            )
                         )
                         Spacer(Modifier.width(4.dp))
                         IconButton(
@@ -189,7 +205,7 @@ private fun ProfileMainContent(
                     }
                     Row{
                         Text(
-                            text = "닉네임닉네임", /** 유저 정보 중 닉네임 */
+                            text = nickname,
                             fontSize = 16.sp,
                             fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                             fontWeight = FontWeight(700),
@@ -197,19 +213,19 @@ private fun ProfileMainContent(
                         )
                         Image(
                             modifier = Modifier.size(24.dp),
-                            painter = painterResource(Badges.level_1_badge),
+                            painter = painterResource(grade.badge),
                             contentDescription = "Level Badge"
                         )
                     }
                     Text(
-                        text = "20대 초반·여자",
+                        text = "${age} · ${gender}",
                         fontSize = 12.sp,
                         color = MatetripColor.gray_06,
                         fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                         fontWeight = FontWeight(500)
                     )
                 }
-                Spacer(Modifier.width(43.dp))
+                Spacer(Modifier.weight(1f))
                 OutlinedButton(
                     modifier = Modifier.height(28.dp),
                     contentPadding = PaddingValues(horizontal = 5.dp),
@@ -278,24 +294,26 @@ private fun ProfileMainContent(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ){
-                if (introduction.isEmpty()){
-                    Text(
-                        text = "프로필을 수정해서 나를 표현해 보세요",
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
-                        fontWeight = FontWeight(500),
-                        color = MatetripColor.gray_06
-                    )
-                    Text(
-                        text = "(상세하게 표현할수록 신뢰도가 쌓여요",
-                        fontSize = 12.sp,
-                        fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
-                        fontWeight = FontWeight(500),
-                        color = MatetripColor.gray_06
-                    )
+                if (introduction.isNullOrEmpty()){
+                    Column{
+                        Text(
+                            text = "프로필을 수정해서 나를 표현해 보세요",
+                            fontSize = 14.sp,
+                            fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
+                            fontWeight = FontWeight(500),
+                            color = MatetripColor.gray_06
+                        )
+                        Text(
+                            text = "(상세하게 표현할수록 신뢰도가 쌓여요",
+                            fontSize = 12.sp,
+                            fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
+                            fontWeight = FontWeight(500),
+                            color = MatetripColor.gray_06
+                        )
+                    }
                 } else {
                     Text(
-                        text = "고즈넉한 분위기를 좋아합니다\nMBTI F인 분과 함께 힐링하고 싶어요", /** introduction  */
+                        text = introduction,
                         fontSize = 14.sp,
                         fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                         fontWeight = FontWeight(400),
