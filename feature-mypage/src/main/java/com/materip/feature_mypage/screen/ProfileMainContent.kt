@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
@@ -46,26 +47,96 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.graphics.Color
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.materip.core_common.ErrorState
+import com.materip.feature_mypage.view_models.ProfileMainUiState
+import com.materip.feature_mypage.view_models.ProfileMainViewModel
 import com.materip.matetrip.component.LevelInfoDialog
 import com.materip.matetrip.icon.Icons
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun ProfileMainContent(
+fun ProfileMainContentRoute(
     profileInfo: String,
     profileTags: List<String>,
     navEditProfile: () -> Unit,
     navProfileDescription: () -> Unit,
     navQuiz100: () -> Unit,
-    navPreview: () -> Unit
+    navPreview: () -> Unit,
+    viewModel: ProfileMainViewModel = hiltViewModel()
+){
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val errState = viewModel.errorState.collectAsStateWithLifecycle()
+    ProfileMainTab(
+        uiState = uiState.value,
+        errState = errState.value,
+        navEditProfile = navEditProfile,
+        navProfileDescription = navProfileDescription,
+        navQuiz100 = navQuiz100,
+        navPreview = navPreview
+    )
+}
+
+@Composable
+fun ProfileMainTab(
+    uiState: ProfileMainUiState,
+    errState: ErrorState,
+    navEditProfile: () -> Unit,
+    navProfileDescription: () -> Unit,
+    navQuiz100: () -> Unit,
+    navPreview: () -> Unit,
+){
+    when(uiState){
+        ProfileMainUiState.Loading -> {
+            CircularProgressIndicator()
+        }
+        is ProfileMainUiState.Success -> {
+            val user = uiState.user
+            ProfileMainContent(
+                profileImg = user.profileImageUrl,
+                nickname = user.nickname,
+                level = 1, /** 받을 수 있게 */
+                age = user.birthYear.toString(),
+                gender = user.gender,
+                introduction = user.description,
+                tags = uiState.getTags(),
+                navEditProfile = navEditProfile,
+                navProfileDescription = navProfileDescription,
+                navQuiz100 = navQuiz100,
+                navPreview = navPreview
+            )
+        }
+        ProfileMainUiState.Error -> {
+            Text(
+                text = "Error",
+                fontSize = 100.sp,
+                color = Color.Red
+            )
+        }
+    }
+
+}
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun ProfileMainContent(
+    profileImg: String,
+    nickname: String,
+    level: Int,
+    age: String,
+    gender: String,
+    introduction: String,
+    tags: List<String>,
+    navEditProfile: () -> Unit,
+    navProfileDescription: () -> Unit,
+    navQuiz100: () -> Unit,
+    navPreview: () -> Unit,
 ){
     val scrollState = rememberScrollState()
-    val currentLevel = 1
     var isLevelInfoOpen by remember{mutableStateOf(false)}
 
     if(isLevelInfoOpen){
         LevelInfoDialog(
-            currentLevel = currentLevel,
+            currentLevel = level,
             onDismissRequest = {isLevelInfoOpen = false}
         )
     }
@@ -209,7 +280,7 @@ fun ProfileMainContent(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ){
-                if (profileInfo.isEmpty()){
+                if (introduction.isEmpty()){
                     Text(
                         text = "프로필을 수정해서 나를 표현해 보세요",
                         fontSize = 14.sp,
@@ -238,7 +309,7 @@ fun ProfileMainContent(
                 verticalArrangement = Arrangement.spacedBy(6.dp),
                 horizontalArrangement = Arrangement.spacedBy(6.dp)
             ){
-                profileTags.forEach{
+                tags.forEach{
                     ProfileTag(it)
                 }
             }

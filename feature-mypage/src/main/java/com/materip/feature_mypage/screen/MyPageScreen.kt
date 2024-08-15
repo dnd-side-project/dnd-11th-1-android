@@ -181,7 +181,7 @@ fun CustomPagerContent(
     ){
         when(selectedTab){
             MyPageTab.Profile -> {
-                ProfileMainContent(
+                ProfileMainContentRoute(
                     navEditProfile = navEditProfile,
                     navProfileDescription = navProfileDescription,
                     navQuiz100 = navQuiz100,
