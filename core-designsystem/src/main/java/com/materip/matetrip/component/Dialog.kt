@@ -148,7 +148,6 @@ fun LevelInfoDialog(
                 .height(358.dp)
                 .width(284.dp)
                 .background(color = Color.White, shape = RoundedCornerShape(size = 10.dp))
-                .dropShadow(shape = RoundedCornerShape(size = 10.dp), color = Color(0x32000000), blur = 2.dp, offsetY = 2.dp)
                 .padding(horizontal = 14.dp)
                 .padding(top = 14.dp, bottom = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
