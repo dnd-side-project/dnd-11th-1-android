@@ -33,7 +33,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -183,11 +185,17 @@ fun LevelInfoDialog(
                 )
                 Spacer(Modifier.width(10.dp))
                 Text(
-                    text = "메잍 레벨",
-                    fontSize = 12.sp,
-                    fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
-                    fontWeight = FontWeight(500),
-                    color = MatetripColor.Gray_08
+                    text = "메이트 레벨",
+                    style = TextStyle(
+                        fontSize = 12.sp,
+                        fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                        fontWeight = FontWeight(500),
+                        color = MatetripColor.Gray_08,
+                        textAlign = TextAlign.Justify,
+                        platformStyle = PlatformTextStyle(
+                            includeFontPadding = false
+                        )
+                    )
                 )
             }
             Spacer(Modifier.height(20.dp))
@@ -212,13 +220,16 @@ fun LevelInfoDialog(
             }
             Spacer(Modifier.height(20.dp))
             Text(
+                modifier = Modifier.fillMaxWidth(),
                 text = nextLevelText,
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
-                fontWeight = FontWeight(700)
+                fontWeight = FontWeight(700),
+                textAlign = TextAlign.Center
             )
             Spacer(Modifier.height(12.dp))
             Text(
+                modifier = Modifier.fillMaxWidth(),
                 text = nextLevelDescText,
                 fontSize = 12.sp,
                 fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
