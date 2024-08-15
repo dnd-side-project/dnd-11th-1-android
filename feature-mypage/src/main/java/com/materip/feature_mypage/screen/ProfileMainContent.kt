@@ -57,8 +57,6 @@ import com.materip.matetrip.icon.Icons
 
 @Composable
 fun ProfileMainContentRoute(
-    profileInfo: String,
-    profileTags: List<String>,
     navEditProfile: () -> Unit,
     navProfileDescription: () -> Unit,
     navQuiz100: () -> Unit,
