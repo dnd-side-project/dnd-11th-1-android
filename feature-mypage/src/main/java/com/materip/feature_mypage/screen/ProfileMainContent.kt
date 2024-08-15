@@ -97,7 +97,7 @@ fun ProfileMainTab(
             ProfileMainContent(
                 profileImg = user.profileImageUrl,
                 nickname = user.nickname,
-                level = 1, /** 받을 수 있게 */
+                level = 4, /** 받을 수 있게 */
                 age = uiState.getAge(),
                 gender = user.gender,
                 introduction = user.description,
