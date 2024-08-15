@@ -31,10 +31,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -96,34 +98,34 @@ fun RegionTag(
 fun ProfileTag(
     tagName: String
 ){
-    val icon = when(tagName){
-        TravelStyle.RESTAURANT_TOUR.name -> Badges.restaurant_badge
-        TravelStyle.DRIVE.name -> Badges.drive_badge
-        TravelStyle.HEALING.name -> Badges.healing_badge
-        TravelStyle.ACTIVITY.name -> Badges.activity_badge
-        TravelStyle.SHOPPING.name -> Badges.shopping_badge
-        TravelStyle.CAFE_TOUR.name -> Badges.cafe_tour_badge
-        TravelStyle.CULTURE_AND_ARTS.name -> Badges.art_badge
-        TravelStyle.LIFE_SHOT.name -> Badges.image_badge
-        TravelStyle.PACKAGE_TOUR.name -> Badges.package_badge
-        TravelStyle.TOURIST_DESTINATION.name -> Badges.tourist_badge
-        TravelInterest.PLANNED.name -> Badges.planned_badge
-        TravelInterest.UNPLANNED.name -> Badges.unplanned_badge
-        TravelInterest.QUICKLY.name -> Badges.rush_badge
-        TravelInterest.LEISURELY.name -> Badges.leisurely_badge
-        TravelInterest.DRAWN_TO.name -> Badges.attractive_badge
-        TravelInterest.DUTCH_PAY.name -> Badges.dutch_pay_badge
-        TravelInterest.LOOKING_FOR.name -> Badges.place_badge
-        TravelInterest.PUBLIC_MONEY.name -> Badges.public_funds_badge
-        FoodPreference.FAST_FOOD.name -> Badges.fast_food_badge
-        FoodPreference.STREET_FOOD.name -> Badges.street_food_badge
-        FoodPreference.RICE.name -> Badges.rice_badge
-        FoodPreference.MEAT.name -> Badges.meat_badge
-        FoodPreference.DESSERT.name -> Badges.dessert_badge
-        FoodPreference.VEGETABLES.name -> Badges.vegetarian_badge
-        FoodPreference.SEAFOOD.name -> Badges.seafood_badge
-        FoodPreference.COFFEE.name -> Badges.coffee_badge
-        else -> R.drawable.ic_app_logo_loading
+    val tag = when(tagName){
+        TravelStyle.RESTAURANT_TOUR.name -> Pair("맛집탐방", Badges.restaurant_badge)
+        TravelStyle.DRIVE.name -> Pair("드라이브",Badges.drive_badge)
+        TravelStyle.HEALING.name -> Pair("힐링",Badges.healing_badge)
+        TravelStyle.ACTIVITY.name -> Pair("액티비티",Badges.activity_badge)
+        TravelStyle.SHOPPING.name -> Pair("쇼핑",Badges.shopping_badge)
+        TravelStyle.CAFE_TOUR.name -> Pair("카페투어",Badges.cafe_tour_badge)
+        TravelStyle.CULTURE_AND_ARTS.name -> Pair("문화예술",Badges.art_badge)
+        TravelStyle.LIFE_SHOT.name -> Pair("인생샷", Badges.image_badge)
+        TravelStyle.PACKAGE_TOUR.name -> Pair("패키지 여행",Badges.package_badge)
+        TravelStyle.TOURIST_DESTINATION.name -> Pair("관광지",Badges.tourist_badge)
+        TravelInterest.PLANNED.name -> Pair("계획적",Badges.planned_badge)
+        TravelInterest.UNPLANNED.name -> Pair("무계획",Badges.unplanned_badge)
+        TravelInterest.QUICKLY.name -> Pair("빨리빨리",Badges.rush_badge)
+        TravelInterest.LEISURELY.name -> Pair("느긋하게",Badges.leisurely_badge)
+        TravelInterest.DRAWN_TO.name -> Pair("끌리는 곳",Badges.attractive_badge)
+        TravelInterest.DUTCH_PAY.name -> Pair("더치페이",Badges.dutch_pay_badge)
+        TravelInterest.LOOKING_FOR.name -> Pair("찾아본 곳",Badges.place_badge)
+        TravelInterest.PUBLIC_MONEY.name -> Pair("공금",Badges.public_funds_badge)
+        FoodPreference.FAST_FOOD.name -> Pair("패스트푸드",Badges.fast_food_badge)
+        FoodPreference.STREET_FOOD.name -> Pair("스트릿푸드",Badges.street_food_badge)
+        FoodPreference.RICE.name -> Pair("밥류",Badges.rice_badge)
+        FoodPreference.MEAT.name -> Pair("육류",Badges.meat_badge)
+        FoodPreference.DESSERT.name -> Pair("디저트",Badges.dessert_badge)
+        FoodPreference.VEGETABLES.name -> Pair("채소",Badges.vegetarian_badge)
+        FoodPreference.SEAFOOD.name -> Pair("해산물",Badges.seafood_badge)
+        FoodPreference.COFFEE.name -> Pair("커피",Badges.coffee_badge)
+        else -> Pair("Default",R.drawable.ic_app_logo_loading)
     }
     Row(
         modifier = Modifier.height(28.dp).wrapContentWidth()
@@ -134,16 +136,22 @@ fun ProfileTag(
     ){
         Image(
             modifier = Modifier.size(18.dp),
-            painter = painterResource(icon),
+            painter = painterResource(tag.second),
             contentDescription = "Tag Icon"
         )
         Spacer(Modifier.width(6.dp))
         Text(
-            text = tagName,
-            fontSize = 12.sp,
-            fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
-            fontWeight = FontWeight(500),
-            color = MatetripColor.Gray_10
+            text = tag.first,
+            style = TextStyle(
+                fontSize = 12.sp,
+                fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                fontWeight = FontWeight(500),
+                color = MatetripColor.Gray_10,
+                textAlign = TextAlign.Justify,
+                platformStyle = PlatformTextStyle(
+                    includeFontPadding = false
+                )
+            )
         )
     }
 }
