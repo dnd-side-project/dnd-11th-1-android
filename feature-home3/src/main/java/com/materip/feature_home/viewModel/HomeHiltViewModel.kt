@@ -109,7 +109,7 @@ class HomeHiltViewModel @Inject constructor(
                 _createdBoardId.value = boardIdDto.boardId // 서버로부터 받은 boardId를 저장
                 HomeUiState.SuccessPost // UI에 성공 상태 알림
             } else {
-                HomeUiState.Error(result.error?.errMsg ?: "게시글 작성에 실패했습니다.") // 에러 시 UI에 알림
+                HomeUiState.Error(result.error?.message ?: "게시글 작성에 실패했습니다.") // 에러 시 UI에 알림
             }
         }
         return BoardIdDto(boardId = _createdBoardId.value ?: 0)
@@ -141,7 +141,7 @@ class HomeHiltViewModel @Inject constructor(
             _uiState.value = if (boardDetail != null) {
                 HomeUiState.SuccessLoad(boardDetail)
             } else {
-                HomeUiState.Error(result.error?.errMsg ?: "게시글 상세 정보를 불러오는데 실패했습니다.")
+                HomeUiState.Error(result.error?.message ?: "게시글 상세 정보를 불러오는데 실패했습니다.")
             }
         }
     }
