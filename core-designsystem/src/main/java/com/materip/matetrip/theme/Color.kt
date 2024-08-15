@@ -49,4 +49,7 @@ object MatetripColor{
 
     //dialog
     val no_text_color = Color(0xFF555555)
+
+    //loading color
+    val loading_color = Color(0xFFDDDDDD)
 }
