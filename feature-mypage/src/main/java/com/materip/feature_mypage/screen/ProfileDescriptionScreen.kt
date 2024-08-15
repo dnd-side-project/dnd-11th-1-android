@@ -107,8 +107,8 @@ fun ProfileDescriptionScreen(
         NormalTopBar(
             title = "",
             navIcon = Icons.close_icon,
-            onBackClick = {},
-            onClick = navBack
+            onBackClick = navBack,
+            onClick = {}
         )
         Spacer(Modifier.height(10.dp))
         Column(
