@@ -89,7 +89,7 @@ fun BackButtonWithTitleTopAppBar(
         },
         actions = {
             Row(
-                modifier = Modifier.padding(end = 16.dp),
+                modifier = Modifier.padding(end = 10.dp),
             ) {
                 Button(
                     onClick = onPostClick,
@@ -100,7 +100,8 @@ fun BackButtonWithTitleTopAppBar(
                 ) {
                     Text(
                         text = "게시",
-                        style = MateTripTypographySet.body04
+                        style = MateTripTypographySet.body04,
+                        color = Color.Black
                     )
                 }
             }
