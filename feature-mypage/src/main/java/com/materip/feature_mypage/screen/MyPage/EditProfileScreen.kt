@@ -1,4 +1,4 @@
-package com.materip.feature_mypage.screen
+package com.materip.feature_mypage.screen.MyPage
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -131,6 +131,7 @@ fun EditProfileScreen(navBack: () -> Unit){
                 }
             )
             Spacer(Modifier.height(40.dp))
+            /** 여행 성향 수정 화면 navigation **/
             TravelInterestEdit(
                 onTravelInterestClick = {/** 여행 성향 수정 화면 navigation **/}
             )

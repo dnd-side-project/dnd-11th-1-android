@@ -1,4 +1,4 @@
-package com.materip.feature_mypage.screen
+package com.materip.feature_mypage.screen.MyPage
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,9 +29,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.materip.core_model.ui_model.MyPageTab
-import com.materip.core_model.ui_model.SendApplicationClass
-import com.materip.core_model.ui_model.TravelInterest
-import com.materip.core_model.ui_model.TravelStyle
 import com.materip.matetrip.component.TempTopBar
 import com.materip.matetrip.theme.MatetripColor
 

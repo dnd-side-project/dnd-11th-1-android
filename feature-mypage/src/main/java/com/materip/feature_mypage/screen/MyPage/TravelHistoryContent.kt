@@ -1,4 +1,4 @@
-package com.materip.feature_mypage.screen
+package com.materip.feature_mypage.screen.MyPage
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -80,11 +79,13 @@ fun TravelHistoryContent(
     Spacer(Modifier.height(20.dp))
     when(selectedTag){
         TravelHistoryTag.RECORD -> TravelHistories(
-            records = dummyData /** dummy */
+            records = dummyData
+            /** dummy */ /** dummy */
         )
         TravelHistoryTag.SEND_APPLICATION -> {
             SendTravelApplication(
-                applications = dummyData, /** dummy data */
+                applications = dummyData,
+                /** dummy data */ /** dummy data */
                 navSendApplication = navSendApplication
             )
         }

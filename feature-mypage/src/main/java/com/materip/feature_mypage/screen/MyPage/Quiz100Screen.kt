@@ -1,4 +1,4 @@
-package com.materip.feature_mypage.screen
+package com.materip.feature_mypage.screen.MyPage
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

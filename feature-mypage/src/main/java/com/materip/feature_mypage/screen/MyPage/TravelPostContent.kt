@@ -1,4 +1,4 @@
-package com.materip.feature_mypage.screen
+package com.materip.feature_mypage.screen.MyPage
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth

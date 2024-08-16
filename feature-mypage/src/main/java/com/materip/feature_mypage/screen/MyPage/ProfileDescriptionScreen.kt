@@ -1,6 +1,5 @@
-package com.materip.feature_mypage.screen
+package com.materip.feature_mypage.screen.MyPage
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -42,11 +40,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_common.ErrorState
 import com.materip.core_designsystem.R
-import com.materip.core_model.ui_model.FoodPreference
 import com.materip.core_model.ui_model.MatetripGrade
-import com.materip.core_model.ui_model.TempHumanDescClass
-import com.materip.core_model.ui_model.TravelInterest
-import com.materip.core_model.ui_model.TravelStyle
 import com.materip.feature_mypage.view_models.ProfileDescriptionUiState
 import com.materip.feature_mypage.view_models.ProfileDescriptionViewModel
 import com.materip.matetrip.component.CircleImageView
