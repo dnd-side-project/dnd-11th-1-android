@@ -22,7 +22,7 @@ import com.materip.feature_home.ui.NotificationScreen
 import com.materip.feature_home.ui.PostBoardScreen
 import com.materip.feature_home.ui.ProfileScreen
 import com.materip.feature_home.ui.ReviewScreen
-import com.materip.feature_home.viewModel.HomeHiltViewModel
+import com.materip.feature_home.viewModel.HomeViewModel
 import com.materip.matetrip.component.BackButtonTopAppBar
 import com.materip.matetrip.component.BackButtonWithTitleTopAppBar
 import com.materip.matetrip.component.MateTripTopAppBar
@@ -33,7 +33,7 @@ import com.materip.matetrip.component.MateTripTopAppBar
 fun SetUpNavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    startDestination: String = Screen.Post.route
+    startDestination: String = Screen.Form.route
 ) {
     NavHost(
         navController = navController,
@@ -54,9 +54,7 @@ fun SetUpNavGraph(
 
         // 홈_게시글 작성_디폴트
         composable(Screen.Post.route) {
-            PostBoardScreen(
-                navController = navController
-            )
+            PostBoardScreen()
         }
 
         // 홈_게시글 진입
@@ -67,14 +65,22 @@ fun SetUpNavGraph(
             val boardId = backStackEntry.arguments?.getInt("boardId") ?: 0
             NavigateToPostScreen(
                 boardId = boardId,
-                onNavigateToForm = { navController.navigate(Screen.Form.route) },
+                onNavigateToForm = { navController.navigate(Screen.Form.route + "/$boardId") },
                 onNavigateToProfile = { navController.navigate(Screen.Profile.route) }
             )
         }
 
         // 게시글_동행 신청
-        composable(Screen.Form.route) {
-            FormScreen()
+        composable(
+            route = Screen.Form.route + "/{boardId}",
+            arguments = listOf(navArgument("boardId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val boardId = backStackEntry.arguments?.getInt("boardId") ?: 0
+            // TODO: 보낸 신청서 내역으로 이동
+            FormScreen(
+                boardId = boardId,
+                onNavigateToProfile = { navController.navigate(Screen.Profile.route) }
+            )
         }
 
         // 게시글_프로필 자세히 보기
@@ -99,12 +105,15 @@ fun GetTopBar(
     currentRoute: String?,
     navController: NavHostController
 ) {
-    val viewModel: HomeHiltViewModel = hiltViewModel()
+    val viewModel: HomeViewModel = hiltViewModel()
 
     when (currentRoute) {
         Screen.Home.route -> { MateTripTopAppBar() }
         Screen.OnBoarding.route -> {
-            BackButtonTopAppBar(onNavigateUp = { navController.navigateUp() } )
+            BackButtonTopAppBar(
+                screenTitle = "",
+                onNavigateUp = { navController.navigateUp() }
+            )
         }
         Screen.Post.route -> {
             BackButtonWithTitleTopAppBar(
@@ -116,8 +125,17 @@ fun GetTopBar(
                 }
             )
         }
+        Screen.Form.route -> {
+            BackButtonTopAppBar(
+                screenTitle = "동행 신청서 작성",
+                onNavigateUp = { navController.navigateUp() }
+            )
+        }
         else -> {
-            BackButtonTopAppBar(onNavigateUp = { navController.navigateUp() } )
+            BackButtonTopAppBar(
+                screenTitle = "",
+                onNavigateUp = { navController.navigateUp() }
+            )
         }
     }
 }
