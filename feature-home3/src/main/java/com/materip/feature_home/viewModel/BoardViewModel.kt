@@ -29,9 +29,8 @@ class BoardViewModel @Inject constructor(
     private val _pageable = MutableStateFlow(Pageable(0, 10, emptyList()))
     val pageable: StateFlow<Pageable> = _pageable
 
-
     // 게시판 목록 로드 함수
-    private fun loadBoardList(pageable: Pageable) {
+    fun loadBoardList(pageable: Pageable) {
         viewModelScope.launch {
             _uiState.value = BoardListUiState.Loading // 로딩 상태로 UI 상태 변경
 
