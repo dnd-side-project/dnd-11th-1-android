@@ -25,4 +25,6 @@ object Icons {
     val review_tag_icon = R.drawable.ic_review_tag
     val selected_radio_btn = R.drawable.ic_selected_radio_btn
     val not_selected_radio_btn = R.drawable.ic_not_selected_radio_btn
+    val active_toggle = R.drawable.ic_active_toggle
+    val inactive_toggle = R.drawable.ic_inactive_toggle
 }
