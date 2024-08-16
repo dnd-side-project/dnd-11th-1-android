@@ -1,19 +1,18 @@
 package com.materip.feature_mypage.navigation
 
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.materip.feature_mypage.screen.EditProfileRoute
-import com.materip.feature_mypage.screen.MyPageRoute
-import com.materip.feature_mypage.screen.PreviewRoute
-import com.materip.feature_mypage.screen.ProfileDescriptionRoute
-import com.materip.feature_mypage.screen.Quiz100Route
-import com.materip.feature_mypage.screen.ReviewDescriptionRoute
-import com.materip.feature_mypage.screen.ReviewListRoute
-import com.materip.feature_mypage.screen.ReviewRoute
-import com.materip.feature_mypage.screen.SendApplicationRoute
+import com.materip.feature_mypage.screen.MyPage.EditProfileRoute
+import com.materip.feature_mypage.screen.MyPage.MyPageRoute
+import com.materip.feature_mypage.screen.MyPage.PreviewRoute
+import com.materip.feature_mypage.screen.MyPage.ProfileDescriptionRoute
+import com.materip.feature_mypage.screen.MyPage.Quiz100Route
+import com.materip.feature_mypage.screen.MyPage.ReviewDescriptionRoute
+import com.materip.feature_mypage.screen.MyPage.ReviewListRoute
+import com.materip.feature_mypage.screen.MyPage.ReviewRoute
+import com.materip.feature_mypage.screen.MyPage.SendApplicationRoute
 
 fun NavController.navigateToMyPageGraph() = navigate(MyPageRoute.MyPageGraph.name)
 fun NavController.navigateToMyPage() = navigate(MyPageRoute.MyPageRoute.name)
