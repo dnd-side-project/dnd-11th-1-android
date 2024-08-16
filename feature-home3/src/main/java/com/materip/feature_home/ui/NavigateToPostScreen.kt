@@ -53,7 +53,7 @@ import coil.compose.SubcomposeAsyncImageContent
 import com.materip.feature_home.R
 import com.materip.feature_home.intent.HomeIntent
 import com.materip.feature_home.state.HomeUiState
-import com.materip.feature_home.viewModel.HomeHiltViewModel
+import com.materip.feature_home.viewModel.HomeViewModel
 import com.materip.matetrip.component.MateTripHomeButton
 import com.materip.matetrip.icon.Badges.profile_default_badge
 import com.materip.matetrip.icon.Icons.date_icon
@@ -73,14 +73,14 @@ import com.materip.matetrip.theme.MateTripTypographySet
 @Composable
 fun NavigateToPostScreen(
     boardId: Int,
-    viewModel: HomeHiltViewModel = hiltViewModel(),
+    viewModel: HomeViewModel = hiltViewModel(),
     onNavigateToForm: () -> Unit,
     onNavigateToProfile: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(boardId) {
-        viewModel.onIntent(HomeIntent.LoadBoardDetail(boardId))
+        viewModel.onHomeIntent(HomeIntent.LoadBoardDetail(boardId))
     }
 
     when (uiState) {
@@ -123,7 +123,7 @@ fun NavigateToPostScreen(
                 userGender = profileInfo.gender
             )
 
-             ShowRecruitment(boardInfo.headCount, boardInfo.capacity)
+            ShowRecruitment(boardInfo.headCount, boardInfo.capacity)
 
             Column(
                 modifier = Modifier
