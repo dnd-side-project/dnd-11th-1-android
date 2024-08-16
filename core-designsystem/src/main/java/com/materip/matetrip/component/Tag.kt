@@ -45,7 +45,7 @@ fun RegionTag(
             Button(
                 onClick = {
                     selectedRegion = region
-                    onClick(region)
+                    onClick(mapRegionToEnum(region))
                 },
                 elevation = ButtonDefaults.buttonElevation(
                     defaultElevation = 4.dp,
@@ -70,6 +70,20 @@ fun RegionTag(
                 )
             }
         }
+    }
+}
+
+fun mapRegionToEnum(region: String): String {
+    return when (region) {
+        "서울" -> "SEOUL"
+        "경기" -> "GYEONGGI_INCHEON"
+        "충청" -> "CHUNGCHEONG_DAEJEON_SEJONG"
+        "강원" -> "GANGWON"
+        "전라" -> "JEOLLA_GWANGJU"
+        "경상" -> "GYEONGSANG_DAEGU_ULSAN"
+        "부산" -> "BUSAN"
+        "제주" -> "JEJU"
+        else -> "UNKNOWN"
     }
 }
 
