@@ -2,6 +2,7 @@ package com.materip.feature_home.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,7 +34,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.materip.core_model.accompany_board.CompanionPost
+import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
+import com.materip.core_model.accompany_board.BoardItem
+import com.materip.core_model.accompany_board.Pageable
+import com.materip.feature_home.viewModel.BoardViewModel
 import com.materip.matetrip.component.MateTripSearchBar
 import com.materip.matetrip.component.RegionTag
 import com.materip.matetrip.icon.Badges.fab_add_badge
@@ -36,16 +46,28 @@ import com.materip.matetrip.icon.Logo
 import com.materip.matetrip.theme.MateTripColors.Blue_02
 import com.materip.matetrip.theme.MateTripColors.Blue_04
 import com.materip.matetrip.theme.MateTripTypographySet
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
-    val samplePosts = listOf(
-        CompanionPost("image1.jpg", listOf("태그1", "태그2"), "닉네임", "슈퍼 J를 찾습니다!!!", "2024.07.20 ~ 2024-07-22"),
-        CompanionPost("image1.jpg", listOf("태그1", "태그2"), "닉네임", "슈퍼 J를 찾습니다!!!", "2024.07.20 ~ 2024-07-22"),
-        CompanionPost("image1.jpg", listOf("태그1", "태그2"), "닉네임", "슈퍼 J를 찾습니다!!!", "2024.07.20 ~ 2024-07-22"),
-    )
+fun HomeScreen(
+    onNavigateToPostDetail: (Int) -> Unit,
+    viewModel: BoardViewModel = hiltViewModel(),
+) {
+    viewModel.loadBoardList(Pageable(0, 10, emptyList()))
+    val boardListState = viewModel.boardList.collectAsState()
+
+    var selectedRegion by remember { mutableStateOf("전체") }
+
+    val filteredBoardItems = if (selectedRegion == "전체") {
+        boardListState.value.data
+    } else {
+        boardListState.value.data.filter { it.region == selectedRegion }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -56,11 +78,21 @@ fun HomeScreen() {
             ),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        // 상단 타이틀
         HomeTitle()
+
+        // 동행글 검색바
         MateTripSearchBar()
-        CompanionLounge()
+
+        // 지역으로 태그해서 동행글 보여주기
+        CompanionLounge(onRegionSelected = { selectedRegion = it })
+
+        // 동행글 목록
         Box(modifier = Modifier.weight(1f)) {
-            PostList(samplePosts)
+            ShowAccompanyPost(
+                boardItems = filteredBoardItems,
+                onPostClick = onNavigateToPostDetail
+            )
         }
     }
 }
@@ -83,7 +115,7 @@ fun HomeTitle() {
 }
 
 @Composable
-fun CompanionLounge() {
+fun CompanionLounge(onRegionSelected: (String) -> Unit) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.Start,
@@ -94,14 +126,20 @@ fun CompanionLounge() {
             modifier = Modifier.padding(start = 20.dp, end = 272.dp, bottom = 12.dp)
         )
         RegionTag(
-            onClick = { /* 선택한 지역에 해당하는 동행글이 보이게 하기*/ },
+            onClick = onRegionSelected,
             modifier = Modifier.fillMaxWidth()
         )
     }
 }
 
 @Composable
-fun PostItem(post: CompanionPost) {
+fun PostItem(
+    boardItem: BoardItem,
+    onBoardItemClick: (Int) -> Unit
+) {
+    val firstImage: String = boardItem.imageUrls.firstOrNull() ?: Logo.app_icon_60.toString()
+    val duration = calculateDuration(boardItem.startDate, boardItem.endDate)
+
     Row(
         modifier = Modifier
             .shadow(
@@ -112,7 +150,8 @@ fun PostItem(post: CompanionPost) {
             .width(360.dp)
             .height(148.dp)
             .background(color = Color.White, shape = RoundedCornerShape(size = 12.dp))
-            .padding(18.dp),
+            .padding(18.dp)
+            .clickable { onBoardItemClick(boardItem.boardId) },
         horizontalArrangement = Arrangement.spacedBy(50.dp, Alignment.Start),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -133,7 +172,7 @@ fun PostItem(post: CompanionPost) {
                     .height(26.dp),
             ) {
                 Text(
-                    text = "부산",
+                    text = boardItem.region,
                     color = Color.White,
                     style = MateTripTypographySet.title05,
                     modifier = Modifier
@@ -146,7 +185,7 @@ fun PostItem(post: CompanionPost) {
                         .padding(start = 10.dp, top = 4.dp, end = 10.dp, bottom = 5.dp)
                 )
                 Text(
-                    text = "2박3일",
+                    text = duration,
                     style = MateTripTypographySet.title05,
                     modifier = Modifier
                         .width(56.dp)
@@ -159,24 +198,24 @@ fun PostItem(post: CompanionPost) {
                 )
             }
             Text(
-                text = post.title,
+                text = boardItem.title,
                 style = MateTripTypographySet.headline05,
             )
             Text(
-                text = post.duration,
+                text = "${boardItem.startDate} ~ ${boardItem.endDate}",
                 style = MateTripTypographySet.title04,
                 color = Color.Gray,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             Text(
-                text = post.username,
+                text = boardItem.nickname,
                 style = MateTripTypographySet.body06,
             )
         }
 
         Image(
-            painter = painterResource(id = Logo.sample_image), // 이미지 리소스 ID로 교체 필요
-            contentDescription = "image description", // 콘텐츠 설명
+            painter = rememberAsyncImagePainter(firstImage),
+            contentDescription = "image description",
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(width = 110.dp, height = 112.dp)
@@ -187,14 +226,20 @@ fun PostItem(post: CompanionPost) {
 
 
 @Composable
-fun PostList(posts: List<CompanionPost>) {
+fun ShowAccompanyPost(
+    boardItems: List<BoardItem>,
+    onPostClick: (Int) -> Unit
+) {
     LazyColumn(
         modifier = Modifier
             .padding(start = 20.dp, end = 20.dp, bottom = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        items(posts) { post ->
-            PostItem(post = post)
+        items(boardItems) { boardItem ->
+            PostItem(
+                boardItem = boardItem,
+                onBoardItemClick = { boardId -> onPostClick(boardId) }
+            )
         }
     }
 }
@@ -215,6 +260,15 @@ fun FabButton(
             contentDescription = "동행 게시글 작성 버튼"
         )
     }
+}
+
+fun calculateDuration(startDate: String, endDate: String): String {
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    val start = LocalDate.parse(startDate, formatter)
+    val end = LocalDate.parse(endDate, formatter)
+    val days = ChronoUnit.DAYS.between(start, end).toInt() + 1
+    val nights = days - 1
+    return "${nights}박 ${days}일"
 }
 
 @Preview
