@@ -114,9 +114,17 @@ fun BackButtonWithTitleTopAppBar(
 
 // 뒤로가기 버튼만 있는 상단바
 @Composable
-fun BackButtonTopAppBar(onNavigateUp: () -> Unit) {
+fun BackButtonTopAppBar(
+    screenTitle: String,
+    onNavigateUp: () -> Unit
+) {
     TopAppBar(
-        title = { /* 빈 타이틀을 설정 */ },
+        title = {
+            Text(
+                text = screenTitle,
+                style = MateTripTypographySet.headline06
+            )
+        },
         navigationIcon = {
             IconButton(onClick = onNavigateUp) {
                 Icon(
