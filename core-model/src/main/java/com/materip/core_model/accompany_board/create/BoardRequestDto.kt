@@ -1,4 +1,4 @@
-package com.materip.core_model.accompany_board
+package com.materip.core_model.accompany_board.create
 
 import kotlinx.serialization.Serializable
 
