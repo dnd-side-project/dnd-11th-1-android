@@ -270,9 +270,3 @@ fun calculateDuration(startDate: String, endDate: String): String {
     val nights = days - 1
     return "${nights}박 ${days}일"
 }
-
-@Preview
-@Composable
-fun HomeScreenPreview() {
-
-}
