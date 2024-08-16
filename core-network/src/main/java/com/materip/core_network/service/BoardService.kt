@@ -1,9 +1,10 @@
 package com.materip.core_network.service
 
-import com.materip.core_model.accompany_board.BoardRequestDto
-import com.materip.core_model.accompany_board.BoardResponseDto
+import com.materip.core_model.accompany_board.create.BoardRequestDto
+import com.materip.core_model.accompany_board.BoardListResponse
 import com.materip.core_model.accompany_board.id.BoardIdDto
 import com.materip.core_model.accompany_board.id.GetBoardDetailDto
+import com.materip.core_model.accompany_board.request.CompanionRequest
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -17,7 +18,7 @@ interface BoardService {
     suspend fun getBoard(
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 1
-    ): ApiResponse<BoardResponseDto>
+    ): ApiResponse<BoardListResponse>
 
     // 동행글 생성
     @POST("/api/v1/accompany/boards")
@@ -26,4 +27,8 @@ interface BoardService {
     // 동행글 상세 조회
     @GET("/api/v1/accompany/boards/{id}")
     suspend fun getBoardDetail(@Path("id") id: Int): ApiResponse<GetBoardDetailDto>
+
+    // 동행 신청
+    @POST("/api/v1/accompany/boards/request")
+    suspend fun postCompanionRequest(@Body companionRequest: CompanionRequest): ApiResponse<Unit>
 }
