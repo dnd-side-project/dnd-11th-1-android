@@ -70,6 +70,7 @@ import com.materip.matetrip.theme.MateTripColors.Gray_12
 import com.materip.matetrip.theme.MateTripColors.Primary
 import com.materip.matetrip.theme.MateTripTypographySet
 
+// 동행글 상세 화면
 @Composable
 fun NavigateToPostScreen(
     boardId: Int,
