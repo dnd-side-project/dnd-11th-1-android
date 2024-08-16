@@ -33,7 +33,7 @@ import com.materip.matetrip.component.MateTripTopAppBar
 fun SetUpNavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    startDestination: String = Screen.Form.route
+    startDestination: String = Screen.Home.route
 ) {
     NavHost(
         navController = navController,
