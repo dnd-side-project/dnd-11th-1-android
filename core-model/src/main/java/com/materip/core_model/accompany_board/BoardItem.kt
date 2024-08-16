@@ -4,11 +4,12 @@ import kotlinx.serialization.Serializable
 
 // 동행글 목록 조회 Data
 @Serializable
-data class Data(
+data class BoardItem(
     val boardId: Int,
-    val endDate: String,
-    val nickname: String,
+    val title: String,
     val region: String,
     val startDate: String,
-    val title: String
+    val endDate: String,
+    val nickname: String,
+    val imageUrls: List<String>
 )
