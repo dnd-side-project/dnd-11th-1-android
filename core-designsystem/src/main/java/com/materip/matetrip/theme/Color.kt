@@ -52,4 +52,7 @@ object MatetripColor{
 
     //loading color
     val loading_color = Color(0xFFDDDDDD)
+
+    //border color
+    val border_color = Color(0xFFD9D9D9)
 }
