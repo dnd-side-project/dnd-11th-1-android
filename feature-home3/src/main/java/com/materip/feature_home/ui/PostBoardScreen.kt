@@ -33,7 +33,6 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -48,12 +47,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.materip.feature_home.intent.HomeIntent
 import com.materip.feature_home.state.HomeUiState
 import com.materip.feature_home.ui.component.ImagePicker
 import com.materip.feature_home.ui.component.TravelDateCalendar
-import com.materip.feature_home.viewModel.HomeHiltViewModel
+import com.materip.feature_home.viewModel.HomeViewModel
 import com.materip.matetrip.component.ToggleButton
 import com.materip.matetrip.icon.Icons.fold_icon
 import com.materip.matetrip.icon.Icons.minus_icon
@@ -74,8 +72,7 @@ import java.time.LocalDate
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
 fun PostBoardScreen(
-    viewModel: HomeHiltViewModel = hiltViewModel(),
-    navController: NavController
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -103,7 +100,7 @@ fun PostBoardScreen(
             imageUris = imageUris,
             onImageUrisChange = {
                 imageUris = it
-                viewModel.onIntent(HomeIntent.UpdateImageUris(it))
+                viewModel.onHomeIntent(HomeIntent.UpdateImageUris(it))
             }
         )
 
@@ -112,7 +109,7 @@ fun PostBoardScreen(
             title = title,
             onTitleChange = {
                 title = it
-                viewModel.onIntent(HomeIntent.UpdateTitle(it))
+                viewModel.onHomeIntent(HomeIntent.UpdateTitle(it))
             }
         )
 
@@ -121,7 +118,7 @@ fun PostBoardScreen(
             content = content,
             onContentChange = {
                 content = it
-                viewModel.onIntent(HomeIntent.UpdateContent(it))
+                viewModel.onHomeIntent(HomeIntent.UpdateContent(it))
             }
         )
 
@@ -134,12 +131,12 @@ fun PostBoardScreen(
                 if (newTag.isNotEmpty() && tags.size < 5 && !tags.contains(newTag)) {
                     tags = tags + newTag
                     tagInput = ""
-                    viewModel.onIntent(HomeIntent.UpdateTagNames(tags))
+                    viewModel.onHomeIntent(HomeIntent.UpdateTagNames(tags))
                 }
             },
             onTagRemove = { tagToRemove ->
                 tags = tags.filter { it != tagToRemove }
-                viewModel.onIntent(HomeIntent.UpdateTagNames(tags))
+                viewModel.onHomeIntent(HomeIntent.UpdateTagNames(tags))
             }
         )
 
@@ -148,7 +145,7 @@ fun PostBoardScreen(
             selectedRegion = selectedRegion,
             onRegionSelected = {
                 selectedRegion = it
-                viewModel.onIntent(HomeIntent.UpdateRegion(it))
+                viewModel.onHomeIntent(HomeIntent.UpdateRegion(it))
             }
         )
 
@@ -156,8 +153,8 @@ fun PostBoardScreen(
         TravelDateCalendar { start, end ->
             startDate = start
             endDate = end
-            viewModel.onIntent(HomeIntent.UpdateStartDate(start.toString()))
-            viewModel.onIntent(HomeIntent.UpdateEndDate(end.toString()))
+            viewModel.onHomeIntent(HomeIntent.UpdateStartDate(start.toString()))
+            viewModel.onHomeIntent(HomeIntent.UpdateEndDate(end.toString()))
         }
 
         // 동행 유형
@@ -165,7 +162,7 @@ fun PostBoardScreen(
             selectedType = selectedType,
             onTypeSelected = {
                 selectedType = it
-                viewModel.onIntent(HomeIntent.UpdateCategory(listOf(it)))
+                viewModel.onHomeIntent(HomeIntent.UpdateCategory(listOf(it)))
             }
         )
 
@@ -174,7 +171,7 @@ fun PostBoardScreen(
             capacity = capacity,
             onCapacityChange = { newCapacity ->
                 capacity = newCapacity
-                viewModel.onIntent(HomeIntent.UpdateCapacity(newCapacity))
+                viewModel.onHomeIntent(HomeIntent.UpdateCapacity(newCapacity))
             }
         )
 
@@ -183,7 +180,7 @@ fun PostBoardScreen(
             selectedAge = age,
             onAgeChange = {
                 age = it
-                viewModel.onIntent(HomeIntent.UpdateAge(it))
+                viewModel.onHomeIntent(HomeIntent.UpdateAge(it))
             }
         )
 
@@ -192,7 +189,7 @@ fun PostBoardScreen(
             selectedGender = gender,
             onGenderChange = {
                 gender = it
-                viewModel.onIntent(HomeIntent.UpdateGender(it))
+                viewModel.onHomeIntent(HomeIntent.UpdateGender(it))
             }
         )
 
