@@ -1,5 +1,7 @@
 package com.materip.feature_home.intent
 
+import com.materip.core_model.accompany_board.create.BoardRequestDto
+
 sealed class HomeIntent {
     data class UpdateTitle(val title: String) : HomeIntent()
     data class UpdateContent(val content: String) : HomeIntent()
@@ -12,5 +14,6 @@ sealed class HomeIntent {
     data class UpdateGender(val preferredGender: String) : HomeIntent()
     data class UpdateCapacity(val capacity: Int) : HomeIntent()
     data class UpdateImageUris(val imageUris: List<String>) : HomeIntent()
+    data class CreatePost(val boardRequestDto: BoardRequestDto) : HomeIntent()
     data class LoadBoardDetail(val boardId: Int) : HomeIntent()
 }
