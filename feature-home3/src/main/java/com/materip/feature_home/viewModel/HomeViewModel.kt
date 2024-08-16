@@ -2,7 +2,7 @@ package com.materip.feature_home.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.materip.core_model.accompany_board.BoardRequestDto
+import com.materip.core_model.accompany_board.create.BoardRequestDto
 import com.materip.core_model.accompany_board.id.BoardIdDto
 import com.materip.core_repository.repository.BoardRepository
 import com.materip.feature_home.intent.HomeIntent
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeHiltViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     private val boardRepository: BoardRepository
 ) : ViewModel() {
 
@@ -36,7 +36,7 @@ class HomeHiltViewModel @Inject constructor(
     private val _capacity = MutableStateFlow(2)
     private val _imageUris = MutableStateFlow(listOf<String>())
 
-    fun onIntent(intent: HomeIntent) {
+    fun onHomeIntent(intent: HomeIntent) {
         when (intent) {
             is HomeIntent.UpdateTitle -> updateTitle(intent.title)
             is HomeIntent.UpdateContent -> updateContent(intent.content)
@@ -49,6 +49,7 @@ class HomeHiltViewModel @Inject constructor(
             is HomeIntent.UpdateGender -> updateGender(intent.preferredGender)
             is HomeIntent.UpdateCapacity -> updateCapacity(intent.capacity)
             is HomeIntent.UpdateImageUris -> updateImageUris(intent.imageUris)
+            is HomeIntent.CreatePost -> createPost(toBoardRequestDto())
             is HomeIntent.LoadBoardDetail -> loadBoardDetail(intent.boardId)
         }
     }
@@ -100,14 +101,14 @@ class HomeHiltViewModel @Inject constructor(
 
     fun createPost(boardRequestDto: BoardRequestDto): BoardIdDto {
         viewModelScope.launch {
-            _uiState.value = HomeUiState.Loading // 서버와의 통신 시작을 알림
+            _uiState.value = HomeUiState.Loading
 
-            val result = boardRepository.postBoard(boardRequestDto) // 서버에 BoardRequestDto 전송
-            val boardIdDto = result.data // 로컬 변수로 할당
+            val result = boardRepository.postBoard(boardRequestDto)
+            val boardIdDto = result.data
 
             _uiState.value = if (boardIdDto != null) {
-                _createdBoardId.value = boardIdDto.boardId // 서버로부터 받은 boardId를 저장
-                HomeUiState.SuccessPost // UI에 성공 상태 알림
+                _createdBoardId.value = boardIdDto.boardId
+                HomeUiState.SuccessPost
             } else {
                 HomeUiState.Error(result.error?.message ?: "게시글 작성에 실패했습니다.") // 에러 시 UI에 알림
             }
@@ -131,6 +132,7 @@ class HomeHiltViewModel @Inject constructor(
         )
     }
 
+    // TODO: HomeScreen에서 CompanionRounge에서 쓰일 함수, 동행글 상세 조회
     private fun loadBoardDetail(boardId: Int) {
         viewModelScope.launch {
             _uiState.value = HomeUiState.Loading
