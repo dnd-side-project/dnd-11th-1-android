@@ -49,7 +49,11 @@ fun SetUpNavGraph(
 
         // 홈
         composable(Screen.Home.route) {
-            HomeScreen()
+            HomeScreen(
+                onNavigateToPostDetail = { boardId ->
+                    navController.navigate(Screen.NavigateToPost.route + "/$boardId")
+                }
+            )
         }
 
         // 홈_게시글 작성_디폴트
