@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.materip.core_designsystem.R
+import com.materip.matetrip.icon.Icons
 import com.materip.matetrip.theme.MateTripTypographySet
 import com.materip.matetrip.theme.MatetripColor.ActivatedColor
 import com.materip.matetrip.theme.MatetripColor.Blue_04
@@ -209,6 +212,24 @@ fun CustomButton(
                 fontWeight = FontWeight(500)
             )
         }
+    }
+}
+
+@Composable
+fun OnAndOffButton(
+    modifier: Modifier,
+    isClicked: Boolean,
+    onClick: () -> Unit,
+){
+    IconButton(
+        modifier = modifier,
+        onClick = onClick
+    ) {
+        Image(
+            modifier = Modifier.fillMaxSize(),
+            painter = painterResource(if(isClicked) Icons.active_toggle else Icons.inactive_toggle),
+            contentDescription = "Toggle"
+        )
     }
 }
 
