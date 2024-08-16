@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalLayoutApi::class)
+@file:OptIn(ExperimentalLayoutApi::class, ExperimentalLayoutApi::class)
 
 package com.materip.feature_home.ui
 
@@ -68,6 +68,7 @@ import com.materip.matetrip.theme.MateTripColors.Primary
 import com.materip.matetrip.theme.MateTripTypographySet
 import java.time.LocalDate
 
+// 동행글 작성 화면
 @SuppressLint("UnrememberedMutableState")
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
