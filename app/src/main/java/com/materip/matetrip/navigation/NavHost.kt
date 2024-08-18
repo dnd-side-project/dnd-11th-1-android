@@ -56,6 +56,11 @@ fun SetUpNavGraph(
             )
         }
 
+        // 홈_알림_디폴트
+        composable(Screen.Notification.route) {
+            NotificationScreen()
+        }
+
         // 홈_게시글 작성_디폴트
         composable(Screen.Post.route) {
             PostBoardScreen()
@@ -92,11 +97,6 @@ fun SetUpNavGraph(
             ProfileScreen()
         }
 
-        // 홈_알림_디폴트
-        composable(Screen.Notification.route) {
-            NotificationScreen()
-        }
-
         // 동행 후기 작성
         composable(Screen.Review.route) {
             ReviewScreen()
@@ -112,29 +112,37 @@ fun GetTopBar(
     val viewModel: HomeViewModel = hiltViewModel()
 
     when (currentRoute) {
-        Screen.Home.route -> { MateTripTopAppBar() }
+        Screen.Home.route -> {
+            MateTripTopAppBar(
+                onNotificationClick = { navController.navigate(Screen.Notification.route) }
+            )
+        }
+
         Screen.OnBoarding.route -> {
             BackButtonTopAppBar(
                 screenTitle = "",
                 onNavigateUp = { navController.navigateUp() }
             )
         }
+
         Screen.Post.route -> {
             BackButtonWithTitleTopAppBar(
                 screenTitle = "동행 모집하기",
                 onNavigateUp = { navController.navigateUp() },
-                onPostClick =  {
+                onPostClick = {
                     val boardIdDto = viewModel.createPost(viewModel.toBoardRequestDto())
                     navController.navigate(Screen.NavigateToPost.route + "/${boardIdDto.boardId}")
                 }
             )
         }
+
         Screen.Form.route -> {
             BackButtonTopAppBar(
                 screenTitle = "동행 신청서 작성",
                 onNavigateUp = { navController.navigateUp() }
             )
         }
+
         else -> {
             BackButtonTopAppBar(
                 screenTitle = "",
