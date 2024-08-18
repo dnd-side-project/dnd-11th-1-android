@@ -19,6 +19,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,12 +33,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.materip.core_model.accompany_board.BoardItem
-import com.materip.core_model.accompany_board.Pageable
+import com.materip.feature_home.state.BoardListUiState
 import com.materip.feature_home.viewModel.BoardViewModel
 import com.materip.matetrip.component.MateTripSearchBar
 import com.materip.matetrip.component.RegionTag
@@ -57,8 +57,13 @@ fun HomeScreen(
     onNavigateToPostDetail: (Int) -> Unit,
     viewModel: BoardViewModel = hiltViewModel(),
 ) {
-    viewModel.loadBoardList(Pageable(0, 10, emptyList()))
+    val uiState by viewModel.uiState.collectAsState()
+    val pageable by viewModel.pageable.collectAsState()
     val boardListState = viewModel.boardList.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.loadBoardList(pageable)
+    }
 
     var selectedRegion by remember { mutableStateOf("전체") }
 
@@ -89,10 +94,41 @@ fun HomeScreen(
 
         // 동행글 목록
         Box(modifier = Modifier.weight(1f)) {
-            ShowAccompanyPost(
-                boardItems = filteredBoardItems,
-                onPostClick = onNavigateToPostDetail
-            )
+            when (uiState) {
+                is BoardListUiState.Loading -> {
+                    // 로딩 상태일 때 더미 데이터로 UI 표시
+                    ShowAccompanyPost(
+                        boardItems = BoardListUiState.Loading.dummyData,
+                        onPostClick = onNavigateToPostDetail
+                    )
+                }
+                is BoardListUiState.Success -> {
+                    // 성공 상태일 때 더미 데이터로 UI 표시
+                    ShowAccompanyPost(
+                        boardItems = (uiState as BoardListUiState.Success).dummyData,
+                        onPostClick = onNavigateToPostDetail
+                    )
+                    // TODO: 성공 상태일 때 실제 데이터로 UI 표시
+//                    ShowAccompanyPost(
+//                        boardItems = filteredBoardItems,
+//                        onPostClick = onNavigateToPostDetail
+//                    )
+                }
+                is BoardListUiState.Error -> {
+                    // 오류 상태일 때 더미 데이터로 UI 표시
+                    ShowAccompanyPost(
+                        boardItems = BoardListUiState.Error("").dummyData,
+                        onPostClick = onNavigateToPostDetail
+                    )
+                }
+                else -> {
+                    // ELSE 상태일 때 더미 데이터로 보여줄 UI
+                    ShowAccompanyPost(
+                        boardItems = (uiState as BoardListUiState.Initial).dummyData,
+                        onPostClick = onNavigateToPostDetail
+                    )
+                }
+            }
         }
     }
 }
@@ -188,7 +224,7 @@ fun PostItem(
                     text = duration,
                     style = MateTripTypographySet.title05,
                     modifier = Modifier
-                        .width(56.dp)
+                        .width(66.dp)
                         .height(26.dp)
                         .background(
                             color = Color(0xFFEFF1FF),
