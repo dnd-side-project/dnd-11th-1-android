@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class GetBoardDetailDto(
     val boardInfo: BoardInfo,
-    val profileInfo: ProfileInfo
+    val profileThumbnail: ProfileThumbnail
 )
