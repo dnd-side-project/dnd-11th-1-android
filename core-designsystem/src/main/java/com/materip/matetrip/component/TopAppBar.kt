@@ -39,7 +39,9 @@ import com.materip.matetrip.theme.MateTripTypographySet
 
 // 홈 화면의 상단바
 @Composable
-fun MateTripTopAppBar() {
+fun MateTripTopAppBar(
+    onNotificationClick: () -> Unit
+) {
     TopAppBar(
         title = {
             Icon(
@@ -50,7 +52,7 @@ fun MateTripTopAppBar() {
             )
         },
         actions = {
-            IconButton(onClick = { /* 알림 설정 시 알림을 표시하기 */ }) {
+            IconButton(onClick = onNotificationClick) {
                 Icon(
                     painter = painterResource(id = notification_icon),
                     contentDescription = "Notifications",
