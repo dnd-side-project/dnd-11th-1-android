@@ -91,7 +91,7 @@ fun NavigateToPostScreen(
 
         is HomeUiState.SuccessLoad -> {
             val boardInfo = (uiState as HomeUiState.SuccessLoad).boardDetail.boardInfo
-            val profileInfo = (uiState as HomeUiState.SuccessLoad).boardDetail.profileInfo
+            val profileInfo = (uiState as HomeUiState.SuccessLoad).boardDetail.profileThumbnail
 
             ShowImageList(imageUris = boardInfo.imageUris)
 
