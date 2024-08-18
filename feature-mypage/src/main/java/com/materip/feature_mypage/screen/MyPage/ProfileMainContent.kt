@@ -54,8 +54,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_common.ErrorState
 import com.materip.core_model.ui_model.MatetripGrade
-import com.materip.feature_mypage.view_models.ProfileMainUiState
-import com.materip.feature_mypage.view_models.ProfileMainViewModel
+import com.materip.feature_mypage.view_models.MyPage.ProfileMainUiState
+import com.materip.feature_mypage.view_models.MyPage.ProfileMainViewModel
 import com.materip.matetrip.component.LevelInfoDialog
 import com.materip.matetrip.icon.Icons
 

@@ -41,8 +41,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_common.ErrorState
 import com.materip.core_designsystem.R
 import com.materip.core_model.ui_model.MatetripGrade
-import com.materip.feature_mypage.view_models.ProfileDescriptionUiState
-import com.materip.feature_mypage.view_models.ProfileDescriptionViewModel
+import com.materip.feature_mypage.view_models.MyPage.ProfileDescriptionUiState
+import com.materip.feature_mypage.view_models.MyPage.ProfileDescriptionViewModel
 import com.materip.matetrip.component.CircleImageView
 import com.materip.matetrip.component.ImageLoadView
 import com.materip.matetrip.component.NormalTopBar
