@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.materip.core_model.accompany_board.BoardListResponse
 import com.materip.core_model.accompany_board.Pageable
 import com.materip.core_repository.repository.BoardRepository
+import com.materip.feature_home.intent.BoardListIntent
 import com.materip.feature_home.state.BoardListUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,8 +30,14 @@ class BoardViewModel @Inject constructor(
     private val _pageable = MutableStateFlow(Pageable(0, 10, emptyList()))
     val pageable: StateFlow<Pageable> = _pageable
 
+    fun handleIntent(intent: BoardListIntent) {
+        when (intent) {
+            is BoardListIntent.LoadBoardList -> loadBoardList(intent.pageable)
+        }
+    }
+
     // 게시판 목록 로드 함수
-    fun loadBoardList(pageable: Pageable) {
+    private fun loadBoardList(pageable: Pageable) {
         viewModelScope.launch {
             _uiState.value = BoardListUiState.Loading // 로딩 상태로 UI 상태 변경
 
