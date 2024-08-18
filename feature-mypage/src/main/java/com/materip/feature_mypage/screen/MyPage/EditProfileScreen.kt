@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,6 +24,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -32,23 +34,33 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.materip.core_common.ErrorState
 import com.materip.core_model.ui_model.FoodPreference
 import com.materip.core_model.ui_model.Gender
+import com.materip.core_model.ui_model.TravelInterest
 import com.materip.core_model.ui_model.TravelStyle
+import com.materip.feature_mypage.view_models.MyPage.EditProfileUiState
+import com.materip.feature_mypage.view_models.MyPage.EditProfileViewModel
 import com.materip.matetrip.component.CustomClickableTag
 import com.materip.matetrip.component.ImageLoadView
 import com.materip.matetrip.component.NormalTopBar
+import com.materip.matetrip.component.ProfileTag
 import com.materip.matetrip.component.SelectableDialog
 import com.materip.matetrip.component.UnderlinedTextField
 import com.materip.matetrip.icon.Badges
@@ -56,17 +68,95 @@ import com.materip.matetrip.icon.Icons
 import com.materip.matetrip.theme.MatetripColor
 
 @Composable
-fun EditProfileRoute(navBack: () -> Unit){
-    EditProfileScreen(navBack = navBack)
+fun EditProfileRoute(
+    navBack: () -> Unit,
+    viewModel: EditProfileViewModel = hiltViewModel()
+){
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val errState = viewModel.errorState.collectAsStateWithLifecycle()
+    EditProfileScreen(
+        uiState = uiState.value,
+        errState = errState.value,
+        navBack = {
+            if (errState.value !is ErrorState.AuthError || !(errState.value as ErrorState.AuthError).isInvalid()) {
+                navBack()
+            }
+        },
+        onEditClick = {profileImg, nickname, description, birthYear, gender, travelPreferences, travelStyles, foodPreferences, snsLink, images ->
+            viewModel.updateProfile(profileImg, nickname, description, birthYear, gender, travelPreferences,
+                travelStyles, foodPreferences, snsLink, images)
+        }
+    )
 }
 
 @Composable
-fun EditProfileScreen(navBack: () -> Unit){
+fun EditProfileScreen(
+    uiState: EditProfileUiState,
+    errState: ErrorState,
+    onEditClick: (profileImg: String, nickname: String, description: String, birthYear: Int, gender: String,
+                  travelPreferences: SnapshotStateList<String>, travelStyles: SnapshotStateList<String>,
+                  foodPreference: SnapshotStateList<String>, snsLink: String?, images: SnapshotStateList<String>) -> Unit,
+    navBack: () -> Unit
+){
+    when(uiState){
+        EditProfileUiState.Loading -> {
+            CircularProgressIndicator()
+        }
+        is EditProfileUiState.Success -> {
+            EditProfileMainContent(
+                initProfileImg = uiState.profileImg,
+                initNickname = uiState.nickname,
+                initDescription = uiState.description,
+                initBirthYear = uiState.birthYear,
+                initGender = uiState.gender,
+                initTravelPreferences = uiState.travelPreferences,
+                initTravelStyles = uiState.travelStyles,
+                initFoodPreferences = uiState.foodPreferences,
+                initSnsLink = uiState.snsLink,
+                initImages = uiState.images,
+                onEditClick = onEditClick,
+                navBack = navBack
+            )
+        }
+        EditProfileUiState.Error -> {
+            /** Error view로 변환해야 함 */
+            Text(
+                text = "Error",
+                fontSize = 100.sp,
+                color = Color.Red
+            )
+        }
+    }
+}
+
+@Composable
+private fun EditProfileMainContent(
+    initProfileImg: String,
+    initNickname: String,
+    initDescription: String?,
+    initBirthYear: Int,
+    initGender: String,
+    initTravelPreferences: List<String>,
+    initTravelStyles: List<String>,
+    initFoodPreferences: List<String>,
+    initSnsLink: String?,
+    initImages: List<String>,
+    onEditClick: (profileImg: String, nickname: String, description: String, birthYear: Int, gender: String,
+                  travelPreferences: SnapshotStateList<String>, travelStyles: SnapshotStateList<String>,
+                  foodPreferences: SnapshotStateList<String>, snsLink: String?, images: SnapshotStateList<String>) -> Unit,
+    navBack: () -> Unit,
+){
     val scrollState = rememberScrollState()
-    var name by remember{mutableStateOf("찬란한 바닷가")} /** initial nickname */
-    var introduction by remember{mutableStateOf("")}
-    var birth by remember{mutableStateOf(2024)}
-    var gender by remember{mutableStateOf(Gender.FEMALE)}
+    var profileImg by remember{mutableStateOf(initProfileImg)}
+    var nickname by remember{mutableStateOf(initNickname)}
+    var introduction by remember{mutableStateOf(initDescription ?: "")}
+    var birthYear by remember{mutableStateOf(initBirthYear)}
+    var gender by remember{mutableStateOf(if(initGender == "MALE") Gender.MALE else Gender.FEMALE)}
+    val travelPreferences = remember{ mutableStateListOf(*initTravelPreferences.toTypedArray())}
+    val travelStyles = remember{ mutableStateListOf(*initTravelStyles.toTypedArray()) }
+    val foodPreferences = remember{ mutableStateListOf(*initFoodPreferences.toTypedArray()) }
+    var snsLink by remember{mutableStateOf(initSnsLink ?: "")}
+    val images = remember{ mutableStateListOf(*initImages.toTypedArray()) }
 
     Column(
         modifier = Modifier
@@ -78,7 +168,7 @@ fun EditProfileScreen(navBack: () -> Unit){
             title = "프로필 수정",
             onBackClick = navBack,
             onClick = {
-                /** 수정 완료 api */
+                onEditClick(profileImg,nickname,introduction,birthYear,gender.name,travelPreferences,travelStyles,foodPreferences,snsLink,images)
                 navBack()
             },
             menuText = "확인"
@@ -111,9 +201,9 @@ fun EditProfileScreen(navBack: () -> Unit){
             }
             Spacer(Modifier.height(30.dp))
             NicknameEdit(
-                nickname = name,
+                nickname = nickname,
                 onNicknameUpdate = {
-                    if(name.length <= 6){name = it}
+                    if(nickname.length <= 6){nickname = it}
                 }
             )
             Spacer(Modifier.height(40.dp))
@@ -123,24 +213,26 @@ fun EditProfileScreen(navBack: () -> Unit){
             )
             Spacer(Modifier.height(40.dp))
             BirthAndGenderEdit(
-                birth = birth.toString(),
-                onBirthUpdate = {birth = it.toInt()},
+                birth = birthYear.toString(),
+                onBirthUpdate = {birthYear = it.toInt()},
                 gender = if(gender == Gender.FEMALE) "여성" else "남성",
                 onGenderUpdate = {
                     gender = if(it == "여성") Gender.FEMALE else Gender.MALE
                 }
             )
             Spacer(Modifier.height(40.dp))
-            /** 여행 성향 수정 화면 navigation **/
-            TravelInterestEdit(
-                onTravelInterestClick = {/** 여행 성향 수정 화면 navigation **/}
+            TravelPreferencesEdit(
+                travelPreferences = travelPreferences,
             )
             Spacer(Modifier.height(40.dp))
-            TravelStyleEdit()
+            TravelStyleEdit(travelStyles = travelStyles)
             Spacer(Modifier.height(40.dp))
-            FoodPreferenceEdit()
+            FoodPreferenceEdit(foodPreferences = foodPreferences)
             Spacer(Modifier.height(40.dp))
-            SNSEdit()
+            SNSEdit(
+                snsLink = snsLink,
+                onUpdateSnsLink = {snsLink = it}
+            )
             Spacer(Modifier.height(40.dp))
             MyImages(pictures = emptyList())
         }
@@ -328,48 +420,256 @@ private fun BirthAndGenderEdit(
 }
 
 @Composable
-private fun TravelInterestEdit(
-    onTravelInterestClick: () -> Unit
+private fun TravelPreferencesEdit(
+    travelPreferences: SnapshotStateList<String>,
 ){
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(40.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+    var isOpen by remember{mutableStateOf(false)}
+    Column(
+        modifier = Modifier.fillMaxWidth()
     ){
-        Text(
-            text = "여행 성향",
-            fontSize = 16.sp,
-            fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
-            fontWeight = FontWeight(700),
-            color = MatetripColor.Gray_11
-        )
-        IconButton(
-            modifier = Modifier.size(16.dp),
-            onClick = {onTravelInterestClick()} /** 여행 성향 수정 화면 navigation */
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(40.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ){
-            Icon(
-                modifier = Modifier.fillMaxSize(),
-                painter = painterResource(Icons.enter_16_icon),
-                contentDescription = "Navigation Icon"
+            Text(
+                text = "여행 성향",
+                fontSize = 16.sp,
+                fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
+                fontWeight = FontWeight(700),
+                color = MatetripColor.Gray_11
             )
+            IconButton(
+                modifier = Modifier.size(16.dp),
+                onClick = {isOpen = !isOpen}
+            ){
+                Icon(
+                    modifier = Modifier.fillMaxSize(),
+                    painter = painterResource(if(isOpen) Icons.fold_icon else Icons.enter_16_icon),
+                    contentDescription = "Navigation Icon"
+                )
+            }
+        }
+        if (isOpen){
+            Spacer(Modifier.height(12.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(40.dp)
+            ){
+                CustomClickableTag(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    shape = RoundedCornerShape(7.dp),
+                    tagName = "계획적",
+                    fontSize = 14.sp,
+                    selectedTextColor = Color.White,
+                    notSelectedTextColor = MatetripColor.Blue_01,
+                    selectedIconTint = Color.White,
+                    notSelectedIconTint = MatetripColor.Blue_01,
+                    isSelected = TravelInterest.PLANNED.name in travelPreferences,
+                    selectedColor = MatetripColor.Primary,
+                    notSelectedColor = MatetripColor.Blue_04,
+                    trailingIcon = Badges.planned_badge,
+                    onClick = {
+                        if(TravelInterest.PLANNED.name !in travelPreferences){
+                            travelPreferences.remove(TravelInterest.UNPLANNED.name)
+                            travelPreferences.add(TravelInterest.PLANNED.name)
+                        }
+                    }
+                )
+                Spacer(Modifier.width(10.dp))
+                CustomClickableTag(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    shape = RoundedCornerShape(7.dp),
+                    tagName = "무계획",
+                    fontSize = 14.sp,
+                    selectedTextColor = Color.White,
+                    notSelectedTextColor = MatetripColor.Blue_01,
+                    selectedIconTint = Color.White,
+                    notSelectedIconTint = MatetripColor.Blue_01,
+                    isSelected = TravelInterest.UNPLANNED.name in travelPreferences,
+                    selectedColor = MatetripColor.Primary,
+                    notSelectedColor = MatetripColor.Blue_04,
+                    trailingIcon = Badges.unplanned_badge,
+                    onClick = {
+                        if(TravelInterest.UNPLANNED.name !in travelPreferences){
+                            travelPreferences.remove(TravelInterest.PLANNED.name)
+                            travelPreferences.add(TravelInterest.UNPLANNED.name)
+                        }
+                    }
+                )
+            }
+            Spacer(Modifier.height(8.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(40.dp)
+            ){
+                CustomClickableTag(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    shape = RoundedCornerShape(7.dp),
+                    tagName = "공금",
+                    fontSize = 14.sp,
+                    selectedTextColor = Color.White,
+                    notSelectedTextColor = MatetripColor.Blue_01,
+                    selectedIconTint = Color.White,
+                    notSelectedIconTint = MatetripColor.Blue_01,
+                    isSelected = TravelInterest.PUBLIC_MONEY.name in travelPreferences,
+                    selectedColor = MatetripColor.Primary,
+                    notSelectedColor = MatetripColor.Blue_04,
+                    trailingIcon = Badges.public_funds_badge,
+                    onClick = {
+                        if(TravelInterest.PUBLIC_MONEY.name !in travelPreferences){
+                            travelPreferences.remove(TravelInterest.DUTCH_PAY.name)
+                            travelPreferences.add(TravelInterest.PUBLIC_MONEY.name)
+                        }
+                    }
+                )
+                Spacer(Modifier.width(10.dp))
+                CustomClickableTag(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    shape = RoundedCornerShape(7.dp),
+                    tagName = "더치페이",
+                    fontSize = 14.sp,
+                    selectedTextColor = Color.White,
+                    notSelectedTextColor = MatetripColor.Blue_01,
+                    selectedIconTint = Color.White,
+                    notSelectedIconTint = MatetripColor.Blue_01,
+                    isSelected = TravelInterest.DUTCH_PAY.name in travelPreferences,
+                    selectedColor = MatetripColor.Primary,
+                    notSelectedColor = MatetripColor.Blue_04,
+                    trailingIcon = Badges.dutch_pay_badge,
+                    onClick = {
+                        if(TravelInterest.DUTCH_PAY.name !in travelPreferences){
+                            travelPreferences.remove(TravelInterest.PUBLIC_MONEY.name)
+                            travelPreferences.add(TravelInterest.DUTCH_PAY.name)
+                        }
+                    }
+                )
+            }
+            Spacer(Modifier.height(8.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(40.dp)
+            ){
+                CustomClickableTag(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    shape = RoundedCornerShape(7.dp),
+                    tagName = "찾아본 곳",
+                    fontSize = 14.sp,
+                    selectedTextColor = Color.White,
+                    notSelectedTextColor = MatetripColor.Blue_01,
+                    selectedIconTint = Color.White,
+                    notSelectedIconTint = MatetripColor.Blue_01,
+                    isSelected = TravelInterest.LOOKING_FOR.name in travelPreferences,
+                    selectedColor = MatetripColor.Primary,
+                    notSelectedColor = MatetripColor.Blue_04,
+                    trailingIcon = Badges.place_badge,
+                    onClick = {
+                        if(TravelInterest.LOOKING_FOR.name !in travelPreferences){
+                            travelPreferences.remove(TravelInterest.DRAWN_TO.name)
+                            travelPreferences.add(TravelInterest.LOOKING_FOR.name)
+                        }
+                    }
+                )
+                Spacer(Modifier.width(10.dp))
+                CustomClickableTag(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    shape = RoundedCornerShape(7.dp),
+                    tagName = "끌리는 곳",
+                    fontSize = 14.sp,
+                    selectedTextColor = Color.White,
+                    notSelectedTextColor = MatetripColor.Blue_01,
+                    selectedIconTint = Color.White,
+                    notSelectedIconTint = MatetripColor.Blue_01,
+                    isSelected = TravelInterest.DRAWN_TO.name in travelPreferences,
+                    selectedColor = MatetripColor.Primary,
+                    notSelectedColor = MatetripColor.Blue_04,
+                    trailingIcon = Badges.unplanned_badge,
+                    onClick = {
+                        if(TravelInterest.DRAWN_TO.name !in travelPreferences){
+                            travelPreferences.remove(TravelInterest.LOOKING_FOR.name)
+                            travelPreferences.add(TravelInterest.DRAWN_TO.name)
+                        }
+                    }
+                )
+            }
+            Spacer(Modifier.height(8.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(40.dp)
+            ){
+                CustomClickableTag(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    shape = RoundedCornerShape(7.dp),
+                    tagName = "빨리빨리",
+                    fontSize = 14.sp,
+                    selectedTextColor = Color.White,
+                    notSelectedTextColor = MatetripColor.Blue_01,
+                    selectedIconTint = Color.White,
+                    notSelectedIconTint = MatetripColor.Blue_01,
+                    isSelected = TravelInterest.QUICKLY.name in travelPreferences,
+                    selectedColor = MatetripColor.Primary,
+                    notSelectedColor = MatetripColor.Blue_04,
+                    trailingIcon = Badges.rush_badge,
+                    onClick = {
+                        if(TravelInterest.QUICKLY.name !in travelPreferences){
+                            travelPreferences.remove(TravelInterest.LEISURELY.name)
+                            travelPreferences.add(TravelInterest.QUICKLY.name)
+                        }
+                    }
+                )
+                Spacer(Modifier.width(10.dp))
+                CustomClickableTag(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    shape = RoundedCornerShape(7.dp),
+                    tagName = "느긋하게",
+                    fontSize = 14.sp,
+                    selectedTextColor = Color.White,
+                    notSelectedTextColor = MatetripColor.Blue_01,
+                    selectedIconTint = Color.White,
+                    notSelectedIconTint = MatetripColor.Blue_01,
+                    isSelected = TravelInterest.LEISURELY.name in travelPreferences,
+                    selectedColor = MatetripColor.Primary,
+                    notSelectedColor = MatetripColor.Blue_04,
+                    trailingIcon = Badges.leisurely_badge,
+                    onClick = {
+                        if(TravelInterest.LEISURELY.name !in travelPreferences){
+                            travelPreferences.remove(TravelInterest.QUICKLY.name)
+                            travelPreferences.add(TravelInterest.LEISURELY.name)
+                        }
+                    }
+                )
+            }
         }
     }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun TravelStyleEdit(){
-    val dummyData = remember{
-        mutableStateListOf(
-            TravelStyle.RESTAURANT_TOUR,
-            TravelStyle.ACTIVITY,
-            TravelStyle.DRIVE,
-            TravelStyle.CAFE_TOUR,
-            TravelStyle.HEALING
-        )
-    }
+private fun TravelStyleEdit(
+    travelStyles: SnapshotStateList<String>,
+){
     Column(
         modifier = Modifier.fillMaxWidth()
     ){
@@ -392,17 +692,17 @@ private fun TravelStyleEdit(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MatetripColor.Blue_01,
-                isSelected = TravelStyle.RESTAURANT_TOUR in dummyData,
+                isSelected = TravelStyle.RESTAURANT_TOUR.name in travelStyles,
                 selectedColor = MatetripColor.Primary,
                 notSelectedColor =MatetripColor.Blue_04,
                 trailingIcon = Badges.restaurant_badge,
                 selectedIconTint = Color.White,
                 notSelectedIconTint = MatetripColor.Blue_01,
                 onClick = {
-                    if(TravelStyle.RESTAURANT_TOUR in dummyData){
-                        dummyData.remove(TravelStyle.RESTAURANT_TOUR)
+                    if(TravelStyle.RESTAURANT_TOUR.name in travelStyles){
+                        travelStyles.remove(TravelStyle.RESTAURANT_TOUR.name)
                     } else {
-                        dummyData.add(TravelStyle.RESTAURANT_TOUR)
+                        travelStyles.add(TravelStyle.RESTAURANT_TOUR.name)
                     }
                 }
             )
@@ -412,17 +712,17 @@ private fun TravelStyleEdit(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MatetripColor.Blue_01,
-                isSelected = TravelStyle.LIFE_SHOT in dummyData,
+                isSelected = TravelStyle.LIFE_SHOT.name in travelStyles,
                 selectedColor = MatetripColor.Primary,
                 notSelectedColor = MatetripColor.Blue_04,
                 trailingIcon = Badges.image_badge,
                 selectedIconTint = Color.White,
                 notSelectedIconTint = MatetripColor.Blue_01,
                 onClick = {
-                    if(TravelStyle.LIFE_SHOT in dummyData){
-                        dummyData.remove(TravelStyle.LIFE_SHOT)
+                    if(TravelStyle.LIFE_SHOT.name in travelStyles){
+                        travelStyles.remove(TravelStyle.LIFE_SHOT.name)
                     } else {
-                        dummyData.add(TravelStyle.LIFE_SHOT)
+                        travelStyles.add(TravelStyle.LIFE_SHOT.name)
                     }
                 }
             )
@@ -432,17 +732,17 @@ private fun TravelStyleEdit(){
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MatetripColor.Blue_01,
-                isSelected = TravelStyle.ACTIVITY in dummyData,
+                isSelected = TravelStyle.ACTIVITY.name in travelStyles,
                 selectedColor = MatetripColor.Primary,
                 notSelectedColor = MatetripColor.Blue_04,
                 trailingIcon = Badges.activity_badge,
                 selectedIconTint = Color.White,
                 notSelectedIconTint = MatetripColor.Blue_01,
                 onClick = {
-                    if(TravelStyle.ACTIVITY in dummyData){
-                        dummyData.remove(TravelStyle.ACTIVITY)
+                    if(TravelStyle.ACTIVITY.name in travelStyles){
+                        travelStyles.remove(TravelStyle.ACTIVITY.name)
                     } else {
-                        dummyData.add(TravelStyle.ACTIVITY)
+                        travelStyles.add(TravelStyle.ACTIVITY.name)
                     }
                 }
             )
@@ -452,17 +752,17 @@ private fun TravelStyleEdit(){
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MatetripColor.Blue_01,
-                isSelected = TravelStyle.DRIVE in dummyData,
+                isSelected = TravelStyle.DRIVE.name in travelStyles,
                 selectedColor = MatetripColor.Primary,
                 notSelectedColor = MatetripColor.Blue_04,
                 trailingIcon = Badges.drive_badge,
                 selectedIconTint = Color.White,
                 notSelectedIconTint = MatetripColor.Blue_01,
                 onClick = {
-                    if(TravelStyle.DRIVE in dummyData){
-                        dummyData.remove(TravelStyle.DRIVE)
+                    if(TravelStyle.DRIVE.name in travelStyles){
+                        travelStyles.remove(TravelStyle.DRIVE.name)
                     } else {
-                        dummyData.add(TravelStyle.DRIVE)
+                        travelStyles.add(TravelStyle.DRIVE.name)
                     }
                 }
             )
@@ -472,17 +772,17 @@ private fun TravelStyleEdit(){
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MatetripColor.Blue_01,
-                isSelected = TravelStyle.CAFE_TOUR in dummyData,
+                isSelected = TravelStyle.CAFE_TOUR.name in travelStyles,
                 selectedColor = MatetripColor.Primary,
                 notSelectedColor = MatetripColor.Blue_04,
                 trailingIcon = Badges.cafe_tour_badge,
                 selectedIconTint = Color.White,
                 notSelectedIconTint = MatetripColor.Blue_01,
                 onClick = {
-                    if(TravelStyle.CAFE_TOUR in dummyData){
-                        dummyData.remove(TravelStyle.CAFE_TOUR)
+                    if(TravelStyle.CAFE_TOUR.name in travelStyles){
+                        travelStyles.remove(TravelStyle.CAFE_TOUR.name)
                     } else {
-                        dummyData.add(TravelStyle.CAFE_TOUR)
+                        travelStyles.add(TravelStyle.CAFE_TOUR.name)
                     }
                 }
             )
@@ -492,17 +792,17 @@ private fun TravelStyleEdit(){
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MatetripColor.Blue_01,
-                isSelected = TravelStyle.HEALING in dummyData,
+                isSelected = TravelStyle.HEALING.name in travelStyles,
                 selectedColor = MatetripColor.Primary,
                 notSelectedColor = MatetripColor.Blue_04,
                 trailingIcon = Badges.healing_badge,
                 selectedIconTint = Color.White,
                 notSelectedIconTint = MatetripColor.Blue_01,
                 onClick = {
-                    if(TravelStyle.HEALING in dummyData){
-                        dummyData.remove(TravelStyle.HEALING)
+                    if(TravelStyle.HEALING.name in travelStyles){
+                        travelStyles.remove(TravelStyle.HEALING.name)
                     } else {
-                        dummyData.add(TravelStyle.HEALING)
+                        travelStyles.add(TravelStyle.HEALING.name)
                     }
                 }
             )
@@ -512,17 +812,17 @@ private fun TravelStyleEdit(){
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MatetripColor.Blue_01,
-                isSelected = TravelStyle.CULTURE_AND_ARTS in dummyData,
+                isSelected = TravelStyle.CULTURE_AND_ARTS.name in travelStyles,
                 selectedColor = MatetripColor.Primary,
                 notSelectedColor = MatetripColor.Blue_04,
                 trailingIcon = Badges.art_badge,
                 selectedIconTint = Color.White,
                 notSelectedIconTint = MatetripColor.Blue_01,
                 onClick = {
-                    if(TravelStyle.CULTURE_AND_ARTS in dummyData){
-                        dummyData.remove(TravelStyle.CULTURE_AND_ARTS)
+                    if(TravelStyle.CULTURE_AND_ARTS.name in travelStyles){
+                        travelStyles.remove(TravelStyle.CULTURE_AND_ARTS.name)
                     } else {
-                        dummyData.add(TravelStyle.CULTURE_AND_ARTS)
+                        travelStyles.add(TravelStyle.CULTURE_AND_ARTS.name)
                     }
                 }
             )
@@ -532,17 +832,17 @@ private fun TravelStyleEdit(){
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MatetripColor.Blue_01,
-                isSelected = TravelStyle.PACKAGE_TOUR in dummyData,
+                isSelected = TravelStyle.PACKAGE_TOUR.name in travelStyles,
                 selectedColor = MatetripColor.Primary,
                 notSelectedColor = MatetripColor.Blue_04,
                 trailingIcon = Badges.package_badge,
                 selectedIconTint = Color.White,
                 notSelectedIconTint = MatetripColor.Blue_01,
                 onClick = {
-                    if(TravelStyle.PACKAGE_TOUR in dummyData){
-                        dummyData.remove(TravelStyle.PACKAGE_TOUR)
+                    if(TravelStyle.PACKAGE_TOUR.name in travelStyles){
+                        travelStyles.remove(TravelStyle.PACKAGE_TOUR.name)
                     } else {
-                        dummyData.add(TravelStyle.PACKAGE_TOUR)
+                        travelStyles.add(TravelStyle.PACKAGE_TOUR.name)
                     }
                 }
             )
@@ -552,15 +852,9 @@ private fun TravelStyleEdit(){
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun FoodPreferenceEdit(){
-    val dummyData = remember{
-        mutableStateListOf(
-            FoodPreference.MEAT,
-            FoodPreference.RICE,
-            FoodPreference.COFFEE,
-            FoodPreference.DESSERT
-        )
-    }
+private fun FoodPreferenceEdit(
+    foodPreferences: SnapshotStateList<String>
+){
     Column(
         modifier = Modifier.fillMaxWidth()
     ){
@@ -582,17 +876,17 @@ private fun FoodPreferenceEdit(){
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MatetripColor.Blue_01,
-                isSelected = FoodPreference.MEAT in dummyData,
+                isSelected = FoodPreference.MEAT.name in foodPreferences,
                 selectedColor = MatetripColor.Primary,
                 notSelectedColor = MatetripColor.Blue_04,
                 trailingIcon = Badges.meat_badge,
                 selectedIconTint = Color.White,
                 notSelectedIconTint = MatetripColor.Blue_01,
                 onClick = {
-                    if(FoodPreference.MEAT in dummyData){
-                        dummyData.remove(FoodPreference.MEAT)
+                    if(FoodPreference.MEAT.name in foodPreferences){
+                        foodPreferences.remove(FoodPreference.MEAT.name)
                     } else {
-                        dummyData.add(FoodPreference.MEAT)
+                        foodPreferences.add(FoodPreference.MEAT.name)
                     }
                 }
             )
@@ -602,17 +896,17 @@ private fun FoodPreferenceEdit(){
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MatetripColor.Blue_01,
-                isSelected = FoodPreference.RICE in dummyData,
+                isSelected = FoodPreference.RICE.name in foodPreferences,
                 selectedColor = MatetripColor.Primary,
                 notSelectedColor = MatetripColor.Blue_04,
                 trailingIcon = Badges.rice_badge,
                 selectedIconTint = Color.White,
                 notSelectedIconTint = MatetripColor.Blue_01,
                 onClick = {
-                    if(FoodPreference.RICE in dummyData){
-                        dummyData.remove(FoodPreference.RICE)
+                    if(FoodPreference.RICE.name in foodPreferences){
+                        foodPreferences.remove(FoodPreference.RICE.name)
                     } else {
-                        dummyData.add(FoodPreference.RICE)
+                        foodPreferences.add(FoodPreference.RICE.name)
                     }
                 }
             )
@@ -622,17 +916,17 @@ private fun FoodPreferenceEdit(){
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MatetripColor.Blue_01,
-                isSelected = FoodPreference.COFFEE in dummyData,
+                isSelected = FoodPreference.COFFEE.name in foodPreferences,
                 selectedColor = MatetripColor.Primary,
                 notSelectedColor = MatetripColor.Blue_04,
                 trailingIcon = Badges.coffee_badge,
                 selectedIconTint = Color.White,
                 notSelectedIconTint = MatetripColor.Blue_01,
                 onClick = {
-                    if(FoodPreference.COFFEE in dummyData){
-                        dummyData.remove(FoodPreference.COFFEE)
+                    if(FoodPreference.COFFEE.name in foodPreferences){
+                        foodPreferences.remove(FoodPreference.COFFEE.name)
                     } else {
-                        dummyData.add(FoodPreference.COFFEE)
+                        foodPreferences.add(FoodPreference.COFFEE.name)
                     }
                 }
             )
@@ -642,17 +936,17 @@ private fun FoodPreferenceEdit(){
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MatetripColor.Blue_01,
-                isSelected = FoodPreference.FAST_FOOD in dummyData,
+                isSelected = FoodPreference.FAST_FOOD.name in foodPreferences,
                 selectedColor = MatetripColor.Primary,
                 notSelectedColor = MatetripColor.Blue_04,
                 trailingIcon = Badges.fast_food_badge,
                 selectedIconTint = Color.White,
                 notSelectedIconTint = MatetripColor.Blue_01,
                 onClick = {
-                    if(FoodPreference.FAST_FOOD in dummyData){
-                        dummyData.remove(FoodPreference.FAST_FOOD)
+                    if(FoodPreference.FAST_FOOD.name in foodPreferences){
+                        foodPreferences.remove(FoodPreference.FAST_FOOD.name)
                     } else {
-                        dummyData.add(FoodPreference.FAST_FOOD)
+                        foodPreferences.add(FoodPreference.FAST_FOOD.name)
                     }
                 }
             )
@@ -662,17 +956,17 @@ private fun FoodPreferenceEdit(){
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MatetripColor.Blue_01,
-                isSelected = FoodPreference.SEAFOOD in dummyData,
+                isSelected = FoodPreference.SEAFOOD.name in foodPreferences,
                 selectedColor = MatetripColor.Primary,
                 notSelectedColor = MatetripColor.Blue_04,
                 trailingIcon = Badges.seafood_badge,
                 selectedIconTint = Color.White,
                 notSelectedIconTint = MatetripColor.Blue_01,
                 onClick = {
-                    if(FoodPreference.SEAFOOD in dummyData){
-                        dummyData.remove(FoodPreference.SEAFOOD)
+                    if(FoodPreference.SEAFOOD.name in foodPreferences){
+                        foodPreferences.remove(FoodPreference.SEAFOOD.name)
                     } else {
-                        dummyData.add(FoodPreference.SEAFOOD)
+                        foodPreferences.add(FoodPreference.SEAFOOD.name)
                     }
                 }
             )
@@ -682,17 +976,17 @@ private fun FoodPreferenceEdit(){
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MatetripColor.Blue_01,
-                isSelected = FoodPreference.VEGETABLES in dummyData,
+                isSelected = FoodPreference.VEGETABLES.name in foodPreferences,
                 selectedColor = MatetripColor.Primary,
                 notSelectedColor = MatetripColor.Blue_04,
                 trailingIcon = Badges.vegetarian_badge,
                 selectedIconTint = Color.White,
                 notSelectedIconTint = MatetripColor.Blue_01,
                 onClick = {
-                    if(FoodPreference.VEGETABLES in dummyData){
-                        dummyData.remove(FoodPreference.VEGETABLES)
+                    if(FoodPreference.VEGETABLES.name in foodPreferences){
+                        foodPreferences.remove(FoodPreference.VEGETABLES.name)
                     } else {
-                        dummyData.add(FoodPreference.VEGETABLES)
+                        foodPreferences.add(FoodPreference.VEGETABLES.name)
                     }
                 }
             )
@@ -702,17 +996,17 @@ private fun FoodPreferenceEdit(){
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MatetripColor.Blue_01,
-                isSelected = FoodPreference.DESSERT in dummyData,
+                isSelected = FoodPreference.DESSERT.name in foodPreferences,
                 selectedColor = MatetripColor.Primary,
                 notSelectedColor = MatetripColor.Blue_04,
                 trailingIcon = Badges.dessert_badge,
                 selectedIconTint = Color.White,
                 notSelectedIconTint = MatetripColor.Blue_01,
                 onClick = {
-                    if(FoodPreference.DESSERT in dummyData){
-                        dummyData.remove(FoodPreference.DESSERT)
+                    if(FoodPreference.DESSERT.name in foodPreferences){
+                        foodPreferences.remove(FoodPreference.DESSERT.name)
                     } else {
-                        dummyData.add(FoodPreference.DESSERT)
+                        foodPreferences.add(FoodPreference.DESSERT.name)
                     }
                 }
             )
@@ -722,17 +1016,17 @@ private fun FoodPreferenceEdit(){
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MatetripColor.Blue_01,
-                isSelected = FoodPreference.STREET_FOOD in dummyData,
+                isSelected = FoodPreference.STREET_FOOD.name in foodPreferences,
                 selectedColor = MatetripColor.Primary,
                 notSelectedColor = MatetripColor.Blue_04,
                 trailingIcon = Badges.street_food_badge,
                 selectedIconTint = Color.White,
                 notSelectedIconTint = MatetripColor.Blue_01,
                 onClick = {
-                    if(FoodPreference.STREET_FOOD in dummyData){
-                        dummyData.remove(FoodPreference.STREET_FOOD)
+                    if(FoodPreference.STREET_FOOD.name in foodPreferences){
+                        foodPreferences.remove(FoodPreference.STREET_FOOD.name)
                     } else {
-                        dummyData.add(FoodPreference.STREET_FOOD)
+                        foodPreferences.add(FoodPreference.STREET_FOOD.name)
                     }
                 }
             )
@@ -741,8 +1035,10 @@ private fun FoodPreferenceEdit(){
 }
 
 @Composable
-private fun SNSEdit(){
-    var snsLink by remember{mutableStateOf("")}
+private fun SNSEdit(
+    snsLink: String,
+    onUpdateSnsLink: (String) -> Unit,
+){
     Column(
         modifier = Modifier.fillMaxWidth()
     ){
@@ -783,14 +1079,18 @@ private fun SNSEdit(){
                     )
                     .padding(horizontal = 12.dp, vertical = 13.dp),
                 value = snsLink,
-                onValueChange = {snsLink = it},
+                onValueChange = onUpdateSnsLink,
                 textStyle = TextStyle(
                     fontSize = 14.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                     fontWeight = FontWeight(400),
-                    color = Color.Black
+                    textAlign = TextAlign.Justify,
+                    color = Color.Black,
+                    platformStyle = PlatformTextStyle(
+                        includeFontPadding = false
+                    )
                 ),
-                maxLines = 1
+                maxLines = 1,
             ){
                 if(snsLink.isEmpty()){
                     Text(
@@ -866,5 +1166,23 @@ private fun MyImages(pictures: List<String>){
 @Preview
 @Composable
 private fun EditProfileUITest(){
-    EditProfileScreen(navBack = {  })
+    EditProfileScreen(
+        navBack = {  },
+        uiState = EditProfileUiState.Success(
+            "",
+            "찬란한바닷가",
+            "",
+            2024,
+            "FEMALE",
+            listOf("PLANNED", "DUTCH_PAY", "LOOKING_FOR", "QUICKLY"),
+            listOf(TravelStyle.RESTAURANT_TOUR.name, TravelStyle.ACTIVITY.name, TravelStyle.DRIVE.name, TravelStyle.CAFE_TOUR.name, TravelStyle.HEALING.name),
+            listOf(FoodPreference.MEAT.name, FoodPreference.RICE.name, FoodPreference.COFFEE.name),
+            snsLink = null,
+            images = listOf("")
+        ),
+        errState = ErrorState.Loading,
+        onEditClick = {a,b,c,d,e,f,g,h,i,j ->
+
+        }
+    )
 }
