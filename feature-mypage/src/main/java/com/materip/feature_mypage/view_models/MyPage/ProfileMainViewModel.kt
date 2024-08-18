@@ -1,14 +1,12 @@
-package com.materip.feature_mypage.view_models
+package com.materip.feature_mypage.view_models.MyPage
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.materip.core_common.ErrorState
 import com.materip.core_common.Result
 import com.materip.core_common.asResult
-import com.materip.core_model.response.GetProfileDetailsResponseDto
-import com.materip.core_repository.repository.profile_repository.ProfileRepository
-import com.materip.core_repository.useCase.GetProfileDetails
+import com.materip.core_model.response.GetProfileResponseDto
+import com.materip.core_repository.useCase.GetProfileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,13 +18,13 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileDescriptionViewModel @Inject constructor(
-    private val getProfileDetails: GetProfileDetails
+class ProfileMainViewModel @Inject constructor(
+    private val getProfileUseCase: GetProfileUseCase
 ): ViewModel() {
     private val invalidTokenError = MutableStateFlow<Boolean>(false)
     private val notFoundTokenError = MutableStateFlow<Boolean>(false)
     private val generalError = MutableStateFlow<Pair<Boolean, String?>>(Pair(false, null))
-    val errorState: StateFlow<ErrorState> = combine(invalidTokenError, notFoundTokenError, generalError){ invalidToken, notFoundToken, general ->
+    val errorState: StateFlow<ErrorState> = combine(invalidTokenError, notFoundTokenError, generalError){invalidToken, notFoundToken, general ->
         ErrorState.AuthError(
             invalidToken,
             notFoundToken,
@@ -37,38 +35,39 @@ class ProfileDescriptionViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = ErrorState.Loading
     )
-    val uiState: StateFlow<ProfileDescriptionUiState> = errorState.map{
-        if(it is ErrorState.AuthError && it.isInvalid()) throw Exception("")
-        Log.d("MATETRIP API TEST", "result before")
-        val result = getProfileDetails()
-        Log.d("MATETRIP API TEST", "result : ${result}")
+    val uiState: StateFlow<ProfileMainUiState> = errorState.map {
+        if (it is ErrorState.AuthError && it.isInvalid()){throw Exception("")}
+        val result = getProfileUseCase()
         if (result.error != null){
             when(result.error!!.status){
-                404 -> notFoundTokenError.update{true}
+                401 -> notFoundTokenError.update{true}
+                404 -> invalidTokenError.update{true}
                 else -> generalError.update{Pair(true, result.error!!.message)}
             }
-            throw Exception("")
+            throw Exception("Error occur in Get Profile")
         }
         result.data
     }.asResult().map{result ->
-        Log.d("MATETRIP API TEST", "map result : ${result}")
         when(result){
-            Result.Loading -> ProfileDescriptionUiState.Loading
-            is Result.Success -> ProfileDescriptionUiState.Success(user = result.data!!)
-            is Result.Error -> ProfileDescriptionUiState.Error
+            Result.Loading -> ProfileMainUiState.Loading
+            is Result.Success -> ProfileMainUiState.Success(result.data!!)
+            is Result.Error -> ProfileMainUiState.Error
         }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = ProfileDescriptionUiState.Loading
+        initialValue = ProfileMainUiState.Loading
     )
+
 }
 
-sealed interface ProfileDescriptionUiState{
-    data object Loading: ProfileDescriptionUiState
+sealed interface ProfileMainUiState{
     data class Success(
-        val user: GetProfileDetailsResponseDto
-    ): ProfileDescriptionUiState{
+        val user: GetProfileResponseDto
+    ): ProfileMainUiState {
+        fun getTags(): List<String>{
+            return user.travelPreferences.plus(user.travelStyles).plus(user.foodPreferences)
+        }
         fun getAge(): String{
             return when(user.birthYear){
                 in 0..9 -> "${user.birthYear}세"
@@ -84,5 +83,6 @@ sealed interface ProfileDescriptionUiState{
             }
         }
     }
-    data object Error: ProfileDescriptionUiState
+    data object Loading: ProfileMainUiState
+    data object Error: ProfileMainUiState
 }
