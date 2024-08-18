@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.materip.core_model.accompany_board.BoardItem
+import com.materip.feature_home.intent.BoardListIntent
 import com.materip.feature_home.state.BoardListUiState
 import com.materip.feature_home.viewModel.BoardViewModel
 import com.materip.matetrip.component.MateTripSearchBar
@@ -62,7 +63,7 @@ fun HomeScreen(
     val boardListState = viewModel.boardList.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.loadBoardList(pageable)
+        viewModel.handleIntent(BoardListIntent.LoadBoardList(pageable))
     }
 
     var selectedRegion by remember { mutableStateOf("전체") }
