@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -128,7 +129,9 @@ fun ProfileTag(
         else -> Pair("Default",R.drawable.ic_app_logo_loading)
     }
     Row(
-        modifier = Modifier.height(28.dp).wrapContentWidth()
+        modifier = Modifier
+            .height(28.dp)
+            .wrapContentWidth()
             .background(color = MatetripColor.Blue_04, shape = RoundedCornerShape(size = 5.dp))
             .padding(horizontal = 10.dp, vertical = 5.dp),
         horizontalArrangement = Arrangement.Center,
@@ -173,8 +176,9 @@ fun CustomClickableTag(
     onClick: () -> Unit,
 ){
     Row(
-        modifier = modifier.background(color = if(isSelected) selectedColor else notSelectedColor, shape = shape)
-            .clickable{onClick()}
+        modifier = modifier
+            .background(color = if (isSelected) selectedColor else notSelectedColor, shape = shape)
+            .clickable { onClick() }
             .padding(horizontal = 8.dp, vertical = 5.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
@@ -204,16 +208,19 @@ fun NormalTag(
     tagName: String,
     shape: Shape,
     color: Color,
-    textStyle: TextStyle
+    textStyle: TextStyle,
+    innerPaddingValues: PaddingValues = PaddingValues(10.dp)
 ){
     Row(
         modifier = modifier
             .background(color = color, shape = shape)
-            .padding(10.dp)
+            .padding(innerPaddingValues),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
     ){
         Text(
             text = tagName,
-            style = textStyle
+            style = textStyle,
         )
     }
 }
@@ -225,5 +232,16 @@ fun RegionTagPreview() {
     Column{
         RegionTag(regions = regions, onClick = {})
         ProfileTag(TravelStyle.RESTAURANT_TOUR.name)
+        NormalTag(
+            modifier = Modifier.size(width = 80.dp, height = 50.dp),
+            tagName = "이름",
+            shape = RoundedCornerShape(size = 10.dp),
+            color = Color.Black,
+            textStyle = TextStyle(
+                fontSize = 14.sp,
+                color = Color.White,
+                fontFamily = FontFamily(Font(R.font.noto_sans_kr))
+            )
+        )
     }
 }
