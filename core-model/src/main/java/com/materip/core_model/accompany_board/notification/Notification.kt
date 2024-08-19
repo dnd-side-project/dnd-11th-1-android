@@ -8,21 +8,7 @@ import java.time.LocalDate
 // TODO: 임시로 만든 데이터 모델, CompanionReview도 임시
 @Serializable
 data class Notification(
-    val userId: Int,
-    val boardRequest: CompanionRequest?,
-    val boardReview: CompanionReview?,
-) {
-    fun getFormattedMessage(): String {
-        val messages = mutableListOf<String>()
-
-        boardRequest?.hasContent()?.let {
-            messages.add("${userId}로부터 동행 신청서가 도착했습니다!")
-        }
-
-        boardReview?.hasContent()?.let {
-            messages.add("${userId}로부터 동행 후기가 도착했습니다!")
-        }
-
-        return messages.joinToString(" ")
-    }
-}
+    val userId: Int, // 요청을 보낸 유저를 뜻함
+    val boardRequest: CompanionRequest?, //  요청을 보낸 유저의 동행신청
+    val boardReview: CompanionReview?, //  요청을 보낸 유저의 동행리뷰
+)
