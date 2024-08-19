@@ -35,6 +35,7 @@ import com.materip.matetrip.component.KakaoButton
 @Composable
 fun LoginRoute(
     navOnBoarding: () -> Unit,
+    navMyPage: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
 ){
     val context = LocalContext.current
@@ -42,22 +43,30 @@ fun LoginRoute(
 
     LoginScreen(
         isLogin = viewModel.isLogin.collectAsStateWithLifecycle().value,
+        isOnboardingCompleted = viewModel.isOnboardingCompleted.collectAsStateWithLifecycle().value,
         errState = errState.value,
         doLogin = {viewModel.doLogin(context)},
-        navOnBoarding = navOnBoarding
+        navOnBoarding = navOnBoarding,
+        navMyPage = navMyPage
     )
 }
 
 @Composable
 fun LoginScreen(
     isLogin: Boolean,
+    isOnboardingCompleted: Boolean,
     errState: ErrorState,
     doLogin: () -> Unit,
     navOnBoarding: () -> Unit,
+    navMyPage: () -> Unit,
 ){
-    LaunchedEffect(isLogin){
+    LaunchedEffect(isLogin, isOnboardingCompleted){
         if (isLogin){
-            navOnBoarding()
+            if(isOnboardingCompleted){
+                navMyPage()
+            } else {
+                navOnBoarding()
+            }
         }
     }
     if (errState is ErrorState.NoAuthError && errState.generalError.first){
@@ -124,6 +133,8 @@ private fun LoginUITest(){
         doLogin = {},
         errState = ErrorState.Loading,
         isLogin = false,
-        navOnBoarding = {}
+        isOnboardingCompleted = false,
+        navOnBoarding = {},
+        navMyPage = {}
     )
 }

@@ -1,6 +1,5 @@
 package com.materip.feature_login.navigation
 
-import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -11,11 +10,13 @@ fun NavController.navigateToLogin() = navigate(LoginRoute.LoginRoute.name)
 fun NavController.navigateToTest() = navigate("TEST_SCREEN")
 
 fun NavGraphBuilder.login(
-    navOnBoarding: () -> Unit
+    navOnBoarding: () -> Unit,
+    navMyPage: () -> Unit,
 ){
     composable(route = LoginRoute.LoginRoute.name){
         LoginRoute(
-            navOnBoarding = navOnBoarding
+            navOnBoarding = navOnBoarding,
+            navMyPage = navMyPage
         )
     }
 }
