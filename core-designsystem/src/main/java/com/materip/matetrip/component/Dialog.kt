@@ -15,21 +15,25 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
@@ -46,10 +50,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.materip.core_designsystem.R
 import com.materip.matetrip.icon.Badges
 import com.materip.matetrip.icon.Icons
 import com.materip.matetrip.theme.MatetripColor
+import kotlinx.coroutines.delay
 
 @Composable
 fun SelectableDialog(
@@ -477,6 +483,44 @@ fun ConfirmationDialog(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun WarningDialog(
+    onDismissRequest: () -> Unit
+){
+    Dialog(
+        onDismissRequest = onDismissRequest,
+        properties = DialogProperties(
+            dismissOnClickOutside = false,
+            dismissOnBackPress = false
+        )
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth()
+                .background(color = MatetripColor.Red)
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.Center
+        ){
+            Icon(
+                modifier = Modifier.size(24.dp).clip(CircleShape),
+                painter = painterResource(Badges.warning_badge),
+                contentDescription = "Warning Icon"
+            )
+            Spacer(Modifier.width(16.dp))
+            Text(
+                text = "인증코드 인증에 실패했습니다.\n인증코드를 다시 한 번 확인해 주세요.",
+                fontSize = 14.sp,
+                fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                fontWeight = FontWeight(400),
+                color = Color.White
+            )
+        }
+    }
+    LaunchedEffect(Unit){
+        delay(1500)
+        onDismissRequest()
     }
 }
 
