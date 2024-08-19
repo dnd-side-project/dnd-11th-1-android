@@ -6,6 +6,7 @@ object Badges {
     // 뱃지
     val information_badge = R.drawable.frame_2608633
     val question_badge = R.drawable.frame_2608635
+    val warning_badge = R.drawable.ic_warning
 
     // 소셜 뱃지
     val instagram_badge = R.drawable.instagram_24px
