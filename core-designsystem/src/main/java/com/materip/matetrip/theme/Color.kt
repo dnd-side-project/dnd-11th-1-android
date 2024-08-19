@@ -32,6 +32,8 @@ object MatetripColor{
     val Gray_02 = Color(0xFFF4F4F4)
     val Gray_01 = Color(0xFFFAFAFA)
 
+    val Red = Color(0xFFF03327)
+
     //kakao button
     val KakaoButtonColor = Color(0xFFF6DB4F)
     val KakaoTextColor = Color(0xFF382929)
