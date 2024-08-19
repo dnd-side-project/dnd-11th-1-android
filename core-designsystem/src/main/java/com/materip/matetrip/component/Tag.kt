@@ -48,12 +48,10 @@ import com.materip.core_model.ui_model.FoodPreference
 import com.materip.core_model.ui_model.TravelInterest
 import com.materip.core_model.ui_model.TravelStyle
 import com.materip.matetrip.icon.Badges
+import com.materip.matetrip.theme.MateTripColors
 import com.materip.matetrip.theme.MateTripColors.Gray_11
 import com.materip.matetrip.theme.MateTripColors.Primary
 import com.materip.matetrip.theme.MateTripTypographySet
-import com.materip.matetrip.theme.MatetripColor
-import com.materip.matetrip.theme.MatetripColor.Gray_11
-import com.materip.matetrip.theme.MatetripColor.Primary
 
 @Composable
 fun RegionTag(
@@ -155,7 +153,7 @@ fun ProfileTag(
         modifier = Modifier
             .height(28.dp)
             .wrapContentWidth()
-            .background(color = MatetripColor.Blue_04, shape = RoundedCornerShape(size = 5.dp))
+            .background(color = MateTripColors.Blue_04, shape = RoundedCornerShape(size = 5.dp))
             .padding(horizontal = 10.dp, vertical = 5.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
@@ -172,7 +170,7 @@ fun ProfileTag(
                 fontSize = 12.sp,
                 fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                 fontWeight = FontWeight(500),
-                color = MatetripColor.Gray_10,
+                color = MateTripColors.Gray_10,
                 textAlign = TextAlign.Justify,
                 platformStyle = PlatformTextStyle(
                     includeFontPadding = false
@@ -253,7 +251,6 @@ fun NormalTag(
 fun RegionTagPreview() {
     val regions = listOf("전체", "수도권", "경기도", "충청도", "강원도", "경상도", "전라도", "제주도", "해외")
     Column{
-        RegionTag(regions = regions, onClick = {})
         ProfileTag(TravelStyle.RESTAURANT_TOUR.name)
         NormalTag(
             modifier = Modifier.size(width = 80.dp, height = 50.dp),
@@ -266,6 +263,6 @@ fun RegionTagPreview() {
                 fontFamily = FontFamily(Font(R.font.noto_sans_kr))
             )
         )
+        RegionTag(onClick = {})
     }
-    RegionTag(onClick = {})
 }
