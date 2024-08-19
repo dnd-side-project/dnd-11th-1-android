@@ -1,5 +1,11 @@
 package com.materip.feature_mypage.screen.MyPage
 
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -38,6 +44,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
@@ -72,6 +79,7 @@ fun EditProfileRoute(
     navBack: () -> Unit,
     viewModel: EditProfileViewModel = hiltViewModel()
 ){
+    val context = LocalContext.current
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     val errState = viewModel.errorState.collectAsStateWithLifecycle()
     EditProfileScreen(
@@ -84,7 +92,16 @@ fun EditProfileRoute(
         },
         onEditClick = {profileImg, nickname, description, birthYear, gender, travelPreferences, travelStyles, foodPreferences, snsLink, images ->
             viewModel.updateProfile(profileImg, nickname, description, birthYear, gender, travelPreferences,
-                travelStyles, foodPreferences, snsLink, images)
+                travelStyles, foodPreferences, snsLink)
+        },
+        onResetUploadImage = {viewModel.resetImages()},
+        onUploadImage = {
+            it.map{
+                viewModel.saveImageToS3(
+                    context = context,
+                    path = it
+                )
+            }
         }
     )
 }
@@ -96,6 +113,8 @@ fun EditProfileScreen(
     onEditClick: (profileImg: String, nickname: String, description: String, birthYear: Int, gender: String,
                   travelPreferences: SnapshotStateList<String>, travelStyles: SnapshotStateList<String>,
                   foodPreference: SnapshotStateList<String>, snsLink: String?, images: SnapshotStateList<String>) -> Unit,
+    onUploadImage: (List<Uri>) -> Unit,
+    onResetUploadImage: () -> Unit,
     navBack: () -> Unit
 ){
     when(uiState){
@@ -115,6 +134,8 @@ fun EditProfileScreen(
                 initSnsLink = uiState.snsLink,
                 initImages = uiState.images,
                 onEditClick = onEditClick,
+                onUploadImage = onUploadImage,
+                onResetUploadImage = onResetUploadImage,
                 navBack = navBack
             )
         }
@@ -144,9 +165,12 @@ private fun EditProfileMainContent(
     onEditClick: (profileImg: String, nickname: String, description: String, birthYear: Int, gender: String,
                   travelPreferences: SnapshotStateList<String>, travelStyles: SnapshotStateList<String>,
                   foodPreferences: SnapshotStateList<String>, snsLink: String?, images: SnapshotStateList<String>) -> Unit,
+    onUploadImage: (List<Uri>) -> Unit,
+    onResetUploadImage: () -> Unit,
     navBack: () -> Unit,
 ){
     val scrollState = rememberScrollState()
+    val context = LocalContext.current
     var profileImg by remember{mutableStateOf(initProfileImg)}
     var nickname by remember{mutableStateOf(initNickname)}
     var introduction by remember{mutableStateOf(initDescription ?: "")}
@@ -157,6 +181,17 @@ private fun EditProfileMainContent(
     val foodPreferences = remember{ mutableStateListOf(*initFoodPreferences.toTypedArray()) }
     var snsLink by remember{mutableStateOf(initSnsLink ?: "")}
     val images = remember{ mutableStateListOf(*initImages.toTypedArray()) }
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickMultipleVisualMedia(),
+        onResult = {
+            if(images.size + it.size <= 4){
+                onUploadImage(it)
+                images.addAll(it.map{it.toString()})
+            } else {
+                Toast.makeText(context, "사진은 4장까지 가능합니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    )
 
     Column(
         modifier = Modifier
@@ -166,7 +201,10 @@ private fun EditProfileMainContent(
     ){
         NormalTopBar(
             title = "프로필 수정",
-            onBackClick = navBack,
+            onBackClick = {
+                onResetUploadImage()
+                navBack()
+            },
             onClick = {
                 onEditClick(profileImg,nickname,introduction,birthYear,gender.name,travelPreferences,travelStyles,foodPreferences,snsLink,images)
                 navBack()
@@ -234,7 +272,10 @@ private fun EditProfileMainContent(
                 onUpdateSnsLink = {snsLink = it}
             )
             Spacer(Modifier.height(40.dp))
-            MyImages(pictures = emptyList())
+            MyImages(
+                pictures = images,
+                onCameraClick = {launcher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))}
+            )
         }
     }
 }
@@ -1109,7 +1150,10 @@ private fun SNSEdit(
 }
 
 @Composable
-private fun MyImages(pictures: List<String>){
+private fun MyImages(
+    pictures: List<String>,
+    onCameraClick :() -> Unit,
+){
     Column(
         modifier = Modifier.fillMaxWidth()
     ){
@@ -1131,7 +1175,10 @@ private fun MyImages(pictures: List<String>){
                         .background(
                             color = MatetripColor.Blue_04,
                             shape = RoundedCornerShape(size = 10.dp)
-                        ),
+                        )
+                        .clickable {
+                            onCameraClick()
+                        },
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ){
@@ -1183,6 +1230,10 @@ private fun EditProfileUITest(){
         errState = ErrorState.Loading,
         onEditClick = {a,b,c,d,e,f,g,h,i,j ->
 
-        }
+        },
+        onUploadImage = {
+
+        },
+        onResetUploadImage = {}
     )
 }
