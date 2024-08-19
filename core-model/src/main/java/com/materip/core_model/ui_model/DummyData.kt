@@ -64,3 +64,11 @@ data class SendApplicationClass(
     val snsLink: String,
     val myNickname: String
 )
+
+data class AccountInfoClass(
+    val kakaoAccount: String,
+    val isSecondAuthDone: Boolean,
+    val phoneNumber: String?,
+    val isSnsLinked: Boolean,
+    val instagram: String?
+)
