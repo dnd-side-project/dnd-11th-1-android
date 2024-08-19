@@ -4,26 +4,40 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.materip.feature_home.ui.FabButton
+import com.materip.feature_home.viewModel.HomeViewModel
+import com.materip.feature_mypage.navigation.MyPageRoute
+import com.materip.feature_mypage.navigation.SettingRoute
+import com.materip.matetrip.component.BackButtonTopAppBar
+import com.materip.matetrip.component.BackButtonWithTitleTopAppBar
 import com.materip.matetrip.component.MateTripBottomBar
-import com.materip.matetrip.navigation.GetTopBar
+import com.materip.matetrip.component.MateTripTopAppBar
 import com.materip.matetrip.navigation.Screen
 import com.materip.matetrip.navigation.SetUpNavGraph
+import com.materip.matetrip.navigation.navigateToBack
 import com.materip.matetrip.ui.theme.MatetripTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    private val viewModel: AppViewModel by viewModels()
+    private val useBottomNavScreen = listOf(Screen.Home.route, MyPageRoute.MyPageRoute.name, SettingRoute.SettingScreen.name)
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                 val navController = rememberNavController()
                 val currentBackStack by navController.currentBackStackEntryAsState()
                 val currentRoute = currentBackStack?.destination?.route
-
+                val startDestination = viewModel.getDestination()
                 Scaffold(
                     topBar = {
                         GetTopBar(
@@ -51,19 +65,69 @@ class MainActivity : AppCompatActivity() {
                         }
                     },
                     bottomBar = {
-                        MateTripBottomBar(
-                            onHomeClick = { navController.navigate(Screen.Home.route) },
-                            onMyPageClick = { navController.navigate(Screen.MyPage.route) },
-                            onSettingClick = { navController.navigate(Screen.Setting.route) }
+                        if(currentRoute in useBottomNavScreen){
+                            MateTripBottomBar(
+                                onHomeClick = { navController.navigate(Screen.Home.route) },
+                                onMyPageClick = { navController.navigate(Screen.MyPage.route) },
+                                onSettingClick = { navController.navigate(Screen.Setting.route) }
+                            )
+                        }
+                    },
+                ) {
+                    Box(
+                        modifier = Modifier.fillMaxSize().padding(it)
+                    ){
+                        SetUpNavGraph(
+                            navController = navController,
+                            startDestination = startDestination
                         )
                     }
-                ) { innerPadding ->
-                    SetUpNavGraph(
-                        navController = navController,
-                        modifier = Modifier.padding(innerPadding)
-                    )
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun GetTopBar(
+    currentRoute: String?,
+    navController: NavHostController
+) {
+    val viewModel: HomeViewModel = hiltViewModel()
+
+    when (currentRoute) {
+        Screen.Home.route -> {
+            MateTripTopAppBar(
+                onNotificationClick = { navController.navigate(Screen.Notification.route) }
+            )
+        }
+
+        // 타이틀, action이 필요한 상단바
+        Screen.Post.route -> {
+            BackButtonWithTitleTopAppBar(
+                screenTitle = "동행 모집하기",
+                onNavigateUp = { navController.navigateUp() },
+                onPostClick = {
+                    val boardIdDto = viewModel.createPost(viewModel.toBoardRequestDto())
+                    navController.navigate(Screen.NavigateToPost.route + "/${boardIdDto.boardId}")
+                }
+            )
+        }
+
+        // 타이틀 제목이 필요한 뒤로가기 상단바
+        Screen.Form.route -> {
+            BackButtonTopAppBar(
+                screenTitle = "동행 신청서 작성",
+                onNavigateUp = navController::navigateToBack
+            )
+        }
+
+        // 뒤로가기만 있는 상단바
+        else -> {
+            BackButtonTopAppBar(
+                screenTitle = "",
+                onNavigateUp = navController::navigateToBack
+            )
         }
     }
 }
