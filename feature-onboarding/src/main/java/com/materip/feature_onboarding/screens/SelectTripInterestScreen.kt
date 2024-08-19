@@ -35,8 +35,8 @@ import com.materip.matetrip.component.MateTripButton
 import com.materip.matetrip.component.OnboardingElevatedCard
 import com.materip.matetrip.component.ProgressIndicator
 import com.materip.matetrip.icon.Badges
+import com.materip.matetrip.theme.MateTripColors.Blue_01
 import com.materip.matetrip.theme.MateTripTypographySet
-import com.materip.matetrip.theme.MatetripColor
 import com.materip.matetrip.theme.OnboardingMessage
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -117,7 +117,7 @@ fun SelectTripInterestScreen(
                     icon = Badges.planned_badge,
                     iconSize = 48.dp,
                     isSelected = planned == TripInterest.PLANNED,
-                    tint = if(planned == TripInterest.PLANNED) Color.White else MatetripColor.Blue_01,
+                    tint = if(planned == TripInterest.PLANNED) Color.White else Blue_01,
                     onClick = {planned = TripInterest.PLANNED}
                 )
                 Spacer(Modifier.width(10.dp))
@@ -129,7 +129,7 @@ fun SelectTripInterestScreen(
                     icon = Badges.unplanned_badge,
                     iconSize = 48.dp,
                     isSelected = planned == TripInterest.UNPLANNED,
-                    tint = if(planned == TripInterest.UNPLANNED) Color.White else MatetripColor.Blue_01,
+                    tint = if(planned == TripInterest.UNPLANNED) Color.White else Blue_01,
                     onClick = {planned = TripInterest.UNPLANNED}
                 )
             }
@@ -145,7 +145,7 @@ fun SelectTripInterestScreen(
                     icon = Badges.public_funds_badge,
                     iconSize = 48.dp,
                     isSelected = money == TripInterest.PUBLIC_MONEY,
-                    tint = if(money == TripInterest.PUBLIC_MONEY) Color.White else MatetripColor.Blue_01,
+                    tint = if(money == TripInterest.PUBLIC_MONEY) Color.White else Blue_01,
                     onClick = {money = TripInterest.PUBLIC_MONEY}
                 )
                 Spacer(Modifier.width(10.dp))
@@ -157,7 +157,7 @@ fun SelectTripInterestScreen(
                     icon = Badges.dutch_pay_badge,
                     iconSize = 48.dp,
                     isSelected = money == TripInterest.DUTCH_PAY,
-                    tint = if(money == TripInterest.DUTCH_PAY) Color.White else MatetripColor.Blue_01,
+                    tint = if(money == TripInterest.DUTCH_PAY) Color.White else Blue_01,
                     onClick = {money = TripInterest.DUTCH_PAY}
                 )
             }
@@ -173,7 +173,7 @@ fun SelectTripInterestScreen(
                     icon = Badges.place_badge,
                     iconSize = 48.dp,
                     isSelected = place == TripInterest.LOOKING_FOR,
-                    tint = if(place == TripInterest.LOOKING_FOR) Color.White else MatetripColor.Blue_01,
+                    tint = if(place == TripInterest.LOOKING_FOR) Color.White else Blue_01,
                     onClick = {place = TripInterest.LOOKING_FOR}
                 )
                 Spacer(Modifier.width(10.dp))
@@ -185,7 +185,7 @@ fun SelectTripInterestScreen(
                     icon = Badges.attractive_badge,
                     iconSize = 48.dp,
                     isSelected = place == TripInterest.DRAWN_TO,
-                    tint = if(place == TripInterest.DRAWN_TO) Color.White else MatetripColor.Blue_01,
+                    tint = if(place == TripInterest.DRAWN_TO) Color.White else Blue_01,
                     onClick = {place = TripInterest.DRAWN_TO}
                 )
             }
@@ -201,7 +201,7 @@ fun SelectTripInterestScreen(
                     icon = Badges.rush_badge,
                     iconSize = 48.dp,
                     isSelected = speed == TripInterest.QUICKLY,
-                    tint = if(speed == TripInterest.QUICKLY) Color.White else MatetripColor.Blue_01,
+                    tint = if(speed == TripInterest.QUICKLY) Color.White else Blue_01,
                     onClick = {speed = TripInterest.QUICKLY}
                 )
                 Spacer(Modifier.width(10.dp))
@@ -213,14 +213,13 @@ fun SelectTripInterestScreen(
                     icon = Badges.leisurely_badge,
                     iconSize = 48.dp,
                     isSelected = speed == TripInterest.LEISURELY,
-                    tint = if(speed == TripInterest.LEISURELY) Color.White else MatetripColor.Blue_01,
+                    tint = if(speed == TripInterest.LEISURELY) Color.White else Blue_01,
                     onClick = {speed = TripInterest.LEISURELY}
                 )
             }
         }
         Spacer(Modifier.height(10.dp))
         MateTripButton(
-            modifier = Modifier.fillMaxWidth(),
             onClick = { onNextClick(planned!!, money!!, place!!, speed!!) },
             buttonText = "다음" ,
             enabled = isEnabled.value

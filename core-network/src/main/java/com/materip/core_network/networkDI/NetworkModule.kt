@@ -1,10 +1,9 @@
-package com.materip.core_network
+package com.materip.core_network.networkDI
 
 import com.google.gson.GsonBuilder
 import com.materip.core_database.TokenManager
-import com.materip.core_network.networkDI.AuthAuthenticator
-import com.materip.core_network.networkDI.HeaderInterceptor
-import com.materip.core_network.service.BoardService
+import com.materip.core_network.BuildConfig
+import com.materip.core_network.service.home.BoardService
 import com.materip.core_network.service.login.LoginService
 import com.materip.core_network.service.onboarding.OnboardingService
 import com.materip.core_network.service.test.TestService
@@ -42,12 +41,6 @@ object NetworkModule {
             .client(okHttpClient)
             .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-            .build()
-    }
-
-    @Provides
-    fun provideOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder()
             .build()
     }
 

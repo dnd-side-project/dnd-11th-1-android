@@ -50,6 +50,7 @@ dependencies {
 
     //hilt
     implementation(libs.bundles.hilt.impl)
+    implementation(project(":core-database"))
     kapt(libs.bundles.hilt.kapt)
 
     //serialization

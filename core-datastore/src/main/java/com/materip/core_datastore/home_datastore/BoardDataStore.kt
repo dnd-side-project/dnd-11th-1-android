@@ -1,4 +1,4 @@
-package com.materip.core_datastore
+package com.materip.core_datastore.home_datastore
 
 import com.materip.core_common.ResultResponse
 import com.materip.core_model.accompany_board.create.BoardRequestDto

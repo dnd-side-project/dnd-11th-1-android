@@ -1,4 +1,4 @@
-package com.materip.core_repository.repository
+package com.materip.core_repository.repository.home_repository
 // repository모듈은 데이터 소스와의 상호작용을 추상화함
 
 import com.materip.core_common.ResultResponse

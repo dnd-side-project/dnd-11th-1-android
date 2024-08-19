@@ -4,13 +4,11 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt.android)
-    kotlin("kapt")
-    alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.kapt)
 }
 
 val localProperties = Properties().apply{
-    load(project.rootProject.file("./app/local.properties").inputStream())
+    load(project.rootProject.file("local.properties").inputStream())
 }
 
 android {

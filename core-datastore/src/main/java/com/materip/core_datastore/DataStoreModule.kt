@@ -1,7 +1,7 @@
 package com.materip.core_datastore.com.materip.core_datastore
 
 import com.materip.core_datastore.com.materip.core_datastore.login_datastore.LocalLoginDataStore
-import com.materip.core_datastore.com.materip.core_datastore.login_datastore.LocalLoginDataStoreImpl
+import com.materip.core_datastore.login_datastore.LocalLoginDataStoreImpl
 import com.materip.core_datastore.com.materip.core_datastore.login_datastore.RemoteLoginDataStore
 import com.materip.core_datastore.com.materip.core_datastore.login_datastore.RemoteLoginDataStoreImpl
 import com.materip.core_datastore.com.materip.core_datastore.onboarding_datastore.OnboardingDataStore

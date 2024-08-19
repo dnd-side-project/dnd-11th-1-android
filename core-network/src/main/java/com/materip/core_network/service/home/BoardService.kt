@@ -1,4 +1,4 @@
-package com.materip.core_network.service
+package com.materip.core_network.service.home
 
 import com.materip.core_model.accompany_board.create.BoardRequestDto
 import com.materip.core_model.accompany_board.BoardListResponse

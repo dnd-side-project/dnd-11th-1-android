@@ -3,7 +3,7 @@ package com.materip.feature_home.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.materip.core_model.accompany_board.request.CompanionRequest
-import com.materip.core_repository.repository.BoardRepository
+import com.materip.core_repository.repository.home_repository.BoardRepository
 import com.materip.feature_home.intent.FormIntent
 import com.materip.feature_home.state.FormUiState
 import dagger.hilt.android.lifecycle.HiltViewModel

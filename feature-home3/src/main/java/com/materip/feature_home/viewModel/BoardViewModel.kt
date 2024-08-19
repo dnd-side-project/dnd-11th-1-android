@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.materip.core_model.accompany_board.BoardListResponse
 import com.materip.core_model.accompany_board.Pageable
-import com.materip.core_repository.repository.BoardRepository
+import com.materip.core_repository.repository.home_repository.BoardRepository
 import com.materip.feature_home.intent.BoardListIntent
 import com.materip.feature_home.state.BoardListUiState
 import dagger.hilt.android.lifecycle.HiltViewModel

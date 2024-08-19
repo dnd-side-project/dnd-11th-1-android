@@ -1,12 +1,13 @@
-package com.materip.core_datastore.com.materip.core_datastore.login_datastore
+package com.materip.core_datastore.login_datastore
 
 import com.materip.core_database.TokenManager
+import com.materip.core_datastore.com.materip.core_datastore.login_datastore.LocalLoginDataStore
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class LocalLoginDataStoreImpl @Inject constructor(
     private val tokenManager: TokenManager
-): LocalLoginDataStore{
+): LocalLoginDataStore {
     override suspend fun getAuthToken(): Flow<String?> {
         return tokenManager.getAuthToken()
     }

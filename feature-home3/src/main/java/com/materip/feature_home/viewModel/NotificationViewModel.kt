@@ -1,7 +1,7 @@
 package com.materip.feature_home.viewModel
 
 import androidx.lifecycle.ViewModel
-import com.materip.core_repository.repository.BoardRepository
+import com.materip.core_repository.repository.home_repository.BoardRepository
 import com.materip.feature_home.state.NotificationUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

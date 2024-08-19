@@ -1,7 +1,5 @@
-package com.materip.matetrip
+package com.materip.core_datastore.home_datastore
 
-import com.materip.core_datastore.BoardDataStore
-import com.materip.core_datastore.BoardDataStoreImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

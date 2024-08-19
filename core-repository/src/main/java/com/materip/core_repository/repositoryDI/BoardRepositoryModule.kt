@@ -1,7 +1,7 @@
 package com.materip.core_repository.repositoryDI
 
-import com.materip.core_repository.repository.BoardRepository
-import com.materip.core_repository.repository.BoardRepositoryImpl
+import com.materip.core_repository.repository.home_repository.BoardRepository
+import com.materip.core_repository.repository.home_repository.BoardRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

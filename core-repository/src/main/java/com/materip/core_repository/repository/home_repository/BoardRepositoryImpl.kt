@@ -1,7 +1,7 @@
-package com.materip.core_repository.repository
+package com.materip.core_repository.repository.home_repository
 
 import com.materip.core_common.ResultResponse
-import com.materip.core_datastore.BoardDataStore
+import com.materip.core_datastore.home_datastore.BoardDataStore
 import com.materip.core_model.accompany_board.create.BoardRequestDto
 import com.materip.core_model.accompany_board.BoardListResponse
 import com.materip.core_model.accompany_board.Pageable

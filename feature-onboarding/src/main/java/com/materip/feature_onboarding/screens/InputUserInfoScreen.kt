@@ -142,7 +142,6 @@ fun InputUserInfoScreen(
         }
         Spacer(Modifier.weight(1f))
         MateTripButton(
-            modifier = Modifier.fillMaxWidth(),
             onClick = { onNextClick(birthYear, selectedGender!!) },
             buttonText = "다음",
             enabled = isEnabled.value

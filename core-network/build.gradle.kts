@@ -56,6 +56,7 @@ dependencies {
 
     //hilt
     implementation(libs.hilt.android)
+    implementation(project(":core-database"))
     kapt(libs.hilt.android.compiler)
 
     //retrofit

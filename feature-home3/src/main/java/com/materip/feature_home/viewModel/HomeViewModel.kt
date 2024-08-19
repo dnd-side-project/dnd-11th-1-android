@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.materip.core_model.accompany_board.create.BoardRequestDto
 import com.materip.core_model.accompany_board.id.BoardIdDto
-import com.materip.core_repository.repository.BoardRepository
+import com.materip.core_repository.repository.home_repository.BoardRepository
 import com.materip.feature_home.intent.HomeIntent
 import com.materip.feature_home.state.HomeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -112,7 +112,7 @@ fun SetUpNavGraph(
             ProfileScreen()
         }
 
-        // 동행 후기 작성
+        // 마이페이지_동행 후기 작성
         composable(Screen.Review.route) {
             ReviewScreen()
         }
@@ -133,6 +133,7 @@ fun GetTopBar(
             )
         }
 
+        // 타이틀, action이 필요한 상단바
         Screen.Post.route -> {
             BackButtonWithTitleTopAppBar(
                 screenTitle = "동행 모집하기",
@@ -144,6 +145,7 @@ fun GetTopBar(
             )
         }
 
+        // 타이틀 제목이 필요한 뒤로가기 상단바
         Screen.Form.route -> {
             BackButtonTopAppBar(
                 screenTitle = "동행 신청서 작성",
@@ -151,6 +153,7 @@ fun GetTopBar(
             )
         }
 
+        // 뒤로가기만 있는 상단바
         else -> {
             BackButtonTopAppBar(
                 screenTitle = "",

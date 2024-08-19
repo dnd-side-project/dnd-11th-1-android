@@ -1,4 +1,4 @@
-package com.materip.core_datastore
+package com.materip.core_datastore.home_datastore
 
 import com.materip.core_common.ResponseError
 import com.materip.core_common.ResultResponse
@@ -8,7 +8,7 @@ import com.materip.core_model.accompany_board.Pageable
 import com.materip.core_model.accompany_board.id.BoardIdDto
 import com.materip.core_model.accompany_board.id.GetBoardDetailDto
 import com.materip.core_model.accompany_board.request.CompanionRequest
-import com.materip.core_network.service.BoardService
+import com.materip.core_network.service.home.BoardService
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.suspendOnError
 import com.skydoves.sandwich.suspendOnSuccess
