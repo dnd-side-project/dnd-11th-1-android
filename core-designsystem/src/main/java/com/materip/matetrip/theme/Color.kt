@@ -34,4 +34,8 @@ object MateTripColors {
     // Point Color
     val Red_01 = Color(0xFFF03327)
     val Gray_12 = Color(0xFF939094)
+
+    //kakao button
+    val KakaoButtonColor = Color(0xFFF6DB4F)
+    val KakaoTextColor = Color(0xFF382929)
 }

@@ -5,6 +5,7 @@ import com.materip.core_common.ResultResponse
 import com.materip.core_model.response.TestResponseDto
 import com.materip.core_network.service.test.TestService
 import com.skydoves.sandwich.message
+import com.skydoves.sandwich.retrofit.apiMessage
 import com.skydoves.sandwich.suspendOnError
 import com.skydoves.sandwich.suspendOnSuccess
 import kotlinx.serialization.json.Json
@@ -18,7 +19,7 @@ class TestDataStoreImpl @Inject constructor(
         testService.getTest().suspendOnSuccess{
             result.data = this.data
         }.suspendOnError{
-            result.error = Json.decodeFromString<ResponseError>(this.message())
+            result.error = Json.decodeFromString<ResponseError>(this.apiMessage!!)
         }
         return result
     }

@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -26,7 +27,17 @@ import com.materip.feature_home.viewModel.HomeViewModel
 import com.materip.matetrip.component.BackButtonTopAppBar
 import com.materip.matetrip.component.BackButtonWithTitleTopAppBar
 import com.materip.matetrip.component.MateTripTopAppBar
-
+import com.materip.feature_login.navigation.login
+import com.materip.feature_login.navigation.navigateToTest
+import com.materip.feature_login.navigation.test
+import com.materip.feature_onboarding.navigation.inputUserInfo
+import com.materip.feature_onboarding.navigation.navigateToInputUserInfo
+import com.materip.feature_onboarding.navigation.navigateToSelectFoodPreference
+import com.materip.feature_onboarding.navigation.navigateToSelectTripInterest
+import com.materip.feature_onboarding.navigation.navigateToSelectTripStyle
+import com.materip.feature_onboarding.navigation.selectFoodPreference
+import com.materip.feature_onboarding.navigation.selectTripInterest
+import com.materip.feature_onboarding.navigation.selectTripStyle
 
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
@@ -43,9 +54,13 @@ fun SetUpNavGraph(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        // 로그인
-
-        // 온보딩
+        // TODO: 로그인 및 온보딩 네비게이션
+        login(navOnBoarding = navController::navigateToInputUserInfo)
+        test()
+        inputUserInfo(navSelectTripInterest = navController::navigateToSelectTripInterest)
+        selectTripInterest(onBackClick = navController::navigateToBack, onNextClick = navController::navigateToSelectTripStyle)
+        selectTripStyle(onBackClick = navController::navigateToBack, onNextClick = navController::navigateToSelectFoodPreference)
+        selectFoodPreference(onBackClick = navController::navigateToBack)
 
         // 홈
         composable(Screen.Home.route) {
@@ -118,13 +133,6 @@ fun GetTopBar(
             )
         }
 
-        Screen.OnBoarding.route -> {
-            BackButtonTopAppBar(
-                screenTitle = "",
-                onNavigateUp = { navController.navigateUp() }
-            )
-        }
-
         Screen.Post.route -> {
             BackButtonWithTitleTopAppBar(
                 screenTitle = "동행 모집하기",
@@ -152,3 +160,4 @@ fun GetTopBar(
     }
 }
 
+fun NavController.navigateToBack() = navigateUp()

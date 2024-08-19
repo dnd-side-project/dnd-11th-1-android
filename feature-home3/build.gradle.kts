@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-    kotlin("kapt")
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -42,6 +43,17 @@ android {
             excludes += "/META-INF/gradle/incremental.annotation.processors"
         }
     }
+    buildFeatures{
+        compose = true
+    }
+    composeOptions{
+        kotlinCompilerExtensionVersion = "1.5.2"
+    }
+    packaging {
+        resources {
+            excludes += "META-INF/gradle/incremental.annotation.processors"
+        }
+    }
 }
 
 dependencies {
@@ -68,6 +80,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview.android)
     kapt(libs.bundles.hilt.kapt)
 
+    implementation(libs.androidx.lifecycle) //lifecycle
+    implementation(libs.bundles.ui) //ui
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

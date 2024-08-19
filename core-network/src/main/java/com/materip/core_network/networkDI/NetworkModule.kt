@@ -1,23 +1,39 @@
-package com.materip.core_network.networkDI
+package com.materip.core_network
 
 import com.google.gson.GsonBuilder
-import com.materip.core_network.BuildConfig
+import com.materip.core_database.TokenManager
+import com.materip.core_network.networkDI.AuthAuthenticator
+import com.materip.core_network.networkDI.HeaderInterceptor
 import com.materip.core_network.service.BoardService
+import com.materip.core_network.service.login.LoginService
+import com.materip.core_network.service.onboarding.OnboardingService
+import com.materip.core_network.service.test.TestService
 import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Authenticator
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-import com.materip.core_network.service.test.TestService
 
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
+    @Singleton
+    @Provides
+    fun provideHeaderInterceptor(tokenManager: TokenManager): HeaderInterceptor {
+        return HeaderInterceptor(tokenManager)
+    }
+    @Singleton
+    @Provides
+    fun provideAuthInterceptor(tokenManager: TokenManager): Authenticator{
+        return AuthAuthenticator(tokenManager)
+    }
     @Singleton
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
@@ -37,8 +53,30 @@ object NetworkModule {
 
     @Singleton
     @Provides
+    fun provideOkHttpClient(headerInterceptor: HeaderInterceptor, authInterceptor: AuthAuthenticator): OkHttpClient{
+        return OkHttpClient.Builder()
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .addInterceptor(headerInterceptor)
+            .authenticator(authInterceptor)
+            .build()
+    }
+
+    @Singleton
+    @Provides
     fun provideTestService(retrofit: Retrofit): TestService {
         return retrofit.create(TestService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideLoginService(retrofit: Retrofit): LoginService {
+        return retrofit.create(LoginService::class.java)
+    }
+    @Singleton
+    @Provides
+    fun provideOnboardingService(retrofit: Retrofit): OnboardingService {
+        return retrofit.create(OnboardingService::class.java)
     }
 
     @Provides
