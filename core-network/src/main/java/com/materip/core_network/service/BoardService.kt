@@ -7,6 +7,7 @@ import com.materip.core_model.accompany_board.id.GetBoardDetailDto
 import com.materip.core_model.accompany_board.request.CompanionRequest
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -31,4 +32,8 @@ interface BoardService {
     // 동행 신청
     @POST("/api/v1/accompany/boards/request")
     suspend fun postCompanionRequest(@Body companionRequest: CompanionRequest): ApiResponse<Unit>
+
+    // 동행글 삭제
+    @DELETE("/api/v1/accompany/boards/{id}")
+    suspend fun deleteBoard(@Path("id") id: Int): ApiResponse<Unit>
 }
