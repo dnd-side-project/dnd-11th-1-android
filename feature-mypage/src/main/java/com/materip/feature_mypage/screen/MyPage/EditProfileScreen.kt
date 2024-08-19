@@ -1257,7 +1257,7 @@ private fun EditProfileUITest(){
             images = listOf("")
         ),
         errState = ErrorState.Loading,
-        images = mutableStateListOf(""),
+        images = remember{ mutableStateListOf("") },
         onEditClick = {a,b,c,d,e,f,g,h,i,j ->
 
         },
