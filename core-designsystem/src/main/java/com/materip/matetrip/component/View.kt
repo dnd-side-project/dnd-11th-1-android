@@ -83,7 +83,6 @@ fun ImageLoadView(
         modifier = Modifier
             .size(size)
             .background(color = backgroundColor, shape = shape)
-            .clip(shape)
     ){
         AsyncImage(
             modifier = Modifier
@@ -91,7 +90,7 @@ fun ImageLoadView(
                 .clip(shape),
             model = imageUrl,
             contentDescription = "Circle Image View",
-            contentScale = ContentScale.Fit,
+            contentScale = ContentScale.FillBounds,
             placeholder = painterResource(R.drawable.ic_app_logo_loading),
             error = painterResource(R.drawable.ic_app_logo_loading)
         )
