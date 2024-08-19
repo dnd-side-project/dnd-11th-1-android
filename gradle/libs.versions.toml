@@ -26,9 +26,6 @@ hilt = "2.48.1"
 hiltNavCompose = "1.2.0"
 kakao = "2.20.0"
 datastore = "1.1.1"
-navigationRuntimeKtx = "2.7.7"
-material3Android = "1.2.1"
-uiToolingPreviewAndroid = "1.6.8"
 kapt = "1.8.10"
 
 [libraries]
@@ -69,9 +66,8 @@ kakao-share= { group = "com.kakao.sdk", name="v2-share", version.ref="kakao"}
 kakao-freind = { group = "com.kakao.sdk", name="v2-friend", version.ref="kakao"}
 kakao-cert = { group = "com.kakao.sdk", name="v2-cert", version.ref="kakao"}
 datastore = { group = "androidx.datastore", name="datastore-preferences", version.ref="datastore"}
-androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
-androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
-androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
+androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigation" }
+androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "androidUI" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
