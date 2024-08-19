@@ -8,7 +8,7 @@ plugins {
 }
 
 val localProperties = Properties().apply{
-    load(project.rootProject.file("./feature-login/local.properties").inputStream())
+    load(project.rootProject.file("local.properties").inputStream())
 }
 
 android {
@@ -33,11 +33,16 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/gradle/incremental.annotation.processors"
+        }
     }
     buildFeatures{
         compose = true

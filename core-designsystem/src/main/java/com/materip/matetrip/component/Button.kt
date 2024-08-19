@@ -3,9 +3,10 @@ package com.materip.matetrip.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -15,14 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.materip.matetrip.theme.MateTripColors.ActivatedColor
+import com.materip.matetrip.theme.MateTripColors.Blue_04
+import com.materip.matetrip.theme.MateTripColors.Gray_06
+import com.materip.matetrip.theme.MateTripColors.Gray_08
+import com.materip.matetrip.theme.MateTripColors.Gray_10
+import com.materip.matetrip.theme.MateTripColors.InactiveColor
+import com.materip.matetrip.theme.MateTripColors.Primary
 import com.materip.matetrip.theme.MateTripTypographySet
-import com.materip.matetrip.theme.MatetripColor.ActivatedColor
-import com.materip.matetrip.theme.MatetripColor.Blue_04
-import com.materip.matetrip.theme.MatetripColor.Gray_08
-import com.materip.matetrip.theme.MatetripColor.Gray_10
-import com.materip.matetrip.theme.MatetripColor.InactiveColor
-import com.materip.matetrip.theme.MatetripColor.Primary
-import com.materip.matetrip.theme.MatetripColor.gray_06
 
 /**
  * MateTrip Button
@@ -31,7 +32,6 @@ import com.materip.matetrip.theme.MatetripColor.gray_06
 
 @Composable
 fun MateTripButton(
-    modifier: Modifier = Modifier,
     onClick: () -> Unit,
     enabled: Boolean = false,
     buttonText: String
@@ -40,12 +40,14 @@ fun MateTripButton(
         onClick = onClick,
         enabled = enabled,
         shape = RoundedCornerShape(10.dp),
-        modifier = modifier.height(height = 54.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .width(54.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = ActivatedColor,
             contentColor = Color.White,
             disabledContainerColor = InactiveColor,
-            disabledContentColor = gray_06
+            disabledContentColor = Gray_06
         )
     ) {
         Text(
@@ -70,7 +72,7 @@ fun MateTripHomeButton(
             containerColor = ActivatedColor,
             contentColor = Color.White,
             disabledContainerColor = InactiveColor,
-            disabledContentColor = gray_06
+            disabledContentColor = Gray_06
         )
     ) {
         Text(
@@ -82,21 +84,18 @@ fun MateTripHomeButton(
 
 // 홈 게시글 작성, 모집 연령, 성별 버튼
 @Composable
-fun FavoriteButton(
-    onClick: () -> Unit,
-    enabled: Boolean = false,
-    buttonText: String
+fun ToggleButton(
+    buttonText: String,
+    isSelected: Boolean,
+    onClick: () -> Unit
 ) {
     Button(
         onClick = onClick,
-        enabled = enabled,
         shape = RoundedCornerShape(7.dp),
-        modifier = Modifier.size(width = 155.dp, height = 40.dp),
+        modifier = Modifier.size(width = 180.dp, height = 40.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Primary,
-            contentColor = Color.White,
-            disabledContainerColor = InactiveColor,
-            disabledContentColor = Gray_10
+            containerColor = if (isSelected) Primary else InactiveColor,
+            contentColor = if (isSelected) Color.White else Gray_10
         )
     ) {
         Text(
@@ -105,6 +104,7 @@ fun FavoriteButton(
         )
     }
 }
+
 
 // 거절, 수락
 @Composable
@@ -122,7 +122,7 @@ fun AccessStatusButton(
             containerColor = ActivatedColor,
             contentColor = Color.White,
             disabledContainerColor = InactiveColor,
-            disabledContentColor = gray_06
+            disabledContentColor = Gray_06
         )
     ) {
         Text(
@@ -186,18 +186,6 @@ fun MateTripButtonPreview() {
             onClick = {},
             enabled = true,
             buttonText = "동행신청"
-        )
-        Spacer(modifier = Modifier.size(16.dp))
-        FavoriteButton(
-            onClick = {},
-            enabled = true,
-            buttonText = "동일 나이대"
-        )
-        Spacer(modifier = Modifier.size(16.dp))
-        FavoriteButton(
-            onClick = {},
-            enabled = false,
-            buttonText = "상관없음"
         )
         Spacer(modifier = Modifier.size(16.dp))
         AccessStatusButton(

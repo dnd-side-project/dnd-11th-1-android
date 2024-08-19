@@ -27,7 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.materip.core_designsystem.R
 import com.materip.core_model.ui_model.InputKeyboardType
-import com.materip.matetrip.theme.MatetripColor.gray_06
+import com.materip.matetrip.theme.MateTripColors.Gray_06
+
 
 @Composable
 fun UnderlinedTextField(
@@ -71,7 +72,7 @@ fun UnderlinedTextField(
                 if(value.isEmpty() && placeholder != null){
                     Text(
                         text = placeholder,
-                        color = gray_06,
+                        color = Gray_06,
                         style = textStyle
                     )
                 } else {
@@ -101,7 +102,7 @@ fun UnderlinedTextFieldText(){
             fontFamily = FontFamily(Font(R.font.roboto_medium)),
             fontWeight = FontWeight(500),
             textColor = Color.Black,
-            underlineColor = gray_06,
+            underlineColor = Gray_06,
             inputType = InputKeyboardType.NUMBER
         )
     }

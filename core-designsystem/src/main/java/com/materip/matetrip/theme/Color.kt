@@ -5,8 +5,7 @@ import androidx.compose.ui.graphics.Color
 /**
  * 메이트립 Android Color
  */
-object MatetripColor{
-
+object MateTripColors {
     // Main Color
     val Primary = Color(0xFF3553F2)
     val Blue_01 = Color(0xFF9BA1DA)
@@ -24,12 +23,17 @@ object MatetripColor{
     val Gray_09 = Color(0xFF484649)
     val Gray_08 = Color(0xFF605D62)
     val Gray_07 = Color(0xFF787579)
-    val gray_06 = Color(0xFF939094)
-    val gray_05 = Color(0xFFAEAAAE)
+    val Gray_06 = Color(0xFF939094)
+    val Gray_05 = Color(0xFFAEAAAE)
     val Gray_04 = Color(0xFFCECECE)
     val Gray_03 = Color(0xFFE9E9E9)
     val Gray_02 = Color(0xFFF4F4F4)
     val Gray_01 = Color(0xFFFAFAFA)
+    val Devider = Color(0xFF555555)
+
+    // Point Color
+    val Red_01 = Color(0xFFF03327)
+    val Gray_12 = Color(0xFF939094)
 
     //kakao button
     val KakaoButtonColor = Color(0xFFF6DB4F)
