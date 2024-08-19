@@ -1,5 +1,7 @@
 package com.materip.core_repository.repositoryDI
 
+import com.materip.core_repository.repository.image_repository.ImageRepository
+import com.materip.core_repository.repository.image_repository.ImageRepositoryImpl
 import com.materip.core_repository.repository.login_repository.LoginRepository
 import com.materip.core_repository.repository.login_repository.LoginRepositoryImpl
 import com.materip.core_repository.repository.onboarding_repository.OnboardingRepository
@@ -32,4 +34,8 @@ interface RepositoryModule {
     @Binds
     @Singleton
     fun bindProfileRepositoryImpl(profileRepositoryImpl: ProfileRepositoryImpl): ProfileRepository
+
+    @Binds
+    @Singleton
+    fun bindImageRepositoryImpl(imageRepositoryImpl: ImageRepositoryImpl): ImageRepository
 }
