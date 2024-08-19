@@ -14,6 +14,8 @@ import com.materip.core_model.ui_model.DefaultImageDto
 import com.materip.core_repository.repository.image_repository.ImageRepository
 import com.materip.core_repository.repository.profile_repository.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -31,7 +33,7 @@ class EditProfileViewModel @Inject constructor(
     private val profileRepository: ProfileRepository,
     private val imageRepository: ImageRepository
 ): ViewModel() {
-    private val paths = mutableStateListOf<DefaultImageDto>()
+    val images = mutableStateListOf<String>()
     private val invalidTokenError = MutableStateFlow<Boolean>(false)
     private val notFoundTokenError = MutableStateFlow<Boolean>(false)
     private val generalError = MutableStateFlow<Pair<Boolean, String?>>(Pair(false, null))
@@ -62,6 +64,7 @@ class EditProfileViewModel @Inject constructor(
             Result.Loading -> EditProfileUiState.Loading
             is Result.Success -> {
                 val data = result.data
+                images.addAll(data.userImageUrls)
                 EditProfileUiState.Success(
                     profileImg = data.profileImageUrl ?: "",
                     nickname = data.nickname,
@@ -92,7 +95,8 @@ class EditProfileViewModel @Inject constructor(
         newTravelPreferences: List<String>,
         newTravelStyles: List<String>,
         newFoodPreferences: List<String>,
-        newSnsLink: String?
+        newSnsLink: String?,
+        newImages: List<String>
     ){
         val requestDto = UpdateProfileRequestDto(
             profileImageUrl = newProfileImg,
@@ -107,7 +111,7 @@ class EditProfileViewModel @Inject constructor(
         )
         viewModelScope.launch{
             val result = profileRepository.updateProfile(requestDto)
-            val imageUpdateResult = profileRepository.updateMyImages(UpdateMyImagesRequestDto(imageUrls = paths.map{it.path}))
+            val imageUpdateResult = profileRepository.updateMyImages(UpdateMyImagesRequestDto(imageUrls = newImages))
             if (result.error != null || imageUpdateResult.error != null){
                 when (result.error!!.status) {
                     401 -> notFoundTokenError.update { true }
@@ -117,14 +121,40 @@ class EditProfileViewModel @Inject constructor(
             }
         }
     }
+    suspend fun updateProfileImg(context: Context, uri: Uri?): String {
+        return viewModelScope.async {
+            if (uri == null) {
+                generalError.update { Pair(true, "파일 경로를 찾을 수 없습니다.") }
+                return@async ""
+            }
+            val file = transformToFile(context, uri)
+            if (file == null) {
+                generalError.update { Pair(true, "파일 경로를 찾을 수 없습니다.") }
+                return@async ""
+            }
+            val result = imageRepository.postImage(file)
+            if (result.error != null) {
+                when (result.error!!.status) {
+                    401 -> notFoundTokenError.update { true }
+                    404 -> invalidTokenError.update { true }
+                    else -> generalError.update { Pair(true, result.error!!.message) }
+                }
+                return@async ""
+            }
+            return@async result.data!!.path
+        }.await()
+    }
 
-    fun saveImageToS3(context: Context, path: Uri){
-        val file = transformToFile(context, path)
-        if (file == null) {
-            generalError.update { Pair(true, "파일 경로를 찾을 수 없습ㄴ디ㅏ.") }
+    fun saveImageToS3(context: Context, path: Uri?){
+        if (path == null) {
+            generalError.update{Pair(true, "파일 경로를 찾을 수 없습니다.")}
             return
         }
-        /** S3에 업로드 >> 서버에 저장 메소드 */
+        val file = transformToFile(context, path)
+        if (file == null) {
+            generalError.update { Pair(true, "파일 경로를 찾을 수 없습니다.") }
+            return
+        }
         viewModelScope.launch{
             val result = imageRepository.postImage(file)
             if (result.error != null) {
@@ -134,15 +164,11 @@ class EditProfileViewModel @Inject constructor(
                     else -> generalError.update{Pair(true, result.error!!.message)}
                 }
             }
-            paths.add(result.data!!)
+            images.add(result.data!!.path)
         }
     }
-    fun resetImages(){
-        viewModelScope.launch{
-            paths.forEach{
-                imageRepository.deleteImage(it)
-            }
-        }
+    fun deleteImage(path: String){
+        images.remove(path)
     }
     private fun transformToFile(
         context: Context,
