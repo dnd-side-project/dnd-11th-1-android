@@ -31,6 +31,11 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.materip.core_designsystem.R
 import com.materip.matetrip.icon.Icons
+import com.materip.matetrip.theme.MateTripColors
+import com.materip.matetrip.theme.MateTripColors.ActivatedColor
+import com.materip.matetrip.theme.MateTripColors.Gray_10
+import com.materip.matetrip.theme.MateTripColors.InactiveColor
+import com.materip.matetrip.theme.MateTripColors.Primary
 import com.materip.matetrip.theme.MateTripTypographySet
 
 /**
@@ -54,7 +59,7 @@ fun MateTripButton(
             containerColor = ActivatedColor,
             contentColor = Color.White,
             disabledContainerColor = InactiveColor,
-            disabledContentColor = gray_06
+            disabledContentColor = MateTripColors.Gray_06
         )
     ) {
         Text(
@@ -79,7 +84,7 @@ fun MateTripHomeButton(
             containerColor = ActivatedColor,
             contentColor = Color.White,
             disabledContainerColor = InactiveColor,
-            disabledContentColor = gray_06
+            disabledContentColor = MateTripColors.Gray_06
         )
     ) {
         Text(
@@ -128,7 +133,7 @@ fun AccessStatusButton(
             containerColor = ActivatedColor,
             contentColor = Color.White,
             disabledContainerColor = InactiveColor,
-            disabledContentColor = gray_06
+            disabledContentColor = MateTripColors.Gray_06
         )
     ) {
         Text(
@@ -150,8 +155,8 @@ fun CreateReviewButton(
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier.size(width = 320.dp, height = 38.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Blue_04,
-            contentColor = Gray_08,
+            containerColor = MateTripColors.Blue_04,
+            contentColor = MateTripColors.Gray_08,
         )
     ) {
         Text(
@@ -253,18 +258,6 @@ fun MateTripButtonPreview() {
             onClick = {},
             enabled = true,
             buttonText = "동행신청"
-        )
-        Spacer(modifier = Modifier.size(16.dp))
-        FavoriteButton(
-            onClick = {},
-            enabled = true,
-            buttonText = "동일 나이대"
-        )
-        Spacer(modifier = Modifier.size(16.dp))
-        FavoriteButton(
-            onClick = {},
-            enabled = false,
-            buttonText = "상관없음"
         )
         Spacer(modifier = Modifier.size(16.dp))
         AccessStatusButton(
