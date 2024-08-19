@@ -9,8 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.materip.matetrip.theme.MatetripColor.Blue_04
-import com.materip.matetrip.theme.MatetripColor.Primary
+import com.materip.matetrip.theme.MateTripColors.Blue_04
+import com.materip.matetrip.theme.MateTripColors.Primary
 
 /**
  * ProgressIndicator

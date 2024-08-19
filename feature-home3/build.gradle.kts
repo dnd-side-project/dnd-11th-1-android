@@ -26,11 +26,22 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
+    }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.2"
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/gradle/incremental.annotation.processors"
+        }
     }
     buildFeatures{
         compose = true
@@ -51,16 +62,26 @@ dependencies {
     implementation(project(":core-designsystem"))
     implementation(project(":core-common"))
 
-    implementation(libs.coroutine) //coroutine
-    implementation(libs.bundles.coil) //coil
-    implementation(libs.navigation) //navigation
-    implementation(libs.bundles.ui) //ui
-    implementation(libs.androidx.lifecycle) //lifecycle
+    //coroutine
+    implementation(libs.coroutine)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(platform(libs.kotlinx.coroutines.bom))
+
+
+    //coil
+    implementation(libs.bundles.coil)
+
+    //navigation
+    implementation(libs.navigation)
 
     //hilt
     implementation(libs.bundles.hilt.impl)
+    implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.ui.tooling.preview.android)
     kapt(libs.bundles.hilt.kapt)
 
+    implementation(libs.androidx.lifecycle) //lifecycle
+    implementation(libs.bundles.ui) //ui
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

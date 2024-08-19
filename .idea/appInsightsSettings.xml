@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.materip.matetrip" />
-                  <option name="mobileSdkAppId" value="1:670879867345:android:75a626fca2fcdea61300f0" />
-                  <option name="projectId" value="dnd11-mate-trip" />
-                  <option name="projectNumber" value="670879867345" />
+                  <option name="appId" value="PLACEHOLDER" />
+                  <option name="mobileSdkAppId" value="" />
+                  <option name="projectId" value="" />
+                  <option name="projectNumber" value="" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

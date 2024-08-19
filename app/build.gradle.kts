@@ -8,7 +8,7 @@ plugins {
 }
 
 val localProperties = Properties().apply{
-    load(project.rootProject.file("./app/local.properties").inputStream())
+    load(project.rootProject.file("local.properties").inputStream())
 }
 
 android {
@@ -55,6 +55,7 @@ android {
     }
     packaging {
         resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
             excludes += "/META-INF/gradle/incremental.annotation.processors"
         }
     }
@@ -69,20 +70,24 @@ android {
 }
 
 dependencies {
+    implementation(project(":core-common"))
     implementation(project(":core-model"))
+    implementation(project(":core-network"))
+    implementation(project(":core-datastore"))
     implementation(project(":core-designsystem"))
     implementation(project(":core-repository"))
-    implementation(project(":core-common"))
     implementation(project(":feature-login"))
-    implementation(project(":feature-home"))
+    implementation(project(":feature-home3"))
     implementation(project(":feature-mypage"))
     implementation(project(":feature-onboarding"))
 
-    implementation(libs.navigation) //navigation
+    //navigation
+    implementation(libs.navigation)
     implementation(libs.bundles.kakao) //kakao
 
     //hilt
     implementation(libs.bundles.hilt.impl)
+    implementation(libs.androidx.navigation.runtime.ktx)
     kapt(libs.bundles.hilt.kapt)
 
     implementation(libs.androidx.core.ktx)

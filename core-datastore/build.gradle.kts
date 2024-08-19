@@ -33,6 +33,11 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    packaging {
+        resources {
+            excludes += "/META-INF/gradle/incremental.annotation.processors"
+        }
+    }
     composeOptions{
         kotlinCompilerExtensionVersion="1.5.2"
     }
@@ -42,10 +47,10 @@ dependencies {
     implementation(project(":core-model"))
     implementation(project(":core-network"))
     implementation(project(":core-common"))
-    implementation(project(":core-database"))
 
     //hilt
     implementation(libs.bundles.hilt.impl)
+    implementation(project(":core-database"))
     kapt(libs.bundles.hilt.kapt)
 
     //serialization

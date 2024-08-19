@@ -21,11 +21,16 @@ object Icons {
     val place_icon = R.drawable.place_24px
     val review_icon = R.drawable.review_24px
     val search_icon = R.drawable.search_24px
-    val camera_icon = R.drawable.ic_camera
     val check_icon = R.drawable.ic_done
     val review_tag_icon = R.drawable.ic_review_tag
     val selected_radio_btn = R.drawable.ic_selected_radio_btn
     val not_selected_radio_btn = R.drawable.ic_not_selected_radio_btn
     val active_toggle = R.drawable.ic_active_toggle
     val inactive_toggle = R.drawable.ic_inactive_toggle
+    val setting_icon = R.drawable.setting_24px
+    val minus_icon = R.drawable.tabler_minus
+    val plus_icon = R.drawable.tabler_plus
+    val camera_icon = R.drawable.camera
+    val dismiss_icon = R.drawable.dismiss
+    val notification_none_icon = R.drawable.notification_none
 }

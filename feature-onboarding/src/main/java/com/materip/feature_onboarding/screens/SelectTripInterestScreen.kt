@@ -35,8 +35,8 @@ import com.materip.matetrip.component.MateTripButton
 import com.materip.matetrip.component.OnboardingElevatedCard
 import com.materip.matetrip.component.ProgressIndicator
 import com.materip.matetrip.icon.Badges
+import com.materip.matetrip.theme.MateTripColors.Blue_01
 import com.materip.matetrip.theme.MateTripTypographySet
-import com.materip.matetrip.theme.MatetripColor
 import com.materip.matetrip.theme.OnboardingMessage
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

@@ -37,8 +37,8 @@ import com.materip.matetrip.component.MateTripButton
 import com.materip.matetrip.component.OnboardingElevatedCard
 import com.materip.matetrip.component.ProgressIndicator
 import com.materip.matetrip.icon.Badges
+import com.materip.matetrip.theme.MateTripColors.Blue_01
 import com.materip.matetrip.theme.MateTripTypographySet
-import com.materip.matetrip.theme.MatetripColor
 import com.materip.matetrip.theme.OnboardingMessage
 
 @Composable
@@ -142,7 +142,7 @@ private fun SelectFoodPreferenceMainContent(
                     icon = Badges.meat_badge,
                     iconSize = 48.dp,
                     isSelected = FoodPreference.MEAT in foodStyles,
-                    tint = if(FoodPreference.MEAT in foodStyles) Color.White else MatetripColor.Blue_01,
+                    tint = if(FoodPreference.MEAT in foodStyles) Color.White else Blue_01,
                     onClick = {
                         if (FoodPreference.MEAT in foodStyles){
                             foodStyles.remove(FoodPreference.MEAT)
@@ -160,7 +160,7 @@ private fun SelectFoodPreferenceMainContent(
                     icon = Badges.unplanned_badge,
                     iconSize = 48.dp,
                     isSelected = FoodPreference.SEAFOOD in foodStyles,
-                    tint = if(FoodPreference.SEAFOOD in foodStyles) Color.White else MatetripColor.Blue_01,
+                    tint = if(FoodPreference.SEAFOOD in foodStyles) Color.White else Blue_01,
                     onClick = {
                         if (FoodPreference.SEAFOOD in foodStyles){
                             foodStyles.remove(FoodPreference.SEAFOOD)
@@ -182,7 +182,7 @@ private fun SelectFoodPreferenceMainContent(
                     icon = Badges.rice_badge,
                     iconSize = 48.dp,
                     isSelected = FoodPreference.RICE in foodStyles,
-                    tint = if(FoodPreference.RICE in foodStyles) Color.White else MatetripColor.Blue_01,
+                    tint = if(FoodPreference.RICE in foodStyles) Color.White else Blue_01,
                     onClick = {
                         if (FoodPreference.RICE in foodStyles){
                             foodStyles.remove(FoodPreference.RICE)
@@ -200,7 +200,7 @@ private fun SelectFoodPreferenceMainContent(
                     icon = Badges.dutch_pay_badge,
                     iconSize = 48.dp,
                     isSelected = FoodPreference.VEGETABLES in foodStyles,
-                    tint = if(FoodPreference.VEGETABLES in foodStyles) Color.White else MatetripColor.Blue_01,
+                    tint = if(FoodPreference.VEGETABLES in foodStyles) Color.White else Blue_01,
                     onClick = {
                         if (FoodPreference.VEGETABLES in foodStyles){
                             foodStyles.remove(FoodPreference.VEGETABLES)
@@ -222,7 +222,7 @@ private fun SelectFoodPreferenceMainContent(
                     icon = Badges.coffee_badge,
                     iconSize = 48.dp,
                     isSelected = FoodPreference.COFFEE in foodStyles,
-                    tint = if(FoodPreference.COFFEE in foodStyles) Color.White else MatetripColor.Blue_01,
+                    tint = if(FoodPreference.COFFEE in foodStyles) Color.White else Blue_01,
                     onClick = {
                         if (FoodPreference.COFFEE in foodStyles){
                             foodStyles.remove(FoodPreference.COFFEE)
@@ -240,7 +240,7 @@ private fun SelectFoodPreferenceMainContent(
                     icon = Badges.dessert_badge,
                     iconSize = 48.dp,
                     isSelected = FoodPreference.DESSERT in foodStyles,
-                    tint = if(FoodPreference.DESSERT in foodStyles) Color.White else MatetripColor.Blue_01,
+                    tint = if(FoodPreference.DESSERT in foodStyles) Color.White else Blue_01,
                     onClick = {
                         if (FoodPreference.DESSERT in foodStyles){
                             foodStyles.remove(FoodPreference.DESSERT)
@@ -262,7 +262,7 @@ private fun SelectFoodPreferenceMainContent(
                     icon = Badges.fast_food_badge,
                     iconSize = 48.dp,
                     isSelected = FoodPreference.FAST_FOOD in foodStyles,
-                    tint = if(FoodPreference.FAST_FOOD in foodStyles) Color.White else MatetripColor.Blue_01,
+                    tint = if(FoodPreference.FAST_FOOD in foodStyles) Color.White else Blue_01,
                     onClick = {
                         if (FoodPreference.FAST_FOOD in foodStyles){
                             foodStyles.remove(FoodPreference.FAST_FOOD)
@@ -280,7 +280,7 @@ private fun SelectFoodPreferenceMainContent(
                     icon = Badges.street_food_badge,
                     iconSize = 48.dp,
                     isSelected = FoodPreference.STREET_FOOD in foodStyles,
-                    tint = if(FoodPreference.STREET_FOOD in foodStyles) Color.White else MatetripColor.Blue_01,
+                    tint = if(FoodPreference.STREET_FOOD in foodStyles) Color.White else Blue_01,
                     onClick = {
                         if (FoodPreference.STREET_FOOD in foodStyles){
                             foodStyles.remove(FoodPreference.STREET_FOOD)
@@ -293,7 +293,6 @@ private fun SelectFoodPreferenceMainContent(
         }
         Spacer(Modifier.height(10.dp))
         MateTripButton(
-            modifier = Modifier.fillMaxWidth(),
             onClick = { onNextClick(foodStyles) },
             buttonText = "다음" ,
             enabled = isEnabled.value

@@ -32,13 +32,6 @@ import androidx.compose.ui.unit.dp
 import com.materip.core_designsystem.R
 import com.materip.matetrip.icon.Icons
 import com.materip.matetrip.theme.MateTripTypographySet
-import com.materip.matetrip.theme.MatetripColor.ActivatedColor
-import com.materip.matetrip.theme.MatetripColor.Blue_04
-import com.materip.matetrip.theme.MatetripColor.Gray_08
-import com.materip.matetrip.theme.MatetripColor.Gray_10
-import com.materip.matetrip.theme.MatetripColor.InactiveColor
-import com.materip.matetrip.theme.MatetripColor.Primary
-import com.materip.matetrip.theme.MatetripColor.gray_06
 
 /**
  * MateTrip Button
@@ -98,21 +91,18 @@ fun MateTripHomeButton(
 
 // 홈 게시글 작성, 모집 연령, 성별 버튼
 @Composable
-fun FavoriteButton(
-    onClick: () -> Unit,
-    enabled: Boolean = false,
-    buttonText: String
+fun ToggleButton(
+    buttonText: String,
+    isSelected: Boolean,
+    onClick: () -> Unit
 ) {
     Button(
         onClick = onClick,
-        enabled = enabled,
         shape = RoundedCornerShape(7.dp),
-        modifier = Modifier.size(width = 155.dp, height = 40.dp),
+        modifier = Modifier.size(width = 180.dp, height = 40.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Primary,
-            contentColor = Color.White,
-            disabledContainerColor = InactiveColor,
-            disabledContentColor = Gray_10
+            containerColor = if (isSelected) Primary else InactiveColor,
+            contentColor = if (isSelected) Color.White else Gray_10
         )
     ) {
         Text(

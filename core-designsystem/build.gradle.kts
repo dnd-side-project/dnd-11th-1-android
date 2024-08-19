@@ -29,12 +29,21 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
+        jvmTarget = "17"
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.2"
     }
-    buildFeatures{
+    buildFeatures {
         compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.2"
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/gradle/incremental.annotation.processors"
+        }
     }
 }
 

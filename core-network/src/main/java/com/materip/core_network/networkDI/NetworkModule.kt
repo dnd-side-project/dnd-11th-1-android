@@ -1,27 +1,27 @@
-package com.materip.core_network
+package com.materip.core_network.networkDI
 
 import com.google.gson.GsonBuilder
 import com.materip.core_database.TokenManager
 import com.materip.core_network.networkDI.AuthAuthenticator
 import com.materip.core_network.networkDI.HeaderInterceptor
 import com.materip.core_network.service.image.ImageService
+import com.materip.core_network.BuildConfig
+import com.materip.core_network.service.home.BoardService
 import com.materip.core_network.service.login.LoginService
 import com.materip.core_network.service.onboarding.OnboardingService
 import com.materip.core_network.service.profile.ProfileService
+import com.materip.core_network.service.test.TestService
 import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Authenticator
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Singleton
-import com.materip.core_network.service.test.TestService
-import kotlinx.coroutines.runBlocking
-import okhttp3.Authenticator
-import okhttp3.Interceptor
 import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -84,5 +84,11 @@ object NetworkModule {
     @Provides
     fun provideImageService(retrofit: Retrofit): ImageService {
         return retrofit.create(ImageService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBoardService(retrofit: Retrofit): BoardService {
+        return retrofit.create(BoardService::class.java)
     }
 }

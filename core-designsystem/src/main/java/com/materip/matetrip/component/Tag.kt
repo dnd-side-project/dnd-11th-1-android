@@ -1,5 +1,6 @@
 package com.materip.matetrip.component
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -47,6 +48,8 @@ import com.materip.core_model.ui_model.FoodPreference
 import com.materip.core_model.ui_model.TravelInterest
 import com.materip.core_model.ui_model.TravelStyle
 import com.materip.matetrip.icon.Badges
+import com.materip.matetrip.theme.MateTripColors.Gray_11
+import com.materip.matetrip.theme.MateTripColors.Primary
 import com.materip.matetrip.theme.MateTripTypographySet
 import com.materip.matetrip.theme.MatetripColor
 import com.materip.matetrip.theme.MatetripColor.Gray_11
@@ -54,15 +57,16 @@ import com.materip.matetrip.theme.MatetripColor.Primary
 
 @Composable
 fun RegionTag(
-    regions: List<String>,
     onClick: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var selectedRegion by remember { mutableStateOf("전체") }
+    val regions = listOf("전체", "수도권", "경기도", "충청도", "강원도", "경상도", "전라도", "제주도", "해외")
 
     LazyRow(
-        modifier = Modifier
-            .background(color = Color.LightGray) // preview에서 보려고 추가 사용 시 수정
-            .padding(horizontal = 16.dp)
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, bottom = 18.dp),
     ) {
         items(regions) { region ->
             val isSelected = region == selectedRegion
@@ -72,8 +76,13 @@ fun RegionTag(
             Button(
                 onClick = {
                     selectedRegion = region
-                    onClick(region)
+                    onClick(mapRegionToEnum(region))
                 },
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 4.dp,
+                    pressedElevation = 6.dp,
+                    disabledElevation = 0.dp
+                ),
                 shape = RoundedCornerShape(28.dp),
                 modifier = Modifier
                     .height(36.dp)
@@ -84,7 +93,7 @@ fun RegionTag(
                     contentColor = textColor,
                     disabledContainerColor = Color.White,
                     disabledContentColor = Gray_11
-                )
+                ),
             ) {
                 Text(
                     text = region,
@@ -92,6 +101,20 @@ fun RegionTag(
                 )
             }
         }
+    }
+}
+
+fun mapRegionToEnum(region: String): String {
+    return when (region) {
+        "서울" -> "SEOUL"
+        "경기" -> "GYEONGGI_INCHEON"
+        "충청" -> "CHUNGCHEONG_DAEJEON_SEJONG"
+        "강원" -> "GANGWON"
+        "전라" -> "JEOLLA_GWANGJU"
+        "경상" -> "GYEONGSANG_DAEGU_ULSAN"
+        "부산" -> "BUSAN"
+        "제주" -> "JEJU"
+        else -> "UNKNOWN"
     }
 }
 
@@ -244,4 +267,5 @@ fun RegionTagPreview() {
             )
         )
     }
+    RegionTag(onClick = {})
 }

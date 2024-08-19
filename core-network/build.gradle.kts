@@ -43,6 +43,11 @@ android {
     buildFeatures{
         buildConfig = true
     }
+    packaging {
+        resources {
+            excludes += "/META-INF/gradle/incremental.annotation.processors"
+        }
+    }
 }
 
 dependencies {
@@ -51,6 +56,7 @@ dependencies {
 
     //hilt
     implementation(libs.hilt.android)
+    implementation(project(":core-database"))
     kapt(libs.hilt.android.compiler)
 
     //retrofit
