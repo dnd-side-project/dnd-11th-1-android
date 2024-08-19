@@ -3,7 +3,6 @@ package com.materip.matetrip.navigation
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -17,13 +16,7 @@ import com.materip.feature_home.ui.NotificationScreen
 import com.materip.feature_home.ui.PostBoardScreen
 import com.materip.feature_home.ui.ProfileScreen
 import com.materip.feature_home.ui.ReviewScreen
-import com.materip.feature_home.viewModel.HomeViewModel
-import com.materip.matetrip.component.BackButtonTopAppBar
-import com.materip.matetrip.component.BackButtonWithTitleTopAppBar
-import com.materip.matetrip.component.MateTripTopAppBar
 import com.materip.feature_login.navigation.login
-import com.materip.feature_login.navigation.navigateToTest
-import com.materip.feature_login.navigation.test
 import com.materip.feature_mypage.navigation.myPageGraph
 import com.materip.feature_mypage.navigation.navigateToEditProfile
 import com.materip.feature_mypage.navigation.navigateToMyPageGraph
@@ -58,16 +51,17 @@ fun SetUpNavGraph(
             navOnBoarding = navController::navigateToInputUserInfo,
             navMyPage = navController::navigateToMyPageGraph
         )
-        test()
         inputUserInfo(navSelectTripInterest = navController::navigateToSelectTripInterest)
         selectTripInterest(onBackClick = navController::navigateToBack, onNextClick = navController::navigateToSelectTripStyle)
         selectTripStyle(onBackClick = navController::navigateToBack, onNextClick = navController::navigateToSelectFoodPreference)
         selectFoodPreference(
             onBackClick = navController::navigateToBack,
-            navMyPage = navController::navigateToMyPageGraph
+            navHome = { navController.navigate(Screen.Home.route) }
         )
 
-        /** my-page module */
+        /** setting graph */
+
+        /** my-page graph */
         myPageGraph(
             navBack = navController::navigateToBack,
             navEditProfile = navController::navigateToEditProfile,
@@ -79,7 +73,6 @@ fun SetUpNavGraph(
             navReviewList = navController::navigateToReviewList,
             navReviewDescription = navController::navigateToReviewDescription
         )
-        selectFoodPreference(onBackClick = navController::navigateToBack)
 
         // 홈
         composable(Screen.Home.route) {
@@ -134,50 +127,6 @@ fun SetUpNavGraph(
         // 마이페이지_동행 후기 작성
         composable(Screen.Review.route) {
             ReviewScreen()
-        }
-    }
-}
-
-@Composable
-fun GetTopBar(
-    currentRoute: String?,
-    navController: NavHostController
-) {
-    val viewModel: HomeViewModel = hiltViewModel()
-
-    when (currentRoute) {
-        Screen.Home.route -> {
-            MateTripTopAppBar(
-                onNotificationClick = { navController.navigate(Screen.Notification.route) }
-            )
-        }
-
-        // 타이틀, action이 필요한 상단바
-        Screen.Post.route -> {
-            BackButtonWithTitleTopAppBar(
-                screenTitle = "동행 모집하기",
-                onNavigateUp = { navController.navigateUp() },
-                onPostClick = {
-                    val boardIdDto = viewModel.createPost(viewModel.toBoardRequestDto())
-                    navController.navigate(Screen.NavigateToPost.route + "/${boardIdDto.boardId}")
-                }
-            )
-        }
-
-        // 타이틀 제목이 필요한 뒤로가기 상단바
-        Screen.Form.route -> {
-            BackButtonTopAppBar(
-                screenTitle = "동행 신청서 작성",
-                onNavigateUp = { navController.navigateUp() }
-            )
-        }
-
-        // 뒤로가기만 있는 상단바
-        else -> {
-            BackButtonTopAppBar(
-                screenTitle = "",
-                onNavigateUp = { navController.navigateUp() }
-            )
         }
     }
 }
