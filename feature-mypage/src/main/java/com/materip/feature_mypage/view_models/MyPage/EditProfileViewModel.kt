@@ -1,29 +1,37 @@
 package com.materip.feature_mypage.view_models.MyPage
 
+import android.content.Context
+import android.net.Uri
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.materip.core_common.ErrorState
 import com.materip.core_common.Result
 import com.materip.core_common.asResult
+import com.materip.core_model.request.UpdateMyImagesRequestDto
 import com.materip.core_model.request.UpdateProfileRequestDto
+import com.materip.core_model.ui_model.DefaultImageDto
+import com.materip.core_repository.repository.image_repository.ImageRepository
 import com.materip.core_repository.repository.profile_repository.ProfileRepository
-import com.materip.core_repository.useCase.GetProfileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
 import javax.inject.Inject
 
 @HiltViewModel
 class EditProfileViewModel @Inject constructor(
-    private val profileRepository: ProfileRepository
+    private val profileRepository: ProfileRepository,
+    private val imageRepository: ImageRepository
 ): ViewModel() {
+    private val paths = mutableStateListOf<DefaultImageDto>()
     private val invalidTokenError = MutableStateFlow<Boolean>(false)
     private val notFoundTokenError = MutableStateFlow<Boolean>(false)
     private val generalError = MutableStateFlow<Pair<Boolean, String?>>(Pair(false, null))
@@ -40,7 +48,7 @@ class EditProfileViewModel @Inject constructor(
     )
     val uiState: StateFlow<EditProfileUiState> = errorState.map {
         if (it is ErrorState.AuthError && it.isInvalid()) throw Exception("Error")
-        val result = profileRepository.getProfile()
+        val result = profileRepository.getProfileDetails()
         if (result.error != null) {
             when (result.error!!.status) {
                 401 -> notFoundTokenError.update { true }
@@ -55,7 +63,7 @@ class EditProfileViewModel @Inject constructor(
             is Result.Success -> {
                 val data = result.data
                 EditProfileUiState.Success(
-                    profileImg = data.profileImageUrl,
+                    profileImg = data.profileImageUrl ?: "",
                     nickname = data.nickname,
                     description = data.description,
                     birthYear = data.birthYear,
@@ -64,7 +72,7 @@ class EditProfileViewModel @Inject constructor(
                     travelPreferences = data.travelPreferences,
                     foodPreferences = data.foodPreferences,
                     snsLink = data.socialMediaUrl,
-                    images = emptyList(), /** 이미지 리스트를 받아와야 함 */
+                    images = data.userImageUrls
                 )
             }
             is Result.Error -> EditProfileUiState.Error
@@ -84,8 +92,7 @@ class EditProfileViewModel @Inject constructor(
         newTravelPreferences: List<String>,
         newTravelStyles: List<String>,
         newFoodPreferences: List<String>,
-        newSnsLink: String?,
-        newImages: List<String>
+        newSnsLink: String?
     ){
         val requestDto = UpdateProfileRequestDto(
             profileImageUrl = newProfileImg,
@@ -100,7 +107,8 @@ class EditProfileViewModel @Inject constructor(
         )
         viewModelScope.launch{
             val result = profileRepository.updateProfile(requestDto)
-            if (result.error != null){
+            val imageUpdateResult = profileRepository.updateMyImages(UpdateMyImagesRequestDto(imageUrls = paths.map{it.path}))
+            if (result.error != null || imageUpdateResult.error != null){
                 when (result.error!!.status) {
                     401 -> notFoundTokenError.update { true }
                     404 -> invalidTokenError.update { true }
@@ -108,6 +116,56 @@ class EditProfileViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun saveImageToS3(context: Context, path: Uri){
+        val file = transformToFile(context, path)
+        if (file == null) {
+            generalError.update { Pair(true, "파일 경로를 찾을 수 없습ㄴ디ㅏ.") }
+            return
+        }
+        /** S3에 업로드 >> 서버에 저장 메소드 */
+        viewModelScope.launch{
+            val result = imageRepository.postImage(file)
+            if (result.error != null) {
+                when(result.error!!.status){
+                    401 -> notFoundTokenError.update{true}
+                    404 -> invalidTokenError.update{true}
+                    else -> generalError.update{Pair(true, result.error!!.message)}
+                }
+            }
+            paths.add(result.data!!)
+        }
+    }
+    fun resetImages(){
+        viewModelScope.launch{
+            paths.forEach{
+                imageRepository.deleteImage(it)
+            }
+        }
+    }
+    private fun transformToFile(
+        context: Context,
+        uri: Uri
+    ): File? {
+        val contentResolver = context.contentResolver
+
+        val filePath = (context.applicationInfo.dataDir + File.separator + System.currentTimeMillis())
+        val file = File(filePath)
+
+        try{
+            val inputStream = contentResolver.openInputStream(uri) ?: return null
+            val outputStream = FileOutputStream(file)
+
+            val buf = ByteArray(1024)
+            var len: Int
+            while(inputStream.read(buf).also{len = it} > 0) outputStream.write(buf, 0, len)
+            outputStream.close()
+            inputStream.close()
+        } catch (ignore: Exception){
+            return null
+        }
+        return file
     }
 }
 
