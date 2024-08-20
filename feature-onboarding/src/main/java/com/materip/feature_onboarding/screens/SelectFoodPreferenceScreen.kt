@@ -31,15 +31,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_common.ErrorState
 import com.materip.core_designsystem.R
+import com.materip.core_designsystem.component.MateTripButton
+import com.materip.core_designsystem.component.OnboardingElevatedCard
+import com.materip.core_designsystem.component.ProgressIndicator
+import com.materip.core_designsystem.icon.Badges
+import com.materip.core_designsystem.theme.MateTripColors.Blue_01
+import com.materip.core_designsystem.theme.MateTripTypographySet
+import com.materip.core_designsystem.theme.OnboardingMessage
 import com.materip.core_model.ui_model.FoodPreference
 import com.materip.feature_onboarding.view_models.OnboardingViewModel
-import com.materip.matetrip.component.MateTripButton
-import com.materip.matetrip.component.OnboardingElevatedCard
-import com.materip.matetrip.component.ProgressIndicator
-import com.materip.matetrip.icon.Badges
-import com.materip.matetrip.theme.MateTripColors.Blue_01
-import com.materip.matetrip.theme.MateTripTypographySet
-import com.materip.matetrip.theme.OnboardingMessage
 
 @Composable
 fun SelectFoodStyleRoute(

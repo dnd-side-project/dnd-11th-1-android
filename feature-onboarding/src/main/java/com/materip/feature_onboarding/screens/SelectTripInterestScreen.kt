@@ -29,16 +29,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.materip.core_designsystem.component.MateTripButton
+import com.materip.core_designsystem.component.OnboardingElevatedCard
+import com.materip.core_designsystem.component.ProgressIndicator
+import com.materip.core_designsystem.icon.Badges
+import com.materip.core_designsystem.theme.MateTripColors
+import com.materip.core_designsystem.theme.MateTripTypographySet
+import com.materip.core_designsystem.theme.OnboardingMessage
 import com.materip.core_model.ui_model.SelectInterests
 import com.materip.core_model.ui_model.TravelInterest
-import com.materip.matetrip.component.MateTripButton
-import com.materip.matetrip.component.OnboardingElevatedCard
-import com.materip.matetrip.component.ProgressIndicator
-import com.materip.matetrip.icon.Badges
-import com.materip.matetrip.theme.MateTripColors
-import com.materip.matetrip.theme.MateTripColors.Blue_01
-import com.materip.matetrip.theme.MateTripTypographySet
-import com.materip.matetrip.theme.OnboardingMessage
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 

@@ -1,5 +1,6 @@
 package com.materip.feature_onboarding.screens
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,14 +27,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.materip.core_designsystem.R
+import com.materip.core_designsystem.component.MateTripButton
+import com.materip.core_designsystem.component.OnboardingElevatedCard
+import com.materip.core_designsystem.component.ProgressIndicator
+import com.materip.core_designsystem.icon.Badges
+import com.materip.core_designsystem.theme.MateTripColors
+import com.materip.core_designsystem.theme.MateTripTypographySet
+import com.materip.core_designsystem.theme.OnboardingMessage
 import com.materip.core_model.ui_model.SelectStyles
 import com.materip.core_model.ui_model.TravelStyle
-import com.materip.matetrip.component.MateTripButton
-import com.materip.matetrip.component.OnboardingElevatedCard
-import com.materip.matetrip.component.ProgressIndicator
-import com.materip.matetrip.icon.Badges
-import com.materip.matetrip.theme.MateTripTypographySet
-import com.materip.matetrip.theme.OnboardingMessage
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -112,7 +114,7 @@ fun SelectTripStyleScreen(
                     icon = Badges.restaurant_badge,
                     iconSize = 48.dp,
                     isSelected = TravelStyle.RESTAURANT_TOUR in styles,
-                    tint = if(TravelStyle.RESTAURANT_TOUR in styles) Color.White else MatetripColor.Blue_01,
+                    tint = if(TravelStyle.RESTAURANT_TOUR in styles) Color.White else MateTripColors.Blue_01,
                     onClick = {
                         if(TravelStyle.RESTAURANT_TOUR in styles){
                             styles.remove(TravelStyle.RESTAURANT_TOUR)
@@ -130,7 +132,7 @@ fun SelectTripStyleScreen(
                     icon = Badges.cafe_tour_badge,
                     iconSize = 48.dp,
                     isSelected = TravelStyle.CAFE_TOUR in styles,
-                    tint = if(TravelStyle.CAFE_TOUR in styles) Color.White else MatetripColor.Blue_01,
+                    tint = if(TravelStyle.CAFE_TOUR in styles) Color.White else MateTripColors.Blue_01,
                     onClick = {
                         if(TravelStyle.CAFE_TOUR in styles){
                             styles.remove(TravelStyle.CAFE_TOUR)
@@ -152,7 +154,7 @@ fun SelectTripStyleScreen(
                     icon = Badges.image_badge,
                     iconSize = 48.dp,
                     isSelected = TravelStyle.LIFE_SHOT in styles,
-                    tint = if(TravelStyle.LIFE_SHOT in styles) Color.White else MatetripColor.Blue_01,
+                    tint = if(TravelStyle.LIFE_SHOT in styles) Color.White else MateTripColors.Blue_01,
                     onClick = {styles.add(TravelStyle.LIFE_SHOT)}
                 )
                 Spacer(Modifier.width(10.dp))
@@ -164,7 +166,7 @@ fun SelectTripStyleScreen(
                     icon = Badges.tourist_badge,
                     iconSize = 48.dp,
                     isSelected = TravelStyle.TOURIST_DESTINATION in styles,
-                    tint = if(TravelStyle.TOURIST_DESTINATION in styles) Color.White else MatetripColor.Blue_01,
+                    tint = if(TravelStyle.TOURIST_DESTINATION in styles) Color.White else MateTripColors.Blue_01,
                     onClick = {
                         if(TravelStyle.TOURIST_DESTINATION in styles){
                             styles.remove(TravelStyle.TOURIST_DESTINATION)
@@ -186,7 +188,7 @@ fun SelectTripStyleScreen(
                     icon = Badges.activity_badge,
                     iconSize = 48.dp,
                     isSelected = TravelStyle.ACTIVITY in styles,
-                    tint = if(TravelStyle.ACTIVITY in styles) Color.White else MatetripColor.Blue_01,
+                    tint = if(TravelStyle.ACTIVITY in styles) Color.White else MateTripColors.Blue_01,
                     onClick = {
                         if(TravelStyle.ACTIVITY in styles){
                             styles.remove(TravelStyle.ACTIVITY)
@@ -204,7 +206,7 @@ fun SelectTripStyleScreen(
                     icon = Badges.healing_badge,
                     iconSize = 48.dp,
                     isSelected = TravelStyle.HEALING in styles,
-                    tint = if(TravelStyle.HEALING in styles) Color.White else MatetripColor.Blue_01,
+                    tint = if(TravelStyle.HEALING in styles) Color.White else MateTripColors.Blue_01,
                     onClick = {
                         if(TravelStyle.HEALING in styles){
                             styles.remove(TravelStyle.HEALING)
@@ -226,7 +228,7 @@ fun SelectTripStyleScreen(
                     icon = Badges.drive_badge,
                     iconSize = 48.dp,
                     isSelected = TravelStyle.DRIVE in styles,
-                    tint = if(TravelStyle.DRIVE in styles) Color.White else MatetripColor.Blue_01,
+                    tint = if(TravelStyle.DRIVE in styles) Color.White else MateTripColors.Blue_01,
                     onClick = {
                         if(TravelStyle.DRIVE in styles) {
                             styles.remove(TravelStyle.DRIVE)
@@ -244,7 +246,7 @@ fun SelectTripStyleScreen(
                     icon = Badges.package_badge,
                     iconSize = 48.dp,
                     isSelected = TravelStyle.PACKAGE_TOUR in styles,
-                    tint = if(TravelStyle.PACKAGE_TOUR in styles) Color.White else MatetripColor.Blue_01,
+                    tint = if(TravelStyle.PACKAGE_TOUR in styles) Color.White else MateTripColors.Blue_01,
                     onClick = {
                         if(TravelStyle.PACKAGE_TOUR in styles){
                             styles.remove(TravelStyle.PACKAGE_TOUR)
@@ -266,7 +268,7 @@ fun SelectTripStyleScreen(
                     icon = Badges.shopping_badge,
                     iconSize = 48.dp,
                     isSelected = TravelStyle.SHOPPING in styles,
-                    tint = if(TravelStyle.SHOPPING in styles) Color.White else MatetripColor.Blue_01,
+                    tint = if(TravelStyle.SHOPPING in styles) Color.White else MateTripColors.Blue_01,
                     onClick = {
                         if(TravelStyle.SHOPPING in styles) {
                             styles.remove(TravelStyle.SHOPPING)
@@ -284,7 +286,7 @@ fun SelectTripStyleScreen(
                     icon = Badges.art_badge,
                     iconSize = 48.dp,
                     isSelected = TravelStyle.CULTURE_AND_ARTS in styles,
-                    tint = if(TravelStyle.CULTURE_AND_ARTS in styles) Color.White else MatetripColor.Blue_01,
+                    tint = if(TravelStyle.CULTURE_AND_ARTS in styles) Color.White else MateTripColors.Blue_01,
                     onClick = {
                         if(TravelStyle.CULTURE_AND_ARTS in styles) {
                             styles.remove(TravelStyle.CULTURE_AND_ARTS)
