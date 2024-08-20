@@ -1,4 +1,4 @@
-package com.materip.feature_home.ui.component
+package com.materip.feature_home3.ui.component
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -15,10 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CutCornerShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
@@ -40,13 +37,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.materip.matetrip.theme.MateTripColors.Blue_02
-import com.materip.matetrip.theme.MateTripColors.Blue_04
-import com.materip.matetrip.theme.MateTripColors.Gray_05
-import com.materip.matetrip.theme.MateTripColors.Gray_11
-import com.materip.matetrip.theme.MateTripColors.Primary
-import com.materip.matetrip.theme.MateTripColors.Red_01
-import com.materip.matetrip.theme.MateTripTypographySet
+import com.materip.core_designsystem.theme.MateTripColors.Blue_02
+import com.materip.core_designsystem.theme.MateTripColors.Blue_04
+import com.materip.core_designsystem.theme.MateTripColors.Gray_05
+import com.materip.core_designsystem.theme.MateTripColors.Gray_11
+import com.materip.core_designsystem.theme.MateTripColors.Primary
+import com.materip.core_designsystem.theme.MateTripColors.Red_01
+import com.materip.core_designsystem.theme.MateTripTypographySet
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth

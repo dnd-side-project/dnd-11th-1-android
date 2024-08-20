@@ -37,17 +37,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import com.materip.matetrip.icon.Icons
-import com.materip.matetrip.icon.Icons.camera_icon
-import com.materip.matetrip.icon.Icons.dismiss_icon
-import com.materip.matetrip.theme.MateTripColors.Blue_04
-import com.materip.matetrip.theme.MateTripColors.Gray_11
-import com.materip.matetrip.theme.MateTripTypographySet
-
+import com.materip.core_designsystem.icon.Icons.camera_icon
+import com.materip.core_designsystem.icon.Icons.dismiss_icon
+import com.materip.core_designsystem.theme.MateTripColors.Blue_04
+import com.materip.core_designsystem.theme.MateTripColors.Gray_11
+import com.materip.core_designsystem.theme.MateTripTypographySet
 
 @Composable
 fun ImagePicker(
