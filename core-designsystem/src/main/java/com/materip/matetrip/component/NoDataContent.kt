@@ -13,7 +13,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.materip.core_designsystem.R
-import com.materip.matetrip.theme.MateTripColors
+import com.materip.core_designsystem.theme.MateTripColors
 
 @Composable
 fun NoDataContent(

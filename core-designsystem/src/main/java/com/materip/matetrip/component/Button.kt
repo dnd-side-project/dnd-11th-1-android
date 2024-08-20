@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,13 +29,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.materip.core_designsystem.R
-import com.materip.matetrip.icon.Icons
-import com.materip.matetrip.theme.MateTripColors
-import com.materip.matetrip.theme.MateTripColors.ActivatedColor
-import com.materip.matetrip.theme.MateTripColors.Gray_10
-import com.materip.matetrip.theme.MateTripColors.InactiveColor
-import com.materip.matetrip.theme.MateTripColors.Primary
-import com.materip.matetrip.theme.MateTripTypographySet
+import com.materip.core_designsystem.icon.Icons
+import com.materip.core_designsystem.theme.MateTripColors
+import com.materip.core_designsystem.theme.MateTripColors.ActivatedColor
+import com.materip.core_designsystem.theme.MateTripColors.Gray_10
+import com.materip.core_designsystem.theme.MateTripColors.InactiveColor
+import com.materip.core_designsystem.theme.MateTripColors.Primary
+import com.materip.core_designsystem.theme.MateTripTypographySet
 
 /**
  * MateTrip Button

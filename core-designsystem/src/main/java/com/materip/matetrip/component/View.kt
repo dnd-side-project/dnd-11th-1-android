@@ -49,8 +49,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.materip.core_designsystem.R
-import com.materip.matetrip.icon.Icons
-import com.materip.matetrip.theme.MateTripColors
+import com.materip.core_designsystem.icon.Icons
+import com.materip.core_designsystem.theme.MateTripColors
 
 @Composable
 fun CircleImageView(

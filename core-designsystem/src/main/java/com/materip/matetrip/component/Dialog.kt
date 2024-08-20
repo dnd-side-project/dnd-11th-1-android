@@ -52,9 +52,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.materip.core_designsystem.R
-import com.materip.matetrip.icon.Badges
-import com.materip.matetrip.icon.Icons
-import com.materip.matetrip.theme.MateTripColors
+import com.materip.core_designsystem.icon.Badges
+import com.materip.core_designsystem.icon.Icons
+import com.materip.core_designsystem.theme.MateTripColors
 import kotlinx.coroutines.delay
 
 @Composable

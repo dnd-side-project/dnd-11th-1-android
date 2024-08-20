@@ -1,5 +1,6 @@
 package com.materip.core_designsystem
 
+import com.materip.core_designsystem.icon.Badges
 import com.materip.core_model.ui_model.Grade
 import com.materip.core_model.ui_model.GradeTag
 import com.materip.matetrip.icon.Badges

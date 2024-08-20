@@ -46,11 +46,11 @@ import com.materip.core_designsystem.R
 import com.materip.core_model.ui_model.FoodPreference
 import com.materip.core_model.ui_model.TravelInterest
 import com.materip.core_model.ui_model.TravelStyle
-import com.materip.matetrip.icon.Badges
-import com.materip.matetrip.theme.MateTripColors
-import com.materip.matetrip.theme.MateTripColors.Gray_11
-import com.materip.matetrip.theme.MateTripColors.Primary
-import com.materip.matetrip.theme.MateTripTypographySet
+import com.materip.core_designsystem.icon.Badges
+import com.materip.core_designsystem.theme.MateTripColors
+import com.materip.core_designsystem.theme.MateTripColors.Gray_11
+import com.materip.core_designsystem.theme.MateTripColors.Primary
+import com.materip.core_designsystem.theme.MateTripTypographySet
 
 @Composable
 fun RegionTag(
