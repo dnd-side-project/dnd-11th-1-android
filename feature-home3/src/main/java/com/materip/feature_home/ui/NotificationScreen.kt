@@ -38,6 +38,7 @@ fun NotificationScreen(
 
         is NotificationUiState.Error -> {
             /* TODO: Error 상태에 대한 UI 로직 추가 */
+            Text(text = "오류: ${uiState.message}")
         }
     }
 }
