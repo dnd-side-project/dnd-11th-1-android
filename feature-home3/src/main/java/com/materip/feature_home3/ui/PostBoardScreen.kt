@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalLayoutApi::class, ExperimentalLayoutApi::class)
+@file:OptIn(ExperimentalLayoutApi::class)
 
 package com.materip.feature_home3.ui
 
