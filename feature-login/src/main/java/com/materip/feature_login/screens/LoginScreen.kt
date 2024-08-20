@@ -1,4 +1,4 @@
-package com.materip.feature_login
+package com.materip.feature_login.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
