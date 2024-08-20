@@ -61,7 +61,7 @@ import com.materip.core_designsystem.theme.MateTripColors.Gray_06
 import com.materip.core_designsystem.theme.MateTripColors.Gray_11
 import com.materip.core_designsystem.theme.MateTripColors.Primary
 import com.materip.core_designsystem.theme.MateTripTypographySet
-import com.materip.feature_home.ui.component.ImagePicker
+import com.materip.feature_home3.ui.component.ImagePicker
 import com.materip.feature_home3.intent.HomeIntent
 import com.materip.feature_home3.state.HomeUiState
 import com.materip.feature_home3.ui.component.TravelDateCalendar

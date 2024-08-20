@@ -17,7 +17,7 @@ fun NavController.navigateToAlarmSetting() = navigate(SettingRoute.AlarmSettingR
 fun NavController.navigateToGetAuthCode() = navigate(SettingRoute.GetAuthCodeRoute.name)
 fun NavController.navigateToSMSVerification() = navigate(SettingRoute.SMSVerificationRoute.name)
 
-fun NavGraphBuilder.setting(){
+fun NavGraphBuilder.settingGraph(){
     navigation(
         startDestination = SettingRoute.SettingRoute.name,
         route = SettingRoute.SettingGraph.name

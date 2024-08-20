@@ -18,8 +18,8 @@ sealed class Screen(val route: String, @StringRes val resourceId: Int, val icon:
     data object Profile : Screen("profile", R.string.profile, Icons.arrow_back_icon)
     data object Notification : Screen("notification", R.string.notification, Icons.arrow_back_icon)
     data object Review : Screen("review", R.string.review, Icons.arrow_back_icon)
-    data object MyPage : Screen(MyPageRoute.MyPageRoute.name, R.string.my_page, Icons.arrow_back_icon)
-    data object Setting : Screen(SettingRoute.SettingRoute.name, R.string.setting, Icons.arrow_back_icon)
+    data object MyPage : Screen(MyPageRoute.MyPageGraph.name, R.string.my_page, Icons.arrow_back_icon)
+    data object Setting : Screen(SettingRoute.SettingGraph.name, R.string.setting, Icons.arrow_back_icon)
 
     companion object {
         fun fromRoute(route: String?): Screen {

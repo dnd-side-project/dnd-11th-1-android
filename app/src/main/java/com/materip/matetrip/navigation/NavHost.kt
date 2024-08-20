@@ -26,6 +26,7 @@ import com.materip.feature_mypage.navigation.navigateToReview
 import com.materip.feature_mypage.navigation.navigateToReviewDescription
 import com.materip.feature_mypage.navigation.navigateToReviewList
 import com.materip.feature_mypage.navigation.navigateToSendApplication
+import com.materip.feature_mypage.navigation.settingGraph
 import com.materip.feature_onboarding.navigation.inputUserInfo
 import com.materip.feature_onboarding.navigation.navigateToInputUserInfo
 import com.materip.feature_onboarding.navigation.navigateToSelectFoodPreference
@@ -59,6 +60,7 @@ fun SetUpNavGraph(
         )
 
         /** setting graph */
+        settingGraph()
 
         /** my-page graph */
         myPageGraph(
