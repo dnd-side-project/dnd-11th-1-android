@@ -1,4 +1,4 @@
-package com.materip.matetrip.icon
+package com.materip.core_designsystem.icon
 
 import com.materip.core_designsystem.R
 

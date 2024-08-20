@@ -50,10 +50,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
-import com.materip.feature_home.R
 import com.materip.feature_home.intent.HomeIntent
 import com.materip.feature_home.state.HomeUiState
 import com.materip.feature_home.viewModel.HomeViewModel
+import com.materip.feature_home3.R
 import com.materip.matetrip.component.MateTripHomeButton
 import com.materip.matetrip.icon.Badges.profile_default_badge
 import com.materip.matetrip.icon.Icons.date_icon
@@ -274,7 +274,7 @@ fun ShowImageList(imageUris: List<String>) {
                 }
             } else {
                 // 로컬 리소스 이미지 처리
-                val resourceId = imageUri.toIntOrNull() ?: R.drawable.default_image
+                val resourceId = imageUri.toIntOrNull() ?: R.drawable.default
                 Image(
                     painter = painterResource(id = resourceId),
                     contentDescription = "Local Image $page",

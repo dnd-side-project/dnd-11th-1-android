@@ -1,4 +1,4 @@
-package com.materip.matetrip.component
+package com.materip.core_designsystem.component
 
 import android.graphics.BlurMaskFilter
 import androidx.compose.ui.Modifier

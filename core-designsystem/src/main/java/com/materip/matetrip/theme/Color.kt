@@ -1,4 +1,4 @@
-package com.materip.matetrip.theme
+package com.materip.core_designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
