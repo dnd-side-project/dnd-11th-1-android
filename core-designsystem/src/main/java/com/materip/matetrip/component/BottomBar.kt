@@ -1,5 +1,6 @@
-package com.materip.matetrip.component
+package com.materip.core_designsystem.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,10 +22,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.materip.matetrip.icon.Icons
-import com.materip.matetrip.theme.MateTripColors.Gray_06
-import com.materip.matetrip.theme.MateTripColors.Primary
-import com.materip.matetrip.theme.MateTripTypographySet
+import com.materip.core_designsystem.icon.Icons
+import com.materip.core_designsystem.theme.MateTripColors.Primary
+import com.materip.core_designsystem.theme.MateTripTypographySet
+import com.materip.core_designsystem.theme.MateTripColors.Gray_06
 
 @Composable
 fun MateTripBottomBar(
@@ -39,7 +40,6 @@ fun MateTripBottomBar(
             .fillMaxWidth()
             .height(78.dp),
         containerColor = Color.White,
-        contentPadding = PaddingValues(horizontal = 34.dp)
     ) {
         BottomBarItem(
             iconRes = Icons.home_icon,

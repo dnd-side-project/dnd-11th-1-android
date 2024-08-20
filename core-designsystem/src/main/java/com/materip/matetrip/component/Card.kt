@@ -1,4 +1,4 @@
-package com.materip.matetrip.component
+package com.materip.core_designsystem.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
@@ -25,8 +24,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.materip.matetrip.icon.Icons.man_icon
-import com.materip.matetrip.theme.MateTripTypographySet
+import com.materip.core_designsystem.icon.Icons.man_icon
+import com.materip.core_designsystem.theme.MateTripTypographySet
 
 /**
  * Onboarding Card

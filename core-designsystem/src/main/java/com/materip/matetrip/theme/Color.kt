@@ -1,4 +1,4 @@
-package com.materip.matetrip.theme
+package com.materip.core_designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
@@ -18,6 +18,8 @@ object MateTripColors {
     val InactiveColor = Color(0xFFDDDFEA)
 
     // Typography Color
+    val Gray_13 = Color(0xFF939094)
+    val Gray_12 = Color(0xFF797979)
     val Gray_11 = Color(0xFF1C1B1F)
     val Gray_10 = Color(0xFF313033)
     val Gray_09 = Color(0xFF484649)
@@ -33,9 +35,28 @@ object MateTripColors {
 
     // Point Color
     val Red_01 = Color(0xFFF03327)
-    val Gray_12 = Color(0xFF939094)
 
     //kakao button
     val KakaoButtonColor = Color(0xFFF6DB4F)
     val KakaoTextColor = Color(0xFF382929)
+
+    val level_1_color = Color(0xFF72A311)
+    val level_2_color = Color(0xFFDA5010)
+    val level_3_color = Color(0xFFE3148D)
+    val level_4_color = Color(0xFF532BF0)
+
+    val icon_color = Color(0xFF222222)
+    val icon_loading_color = Color(0xFFBBBBBB)
+
+    //divider color
+    val divider_color = Color(0xFFEEEEEE)
+
+    //dialog
+    val no_text_color = Color(0xFF555555)
+
+    //loading color
+    val loading_color = Color(0xFFDDDDDD)
+
+    //border color
+    val border_color = Color(0xFFD9D9D9)
 }

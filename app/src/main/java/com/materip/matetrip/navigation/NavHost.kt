@@ -2,34 +2,31 @@ package com.materip.matetrip.navigation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.materip.feature_home.ui.FormScreen
-import com.materip.feature_home.ui.HomeScreen
-import com.materip.feature_home.ui.NavigateToPostScreen
-import com.materip.feature_home.ui.NotificationScreen
-import com.materip.feature_home.ui.PostBoardScreen
-import com.materip.feature_home.ui.ProfileScreen
-import com.materip.feature_home.ui.ReviewScreen
-import com.materip.feature_home.viewModel.HomeViewModel
-import com.materip.matetrip.component.BackButtonTopAppBar
-import com.materip.matetrip.component.BackButtonWithTitleTopAppBar
-import com.materip.matetrip.component.MateTripTopAppBar
+import com.materip.feature_home3.ui.FormScreen
+import com.materip.feature_home3.ui.HomeScreen
+import com.materip.feature_home3.ui.NavigateToPostScreen
+import com.materip.feature_home3.ui.NotificationScreen
+import com.materip.feature_home3.ui.PostBoardScreen
+import com.materip.feature_home3.ui.ProfileScreen
+import com.materip.feature_home3.ui.ReviewScreen
 import com.materip.feature_login.navigation.login
-import com.materip.feature_login.navigation.navigateToTest
-import com.materip.feature_login.navigation.test
+import com.materip.feature_mypage.navigation.myPageGraph
+import com.materip.feature_mypage.navigation.navigateToEditProfile
+import com.materip.feature_mypage.navigation.navigateToPreview
+import com.materip.feature_mypage.navigation.navigateToProfileDescription
+import com.materip.feature_mypage.navigation.navigateToQuiz100
+import com.materip.feature_mypage.navigation.navigateToReview
+import com.materip.feature_mypage.navigation.navigateToReviewDescription
+import com.materip.feature_mypage.navigation.navigateToReviewList
+import com.materip.feature_mypage.navigation.navigateToSendApplication
+import com.materip.feature_mypage.navigation.settingGraph
 import com.materip.feature_onboarding.navigation.inputUserInfo
 import com.materip.feature_onboarding.navigation.navigateToInputUserInfo
 import com.materip.feature_onboarding.navigation.navigateToSelectFoodPreference
@@ -43,24 +40,40 @@ import com.materip.feature_onboarding.navigation.selectTripStyle
 @Composable
 fun SetUpNavGraph(
     navController: NavHostController,
-    modifier: Modifier = Modifier,
-    startDestination: String = Screen.Home.route
+    startDestination: String
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination,
-        modifier = modifier
-            .background(Color.White)
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-    ) {
-        // TODO: 로그인 및 온보딩 네비게이션
-        login(navOnBoarding = navController::navigateToInputUserInfo)
-        test()
+        startDestination = startDestination
+    ){
+        /** feature-login */
+        login(
+            navOnBoarding = navController::navigateToInputUserInfo,
+            navHome = { navController.navigate(Screen.Home.route) }
+        )
         inputUserInfo(navSelectTripInterest = navController::navigateToSelectTripInterest)
         selectTripInterest(onBackClick = navController::navigateToBack, onNextClick = navController::navigateToSelectTripStyle)
         selectTripStyle(onBackClick = navController::navigateToBack, onNextClick = navController::navigateToSelectFoodPreference)
-        selectFoodPreference(onBackClick = navController::navigateToBack)
+        selectFoodPreference(
+            onBackClick = navController::navigateToBack,
+            navHome = { navController.navigate(Screen.Home.route) }
+        )
+
+        /** setting graph */
+        settingGraph()
+
+        /** my-page graph */
+        myPageGraph(
+            navBack = navController::navigateToBack,
+            navEditProfile = navController::navigateToEditProfile,
+            navPreview = navController::navigateToPreview,
+            navProfileDescription = navController::navigateToProfileDescription,
+            navQuiz100 = navController::navigateToQuiz100,
+            navSendApplication = navController::navigateToSendApplication,
+            navReview = navController::navigateToReview,
+            navReviewList = navController::navigateToReviewList,
+            navReviewDescription = navController::navigateToReviewDescription
+        )
 
         // 홈
         composable(Screen.Home.route) {
@@ -115,50 +128,6 @@ fun SetUpNavGraph(
         // 마이페이지_동행 후기 작성
         composable(Screen.Review.route) {
             ReviewScreen()
-        }
-    }
-}
-
-@Composable
-fun GetTopBar(
-    currentRoute: String?,
-    navController: NavHostController
-) {
-    val viewModel: HomeViewModel = hiltViewModel()
-
-    when (currentRoute) {
-        Screen.Home.route -> {
-            MateTripTopAppBar(
-                onNotificationClick = { navController.navigate(Screen.Notification.route) }
-            )
-        }
-
-        // 타이틀, action이 필요한 상단바
-        Screen.Post.route -> {
-            BackButtonWithTitleTopAppBar(
-                screenTitle = "동행 모집하기",
-                onNavigateUp = { navController.navigateUp() },
-                onPostClick = {
-                    val boardIdDto = viewModel.createPost(viewModel.toBoardRequestDto())
-                    navController.navigate(Screen.NavigateToPost.route + "/${boardIdDto.boardId}")
-                }
-            )
-        }
-
-        // 타이틀 제목이 필요한 뒤로가기 상단바
-        Screen.Form.route -> {
-            BackButtonTopAppBar(
-                screenTitle = "동행 신청서 작성",
-                onNavigateUp = { navController.navigateUp() }
-            )
-        }
-
-        // 뒤로가기만 있는 상단바
-        else -> {
-            BackButtonTopAppBar(
-                screenTitle = "",
-                onNavigateUp = { navController.navigateUp() }
-            )
         }
     }
 }

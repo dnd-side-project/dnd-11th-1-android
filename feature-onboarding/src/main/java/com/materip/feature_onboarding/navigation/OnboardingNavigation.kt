@@ -63,6 +63,7 @@ fun NavGraphBuilder.selectTripStyle(
 }
 fun NavGraphBuilder.selectFoodPreference(
     onBackClick: () -> Unit,
+    navHome: () -> Unit,
 ){
     composable(
         route = "${OnboardingRoute.SelectFoodPreferenceRoute.name}/{userInfo}/{tripInterests}/{tripStyles}",
@@ -80,7 +81,7 @@ fun NavGraphBuilder.selectFoodPreference(
             tripInterests = tripInterests,
             tripStyles = tripStyles,
             onBackClick = onBackClick,
-            onNextClick = {/** 홈화면으로 navigation */}
+            onNextClick = navHome
         )
     }
 }

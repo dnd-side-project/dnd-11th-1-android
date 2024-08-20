@@ -25,15 +25,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.materip.core_designsystem.component.MateTripButton
+import com.materip.core_designsystem.component.OnboardingElevatedCard
+import com.materip.core_designsystem.component.ProgressIndicator
+import com.materip.core_designsystem.component.UnderlinedTextField
+import com.materip.core_designsystem.theme.MateTripTypographySet
+import com.materip.core_designsystem.theme.OnboardingMessage
 import com.materip.core_model.ui_model.Gender
 import com.materip.core_model.ui_model.InputKeyboardType
 import com.materip.core_model.ui_model.UserInfo
-import com.materip.matetrip.component.MateTripButton
-import com.materip.matetrip.component.OnboardingElevatedCard
-import com.materip.matetrip.component.ProgressIndicator
-import com.materip.matetrip.component.UnderlinedTextField
-import com.materip.matetrip.theme.MateTripTypographySet
-import com.materip.matetrip.theme.OnboardingMessage
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 

@@ -1,4 +1,4 @@
-package com.materip.matetrip.icon
+package com.materip.core_designsystem.icon
 
 import com.materip.core_designsystem.R
 
@@ -6,9 +6,11 @@ object Badges {
     // 뱃지
     val information_badge = R.drawable.frame_2608633
     val question_badge = R.drawable.frame_2608635
+    val warning_badge = R.drawable.ic_warning
 
     // 소셜 뱃지
     val instagram_badge = R.drawable.instagram_24px
+    val instagram_outlined_badge = R.drawable.ic_instagram_outlined
     val kakaotalk_badge = R.drawable.icon_kakaotalk_20px
     val sms_badge = R.drawable.icon_sms_20px
 
@@ -64,4 +66,7 @@ object Badges {
 
     // 프로필 이미지 기본값
     val profile_default_badge = R.drawable.profile_default
+
+    //배경 badge
+    val background_badge = R.drawable.ic_background_design_badge
 }

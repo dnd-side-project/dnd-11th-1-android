@@ -2,10 +2,14 @@ package com.materip.core_network.networkDI
 
 import com.google.gson.GsonBuilder
 import com.materip.core_database.TokenManager
+import com.materip.core_network.networkDI.AuthAuthenticator
+import com.materip.core_network.networkDI.HeaderInterceptor
+import com.materip.core_network.service.image.ImageService
 import com.materip.core_network.BuildConfig
 import com.materip.core_network.service.home.BoardService
 import com.materip.core_network.service.login.LoginService
 import com.materip.core_network.service.onboarding.OnboardingService
+import com.materip.core_network.service.profile.ProfileService
 import com.materip.core_network.service.test.TestService
 import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
 import dagger.Module
@@ -70,6 +74,16 @@ object NetworkModule {
     @Provides
     fun provideOnboardingService(retrofit: Retrofit): OnboardingService {
         return retrofit.create(OnboardingService::class.java)
+    }
+    @Singleton
+    @Provides
+    fun provideProfileService(retrofit: Retrofit): ProfileService{
+        return retrofit.create(ProfileService::class.java)
+    }
+    @Singleton
+    @Provides
+    fun provideImageService(retrofit: Retrofit): ImageService {
+        return retrofit.create(ImageService::class.java)
     }
 
     @Provides

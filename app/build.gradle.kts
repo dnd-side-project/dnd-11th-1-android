@@ -8,7 +8,7 @@ plugins {
 }
 
 val localProperties = Properties().apply{
-    load(project.rootProject.file("local.properties").inputStream())
+    load(project.file("local.properties").inputStream())
 }
 
 android {
@@ -87,7 +87,6 @@ dependencies {
 
     //hilt
     implementation(libs.bundles.hilt.impl)
-    implementation(libs.androidx.navigation.runtime.ktx)
     kapt(libs.bundles.hilt.kapt)
 
     implementation(libs.androidx.core.ktx)

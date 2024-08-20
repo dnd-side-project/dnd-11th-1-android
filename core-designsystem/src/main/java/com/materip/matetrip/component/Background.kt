@@ -1,2 +1,2 @@
-package com.materip.matetrip.component
+package com.materip.core_designsystem.component
 
