@@ -3,8 +3,6 @@
 package com.materip.feature_home.ui
 
 import android.annotation.SuppressLint
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -43,7 +41,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -70,7 +67,6 @@ import java.time.LocalDate
 
 // 동행글 작성 화면
 @SuppressLint("UnrememberedMutableState")
-@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
 fun PostBoardScreen(
     viewModel: HomeViewModel = hiltViewModel(),
@@ -743,21 +739,5 @@ fun SetCapacity(
         Spacer(modifier = Modifier.height(20.dp))
         SimpleDivider(Gray_03)
         Spacer(modifier = Modifier.height(20.dp))
-    }
-}
-
-@Preview
-@Composable
-fun PreviewSetCapacity() {
-    Column(
-        modifier = Modifier
-            .background(Color.White)
-            .padding(top = 50.dp, end = 20.dp, start = 20.dp, bottom = 50.dp),
-        verticalArrangement = Arrangement.spacedBy(30.dp)
-    ) {
-        SetCapacity(
-            capacity = 2,
-            onCapacityChange = {}
-        )
     }
 }
