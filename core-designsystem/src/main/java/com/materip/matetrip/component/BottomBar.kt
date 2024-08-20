@@ -1,5 +1,6 @@
 package com.materip.core_designsystem.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,7 +40,6 @@ fun MateTripBottomBar(
             .fillMaxWidth()
             .height(78.dp),
         containerColor = Color.White,
-        contentPadding = PaddingValues(horizontal = 34.dp)
     ) {
         BottomBarItem(
             iconRes = Icons.home_icon,
