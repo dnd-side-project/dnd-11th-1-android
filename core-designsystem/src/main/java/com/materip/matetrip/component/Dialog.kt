@@ -54,7 +54,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.materip.core_designsystem.R
 import com.materip.matetrip.icon.Badges
 import com.materip.matetrip.icon.Icons
-import com.materip.matetrip.theme.MatetripColor
+import com.materip.matetrip.theme.MateTripColors
 import kotlinx.coroutines.delay
 
 @Composable
@@ -89,7 +89,7 @@ fun SelectableDialog(
                         fontSize = 18.sp,
                         fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                         fontWeight = FontWeight(400),
-                        color = MatetripColor.Gray_11
+                        color = MateTripColors.Gray_11
                     )
                     IconButton(
                         modifier = Modifier.size(18.dp),
@@ -106,7 +106,7 @@ fun SelectableDialog(
                         )
                     }
                 }
-                if(options.indexOf(option) != options.lastIndex){HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = MatetripColor.divider_color)}
+                if(options.indexOf(option) != options.lastIndex){HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = MateTripColors.divider_color)}
             }
         }
     }
@@ -118,15 +118,15 @@ fun LevelInfoDialog(
     onDismissRequest: () -> Unit,
 ){
     val currentLevelInfo = when(currentLevel){
-        1 -> Triple(MatetripColor.level_1_color, Badges.level_1_badge, "새싹 메이트")
-        2 -> Triple(MatetripColor.level_2_color, Badges.level_2_badge, "우수 메이트")
-        3 -> Triple(MatetripColor.level_3_color, Badges.level_3_badge, "열정 메이트")
-        else -> Triple(MatetripColor.level_4_color, Badges.level_4_badge, "베테랑 메이트")
+        1 -> Triple(MateTripColors.level_1_color, Badges.level_1_badge, "새싹 메이트")
+        2 -> Triple(MateTripColors.level_2_color, Badges.level_2_badge, "우수 메이트")
+        3 -> Triple(MateTripColors.level_3_color, Badges.level_3_badge, "열정 메이트")
+        else -> Triple(MateTripColors.level_4_color, Badges.level_4_badge, "베테랑 메이트")
     }
     val nextLevelInfo = when(currentLevel + 1){
-        2 -> Pair(MatetripColor.level_2_color, "우수 메이트")
-        3 -> Pair(MatetripColor.level_3_color, "열정 메이트")
-        else -> Pair(MatetripColor.level_4_color, "베테랑 메이트")
+        2 -> Pair(MateTripColors.level_2_color, "우수 메이트")
+        3 -> Pair(MateTripColors.level_3_color, "열정 메이트")
+        else -> Pair(MateTripColors.level_4_color, "베테랑 메이트")
     }
     val nextLevelText = buildAnnotatedString {
         if(currentLevel != 4) {
@@ -140,7 +140,7 @@ fun LevelInfoDialog(
             withStyle(style = SpanStyle(color = Color.Black)){
                 append("메이트님은 저희가 선정한\n")
             }
-            withStyle(style = SpanStyle(color = MatetripColor.level_4_color)){
+            withStyle(style = SpanStyle(color = MateTripColors.level_4_color)){
                 append("가장 신뢰도 높은 메이트")
             }
             withStyle(style = SpanStyle(color = Color.Black)){
@@ -150,20 +150,20 @@ fun LevelInfoDialog(
     }
     val nextLevelDescText = buildAnnotatedString {
         if (currentLevel != 4){
-            withStyle(style = SpanStyle(color = MatetripColor.Primary)){
+            withStyle(style = SpanStyle(color = MateTripColors.Primary)){
                 append("동행 후기")
             }
-            withStyle(style = SpanStyle(color = MatetripColor.gray_06)){
+            withStyle(style = SpanStyle(color = MateTripColors.Gray_06)){
                 append("를 작성하고 다음 레벨로 진급해서\n더욱")
             }
-            withStyle(style = SpanStyle(color = MatetripColor.Primary)){
+            withStyle(style = SpanStyle(color = MateTripColors.Primary)){
                 append("신뢰도 있는 메이트")
             }
-            withStyle(style = SpanStyle(color = MatetripColor.gray_06)){
+            withStyle(style = SpanStyle(color = MateTripColors.Gray_06)){
                 append("가 되어 보세요 :)")
             }
         } else {
-            withStyle(style = SpanStyle(color = MatetripColor.gray_06)){
+            withStyle(style = SpanStyle(color = MateTripColors.Gray_06)){
                 append("자부심을 가져도 좋아요 :)")
             }
         }
@@ -196,7 +196,7 @@ fun LevelInfoDialog(
                         fontSize = 12.sp,
                         fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                         fontWeight = FontWeight(500),
-                        color = MatetripColor.Gray_08,
+                        color = MateTripColors.Gray_08,
                         textAlign = TextAlign.Justify,
                         platformStyle = PlatformTextStyle(
                             includeFontPadding = false
@@ -268,18 +268,18 @@ fun LevelInfoDialog(
                             fontSize = 12.sp,
                             fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                             fontWeight = FontWeight(500),
-                            color = MatetripColor.level_1_color
+                            color = MateTripColors.level_1_color
                         )
                         Text(
                             text = "일반 회원",
                             fontSize = 12.sp,
                             fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                             fontWeight = FontWeight(400),
-                            color = MatetripColor.Gray_07
+                            color = MateTripColors.Gray_07
                         )
                     }
                 }
-                VerticalDivider(Modifier.fillMaxHeight(), color = MatetripColor.divider_color)
+                VerticalDivider(Modifier.fillMaxHeight(), color = MateTripColors.divider_color)
                 Row(
                     modifier = Modifier
                         .weight(1f)
@@ -301,14 +301,14 @@ fun LevelInfoDialog(
                             fontSize = 12.sp,
                             fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                             fontWeight = FontWeight(500),
-                            color = MatetripColor.level_2_color
+                            color = MateTripColors.level_2_color
                         )
                         Text(
                             text = "후기 1개 이상",
                             fontSize = 12.sp,
                             fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                             fontWeight = FontWeight(400),
-                            color = MatetripColor.Gray_07
+                            color = MateTripColors.Gray_07
                         )
                     }
                 }
@@ -317,9 +317,9 @@ fun LevelInfoDialog(
             Row(
                 modifier = Modifier.fillMaxWidth()
             ){
-                HorizontalDivider(Modifier.weight(1f), color = MatetripColor.divider_color)
+                HorizontalDivider(Modifier.weight(1f), color = MateTripColors.divider_color)
                 Spacer(Modifier.width(32.dp))
-                HorizontalDivider(Modifier.weight(1f), color = MatetripColor.divider_color)
+                HorizontalDivider(Modifier.weight(1f), color = MateTripColors.divider_color)
             }
             Spacer(Modifier.height(10.dp))
             Row(
@@ -347,18 +347,18 @@ fun LevelInfoDialog(
                             fontSize = 12.sp,
                             fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                             fontWeight = FontWeight(500),
-                            color = MatetripColor.level_3_color
+                            color = MateTripColors.level_3_color
                         )
                         Text(
                             text = "후기 3개 이상",
                             fontSize = 12.sp,
                             fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                             fontWeight = FontWeight(400),
-                            color = MatetripColor.Gray_07
+                            color = MateTripColors.Gray_07
                         )
                     }
                 }
-                VerticalDivider(Modifier.fillMaxHeight(), color = MatetripColor.divider_color)
+                VerticalDivider(Modifier.fillMaxHeight(), color = MateTripColors.divider_color)
                 Row(
                     modifier = Modifier
                         .weight(1f)
@@ -380,14 +380,14 @@ fun LevelInfoDialog(
                             fontSize = 12.sp,
                             fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                             fontWeight = FontWeight(500),
-                            color = MatetripColor.level_4_color
+                            color = MateTripColors.level_4_color
                         )
                         Text(
                             text = "후기 5개 이상",
                             fontSize = 12.sp,
                             fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                             fontWeight = FontWeight(400),
-                            color = MatetripColor.Gray_07
+                            color = MateTripColors.Gray_07
                         )
                     }
                 }
@@ -436,7 +436,7 @@ fun ConfirmationDialog(
                         .fillMaxHeight(),
                     onClick = onDismissRequest,
                     colors = ButtonDefaults.textButtonColors(
-                        containerColor = MatetripColor.divider_color,
+                        containerColor = MateTripColors.divider_color,
                     ),
                     shape = RoundedCornerShape(size = 10.dp)
                 ) {
@@ -449,7 +449,7 @@ fun ConfirmationDialog(
                             fontSize = 14.sp,
                             fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                             fontWeight = FontWeight(500),
-                            color = MatetripColor.no_text_color,
+                            color = MateTripColors.no_text_color,
                             textAlign = TextAlign.Center
                         )
                     }
@@ -499,7 +499,7 @@ fun WarningDialog(
     ) {
         Row(
             modifier = Modifier.fillMaxWidth()
-                .background(color = MatetripColor.Red)
+                .background(color = MateTripColors.Red_01)
                 .padding(12.dp),
             horizontalArrangement = Arrangement.Center
         ){

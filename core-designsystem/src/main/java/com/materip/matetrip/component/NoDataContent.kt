@@ -13,7 +13,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.materip.core_designsystem.R
-import com.materip.matetrip.theme.MatetripColor
+import com.materip.matetrip.theme.MateTripColors
 
 @Composable
 fun NoDataContent(
@@ -29,7 +29,7 @@ fun NoDataContent(
             fontSize = 16.sp,
             fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
             fontWeight = FontWeight(400),
-            color = MatetripColor.Gray_04
+            color = MateTripColors.Gray_04
         )
     }
 }

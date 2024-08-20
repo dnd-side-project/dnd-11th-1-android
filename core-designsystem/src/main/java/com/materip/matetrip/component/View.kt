@@ -50,7 +50,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.materip.core_designsystem.R
 import com.materip.matetrip.icon.Icons
-import com.materip.matetrip.theme.MatetripColor
+import com.materip.matetrip.theme.MateTripColors
 
 @Composable
 fun CircleImageView(
@@ -60,7 +60,7 @@ fun CircleImageView(
     AsyncImage(
         modifier = Modifier
             .size(size)
-            .background(color = MatetripColor.Blue_04, shape = CircleShape)
+            .background(color = MateTripColors.Blue_04, shape = CircleShape)
             .clip(CircleShape),
         model = imageUrl,
         contentDescription = "Circle Image View",
@@ -131,7 +131,7 @@ fun TravelPostItem(
         modifier = modifier
             .border(
                 width = 1.dp,
-                color = MatetripColor.Blue_03,
+                color = MateTripColors.Blue_03,
                 shape = RoundedCornerShape(size = 10.dp)
             )
             .clickable { onClick() }
@@ -148,7 +148,7 @@ fun TravelPostItem(
                         modifier = Modifier
                             .height(27.dp)
                             .background(
-                                color = MatetripColor.Primary,
+                                color = MateTripColors.Primary,
                                 shape = RoundedCornerShape(size = 6.dp)
                             )
                             .padding(horizontal = 10.dp),
@@ -168,7 +168,7 @@ fun TravelPostItem(
                         modifier = Modifier
                             .height(27.dp)
                             .background(
-                                color = MatetripColor.Blue_04,
+                                color = MateTripColors.Blue_04,
                                 shape = RoundedCornerShape(size = 6.dp)
                             )
                             .padding(horizontal = 10.dp),
@@ -203,7 +203,7 @@ fun TravelPostItem(
                 modifier = Modifier
                     .size(84.dp)
                     .clip(RoundedCornerShape(size = 10.dp))
-                    .background(color = MatetripColor.loading_color, shape = RoundedCornerShape(size = 10.dp)),
+                    .background(color = MateTripColors.loading_color, shape = RoundedCornerShape(size = 10.dp)),
                 contentScale = ContentScale.Crop,
                 model = postImage,
                 contentDescription = "Post Image",
@@ -234,7 +234,7 @@ fun QuizItem(
                 .height(62.dp)
                 .border(
                     width = 1.dp,
-                    color = MatetripColor.Blue_03,
+                    color = MateTripColors.Blue_03,
                     shape = if (isClicked) RoundedCornerShape(
                         topStart = 10.dp,
                         topEnd = 10.dp
@@ -247,7 +247,7 @@ fun QuizItem(
             Box(
                 modifier = Modifier
                     .size(24.dp)
-                    .background(color = MatetripColor.Blue_03, shape = CircleShape)
+                    .background(color = MateTripColors.Blue_03, shape = CircleShape)
                     .clip(CircleShape),
                 contentAlignment = Alignment.Center
             ){
@@ -256,7 +256,7 @@ fun QuizItem(
                     fontSize = 14.sp,
                     fontFamily = FontFamily(Font(R.font.roboto_medium)),
                     fontWeight = FontWeight(500),
-                    color = MatetripColor.Gray_10
+                    color = MateTripColors.Gray_10
                 )
             }
             Spacer(Modifier.width(8.dp))
@@ -273,7 +273,7 @@ fun QuizItem(
                 },
                 singleLine = true,
                 textStyle = TextStyle(
-                    color = MatetripColor.Gray_07,
+                    color = MateTripColors.Gray_07,
                     fontSize = 16.sp,
                     fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                     fontWeight = FontWeight(500)
@@ -299,7 +299,7 @@ fun QuizItem(
                             fontSize = 16.sp,
                             fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                             fontWeight = FontWeight(400),
-                            color = MatetripColor.Gray_07
+                            color = MateTripColors.Gray_07
                         )
                     }
                 }
@@ -316,7 +316,7 @@ fun QuizItem(
                     .fillMaxWidth()
                     .height(60.dp)
                     .background(
-                        color = MatetripColor.Blue_04,
+                        color = MateTripColors.Blue_04,
                         shape = RoundedCornerShape(bottomEnd = 10.dp, bottomStart = 10.dp)
                     ),
                 value = answerText,
@@ -326,7 +326,7 @@ fun QuizItem(
                 },
                 singleLine = true,
                 textStyle = TextStyle(
-                    color = MatetripColor.Gray_07,
+                    color = MateTripColors.Gray_07,
                     fontSize = 14.sp,
                     fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                     fontWeight = FontWeight(400)
@@ -338,7 +338,7 @@ fun QuizItem(
                 ){
                     Text(
                         text = " · ",
-                        color = MatetripColor.Gray_07,
+                        color = MateTripColors.Gray_07,
                         fontSize = 14.sp,
                         fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                         fontWeight = FontWeight(400)
@@ -351,7 +351,7 @@ fun QuizItem(
                             fontSize = 14.sp,
                             fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                             fontWeight = FontWeight(400),
-                            color = MatetripColor.Gray_07
+                            color = MateTripColors.Gray_07
                         )
                     }
                 }
@@ -371,14 +371,14 @@ fun QuizEditItem(
         modifier = Modifier
             .fillMaxWidth()
             .height(62.dp)
-            .border(width = 1.dp, color = MatetripColor.Blue_03, shape = RoundedCornerShape(10.dp))
+            .border(width = 1.dp, color = MateTripColors.Blue_03, shape = RoundedCornerShape(10.dp))
             .padding(horizontal = 12.dp, vertical = 19.dp),
         verticalAlignment = Alignment.CenterVertically
     ){
         Box(
             modifier = Modifier
                 .size(24.dp)
-                .background(color = MatetripColor.Blue_03, shape = CircleShape),
+                .background(color = MateTripColors.Blue_03, shape = CircleShape),
             contentAlignment = Alignment.Center
         ){
             Text(
@@ -386,7 +386,7 @@ fun QuizEditItem(
                 fontSize = 14.sp,
                 fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                 fontWeight = FontWeight(500),
-                color = MatetripColor.Gray_10
+                color = MateTripColors.Gray_10
             )
         }
         Spacer(Modifier.width(8.dp))
@@ -426,7 +426,7 @@ fun ReviewDescItem(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .border(width = 1.dp, color = MatetripColor.Blue_03, shape = RoundedCornerShape(10.dp))
+            .border(width = 1.dp, color = MateTripColors.Blue_03, shape = RoundedCornerShape(10.dp))
             .padding(14.dp)
     ){
         Row(
@@ -436,7 +436,7 @@ fun ReviewDescItem(
             Row(
                 modifier = Modifier
                     .height(28.dp)
-                    .background(color = MatetripColor.Primary, shape = RoundedCornerShape(5.dp))
+                    .background(color = MateTripColors.Primary, shape = RoundedCornerShape(5.dp))
                     .padding(horizontal = 10.dp, vertical = 5.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
@@ -453,7 +453,7 @@ fun ReviewDescItem(
             Row(
                 modifier = Modifier
                     .height(28.dp)
-                    .background(color = MatetripColor.Blue_04, shape = RoundedCornerShape(5.dp))
+                    .background(color = MateTripColors.Blue_04, shape = RoundedCornerShape(5.dp))
                     .padding(horizontal = 10.dp, vertical = 5.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
@@ -463,7 +463,7 @@ fun ReviewDescItem(
                     fontSize = 12.sp,
                     fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                     fontWeight = FontWeight(500),
-                    color = MatetripColor.Gray_11
+                    color = MateTripColors.Gray_11
                 )
             }
             Spacer(Modifier.weight(1f))
@@ -472,11 +472,11 @@ fun ReviewDescItem(
                 fontSize = 12.sp,
                 fontFamily = FontFamily(Font(R.font.roboto_medium)),
                 fontWeight = FontWeight(400),
-                color = MatetripColor.gray_06
+                color = MateTripColors.Gray_06
             )
         }
         Spacer(Modifier.height(13.dp))
-        HorizontalDivider(Modifier.fillMaxWidth(), thickness = 1.dp, color = MatetripColor.Blue_03)
+        HorizontalDivider(Modifier.fillMaxWidth(), thickness = 1.dp, color = MateTripColors.Blue_03)
         Spacer(Modifier.height(13.dp))
         Row(
             modifier = Modifier.fillMaxWidth()
@@ -500,7 +500,7 @@ fun ReviewDescItem(
                     fontSize = 12.sp,
                     fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                     fontWeight = FontWeight(400),
-                    color = MatetripColor.Gray_12
+                    color = MateTripColors.Gray_12
                 )
             }
         }
@@ -510,7 +510,7 @@ fun ReviewDescItem(
             fontSize = 14.sp,
             fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
             fontWeight = FontWeight(400),
-            color = MatetripColor.Gray_07,
+            color = MateTripColors.Gray_07,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )
@@ -520,8 +520,8 @@ fun ReviewDescItem(
             shape = RoundedCornerShape(size = 8.dp),
             btnText = "상세 후기 보기",
             fontSize = 12.sp,
-            textColor = MatetripColor.Gray_08,
-            btnColor = MatetripColor.Gray_02,
+            textColor = MateTripColors.Gray_08,
+            btnColor = MateTripColors.Gray_02,
             onClick = onClick
         )
     }
@@ -538,7 +538,7 @@ fun ReviewItem(
         Icon(
             modifier = Modifier.size(32.dp),
             painter = painterResource(Icons.review_tag_icon),
-            tint = MatetripColor.Blue_02,
+            tint = MateTripColors.Blue_02,
             contentDescription = "Review Tag"
         )
         Text(
@@ -547,13 +547,13 @@ fun ReviewItem(
             fontSize = 16.sp,
             fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.roboto_medium)),
             fontWeight = FontWeight(700),
-            color = MatetripColor.Gray_11,
+            color = MateTripColors.Gray_11,
             textAlign = TextAlign.Center
         )
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = MatetripColor.Blue_04, shape = RoundedCornerShape(8.dp))
+                .background(color = MateTripColors.Blue_04, shape = RoundedCornerShape(8.dp))
                 .padding(horizontal = 12.dp, vertical = 10.dp)
         ){
             Text(
@@ -561,7 +561,7 @@ fun ReviewItem(
                 fontSize = 14.sp,
                 fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                 fontWeight = FontWeight(500),
-                color = MatetripColor.Gray_11
+                color = MateTripColors.Gray_11
             )
         }
     }
