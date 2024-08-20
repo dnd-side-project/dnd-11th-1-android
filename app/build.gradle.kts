@@ -59,7 +59,7 @@ android {
             excludes += "/META-INF/gradle/incremental.annotation.processors"
         }
     }
-    kapt{
+    kapt {
         correctErrorTypes = true
     }
     java{
@@ -83,12 +83,16 @@ dependencies {
 
     //navigation
     implementation(libs.navigation)
-    implementation(libs.bundles.kakao) //kakao
+    implementation(libs.androidx.navigation.runtime.ktx)
+
+    //kakao
+    implementation(libs.bundles.kakao)
 
     //hilt
     implementation(libs.bundles.hilt.impl)
-    implementation(libs.androidx.navigation.runtime.ktx)
     kapt(libs.bundles.hilt.kapt)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt.android)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
