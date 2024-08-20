@@ -24,11 +24,7 @@ import com.materip.feature_home.ui.PostBoardScreen
 import com.materip.feature_home.ui.ProfileScreen
 import com.materip.feature_home.ui.ReviewScreen
 import com.materip.feature_home.viewModel.HomeViewModel
-import com.materip.matetrip.component.BackButtonTopAppBar
-import com.materip.matetrip.component.BackButtonWithTitleTopAppBar
-import com.materip.matetrip.component.MateTripTopAppBar
 import com.materip.feature_login.navigation.login
-import com.materip.feature_login.navigation.navigateToTest
 import com.materip.feature_login.navigation.test
 import com.materip.feature_onboarding.navigation.inputUserInfo
 import com.materip.feature_onboarding.navigation.navigateToInputUserInfo
@@ -38,13 +34,15 @@ import com.materip.feature_onboarding.navigation.navigateToSelectTripStyle
 import com.materip.feature_onboarding.navigation.selectFoodPreference
 import com.materip.feature_onboarding.navigation.selectTripInterest
 import com.materip.feature_onboarding.navigation.selectTripStyle
+import com.materip.matetrip.component.BackButtonTopAppBar
+import com.materip.matetrip.component.BackButtonWithTitleTopAppBar
+import com.materip.matetrip.component.MateTripTopAppBar
 
-@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
 fun SetUpNavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    startDestination: String = Screen.Home.route
+    startDestination: String = Screen.Post.route
 ) {
     NavHost(
         navController = navController,
