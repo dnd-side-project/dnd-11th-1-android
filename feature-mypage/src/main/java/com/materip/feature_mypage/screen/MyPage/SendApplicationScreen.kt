@@ -38,14 +38,14 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.materip.core_designsystem.component.CircleImageView
+import com.materip.core_designsystem.component.ConfirmationDialog
+import com.materip.core_designsystem.component.CustomButton
+import com.materip.core_designsystem.component.NormalTag
+import com.materip.core_designsystem.component.NormalTopBar
+import com.materip.core_designsystem.icon.Icons
+import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_model.ui_model.SendApplicationClass
-import com.materip.matetrip.component.CircleImageView
-import com.materip.matetrip.component.ConfirmationDialog
-import com.materip.matetrip.component.CustomButton
-import com.materip.matetrip.component.NormalTag
-import com.materip.matetrip.component.NormalTopBar
-import com.materip.matetrip.icon.Icons
-import com.materip.matetrip.theme.MatetripColor
 
 @Composable
 fun SendApplicationRoute(
@@ -78,13 +78,13 @@ fun SendApplicationScreen(
         withStyle(style = SpanStyle(color = Color.Black)){
             append("동행 수락 후 카카오톡 오픈채팅")
         }
-        withStyle(style = SpanStyle(color = MatetripColor.gray_06)){
+        withStyle(style = SpanStyle(color = MateTripColors.Gray_06)){
             append("에서 대화해 보세요!\n상대방의 동의 없는 링크 공유는")
         }
         withStyle(style = SpanStyle(color = Color.Black)){
             append("서비스 이용 제재의 사유")
         }
-        withStyle(style = SpanStyle(color = MatetripColor.gray_06)){
+        withStyle(style = SpanStyle(color = MateTripColors.Gray_06)){
             append("가 됩니다.")
         }
     }
@@ -141,7 +141,7 @@ fun SendApplicationScreen(
                     .fillMaxWidth()
                     .height(240.dp)
                     .background(
-                        color = MatetripColor.Blue_03,
+                        color = MateTripColors.Blue_03,
                         shape = RoundedCornerShape(size = 10.dp)
                     )
                     .padding(12.dp),
@@ -151,7 +151,7 @@ fun SendApplicationScreen(
                     fontSize = 14.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                     fontWeight = FontWeight(500),
-                    color = MatetripColor.Gray_11
+                    color = MateTripColors.Gray_11
                 )
                 Spacer(Modifier.height(18.dp))
                 Text(
@@ -159,7 +159,7 @@ fun SendApplicationScreen(
                     fontSize = 14.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                     fontWeight = FontWeight(400),
-                    color = MatetripColor.Gray_10
+                    color = MateTripColors.Gray_10
                 )
             }
             Spacer(Modifier.height(14.dp))
@@ -177,7 +177,7 @@ fun SendApplicationScreen(
                     .background(color = Color.White, shape = RoundedCornerShape(size = 10.dp))
                     .border(
                         width = 1.dp,
-                        color = MatetripColor.Blue_03,
+                        color = MateTripColors.Blue_03,
                         shape = RoundedCornerShape(10.dp)
                     )
                     .padding(vertical = 12.dp, horizontal = 10.dp)
@@ -199,9 +199,9 @@ fun SendApplicationScreen(
                     .height(54.dp),
                 shape = RoundedCornerShape(size = 10.dp),
                 btnText = if(isCancellable) "동행 신청 취소" else "취소 완료",
-                textColor = if(isCancellable) Color.White else MatetripColor.gray_06,
+                textColor = if(isCancellable) Color.White else MateTripColors.Gray_06,
                 fontSize = 14.sp,
-                btnColor = if(isCancellable) Color.Black else MatetripColor.Blue_03,
+                btnColor = if(isCancellable) Color.Black else MateTripColors.Blue_03,
                 isEnabled = isCancellable,
                 onClick = {isOpen = true}
             )
@@ -223,7 +223,7 @@ private fun ProfileView(
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = MatetripColor.Blue_03,
+                color = MateTripColors.Blue_03,
                 shape = RoundedCornerShape(size = 10.dp)
             )
             .padding(12.dp)
@@ -243,14 +243,14 @@ private fun ProfileView(
                     fontSize = 14.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                     fontWeight = FontWeight(500),
-                    color = MatetripColor.Gray_11
+                    color = MateTripColors.Gray_11
                 )
                 Text(
                     text = "${age} · ${gender}",
                     fontSize = 12.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                     fontWeight = FontWeight(400),
-                    color = MatetripColor.gray_06
+                    color = MateTripColors.Gray_06
                 )
             }
             Spacer(Modifier.weight(1f))
@@ -262,7 +262,7 @@ private fun ProfileView(
                     fontSize = 12.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                     fontWeight = FontWeight(400),
-                    color = MatetripColor.Gray_11
+                    color = MateTripColors.Gray_11
                 )
                 Spacer(Modifier.width(4.dp))
                 IconButton(
@@ -292,7 +292,7 @@ private fun ProfileView(
                         fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                         fontWeight = FontWeight(500),
                     ),
-                    color = MatetripColor.Gray_02
+                    color = MateTripColors.Gray_02
                 )
             }
         }

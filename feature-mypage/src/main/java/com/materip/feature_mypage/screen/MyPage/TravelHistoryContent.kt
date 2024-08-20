@@ -35,19 +35,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.materip.core_designsystem.R
+import com.materip.core_designsystem.component.CircleImageView
+import com.materip.core_designsystem.component.CustomButton
+import com.materip.core_designsystem.component.CustomClickableTag
+import com.materip.core_designsystem.component.NoDataContent
+import com.materip.core_designsystem.component.ProfileTag
+import com.materip.core_designsystem.component.TravelPostItem
+import com.materip.core_designsystem.icon.Badges
+import com.materip.core_designsystem.icon.Icons
+import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_model.ui_model.TempHumanClass
 import com.materip.core_model.ui_model.TempTravelPost
 import com.materip.core_model.ui_model.TravelHistoryTag
 import com.materip.core_model.ui_model.TravelStyle
-import com.materip.matetrip.component.CircleImageView
-import com.materip.matetrip.component.CustomButton
-import com.materip.matetrip.component.CustomClickableTag
-import com.materip.matetrip.component.NoDataContent
-import com.materip.matetrip.component.ProfileTag
-import com.materip.matetrip.component.TravelPostItem
-import com.materip.matetrip.icon.Badges
-import com.materip.matetrip.icon.Icons
-import com.materip.matetrip.theme.MatetripColor
 
 @Composable
 fun TravelHistoryContent(
@@ -109,10 +109,10 @@ private fun TagList(
             fontSize = 14.sp,
             shape = RoundedCornerShape(size = 60.dp),
             selectedTextColor = Color.White,
-            notSelectedTextColor = MatetripColor.gray_06,
+            notSelectedTextColor = MateTripColors.Gray_06,
             isSelected = selectedTag == TravelHistoryTag.RECORD,
-            selectedColor = MatetripColor.ActivatedColor,
-            notSelectedColor = MatetripColor.InactiveColor,
+            selectedColor = MateTripColors.ActivatedColor,
+            notSelectedColor = MateTripColors.InactiveColor,
             onClick = {onTagChange(TravelHistoryTag.RECORD)}
         )
         Spacer(Modifier.width(12.dp))
@@ -121,10 +121,10 @@ private fun TagList(
             fontSize = 14.sp,
             shape = RoundedCornerShape(size = 60.dp),
             selectedTextColor = Color.White,
-            notSelectedTextColor = MatetripColor.gray_06,
+            notSelectedTextColor = MateTripColors.Gray_06,
             isSelected = selectedTag == TravelHistoryTag.SEND_APPLICATION,
-            selectedColor = MatetripColor.ActivatedColor,
-            notSelectedColor = MatetripColor.InactiveColor,
+            selectedColor = MateTripColors.ActivatedColor,
+            notSelectedColor = MateTripColors.InactiveColor,
             onClick = {onTagChange(TravelHistoryTag.SEND_APPLICATION)}
         )
         Spacer(Modifier.width(12.dp))
@@ -133,10 +133,10 @@ private fun TagList(
             fontSize = 14.sp,
             shape = RoundedCornerShape(size = 60.dp),
             selectedTextColor = Color.White,
-            notSelectedTextColor = MatetripColor.gray_06,
+            notSelectedTextColor = MateTripColors.Gray_06,
             isSelected = selectedTag == TravelHistoryTag.RECEIVE_APPLICATION,
-            selectedColor = MatetripColor.ActivatedColor,
-            notSelectedColor = MatetripColor.InactiveColor,
+            selectedColor = MateTripColors.ActivatedColor,
+            notSelectedColor = MateTripColors.InactiveColor,
             onClick = {onTagChange(TravelHistoryTag.RECEIVE_APPLICATION)}
         )
     }
@@ -168,8 +168,8 @@ private fun TravelHistories(records: List<TempTravelPost>){
                     shape = RoundedCornerShape(size = 8.dp),
                     btnText = "동행 후기 작성",
                     fontSize = 14.sp,
-                    btnColor = MatetripColor.Blue_04,
-                    textColor = MatetripColor.Gray_08,
+                    btnColor = MateTripColors.Blue_04,
+                    textColor = MateTripColors.Gray_08,
                     trailingIcon = Icons.review_icon,
                     onClick = { /** 동행 후기 작성하는 곳으로 navigation */ }
                 )
@@ -207,8 +207,8 @@ private fun SendTravelApplication(
                     shape = RoundedCornerShape(size = 8.dp),
                     btnText = "보낸 신청서 보기",
                     fontSize = 14.sp,
-                    btnColor = MatetripColor.Blue_04,
-                    textColor = MatetripColor.Gray_08,
+                    btnColor = MateTripColors.Blue_04,
+                    textColor = MateTripColors.Gray_08,
                     onClick = navSendApplication
                 )
             }
@@ -253,7 +253,7 @@ private fun ReceiveTravelApplication(){
                         .wrapContentHeight()
                         .border(
                             width = 1.dp,
-                            color = MatetripColor.Blue_03,
+                            color = MateTripColors.Blue_03,
                             shape = RoundedCornerShape(size = 10.dp)
                         )
                         .padding(16.dp)
@@ -287,7 +287,7 @@ private fun ReceiveTravelApplication(){
                             Text(
                                 text = "20대 초반·여자",
                                 fontSize = 12.sp,
-                                color = MatetripColor.gray_06,
+                                color = MateTripColors.Gray_06,
                                 fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                                 fontWeight = FontWeight(500)
                             )
@@ -336,9 +336,9 @@ private fun ReceiveTravelApplication(){
                         .height(38.dp),
                     shape = RoundedCornerShape(size = 8.dp),
                     btnText = "받은 신청서 보기",
-                    textColor = MatetripColor.Gray_08,
+                    textColor = MateTripColors.Gray_08,
                     fontSize = 14.sp,
-                    btnColor = MatetripColor.Blue_04,
+                    btnColor = MateTripColors.Blue_04,
                     onClick = { /** 받은 신청서 보기 (navigation) */ }
                 )
             }

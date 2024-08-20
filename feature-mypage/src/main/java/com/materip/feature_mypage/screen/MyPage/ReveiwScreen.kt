@@ -22,9 +22,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.materip.core_designsystem.component.NormalTopBar
+import com.materip.core_designsystem.component.ReviewItem
 import com.materip.core_model.ui_model.ReviewClass
-import com.materip.matetrip.component.NormalTopBar
-import com.materip.matetrip.component.ReviewItem
 
 @Composable
 fun ReviewRoute(

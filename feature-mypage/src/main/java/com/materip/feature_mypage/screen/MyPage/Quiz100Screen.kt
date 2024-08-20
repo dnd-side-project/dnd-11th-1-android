@@ -33,12 +33,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.materip.core_designsystem.component.NormalTopBar
+import com.materip.core_designsystem.component.QuizEditItem
+import com.materip.core_designsystem.component.QuizItem
+import com.materip.core_designsystem.icon.Icons
+import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_model.ui_model.QuizClass
-import com.materip.matetrip.component.NormalTopBar
-import com.materip.matetrip.component.QuizEditItem
-import com.materip.matetrip.component.QuizItem
-import com.materip.matetrip.icon.Icons
-import com.materip.matetrip.theme.MatetripColor
 
 @Composable
 fun Quiz100Route(
@@ -76,7 +76,7 @@ fun Quiz100Screen(navBack: () -> Unit){
         NormalTopBar(
             title = "백문백답 챌린지",
             menuText = if(isEditable) "삭제" else "편집",
-            menuTextColor = MatetripColor.gray_06,
+            menuTextColor = MateTripColors.Gray_06,
             titleFontWeight = FontWeight(700),
             onBackClick = navBack,
             onClick = {
@@ -128,7 +128,7 @@ private fun EditableQuiz(
                 fontSize = 14.sp,
                 fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                 fontWeight = FontWeight(400),
-                color = MatetripColor.gray_06
+                color = MateTripColors.Gray_06
             )
         }
         Spacer(Modifier.height(20.dp))

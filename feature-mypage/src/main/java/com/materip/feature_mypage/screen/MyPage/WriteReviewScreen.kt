@@ -44,17 +44,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.materip.matetrip.component.CustomButton
-import com.materip.matetrip.component.CustomClickableTag
-import com.materip.matetrip.component.ImageLoadView
-import com.materip.matetrip.component.NormalTag
-import com.materip.matetrip.component.NormalTopBar
-import com.materip.matetrip.icon.Icons
-import com.materip.matetrip.theme.MatetripColor
+import com.materip.core_designsystem.component.CustomButton
+import com.materip.core_designsystem.component.CustomClickableTag
+import com.materip.core_designsystem.component.ImageLoadView
+import com.materip.core_designsystem.component.NormalTag
+import com.materip.core_designsystem.component.NormalTopBar
+import com.materip.core_designsystem.icon.Icons
+import com.materip.core_designsystem.theme.MateTripColors
 
 @Composable
 fun WriteReviewRoute(){
-
+    WriteReviewScreen()
 }
 
 @Composable
@@ -101,8 +101,8 @@ fun WriteReviewScreen(){
                 shape = RoundedCornerShape(size = 8.dp),
                 btnText = "작성완료",
                 fontSize = 14.sp,
-                btnColor = if(isDone) MatetripColor.ActivatedColor else MatetripColor.InactiveColor,
-                textColor = MatetripColor.gray_06,
+                btnColor = if(isDone) MateTripColors.ActivatedColor else MateTripColors.InactiveColor,
+                textColor = MateTripColors.Gray_06,
                 onClick = { /*TODO*/ }
             )
         }
@@ -126,7 +126,7 @@ private fun TravelSatisfiedSurvey(){
                     fontSize = 16.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                     fontWeight = FontWeight(700),
-                    color = MatetripColor.Gray_11,
+                    color = MateTripColors.Gray_11,
                     textAlign = TextAlign.Justify,
                     platformStyle = PlatformTextStyle(includeFontPadding = false)
                 )
@@ -136,7 +136,7 @@ private fun TravelSatisfiedSurvey(){
                 modifier = Modifier.width(42.dp).height(21.dp),
                 tagName = "필수",
                 shape = RoundedCornerShape(size = 55.dp),
-                color = MatetripColor.Gray_11,
+                color = MateTripColors.Gray_11,
                 textStyle = TextStyle(
                     fontSize = 12.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
@@ -159,10 +159,10 @@ private fun TravelSatisfiedSurvey(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = satisfiedGrade == "만족",
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {satisfiedGrade = "만족"}
             )
             Spacer(Modifier.width(10.dp))
@@ -171,10 +171,10 @@ private fun TravelSatisfiedSurvey(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = satisfiedGrade == "보통",
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {satisfiedGrade = "보통"}
             )
             Spacer(Modifier.width(10.dp))
@@ -183,10 +183,10 @@ private fun TravelSatisfiedSurvey(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = satisfiedGrade == "불만족",
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {satisfiedGrade = "불만족"}
             )
         }
@@ -210,7 +210,7 @@ private fun RecommendNextSurvey(){
                     fontSize = 16.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                     fontWeight = FontWeight(700),
-                    color = MatetripColor.Gray_11,
+                    color = MateTripColors.Gray_11,
                     textAlign = TextAlign.Justify,
                     platformStyle = PlatformTextStyle(includeFontPadding = false)
                 )
@@ -220,7 +220,7 @@ private fun RecommendNextSurvey(){
                 modifier = Modifier.width(42.dp).height(21.dp),
                 tagName = "필수",
                 shape = RoundedCornerShape(size = 55.dp),
-                color = MatetripColor.Gray_11,
+                color = MateTripColors.Gray_11,
                 textStyle = TextStyle(
                     fontSize = 12.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
@@ -241,10 +241,10 @@ private fun RecommendNextSurvey(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = isRecommend == "추천",
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {isRecommend = "추천"}
             )
             Spacer(Modifier.width(10.dp))
@@ -253,10 +253,10 @@ private fun RecommendNextSurvey(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = isRecommend == "비추천",
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {isRecommend = "비추천"}
             )
         }
@@ -281,7 +281,7 @@ private fun SelectTravelType(){
                     fontSize = 16.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                     fontWeight = FontWeight(700),
-                    color = MatetripColor.Gray_11,
+                    color = MateTripColors.Gray_11,
                     textAlign = TextAlign.Justify,
                     platformStyle = PlatformTextStyle(includeFontPadding = false)
                 )
@@ -291,7 +291,7 @@ private fun SelectTravelType(){
                 modifier = Modifier.width(42.dp).height(21.dp),
                 tagName = "필수",
                 shape = RoundedCornerShape(size = 55.dp),
-                color = MatetripColor.Gray_11,
+                color = MateTripColors.Gray_11,
                 textStyle = TextStyle(
                     fontSize = 12.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
@@ -314,10 +314,10 @@ private fun SelectTravelType(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = travelType == "추천",
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {travelType = "추천"}
             )
             Spacer(Modifier.width(10.dp))
@@ -326,10 +326,10 @@ private fun SelectTravelType(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = travelType == "부분동행",
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {travelType = "비추천"}
             )
             Spacer(Modifier.width(10.dp))
@@ -338,10 +338,10 @@ private fun SelectTravelType(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = travelType == "숙소공유",
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {travelType = "숙소공유"}
             )
             Spacer(Modifier.width(10.dp))
@@ -350,10 +350,10 @@ private fun SelectTravelType(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = travelType == "투어동행",
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {travelType = "투어동행"}
             )
         }
@@ -379,14 +379,14 @@ private fun SelectReviewTag(){
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                 fontWeight = FontWeight(700),
-                color = MatetripColor.Gray_11
+                color = MateTripColors.Gray_11
             )
             Spacer(Modifier.width(12.dp))
             NormalTag(
                 modifier = Modifier.width(42.dp).height(21.dp),
                 tagName = "필수",
                 shape = RoundedCornerShape(size = 55.dp),
-                color = MatetripColor.Gray_11,
+                color = MateTripColors.Gray_11,
                 textStyle = TextStyle(
                     fontSize = 12.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
@@ -404,7 +404,7 @@ private fun SelectReviewTag(){
             fontSize = 14.sp,
             fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
             fontWeight = FontWeight(500),
-            color = MatetripColor.gray_06
+            color = MateTripColors.Gray_06
         )
         Spacer(Modifier.height(24.dp))
         Text(
@@ -412,7 +412,7 @@ private fun SelectReviewTag(){
             fontSize = 14.sp,
             fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
             fontWeight = FontWeight(500),
-            color = MatetripColor.Gray_11
+            color = MateTripColors.Gray_11
         )
         Spacer(Modifier.height(10.dp))
         FlowRow(
@@ -425,10 +425,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "친절해요" in personality,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("친절해요" in personality) personality.remove("친절해요")
                     else personality.add("친절해요")
@@ -439,10 +439,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "밝아요" in personality,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("밝아요" in personality) personality.remove("밝아요")
                     else personality.add("밝아요")
@@ -453,10 +453,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "재밌어요" in personality,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("재밌어요" in personality) personality.remove("재밌어요")
                     else personality.add("재밌어요")
@@ -467,10 +467,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "편안해요" in personality,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("편안해요" in personality) personality.remove("편안해요")
                     else personality.add("편안해요")
@@ -481,10 +481,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "신뢰가 가요" in personality,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("신뢰가 가요" in personality) personality.remove("신뢰가 가요")
                     else personality.add("신뢰가 가요")
@@ -495,10 +495,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "긍정적이에요" in personality,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("긍정적이에요" in personality) personality.remove("긍정적이에요")
                     else personality.add("긍정적이에요")
@@ -509,10 +509,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "센스있어요" in personality,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("센스있어요" in personality) personality.remove("센스있어요")
                     else personality.add("센스있어요")
@@ -523,10 +523,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "감성적이에요" in personality,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("감성적이에요" in personality) personality.remove("감성적이에요")
                     else personality.add("감성적이에요")
@@ -537,10 +537,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "이성적이에요" in personality,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("이성적이에요" in personality) personality.remove("이성적이에요")
                     else personality.add("이성적이에요")
@@ -551,10 +551,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "열정적이에요" in personality,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("열정적이에요" in personality) personality.remove("열정적이에요")
                     else personality.add("열정적이에요")
@@ -565,10 +565,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "붙임성이 좋아요" in personality,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("붙임성이 좋아요" in personality) personality.remove("붙임성이 좋아요")
                     else personality.add("붙임성이 좋아요")
@@ -581,7 +581,7 @@ private fun SelectReviewTag(){
             fontSize = 14.sp,
             fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
             fontWeight = FontWeight(500),
-            color = MatetripColor.Gray_11
+            color = MateTripColors.Gray_11
         )
         Spacer(Modifier.height(10.dp))
         FlowRow(
@@ -594,10 +594,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "계획적이에요" in preferences,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("계획적이에요" in preferences) preferences.remove("계획적이에요")
                     else preferences.add("계획적이에요")
@@ -608,10 +608,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "즉흥적이에요" in preferences,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("즉흥적이에요" in preferences) preferences.remove("즉흥적이에요")
                     else preferences.add("즉흥적이에요")
@@ -622,10 +622,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "공금이 편해요" in preferences,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("공금이 편해요" in preferences) preferences.remove("공금이 편해요")
                     else preferences.add("공금이 편해요")
@@ -636,10 +636,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "더치페이 해요" in preferences,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("더치페이 해요" in preferences) preferences.remove("더치페이 해요")
                     else preferences.add("더치페이 해요")
@@ -650,10 +650,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "부지런해요" in preferences,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("부지런해요" in preferences) preferences.remove("부지런해요")
                     else preferences.add("부지런해요")
@@ -664,10 +664,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "느긋해요" in preferences,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("느긋해요" in preferences) preferences.remove("느긋해요")
                     else preferences.add("느긋해요")
@@ -680,7 +680,7 @@ private fun SelectReviewTag(){
             fontSize = 14.sp,
             fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
             fontWeight = FontWeight(500),
-            color = MatetripColor.Gray_11
+            color = MateTripColors.Gray_11
         )
         Spacer(Modifier.height(10.dp))
         FlowRow(
@@ -693,10 +693,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "맛집을 좋아해요" in styles,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("맛집을 좋아해요" in styles) styles.remove("맛집을 좋아해요")
                     else styles.add("맛집을 좋아해요")
@@ -707,10 +707,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "맛집이 아니어도 돼요" in styles,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("맛집이 아니어도 돼요" in styles) styles.remove("맛집이 아니어도 돼요")
                     else styles.add("맛집이 아니어도 돼요")
@@ -721,10 +721,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "핫플을 선호해요" in styles,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("핫플을 선호해요" in styles) styles.remove("핫플을 선호해요")
                     else styles.add("핫플을 선호해요")
@@ -735,10 +735,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "고즈넉한 곳을 좋아해요" in styles,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("고즈넉한 곳을 좋아해요" in styles) styles.remove("고즈넉한 곳을 좋아해요")
                     else styles.add("고즈넉한 곳을 좋아해요")
@@ -749,10 +749,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "사진 찍는 걸 좋아해요" in styles,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("사진 찍는 걸 좋아해요" in styles) styles.remove("사진 찍는 걸 좋아해요")
                     else styles.add("사진 찍는 걸 좋아해요")
@@ -763,10 +763,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "관광지를 선호해요" in styles,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("관광지를 선호해요" in styles) styles.remove("관광지를 선호해요")
                     else styles.add("관광지를 선호해요")
@@ -777,10 +777,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "힐링을 선호해요" in styles,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("힐링을 선호해요" in styles) styles.remove("힐링을 선호해요")
                     else styles.add("힐링을 선호해요")
@@ -791,10 +791,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "액티비티를 즐겨요" in styles,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("액티비티를 즐겨요" in styles) styles.remove("액티비티를 즐겨요")
                     else styles.add("액티비티를 즐겨요")
@@ -805,10 +805,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "쇼핑을 좋아해요" in styles,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("쇼핑을 좋아해요" in styles) styles.remove("쇼핑을 좋아해요")
                     else styles.add("쇼핑을 좋아해요")
@@ -819,10 +819,10 @@ private fun SelectReviewTag(){
                 shape = RoundedCornerShape(size = 6.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = "카페를 좋아해요" in styles,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 onClick = {
                     if("카페를 좋아해요" in styles) styles.remove("카페를 좋아해요")
                     else styles.add("카페를 좋아해요")
@@ -848,19 +848,19 @@ private fun WriteReviewDetails(){
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                 fontWeight = FontWeight(700),
-                color = MatetripColor.Gray_11
+                color = MateTripColors.Gray_11
             )
             Spacer(Modifier.width(12.dp))
             NormalTag(
                 modifier = Modifier.width(42.dp).height(21.dp),
                 tagName = "선택",
                 shape = RoundedCornerShape(size = 55.dp),
-                color = MatetripColor.Gray_03,
+                color = MateTripColors.Gray_03,
                 textStyle = TextStyle(
                     fontSize = 12.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                     fontWeight = FontWeight(500),
-                    color = MatetripColor.Gray_08,
+                    color = MateTripColors.Gray_08,
                     textAlign = TextAlign.Justify,
                     platformStyle = PlatformTextStyle(includeFontPadding = false)
                 ),
@@ -875,10 +875,10 @@ private fun WriteReviewDetails(){
             onValueChange = {reviewDetails = it},
             shape = RoundedCornerShape(size = 10.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = MatetripColor.Blue_03,
-                unfocusedBorderColor = MatetripColor.Blue_03,
-                focusedPlaceholderColor = MatetripColor.gray_05,
-                unfocusedPlaceholderColor = MatetripColor.gray_05
+                focusedBorderColor = MateTripColors.Blue_03,
+                unfocusedBorderColor = MateTripColors.Blue_03,
+                focusedPlaceholderColor = MateTripColors.Gray_05,
+                unfocusedPlaceholderColor = MateTripColors.Gray_05
             ),
             textStyle = TextStyle(
                 fontSize = 14.sp,
@@ -925,19 +925,19 @@ private fun SharePictures(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                 fontWeight = FontWeight(700),
-                color = MatetripColor.Gray_11
+                color = MateTripColors.Gray_11
             )
             Spacer(Modifier.width(12.dp))
             NormalTag(
                 modifier = Modifier.width(42.dp).height(21.dp),
                 tagName = "선택",
                 shape = RoundedCornerShape(size = 55.dp),
-                color = MatetripColor.Gray_03,
+                color = MateTripColors.Gray_03,
                 textStyle = TextStyle(
                     fontSize = 12.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                     fontWeight = FontWeight(500),
-                    color = MatetripColor.Gray_08,
+                    color = MateTripColors.Gray_08,
                     textAlign = TextAlign.Justify,
                     platformStyle = PlatformTextStyle(includeFontPadding = false)
                 ),
@@ -953,7 +953,7 @@ private fun SharePictures(
                     modifier = Modifier
                         .size(60.dp)
                         .background(
-                            color = MatetripColor.Blue_04,
+                            color = MateTripColors.Blue_04,
                             shape = RoundedCornerShape(size = 10.dp)
                         )
                         .clickable {
@@ -972,7 +972,7 @@ private fun SharePictures(
                         fontSize = 12.sp,
                         fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                         fontWeight = FontWeight(400),
-                        color = MatetripColor.icon_color
+                        color = MateTripColors.icon_color
                     )
                 }
             }
@@ -981,7 +981,7 @@ private fun SharePictures(
                     shape = RoundedCornerShape(size = 10.dp),
                     size = 60.dp,
                     imageUrl = picture,
-                    backgroundColor = MatetripColor.icon_loading_color,
+                    backgroundColor = MateTripColors.icon_loading_color,
                     isEnabledClose = true,
                     onCloseClick = { onDeleteImage(picture) }
                 )

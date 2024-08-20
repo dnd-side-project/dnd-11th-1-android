@@ -58,20 +58,20 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_common.ErrorState
+import com.materip.core_designsystem.component.CustomClickableTag
+import com.materip.core_designsystem.component.ImageLoadView
+import com.materip.core_designsystem.component.NormalTopBar
+import com.materip.core_designsystem.component.SelectableDialog
+import com.materip.core_designsystem.component.UnderlinedTextField
+import com.materip.core_designsystem.icon.Badges
+import com.materip.core_designsystem.icon.Icons
+import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_model.ui_model.FoodPreference
 import com.materip.core_model.ui_model.Gender
 import com.materip.core_model.ui_model.TravelInterest
 import com.materip.core_model.ui_model.TravelStyle
 import com.materip.feature_mypage.view_models.MyPage.EditProfileUiState
 import com.materip.feature_mypage.view_models.MyPage.EditProfileViewModel
-import com.materip.matetrip.component.CustomClickableTag
-import com.materip.matetrip.component.ImageLoadView
-import com.materip.matetrip.component.NormalTopBar
-import com.materip.matetrip.component.SelectableDialog
-import com.materip.matetrip.component.UnderlinedTextField
-import com.materip.matetrip.icon.Badges
-import com.materip.matetrip.icon.Icons
-import com.materip.matetrip.theme.MatetripColor
 import kotlinx.coroutines.launch
 
 @Composable
@@ -238,7 +238,7 @@ private fun EditProfileMainContent(
                 Box(
                     modifier = Modifier
                         .size(80.dp)
-                        .background(color = MatetripColor.Blue_04, shape = CircleShape)
+                        .background(color = MateTripColors.Blue_04, shape = CircleShape)
                         .clickable {
                             profileLauncher.launch(
                                 PickVisualMediaRequest(
@@ -249,7 +249,7 @@ private fun EditProfileMainContent(
                     contentAlignment = Alignment.Center
                 ){
                     ImageLoadView(
-                        backgroundColor = MatetripColor.Blue_04,
+                        backgroundColor = MateTripColors.Blue_04,
                         shape = CircleShape,
                         size = 80.dp,
                         imageUrl = profileImg,
@@ -321,7 +321,7 @@ private fun NicknameEdit(
             fontSize = 16.sp,
             fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
             fontWeight = FontWeight(700),
-            color = MatetripColor.Gray_11
+            color = MateTripColors.Gray_11
         )
         Spacer(Modifier.height(12.dp))
         UnderlinedTextField(
@@ -331,8 +331,8 @@ private fun NicknameEdit(
             fontSize = 14.sp,
             fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
             fontWeight = FontWeight(400),
-            textColor = MatetripColor.Gray_10,
-            underlineColor = MatetripColor.Gray_10
+            textColor = MateTripColors.Gray_10,
+            underlineColor = MateTripColors.Gray_10
         )
         Spacer(Modifier.height(10.dp))
         Text(
@@ -340,7 +340,7 @@ private fun NicknameEdit(
             fontSize = 12.sp,
             fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
             fontWeight = FontWeight(400),
-            color = MatetripColor.gray_06
+            color = MateTripColors.Gray_06
         )
     }
 }
@@ -358,14 +358,14 @@ private fun MyIntroductionEdit(
             fontSize = 16.sp,
             fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
             fontWeight = FontWeight(700),
-            color = MatetripColor.Gray_11
+            color = MateTripColors.Gray_11
         )
         Spacer(Modifier.height(12.dp))
         BasicTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(102.dp)
-                .background(color = MatetripColor.Blue_04, shape = RoundedCornerShape(size = 10.dp))
+                .background(color = MateTripColors.Blue_04, shape = RoundedCornerShape(size = 10.dp))
                 .padding(12.dp),
             value = introduction,
             onValueChange = onIntroductionUpdate,
@@ -373,7 +373,7 @@ private fun MyIntroductionEdit(
                 fontSize = 14.sp,
                 fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                 fontWeight = FontWeight(400),
-                color = MatetripColor.Gray_11
+                color = MateTripColors.Gray_11
             ),
         ){
             if(introduction.isEmpty()){
@@ -382,7 +382,7 @@ private fun MyIntroductionEdit(
                     fontSize = 14.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                     fontWeight = FontWeight(400),
-                    color = MatetripColor.Gray_07
+                    color = MateTripColors.Gray_07
                 )
             } else {
                 it()
@@ -430,7 +430,7 @@ private fun BirthAndGenderEdit(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                 fontWeight = FontWeight(700),
-                color = MatetripColor.Gray_11
+                color = MateTripColors.Gray_11
             )
             Spacer(Modifier.height(10.dp))
             Row(
@@ -445,7 +445,7 @@ private fun BirthAndGenderEdit(
                     fontSize = 16.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.roboto_medium)),
                     fontWeight = FontWeight(500),
-                    color = MatetripColor.Gray_10
+                    color = MateTripColors.Gray_10
                 )
                 Icon(
                     painter = painterResource(Icons.fold_icon),
@@ -462,7 +462,7 @@ private fun BirthAndGenderEdit(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                 fontWeight = FontWeight(700),
-                color = MatetripColor.Gray_11
+                color = MateTripColors.Gray_11
             )
             Spacer(Modifier.height(10.dp))
             Row(
@@ -477,7 +477,7 @@ private fun BirthAndGenderEdit(
                     fontSize = 16.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.roboto_medium)),
                     fontWeight = FontWeight(500),
-                    color = MatetripColor.Gray_10
+                    color = MateTripColors.Gray_10
                 )
                 Icon(
                     painter = painterResource(Icons.fold_icon),
@@ -508,7 +508,7 @@ private fun TravelPreferencesEdit(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                 fontWeight = FontWeight(700),
-                color = MatetripColor.Gray_11
+                color = MateTripColors.Gray_11
             )
             IconButton(
                 modifier = Modifier.size(16.dp),
@@ -536,12 +536,12 @@ private fun TravelPreferencesEdit(
                     tagName = "계획적",
                     fontSize = 14.sp,
                     selectedTextColor = Color.White,
-                    notSelectedTextColor = MatetripColor.Blue_01,
+                    notSelectedTextColor = MateTripColors.Blue_01,
                     selectedIconTint = Color.White,
-                    notSelectedIconTint = MatetripColor.Blue_01,
+                    notSelectedIconTint = MateTripColors.Blue_01,
                     isSelected = TravelInterest.PLANNED.name in travelPreferences,
-                    selectedColor = MatetripColor.Primary,
-                    notSelectedColor = MatetripColor.Blue_04,
+                    selectedColor = MateTripColors.Primary,
+                    notSelectedColor = MateTripColors.Blue_04,
                     trailingIcon = Badges.planned_badge,
                     onClick = {
                         if(TravelInterest.PLANNED.name !in travelPreferences){
@@ -559,12 +559,12 @@ private fun TravelPreferencesEdit(
                     tagName = "무계획",
                     fontSize = 14.sp,
                     selectedTextColor = Color.White,
-                    notSelectedTextColor = MatetripColor.Blue_01,
+                    notSelectedTextColor = MateTripColors.Blue_01,
                     selectedIconTint = Color.White,
-                    notSelectedIconTint = MatetripColor.Blue_01,
+                    notSelectedIconTint = MateTripColors.Blue_01,
                     isSelected = TravelInterest.UNPLANNED.name in travelPreferences,
-                    selectedColor = MatetripColor.Primary,
-                    notSelectedColor = MatetripColor.Blue_04,
+                    selectedColor = MateTripColors.Primary,
+                    notSelectedColor = MateTripColors.Blue_04,
                     trailingIcon = Badges.unplanned_badge,
                     onClick = {
                         if(TravelInterest.UNPLANNED.name !in travelPreferences){
@@ -588,12 +588,12 @@ private fun TravelPreferencesEdit(
                     tagName = "공금",
                     fontSize = 14.sp,
                     selectedTextColor = Color.White,
-                    notSelectedTextColor = MatetripColor.Blue_01,
+                    notSelectedTextColor = MateTripColors.Blue_01,
                     selectedIconTint = Color.White,
-                    notSelectedIconTint = MatetripColor.Blue_01,
+                    notSelectedIconTint = MateTripColors.Blue_01,
                     isSelected = TravelInterest.PUBLIC_MONEY.name in travelPreferences,
-                    selectedColor = MatetripColor.Primary,
-                    notSelectedColor = MatetripColor.Blue_04,
+                    selectedColor = MateTripColors.Primary,
+                    notSelectedColor = MateTripColors.Blue_04,
                     trailingIcon = Badges.public_funds_badge,
                     onClick = {
                         if(TravelInterest.PUBLIC_MONEY.name !in travelPreferences){
@@ -611,12 +611,12 @@ private fun TravelPreferencesEdit(
                     tagName = "더치페이",
                     fontSize = 14.sp,
                     selectedTextColor = Color.White,
-                    notSelectedTextColor = MatetripColor.Blue_01,
+                    notSelectedTextColor = MateTripColors.Blue_01,
                     selectedIconTint = Color.White,
-                    notSelectedIconTint = MatetripColor.Blue_01,
+                    notSelectedIconTint = MateTripColors.Blue_01,
                     isSelected = TravelInterest.DUTCH_PAY.name in travelPreferences,
-                    selectedColor = MatetripColor.Primary,
-                    notSelectedColor = MatetripColor.Blue_04,
+                    selectedColor = MateTripColors.Primary,
+                    notSelectedColor = MateTripColors.Blue_04,
                     trailingIcon = Badges.dutch_pay_badge,
                     onClick = {
                         if(TravelInterest.DUTCH_PAY.name !in travelPreferences){
@@ -640,12 +640,12 @@ private fun TravelPreferencesEdit(
                     tagName = "찾아본 곳",
                     fontSize = 14.sp,
                     selectedTextColor = Color.White,
-                    notSelectedTextColor = MatetripColor.Blue_01,
+                    notSelectedTextColor = MateTripColors.Blue_01,
                     selectedIconTint = Color.White,
-                    notSelectedIconTint = MatetripColor.Blue_01,
+                    notSelectedIconTint = MateTripColors.Blue_01,
                     isSelected = TravelInterest.LOOKING_FOR.name in travelPreferences,
-                    selectedColor = MatetripColor.Primary,
-                    notSelectedColor = MatetripColor.Blue_04,
+                    selectedColor = MateTripColors.Primary,
+                    notSelectedColor = MateTripColors.Blue_04,
                     trailingIcon = Badges.place_badge,
                     onClick = {
                         if(TravelInterest.LOOKING_FOR.name !in travelPreferences){
@@ -663,12 +663,12 @@ private fun TravelPreferencesEdit(
                     tagName = "끌리는 곳",
                     fontSize = 14.sp,
                     selectedTextColor = Color.White,
-                    notSelectedTextColor = MatetripColor.Blue_01,
+                    notSelectedTextColor = MateTripColors.Blue_01,
                     selectedIconTint = Color.White,
-                    notSelectedIconTint = MatetripColor.Blue_01,
+                    notSelectedIconTint = MateTripColors.Blue_01,
                     isSelected = TravelInterest.DRAWN_TO.name in travelPreferences,
-                    selectedColor = MatetripColor.Primary,
-                    notSelectedColor = MatetripColor.Blue_04,
+                    selectedColor = MateTripColors.Primary,
+                    notSelectedColor = MateTripColors.Blue_04,
                     trailingIcon = Badges.unplanned_badge,
                     onClick = {
                         if(TravelInterest.DRAWN_TO.name !in travelPreferences){
@@ -692,12 +692,12 @@ private fun TravelPreferencesEdit(
                     tagName = "빨리빨리",
                     fontSize = 14.sp,
                     selectedTextColor = Color.White,
-                    notSelectedTextColor = MatetripColor.Blue_01,
+                    notSelectedTextColor = MateTripColors.Blue_01,
                     selectedIconTint = Color.White,
-                    notSelectedIconTint = MatetripColor.Blue_01,
+                    notSelectedIconTint = MateTripColors.Blue_01,
                     isSelected = TravelInterest.QUICKLY.name in travelPreferences,
-                    selectedColor = MatetripColor.Primary,
-                    notSelectedColor = MatetripColor.Blue_04,
+                    selectedColor = MateTripColors.Primary,
+                    notSelectedColor = MateTripColors.Blue_04,
                     trailingIcon = Badges.rush_badge,
                     onClick = {
                         if(TravelInterest.QUICKLY.name !in travelPreferences){
@@ -715,12 +715,12 @@ private fun TravelPreferencesEdit(
                     tagName = "느긋하게",
                     fontSize = 14.sp,
                     selectedTextColor = Color.White,
-                    notSelectedTextColor = MatetripColor.Blue_01,
+                    notSelectedTextColor = MateTripColors.Blue_01,
                     selectedIconTint = Color.White,
-                    notSelectedIconTint = MatetripColor.Blue_01,
+                    notSelectedIconTint = MateTripColors.Blue_01,
                     isSelected = TravelInterest.LEISURELY.name in travelPreferences,
-                    selectedColor = MatetripColor.Primary,
-                    notSelectedColor = MatetripColor.Blue_04,
+                    selectedColor = MateTripColors.Primary,
+                    notSelectedColor = MateTripColors.Blue_04,
                     trailingIcon = Badges.leisurely_badge,
                     onClick = {
                         if(TravelInterest.LEISURELY.name !in travelPreferences){
@@ -760,13 +760,13 @@ private fun TravelStyleEdit(
                 shape = RoundedCornerShape(size = 60.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = TravelStyle.RESTAURANT_TOUR.name in travelStyles,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor =MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor =MateTripColors.Blue_04,
                 trailingIcon = Badges.restaurant_badge,
                 selectedIconTint = Color.White,
-                notSelectedIconTint = MatetripColor.Blue_01,
+                notSelectedIconTint = MateTripColors.Blue_01,
                 onClick = {
                     if(TravelStyle.RESTAURANT_TOUR.name in travelStyles){
                         travelStyles.remove(TravelStyle.RESTAURANT_TOUR.name)
@@ -780,13 +780,13 @@ private fun TravelStyleEdit(
                 shape = RoundedCornerShape(size = 60.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = TravelStyle.LIFE_SHOT.name in travelStyles,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 trailingIcon = Badges.image_badge,
                 selectedIconTint = Color.White,
-                notSelectedIconTint = MatetripColor.Blue_01,
+                notSelectedIconTint = MateTripColors.Blue_01,
                 onClick = {
                     if(TravelStyle.LIFE_SHOT.name in travelStyles){
                         travelStyles.remove(TravelStyle.LIFE_SHOT.name)
@@ -800,13 +800,13 @@ private fun TravelStyleEdit(
                 fontSize = 14.sp,
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = TravelStyle.ACTIVITY.name in travelStyles,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 trailingIcon = Badges.activity_badge,
                 selectedIconTint = Color.White,
-                notSelectedIconTint = MatetripColor.Blue_01,
+                notSelectedIconTint = MateTripColors.Blue_01,
                 onClick = {
                     if(TravelStyle.ACTIVITY.name in travelStyles){
                         travelStyles.remove(TravelStyle.ACTIVITY.name)
@@ -820,13 +820,13 @@ private fun TravelStyleEdit(
                 fontSize = 14.sp,
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = TravelStyle.DRIVE.name in travelStyles,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 trailingIcon = Badges.drive_badge,
                 selectedIconTint = Color.White,
-                notSelectedIconTint = MatetripColor.Blue_01,
+                notSelectedIconTint = MateTripColors.Blue_01,
                 onClick = {
                     if(TravelStyle.DRIVE.name in travelStyles){
                         travelStyles.remove(TravelStyle.DRIVE.name)
@@ -840,13 +840,13 @@ private fun TravelStyleEdit(
                 fontSize = 14.sp,
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = TravelStyle.CAFE_TOUR.name in travelStyles,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 trailingIcon = Badges.cafe_tour_badge,
                 selectedIconTint = Color.White,
-                notSelectedIconTint = MatetripColor.Blue_01,
+                notSelectedIconTint = MateTripColors.Blue_01,
                 onClick = {
                     if(TravelStyle.CAFE_TOUR.name in travelStyles){
                         travelStyles.remove(TravelStyle.CAFE_TOUR.name)
@@ -860,13 +860,13 @@ private fun TravelStyleEdit(
                 fontSize = 14.sp,
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = TravelStyle.HEALING.name in travelStyles,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 trailingIcon = Badges.healing_badge,
                 selectedIconTint = Color.White,
-                notSelectedIconTint = MatetripColor.Blue_01,
+                notSelectedIconTint = MateTripColors.Blue_01,
                 onClick = {
                     if(TravelStyle.HEALING.name in travelStyles){
                         travelStyles.remove(TravelStyle.HEALING.name)
@@ -880,13 +880,13 @@ private fun TravelStyleEdit(
                 fontSize = 14.sp,
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = TravelStyle.CULTURE_AND_ARTS.name in travelStyles,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 trailingIcon = Badges.art_badge,
                 selectedIconTint = Color.White,
-                notSelectedIconTint = MatetripColor.Blue_01,
+                notSelectedIconTint = MateTripColors.Blue_01,
                 onClick = {
                     if(TravelStyle.CULTURE_AND_ARTS.name in travelStyles){
                         travelStyles.remove(TravelStyle.CULTURE_AND_ARTS.name)
@@ -900,13 +900,13 @@ private fun TravelStyleEdit(
                 fontSize = 14.sp,
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = TravelStyle.PACKAGE_TOUR.name in travelStyles,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 trailingIcon = Badges.package_badge,
                 selectedIconTint = Color.White,
-                notSelectedIconTint = MatetripColor.Blue_01,
+                notSelectedIconTint = MateTripColors.Blue_01,
                 onClick = {
                     if(TravelStyle.PACKAGE_TOUR.name in travelStyles){
                         travelStyles.remove(TravelStyle.PACKAGE_TOUR.name)
@@ -944,13 +944,13 @@ private fun FoodPreferenceEdit(
                 fontSize = 14.sp,
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.MEAT.name in foodPreferences,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 trailingIcon = Badges.meat_badge,
                 selectedIconTint = Color.White,
-                notSelectedIconTint = MatetripColor.Blue_01,
+                notSelectedIconTint = MateTripColors.Blue_01,
                 onClick = {
                     if(FoodPreference.MEAT.name in foodPreferences){
                         foodPreferences.remove(FoodPreference.MEAT.name)
@@ -964,13 +964,13 @@ private fun FoodPreferenceEdit(
                 fontSize = 14.sp,
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.RICE.name in foodPreferences,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 trailingIcon = Badges.rice_badge,
                 selectedIconTint = Color.White,
-                notSelectedIconTint = MatetripColor.Blue_01,
+                notSelectedIconTint = MateTripColors.Blue_01,
                 onClick = {
                     if(FoodPreference.RICE.name in foodPreferences){
                         foodPreferences.remove(FoodPreference.RICE.name)
@@ -984,13 +984,13 @@ private fun FoodPreferenceEdit(
                 fontSize = 14.sp,
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.COFFEE.name in foodPreferences,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 trailingIcon = Badges.coffee_badge,
                 selectedIconTint = Color.White,
-                notSelectedIconTint = MatetripColor.Blue_01,
+                notSelectedIconTint = MateTripColors.Blue_01,
                 onClick = {
                     if(FoodPreference.COFFEE.name in foodPreferences){
                         foodPreferences.remove(FoodPreference.COFFEE.name)
@@ -1004,13 +1004,13 @@ private fun FoodPreferenceEdit(
                 fontSize = 14.sp,
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.FAST_FOOD.name in foodPreferences,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 trailingIcon = Badges.fast_food_badge,
                 selectedIconTint = Color.White,
-                notSelectedIconTint = MatetripColor.Blue_01,
+                notSelectedIconTint = MateTripColors.Blue_01,
                 onClick = {
                     if(FoodPreference.FAST_FOOD.name in foodPreferences){
                         foodPreferences.remove(FoodPreference.FAST_FOOD.name)
@@ -1024,13 +1024,13 @@ private fun FoodPreferenceEdit(
                 fontSize = 14.sp,
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.SEAFOOD.name in foodPreferences,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 trailingIcon = Badges.seafood_badge,
                 selectedIconTint = Color.White,
-                notSelectedIconTint = MatetripColor.Blue_01,
+                notSelectedIconTint = MateTripColors.Blue_01,
                 onClick = {
                     if(FoodPreference.SEAFOOD.name in foodPreferences){
                         foodPreferences.remove(FoodPreference.SEAFOOD.name)
@@ -1044,13 +1044,13 @@ private fun FoodPreferenceEdit(
                 fontSize = 14.sp,
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.VEGETABLES.name in foodPreferences,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 trailingIcon = Badges.vegetarian_badge,
                 selectedIconTint = Color.White,
-                notSelectedIconTint = MatetripColor.Blue_01,
+                notSelectedIconTint = MateTripColors.Blue_01,
                 onClick = {
                     if(FoodPreference.VEGETABLES.name in foodPreferences){
                         foodPreferences.remove(FoodPreference.VEGETABLES.name)
@@ -1064,13 +1064,13 @@ private fun FoodPreferenceEdit(
                 fontSize = 14.sp,
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.DESSERT.name in foodPreferences,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 trailingIcon = Badges.dessert_badge,
                 selectedIconTint = Color.White,
-                notSelectedIconTint = MatetripColor.Blue_01,
+                notSelectedIconTint = MateTripColors.Blue_01,
                 onClick = {
                     if(FoodPreference.DESSERT.name in foodPreferences){
                         foodPreferences.remove(FoodPreference.DESSERT.name)
@@ -1084,13 +1084,13 @@ private fun FoodPreferenceEdit(
                 fontSize = 14.sp,
                 shape = RoundedCornerShape(size = 60.dp),
                 selectedTextColor = Color.White,
-                notSelectedTextColor = MatetripColor.Blue_01,
+                notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.STREET_FOOD.name in foodPreferences,
-                selectedColor = MatetripColor.Primary,
-                notSelectedColor = MatetripColor.Blue_04,
+                selectedColor = MateTripColors.Primary,
+                notSelectedColor = MateTripColors.Blue_04,
                 trailingIcon = Badges.street_food_badge,
                 selectedIconTint = Color.White,
-                notSelectedIconTint = MatetripColor.Blue_01,
+                notSelectedIconTint = MateTripColors.Blue_01,
                 onClick = {
                     if(FoodPreference.STREET_FOOD.name in foodPreferences){
                         foodPreferences.remove(FoodPreference.STREET_FOOD.name)
@@ -1125,14 +1125,14 @@ private fun SNSEdit(
             Box(
                 modifier = Modifier
                     .size(34.dp)
-                    .border(width = 1.dp, color = MatetripColor.Blue_03, shape = CircleShape),
+                    .border(width = 1.dp, color = MateTripColors.Blue_03, shape = CircleShape),
                 contentAlignment = Alignment.Center
             ){
                 Icon(
                     modifier = Modifier.size(24.dp),
                     painter = painterResource(Badges.instagram_outlined_badge),
                     contentDescription = "Instagram Badge",
-                    tint = MatetripColor.Blue_01
+                    tint = MateTripColors.Blue_01
                 )
             }
             Spacer(Modifier.width(10.dp))
@@ -1143,7 +1143,7 @@ private fun SNSEdit(
                     .background(color = Color.White, shape = RoundedCornerShape(size = 10.dp))
                     .border(
                         width = 1.dp,
-                        color = MatetripColor.Blue_03,
+                        color = MateTripColors.Blue_03,
                         shape = RoundedCornerShape(size = 10.dp)
                     )
                     .padding(horizontal = 12.dp, vertical = 13.dp),
@@ -1167,7 +1167,7 @@ private fun SNSEdit(
                         fontSize = 14.sp,
                         fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                         fontWeight = FontWeight(400),
-                        color = MatetripColor.gray_06
+                        color = MateTripColors.Gray_06
                     )
                 } else {
                     it()
@@ -1191,7 +1191,7 @@ private fun MyImages(
             fontSize = 16.sp,
             fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
             fontWeight = FontWeight(700),
-            color = MatetripColor.Gray_11
+            color = MateTripColors.Gray_11
         )
         Spacer(Modifier.height(12.dp))
         LazyRow(
@@ -1202,7 +1202,7 @@ private fun MyImages(
                     modifier = Modifier
                         .size(60.dp)
                         .background(
-                            color = MatetripColor.Blue_04,
+                            color = MateTripColors.Blue_04,
                             shape = RoundedCornerShape(size = 10.dp)
                         )
                         .clickable {
@@ -1221,7 +1221,7 @@ private fun MyImages(
                         fontSize = 12.sp,
                         fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                         fontWeight = FontWeight(400),
-                        color = MatetripColor.icon_color
+                        color = MateTripColors.icon_color
                     )
                 }
             }
@@ -1230,7 +1230,7 @@ private fun MyImages(
                     shape = RoundedCornerShape(size = 10.dp),
                     size = 60.dp,
                     imageUrl = picture,
-                    backgroundColor = MatetripColor.icon_loading_color,
+                    backgroundColor = MateTripColors.icon_loading_color,
                     isEnabledClose = true,
                     onCloseClick = { onDeleteImage(picture) }
                 )

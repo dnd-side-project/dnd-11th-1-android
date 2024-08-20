@@ -7,9 +7,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.materip.core_designsystem.component.NoDataContent
+import com.materip.core_designsystem.component.TravelPostItem
 import com.materip.core_model.ui_model.TempTravelPost
-import com.materip.matetrip.component.NoDataContent
-import com.materip.matetrip.component.TravelPostItem
 
 @Composable
 fun TravelPostContent(){

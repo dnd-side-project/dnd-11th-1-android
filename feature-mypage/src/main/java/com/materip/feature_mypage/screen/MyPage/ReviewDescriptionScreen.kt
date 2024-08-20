@@ -37,11 +37,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.materip.core_designsystem.component.NormalTag
+import com.materip.core_designsystem.component.NormalTopBar
+import com.materip.core_designsystem.icon.Badges
+import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_model.ui_model.ReviewDescClass
-import com.materip.matetrip.component.NormalTag
-import com.materip.matetrip.component.NormalTopBar
-import com.materip.matetrip.icon.Badges
-import com.materip.matetrip.theme.MatetripColor
 
 @Composable
 fun ReviewDescriptionRoute(navBack: () -> Unit){
@@ -117,7 +117,7 @@ fun ReviewDescriptionScreen(navBack: () -> Unit){
                             modifier = Modifier
                                 .height(27.dp)
                                 .background(
-                                    color = MatetripColor.Primary,
+                                    color = MateTripColors.Primary,
                                     shape = RoundedCornerShape(size = 5.dp)
                                 )
                                 .padding(horizontal = 10.dp, vertical = 5.dp),
@@ -135,7 +135,7 @@ fun ReviewDescriptionScreen(navBack: () -> Unit){
                             modifier = Modifier
                                 .height(27.dp)
                                 .background(
-                                    color = MatetripColor.Blue_04,
+                                    color = MateTripColors.Blue_04,
                                     shape = RoundedCornerShape(size = 5.dp)
                                 )
                                 .padding(horizontal = 10.dp, vertical = 5.dp),
@@ -154,7 +154,7 @@ fun ReviewDescriptionScreen(navBack: () -> Unit){
                         fontSize = 14.sp,
                         fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.roboto_medium)),
                         fontWeight = FontWeight(400),
-                        color = MatetripColor.gray_06
+                        color = MateTripColors.Gray_06
                     )
                 }
                 if(dummyData.images.isNotEmpty()){
@@ -167,7 +167,7 @@ fun ReviewDescriptionScreen(navBack: () -> Unit){
                         .fillMaxWidth()
                         .height(200.dp)
                         .background(
-                            color = MatetripColor.Blue_04,
+                            color = MateTripColors.Blue_04,
                             shape = RoundedCornerShape(size = 10.dp)
                         )
                         .padding(12.dp)
@@ -177,7 +177,7 @@ fun ReviewDescriptionScreen(navBack: () -> Unit){
                         fontSize = 14.sp,
                         fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                         fontWeight = FontWeight(500),
-                        color = MatetripColor.Gray_11
+                        color = MateTripColors.Gray_11
                     )
                     Spacer(Modifier.height(20.dp))
                     Text(
@@ -186,7 +186,7 @@ fun ReviewDescriptionScreen(navBack: () -> Unit){
                         fontSize = 14.sp,
                         fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                         fontWeight = FontWeight(400),
-                        color = MatetripColor.Gray_10,
+                        color = MateTripColors.Gray_10,
                         softWrap = true
                     )
                 }
@@ -206,7 +206,7 @@ private fun ImagePagerView(
     Box(
         modifier = Modifier.fillMaxWidth()
             .height(200.dp)
-            .background(color = MatetripColor.Blue_04, shape = RoundedCornerShape(10.dp)),
+            .background(color = MateTripColors.Blue_04, shape = RoundedCornerShape(10.dp)),
         contentAlignment = Alignment.BottomCenter
     ){
         HorizontalPager(state = pagerState) {
@@ -225,7 +225,7 @@ private fun ImagePagerView(
                 val isSelected = idx == pagerState.currentPage
                 Box(
                     modifier = Modifier.size(6.dp)
-                        .background(if(isSelected) MatetripColor.icon_color else MatetripColor.icon_loading_color, shape = CircleShape)
+                        .background(if(isSelected) MateTripColors.icon_color else MateTripColors.icon_loading_color, shape = CircleShape)
                         .clip(CircleShape)
                 )
                 if(idx != images.size-1){
@@ -248,7 +248,7 @@ private fun TagList(tags: List<String>){
                 modifier = Modifier.height(38.dp),
                 tagName = tag,
                 shape = RoundedCornerShape(size = 6.dp),
-                color = MatetripColor.Blue_04,
+                color = MateTripColors.Blue_04,
                 textStyle = TextStyle(
                     fontSize = 12.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),

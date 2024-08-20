@@ -34,11 +34,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.materip.matetrip.component.CircleImageView
-import com.materip.matetrip.component.CustomButton
-import com.materip.matetrip.component.ProfileTag
-import com.materip.matetrip.icon.Badges
-import com.materip.matetrip.theme.MatetripColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -53,11 +48,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_common.ErrorState
-import com.materip.core_model.ui_model.MatetripGrade
+import com.materip.core_designsystem.MatetripGrade
+import com.materip.core_designsystem.component.CircleImageView
+import com.materip.core_designsystem.component.CustomButton
+import com.materip.core_designsystem.component.LevelInfoDialog
+import com.materip.core_designsystem.component.ProfileTag
+import com.materip.core_designsystem.icon.Badges
+import com.materip.core_designsystem.icon.Icons
+import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.feature_mypage.view_models.MyPage.ProfileMainUiState
 import com.materip.feature_mypage.view_models.MyPage.ProfileMainViewModel
-import com.materip.matetrip.component.LevelInfoDialog
-import com.materip.matetrip.icon.Icons
 
 @Composable
 fun ProfileMainContentRoute(
@@ -160,7 +160,7 @@ private fun ProfileMainContent(
                 .wrapContentHeight()
                 .border(
                     width = 1.dp,
-                    color = MatetripColor.Blue_03,
+                    color = MateTripColors.Blue_03,
                     shape = RoundedCornerShape(size = 10.dp)
                 )
                 .padding(16.dp)
@@ -210,7 +210,7 @@ private fun ProfileMainContent(
                             fontSize = 16.sp,
                             fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                             fontWeight = FontWeight(700),
-                            color = MatetripColor.Gray_11
+                            color = MateTripColors.Gray_11
                         )
                         Image(
                             modifier = Modifier.size(24.dp),
@@ -221,7 +221,7 @@ private fun ProfileMainContent(
                     Text(
                         text = "${age} · ${gender}",
                         fontSize = 12.sp,
-                        color = MatetripColor.gray_06,
+                        color = MateTripColors.Gray_06,
                         fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                         fontWeight = FontWeight(500)
                     )
@@ -231,7 +231,7 @@ private fun ProfileMainContent(
                     modifier = Modifier.height(28.dp),
                     contentPadding = PaddingValues(horizontal = 5.dp),
                     shape = RoundedCornerShape(size = 100.dp),
-                    border = BorderStroke(width = 1.dp, color = MatetripColor.Primary),
+                    border = BorderStroke(width = 1.dp, color = MateTripColors.Primary),
                     colors = ButtonDefaults.outlinedButtonColors(
                         containerColor = Color.White,
                     ),
@@ -244,7 +244,7 @@ private fun ProfileMainContent(
                         Icon(
                             modifier = Modifier.size(14.dp),
                             painter = painterResource(Icons.review_icon),
-                            tint = MatetripColor.Primary,
+                            tint = MateTripColors.Primary,
                             contentDescription = "Edit Button"
                         )
                         Spacer(Modifier.width(3.dp))
@@ -253,7 +253,7 @@ private fun ProfileMainContent(
                             fontSize = 12.sp,
                             fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                             fontWeight = FontWeight(500),
-                            color = MatetripColor.Primary
+                            color = MateTripColors.Primary
                         )
                     }
                 }
@@ -290,7 +290,7 @@ private fun ProfileMainContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(color = MatetripColor.Blue_04, shape = RoundedCornerShape(10.dp))
+                    .background(color = MateTripColors.Blue_04, shape = RoundedCornerShape(10.dp))
                     .padding(20.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
@@ -302,14 +302,14 @@ private fun ProfileMainContent(
                             fontSize = 14.sp,
                             fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                             fontWeight = FontWeight(500),
-                            color = MatetripColor.gray_06
+                            color = MateTripColors.Gray_06
                         )
                         Text(
                             text = "(상세하게 표현할수록 신뢰도가 쌓여요",
                             fontSize = 12.sp,
                             fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                             fontWeight = FontWeight(500),
-                            color = MatetripColor.gray_06
+                            color = MateTripColors.Gray_06
                         )
                     }
                 } else {
@@ -337,9 +337,9 @@ private fun ProfileMainContent(
                     .height(38.dp),
                 shape = RoundedCornerShape(size = 8.dp),
                 btnText = "자세히 보기",
-                textColor = MatetripColor.Gray_08,
+                textColor = MateTripColors.Gray_08,
                 fontSize = 12.sp,
-                btnColor = MatetripColor.Gray_02,
+                btnColor = MateTripColors.Gray_02,
                 onClick = navProfileDescription
             )
         }
@@ -370,7 +370,7 @@ private fun ProfileMainContent(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                 fontWeight = FontWeight(700),
-                color = MatetripColor.Gray_11
+                color = MateTripColors.Gray_11
             )
             IconButton(
                 modifier = Modifier.size(24.dp),
@@ -396,7 +396,7 @@ private fun ProfileMainContent(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                 fontWeight = FontWeight(700),
-                color = MatetripColor.Gray_11
+                color = MateTripColors.Gray_11
             )
             IconButton(
                 modifier = Modifier.size(24.dp),

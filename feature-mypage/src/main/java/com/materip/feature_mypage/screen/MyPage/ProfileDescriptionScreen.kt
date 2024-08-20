@@ -39,17 +39,17 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_common.ErrorState
+import com.materip.core_designsystem.MatetripGrade
 import com.materip.core_designsystem.R
-import com.materip.core_model.ui_model.MatetripGrade
+import com.materip.core_designsystem.component.CircleImageView
+import com.materip.core_designsystem.component.ImageLoadView
+import com.materip.core_designsystem.component.NormalTopBar
+import com.materip.core_designsystem.component.ProfileTag
+import com.materip.core_designsystem.icon.Badges
+import com.materip.core_designsystem.icon.Icons
+import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.feature_mypage.view_models.MyPage.ProfileDescriptionUiState
 import com.materip.feature_mypage.view_models.MyPage.ProfileDescriptionViewModel
-import com.materip.matetrip.component.CircleImageView
-import com.materip.matetrip.component.ImageLoadView
-import com.materip.matetrip.component.NormalTopBar
-import com.materip.matetrip.component.ProfileTag
-import com.materip.matetrip.icon.Badges
-import com.materip.matetrip.icon.Icons
-import com.materip.matetrip.theme.MatetripColor
 
 @Composable
 fun ProfileDescriptionRoute(
@@ -176,7 +176,7 @@ private fun ProfileDescriptionContent(
                             fontSize = 16.sp,
                             fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                             fontWeight = FontWeight(700),
-                            color = MatetripColor.Gray_11
+                            color = MateTripColors.Gray_11
                         )
                         Image(
                             modifier = Modifier.size(24.dp),
@@ -187,7 +187,7 @@ private fun ProfileDescriptionContent(
                     Text(
                         text = "${age} · ${gender}",
                         fontSize = 12.sp,
-                        color = MatetripColor.gray_06,
+                        color = MateTripColors.Gray_06,
                         fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                         fontWeight = FontWeight(500)
                     )
@@ -231,7 +231,7 @@ private fun ProfileDescriptionContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(color = MatetripColor.Blue_04, shape = RoundedCornerShape(10.dp))
+                    .background(color = MateTripColors.Blue_04, shape = RoundedCornerShape(10.dp))
                     .padding(20.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
@@ -244,7 +244,7 @@ private fun ProfileDescriptionContent(
                             fontSize = 14.sp,
                             fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                             fontWeight = FontWeight(500),
-                            color = MatetripColor.gray_06,
+                            color = MateTripColors.Gray_06,
                             textAlign = TextAlign.Center
                         )
                         Text(
@@ -253,7 +253,7 @@ private fun ProfileDescriptionContent(
                             fontSize = 12.sp,
                             fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                             fontWeight = FontWeight(500),
-                            color = MatetripColor.gray_06,
+                            color = MateTripColors.Gray_06,
                             textAlign = TextAlign.Center
                         )
                     }
@@ -296,13 +296,13 @@ private fun BasicInfo(
         fontSize = 14.sp,
         fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
         fontWeight = FontWeight(500),
-        color = MatetripColor.gray_06
+        color = MateTripColors.Gray_06
     )
     val contentStyle = TextStyle(
         fontSize = 14.sp,
         fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
         fontWeight = FontWeight(500),
-        color = MatetripColor.Gray_10
+        color = MateTripColors.Gray_10
     )
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -471,7 +471,7 @@ private fun MyImageInfo(images: List<String>){
         ){
             images.forEach{
                 ImageLoadView(
-                    backgroundColor = MatetripColor.Blue_04,
+                    backgroundColor = MateTripColors.Blue_04,
                     shape = RoundedCornerShape(size = 10.dp),
                     size = 100.dp,
                     imageUrl = it,

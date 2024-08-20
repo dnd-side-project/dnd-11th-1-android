@@ -28,9 +28,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.materip.core_designsystem.component.TempTopBar
+import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_model.ui_model.MyPageTab
-import com.materip.matetrip.component.TempTopBar
-import com.materip.matetrip.theme.MatetripColor
 
 @Composable
 fun MyPageRoute(
@@ -111,10 +111,10 @@ fun CustomPager(
             Text(
                 text = "프로필",
                 style = textStyle,
-                color = if(selectedTab == MyPageTab.Profile) MatetripColor.Primary else MatetripColor.gray_06
+                color = if(selectedTab == MyPageTab.Profile) MateTripColors.Primary else MateTripColors.Gray_06
             )
             if(selectedTab == MyPageTab.Profile) {
-                HorizontalDivider(modifier = Modifier.fillMaxWidth().padding(horizontal = 5.dp), thickness = 3.dp, color = MatetripColor.Primary)
+                HorizontalDivider(modifier = Modifier.fillMaxWidth().padding(horizontal = 5.dp), thickness = 3.dp, color = MateTripColors.Primary)
             }
         }
         Spacer(Modifier.width(20.dp))
@@ -133,10 +133,10 @@ fun CustomPager(
             Text(
                 text = "동행글",
                 style = textStyle,
-                color = if(selectedTab == MyPageTab.TravelPost) MatetripColor.Primary else MatetripColor.gray_06
+                color = if(selectedTab == MyPageTab.TravelPost) MateTripColors.Primary else MateTripColors.Gray_06
             )
             if(selectedTab == MyPageTab.TravelPost) {
-                HorizontalDivider(modifier = Modifier.fillMaxWidth().padding(horizontal = 5.dp), thickness = 3.dp, color = MatetripColor.Primary)
+                HorizontalDivider(modifier = Modifier.fillMaxWidth().padding(horizontal = 5.dp), thickness = 3.dp, color = MateTripColors.Primary)
             }
         }
         Spacer(Modifier.width(20.dp))
@@ -155,10 +155,10 @@ fun CustomPager(
             Text(
                 text = "동행내역",
                 style = textStyle,
-                color = if(selectedTab == MyPageTab.TravelHistory) MatetripColor.Primary else MatetripColor.gray_06
+                color = if(selectedTab == MyPageTab.TravelHistory) MateTripColors.Primary else MateTripColors.Gray_06
             )
             if(selectedTab == MyPageTab.TravelHistory) {
-                HorizontalDivider(modifier = Modifier.fillMaxWidth().padding(horizontal = 5.dp), thickness = 3.dp, color = MatetripColor.Primary)
+                HorizontalDivider(modifier = Modifier.fillMaxWidth().padding(horizontal = 5.dp), thickness = 3.dp, color = MateTripColors.Primary)
             }
         }
     }
