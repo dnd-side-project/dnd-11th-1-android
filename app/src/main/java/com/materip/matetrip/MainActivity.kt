@@ -28,6 +28,8 @@ import com.materip.core_designsystem.component.BackButtonTopAppBar
 import com.materip.core_designsystem.component.BackButtonWithTitleTopAppBar
 import com.materip.core_designsystem.component.MateTripBottomBar
 import com.materip.core_designsystem.component.MateTripTopAppBar
+import com.materip.feature_login.navigation.LoginRoute
+import com.materip.feature_onboarding.navigation.OnboardingRoute
 import com.materip.matetrip.navigation.Screen
 import com.materip.matetrip.navigation.SetUpNavGraph
 import com.materip.matetrip.navigation.navigateToBack
@@ -75,7 +77,9 @@ class MainActivity : AppCompatActivity() {
                     },
                 ) {
                     Box(
-                        modifier = Modifier.fillMaxSize().padding(it)
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(it)
                     ){
                         SetUpNavGraph(
                             navController = navController,
@@ -94,6 +98,28 @@ fun GetTopBar(
     navController: NavHostController
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
+
+    val notHaveTopBar = listOf(
+        LoginRoute.LoginRoute.name,
+        OnboardingRoute.InputUserInfoRoute.name,
+        OnboardingRoute.SelectTripStyleRoute.name,
+        OnboardingRoute.SelectTripInterestRoute.name,
+        OnboardingRoute.SelectFoodPreferenceRoute.name,
+        MyPageRoute.MyPageRoute.name,
+        MyPageRoute.EditProfileRoute.name,
+        MyPageRoute.ReviewRoute.name,
+        MyPageRoute.ReviewListRoute.name,
+        MyPageRoute.ReviewDescriptionRoute.name,
+        MyPageRoute.PreviewRoute.name,
+        MyPageRoute.SendApplicationRoute.name,
+        MyPageRoute.Quiz100Route.name,
+        MyPageRoute.ProfileDescriptionRoute.name,
+        SettingRoute.SettingRoute.name,
+        SettingRoute.AlarmSettingRoute.name,
+        SettingRoute.AccountInfoRoute.name,
+        SettingRoute.SMSVerificationRoute.name,
+        SettingRoute.GetAuthCodeRoute.name
+    )
 
     when (currentRoute) {
         Screen.Home.route -> {
@@ -120,6 +146,11 @@ fun GetTopBar(
                 screenTitle = "동행 신청서 작성",
                 onNavigateUp = navController::navigateToBack
             )
+        }
+
+        //별개 top bar 보유
+        in notHaveTopBar ->{
+
         }
 
         // 뒤로가기만 있는 상단바
