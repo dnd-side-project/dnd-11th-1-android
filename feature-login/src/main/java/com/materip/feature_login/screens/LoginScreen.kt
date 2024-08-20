@@ -29,13 +29,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_common.ErrorState
 import com.materip.core_designsystem.R
+import com.materip.core_designsystem.component.KakaoButton
 import com.materip.feature_login.view_models.LoginViewModel
-import com.materip.matetrip.component.KakaoButton
 
 @Composable
 fun LoginRoute(
     navOnBoarding: () -> Unit,
-    navMyPage: () -> Unit,
+    navHome: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
 ){
     val context = LocalContext.current
@@ -47,7 +47,7 @@ fun LoginRoute(
         errState = errState.value,
         doLogin = {viewModel.doLogin(context)},
         navOnBoarding = navOnBoarding,
-        navMyPage = navMyPage
+        navHome = navHome
     )
 }
 
@@ -58,12 +58,12 @@ fun LoginScreen(
     errState: ErrorState,
     doLogin: () -> Unit,
     navOnBoarding: () -> Unit,
-    navMyPage: () -> Unit,
+    navHome: () -> Unit,
 ){
     LaunchedEffect(isLogin, isOnboardingCompleted){
         if (isLogin){
             if(isOnboardingCompleted){
-                navMyPage()
+                navHome()
             } else {
                 navOnBoarding()
             }
@@ -135,6 +135,6 @@ private fun LoginUITest(){
         isLogin = false,
         isOnboardingCompleted = false,
         navOnBoarding = {},
-        navMyPage = {}
+        navHome = {}
     )
 }

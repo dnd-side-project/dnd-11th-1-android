@@ -44,9 +44,9 @@ import com.materip.core_designsystem.theme.MateTripColors.Blue_02
 import com.materip.core_designsystem.theme.MateTripColors.Blue_04
 import com.materip.core_designsystem.theme.MateTripTypographySet
 import com.materip.core_model.accompany_board.BoardItem
-import com.materip.feature_home.viewModel.BoardViewModel
 import com.materip.feature_home3.intent.BoardListIntent
 import com.materip.feature_home3.state.BoardListUiState
+import com.materip.feature_home3.viewModel.BoardViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit

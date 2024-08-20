@@ -16,8 +16,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.materip.core_designsystem.icon.Icons.notification_none_icon
 import com.materip.core_designsystem.theme.MateTripColors.Gray_05
 import com.materip.core_designsystem.theme.MateTripTypographySet
-import com.materip.feature_home.viewModel.NotificationViewModel
 import com.materip.feature_home3.state.NotificationUiState
+import com.materip.feature_home3.viewModel.NotificationViewModel
 
 // TODO: 로그인 정보가 필요해서 병합 후 작업 예정
 @Composable

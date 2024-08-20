@@ -49,7 +49,7 @@ fun SetUpNavGraph(
         /** feature-login */
         login(
             navOnBoarding = navController::navigateToInputUserInfo,
-            navMyPage = navController::navigateToMyPageGraph
+            navHome = { navController.navigate(Screen.Home.route) }
         )
         inputUserInfo(navSelectTripInterest = navController::navigateToSelectTripInterest)
         selectTripInterest(onBackClick = navController::navigateToBack, onNextClick = navController::navigateToSelectTripStyle)

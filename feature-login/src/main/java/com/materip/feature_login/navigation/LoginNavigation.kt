@@ -9,12 +9,12 @@ fun NavController.navigateToLogin() = navigate(LoginRoute.LoginRoute.name)
 
 fun NavGraphBuilder.login(
     navOnBoarding: () -> Unit,
-    navMyPage: () -> Unit,
+    navHome: () -> Unit,
 ){
     composable(route = LoginRoute.LoginRoute.name){
         LoginRoute(
             navOnBoarding = navOnBoarding,
-            navMyPage = navMyPage
+            navHome = navHome
         )
     }
 }
