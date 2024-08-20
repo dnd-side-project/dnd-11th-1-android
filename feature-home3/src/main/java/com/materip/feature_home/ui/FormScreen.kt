@@ -90,7 +90,10 @@ fun FormScreen(
                 MateTripHomeButton(
                     buttonText = "보내기",
                     enabled = isButtonEnabled,
-                    onClick = { viewModel.onFormIntent(FormIntent.SubmitCompanionRequest(boardId)) }
+                    onClick = {
+                        viewModel.onFormIntent(FormIntent.SubmitCompanionRequest(boardId))
+                        onNavigateToProfile()
+                    }
                 )
                 Spacer(modifier = Modifier.height(30.dp))
             }
