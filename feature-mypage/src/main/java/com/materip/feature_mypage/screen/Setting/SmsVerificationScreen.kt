@@ -23,12 +23,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.materip.core_designsystem.component.CustomButton
+import com.materip.core_designsystem.component.NormalTopBar
+import com.materip.core_designsystem.component.UnderlinedTextField
+import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_model.ui_model.InputKeyboardType
-import com.materip.feature_mypage.R
-import com.materip.matetrip.component.CustomButton
-import com.materip.matetrip.component.NormalTopBar
-import com.materip.matetrip.component.UnderlinedTextField
-import com.materip.matetrip.theme.MatetripColor
 
 @Composable
 fun SmsVerificationRoute(){
@@ -84,7 +83,7 @@ fun SmsVerificationScreen(){
             btnText = "확인",
             fontSize = 14.sp,
             textColor = Color.White,
-            btnColor = if(isEnabled.value) Color.Black else MatetripColor.loading_color,
+            btnColor = if(isEnabled.value) Color.Black else MateTripColors.loading_color,
             isEnabled = isEnabled.value,
             onClick = { /** SMS 인증 신청 api */ }
         )

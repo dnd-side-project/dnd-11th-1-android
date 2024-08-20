@@ -24,10 +24,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.materip.feature_mypage.R
-import com.materip.matetrip.component.NormalTopBar
-import com.materip.matetrip.component.OnAndOffButton
-import com.materip.matetrip.theme.MatetripColor
+import com.materip.core_designsystem.component.NormalTopBar
+import com.materip.core_designsystem.component.OnAndOffButton
+import com.materip.core_designsystem.theme.MateTripColors
 
 @Composable
 fun AlarmSettingRoute(){
@@ -58,7 +57,7 @@ fun AlarmSettingScreen(){
             fontSize = 12.sp,
             fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
             fontWeight = FontWeight(400),
-            color = MatetripColor.Gray_11
+            color = MateTripColors.Gray_11
         )
         Spacer(Modifier.height(10.dp))
         ReceiveApplication(
@@ -76,7 +75,7 @@ fun AlarmSettingScreen(){
             fontSize = 12.sp,
             fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
             fontWeight = FontWeight(400),
-            color = MatetripColor.Gray_11
+            color = MateTripColors.Gray_11
         )
         Spacer(Modifier.height(10.dp))
         ReceiveReview(
@@ -106,14 +105,14 @@ private fun ReceiveApplication(
                 fontSize = 14.sp,
                 fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                 fontWeight = FontWeight(400),
-                color = MatetripColor.Gray_11
+                color = MateTripColors.Gray_11
             )
             Text(
                 text = "동행 신청을 받을 때 카카오 앱 푸시 알림",
                 fontSize = 12.sp,
                 fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                 fontWeight = FontWeight(400),
-                color = MatetripColor.gray_06
+                color = MateTripColors.Gray_06
 
             )
         }
@@ -140,14 +139,14 @@ private fun AcceptApplication(
                 fontSize = 14.sp,
                 fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                 fontWeight = FontWeight(400),
-                color = MatetripColor.Gray_11
+                color = MateTripColors.Gray_11
             )
             Text(
                 text = "동행 신청을 받을 때 카카오 앱 푸시 알림",
                 fontSize = 12.sp,
                 fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                 fontWeight = FontWeight(400),
-                color = MatetripColor.gray_06
+                color = MateTripColors.Gray_06
 
             )
         }
@@ -174,14 +173,14 @@ private fun ReceiveReview(
                 fontSize = 14.sp,
                 fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                 fontWeight = FontWeight(400),
-                color = MatetripColor.Gray_11
+                color = MateTripColors.Gray_11
             )
             Text(
                 text = "동행 신청을 받을 때 카카오 앱 푸시 알림",
                 fontSize = 12.sp,
                 fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                 fontWeight = FontWeight(400),
-                color = MatetripColor.gray_06
+                color = MateTripColors.Gray_06
 
             )
         }
@@ -208,15 +207,14 @@ private fun WriteReview(
                 fontSize = 14.sp,
                 fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                 fontWeight = FontWeight(400),
-                color = MatetripColor.Gray_11
+                color = MateTripColors.Gray_11
             )
             Text(
                 text = "동행 신청을 받을 때 카카오 앱 푸시 알림",
                 fontSize = 12.sp,
                 fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                 fontWeight = FontWeight(400),
-                color = MatetripColor.gray_06
-
+                color = MateTripColors.Gray_06
             )
         }
         OnAndOffButton(

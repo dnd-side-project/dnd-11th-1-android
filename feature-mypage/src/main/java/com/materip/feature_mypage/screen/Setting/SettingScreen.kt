@@ -24,9 +24,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.materip.feature_mypage.R
-import com.materip.matetrip.icon.Icons
-import com.materip.matetrip.theme.MatetripColor
+import com.materip.core_designsystem.icon.Icons
+import com.materip.core_designsystem.theme.MateTripColors
 
 @Composable
 fun SettingRoute(){
@@ -65,7 +64,7 @@ fun SettingScreen(){
                 modifier = Modifier.size(24.dp),
                 painter = painterResource(Icons.my_page_icon),
                 contentDescription = "Account Info IC",
-                tint = MatetripColor.Primary
+                tint = MateTripColors.Primary
             )
             Spacer(Modifier.width(10.dp))
             Text(
@@ -97,7 +96,7 @@ fun SettingScreen(){
                 modifier = Modifier.size(24.dp),
                 painter = painterResource(Icons.notification_icon),
                 contentDescription = "Alarm Setting IC",
-                tint = MatetripColor.Primary
+                tint = MateTripColors.Primary
             )
             Spacer(Modifier.width(10.dp))
             Text(

@@ -2,9 +2,7 @@ package com.materip.feature_mypage.screen.Setting
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,15 +31,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.materip.core_designsystem.R
+import com.materip.core_designsystem.component.ConfirmationDialog
+import com.materip.core_designsystem.component.CustomButton
+import com.materip.core_designsystem.component.NormalTopBar
+import com.materip.core_designsystem.component.UnderlinedTextField
+import com.materip.core_designsystem.component.WarningDialog
+import com.materip.core_designsystem.icon.Icons
+import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_model.ui_model.InputKeyboardType
-import com.materip.matetrip.component.ConfirmationDialog
-import com.materip.matetrip.component.CustomButton
-import com.materip.matetrip.component.NormalTopBar
-import com.materip.matetrip.component.SelectableDialog
-import com.materip.matetrip.component.UnderlinedTextField
-import com.materip.matetrip.component.WarningDialog
-import com.materip.matetrip.icon.Icons
-import com.materip.matetrip.theme.MatetripColor
 
 @Composable
 fun GetAuthCodeRoute(){
@@ -129,7 +126,7 @@ private fun AuthProcessContent(
         btnText = "확인",
         fontSize = 14.sp,
         textColor = Color.White,
-        btnColor = if(isEnabled) Color.Black else MatetripColor.loading_color,
+        btnColor = if(isEnabled) Color.Black else MateTripColors.loading_color,
         isEnabled = isEnabled,
         onClick = { /** 인증 번호 확인 */ }
     )
