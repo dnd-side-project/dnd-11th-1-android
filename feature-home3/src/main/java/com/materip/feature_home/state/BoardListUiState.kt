@@ -46,6 +46,7 @@ sealed class BoardListUiState {
             )
         )
     }
+
     data object Loading : BoardListUiState() {
         val dummyData = listOf(
             BoardItem(
@@ -87,7 +88,7 @@ sealed class BoardListUiState {
         )
     }
 
-    data class Success(val boardList: BoardListResponse) : BoardListUiState(){
+    data class Success(val boardList: BoardListResponse) : BoardListUiState() {
         val dummyData = listOf(
             BoardItem(
                 boardId = 999,
@@ -127,7 +128,8 @@ sealed class BoardListUiState {
             )
         )
     }
-    data class Error(val message: String) : BoardListUiState(){
+
+    data class Error(val message: String) : BoardListUiState() {
         val dummyData = listOf(
             BoardItem(
                 boardId = 999,
