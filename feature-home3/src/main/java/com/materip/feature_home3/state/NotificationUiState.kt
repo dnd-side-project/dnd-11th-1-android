@@ -1,4 +1,4 @@
-package com.materip.feature_home.state
+package com.materip.feature_home3.state
 
 import com.materip.core_model.accompany_board.id.ProfileThumbnail
 import com.materip.core_model.accompany_board.notification.Notification

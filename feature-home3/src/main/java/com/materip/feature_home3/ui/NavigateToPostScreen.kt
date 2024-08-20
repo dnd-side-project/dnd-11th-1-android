@@ -1,6 +1,6 @@
-@file:OptIn(ExperimentalLayoutApi::class)
+@file:OptIn(ExperimentalLayoutApi::class,ExperimentalFoundationApi::class)
 
-package com.materip.feature_home.ui
+package com.materip.feature_home3.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -50,25 +50,25 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
-import com.materip.feature_home.intent.HomeIntent
-import com.materip.feature_home.state.HomeUiState
-import com.materip.feature_home.viewModel.HomeViewModel
+import com.materip.core_designsystem.component.MateTripHomeButton
+import com.materip.core_designsystem.icon.Badges.profile_default_badge
+import com.materip.core_designsystem.icon.Icons.date_icon
+import com.materip.core_designsystem.icon.Icons.enter_24_icon
+import com.materip.core_designsystem.icon.Icons.gender_icon
+import com.materip.core_designsystem.icon.Icons.party_icon
+import com.materip.core_designsystem.icon.Icons.place_icon
+import com.materip.core_designsystem.theme.MateTripColors.Blue_03
+import com.materip.core_designsystem.theme.MateTripColors.Blue_04
+import com.materip.core_designsystem.theme.MateTripColors.Gray_02
+import com.materip.core_designsystem.theme.MateTripColors.Gray_10
+import com.materip.core_designsystem.theme.MateTripColors.Gray_11
+import com.materip.core_designsystem.theme.MateTripColors.Gray_12
+import com.materip.core_designsystem.theme.MateTripColors.Primary
+import com.materip.core_designsystem.theme.MateTripTypographySet
+import com.materip.feature_home3.intent.HomeIntent
+import com.materip.feature_home3.state.HomeUiState
+import com.materip.feature_home3.viewModel.HomeViewModel
 import com.materip.feature_home3.R
-import com.materip.matetrip.component.MateTripHomeButton
-import com.materip.matetrip.icon.Badges.profile_default_badge
-import com.materip.matetrip.icon.Icons.date_icon
-import com.materip.matetrip.icon.Icons.enter_24_icon
-import com.materip.matetrip.icon.Icons.gender_icon
-import com.materip.matetrip.icon.Icons.party_icon
-import com.materip.matetrip.icon.Icons.place_icon
-import com.materip.matetrip.theme.MateTripColors.Blue_03
-import com.materip.matetrip.theme.MateTripColors.Blue_04
-import com.materip.matetrip.theme.MateTripColors.Gray_02
-import com.materip.matetrip.theme.MateTripColors.Gray_10
-import com.materip.matetrip.theme.MateTripColors.Gray_11
-import com.materip.matetrip.theme.MateTripColors.Gray_12
-import com.materip.matetrip.theme.MateTripColors.Primary
-import com.materip.matetrip.theme.MateTripTypographySet
 
 // 동행글 상세 화면
 @Composable
@@ -274,7 +274,7 @@ fun ShowImageList(imageUris: List<String>) {
                 }
             } else {
                 // 로컬 리소스 이미지 처리
-                val resourceId = imageUri.toIntOrNull() ?: R.drawable.default
+                val resourceId = imageUri.toIntOrNull() ?: com.materip.core_designsystem.R.drawable.profile_default
                 Image(
                     painter = painterResource(id = resourceId),
                     contentDescription = "Local Image $page",
@@ -538,7 +538,7 @@ fun ShowRecruitment(headCount: Int, capacity: Int) {
 @Preview
 @Composable
 fun NavigateToPostScreenPreview() {
-    val imageList = List(5) { R.drawable.default_image.toString() }
+    val imageList = List(5) { com.materip.core_designsystem.R.drawable.profile_default.toString() }
     val category = listOf("전체동행", "부분동행", "식사동행")
 
     LazyColumn(

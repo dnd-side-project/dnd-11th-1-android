@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalLayoutApi::class, ExperimentalLayoutApi::class)
 
-package com.materip.feature_home.ui
+package com.materip.feature_home3.ui
 
 import android.annotation.SuppressLint
 import android.os.Build
@@ -47,25 +47,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.materip.feature_home.intent.HomeIntent
-import com.materip.feature_home.state.HomeUiState
+import com.materip.core_designsystem.component.ToggleButton
+import com.materip.core_designsystem.icon.Icons.fold_icon
+import com.materip.core_designsystem.icon.Icons.minus_icon
+import com.materip.core_designsystem.icon.Icons.plus_icon
+import com.materip.core_designsystem.theme.MateTripColors.ActivatedColor
+import com.materip.core_designsystem.theme.MateTripColors.Blue_02
+import com.materip.core_designsystem.theme.MateTripColors.Blue_03
+import com.materip.core_designsystem.theme.MateTripColors.Blue_04
+import com.materip.core_designsystem.theme.MateTripColors.Devider
+import com.materip.core_designsystem.theme.MateTripColors.Gray_03
+import com.materip.core_designsystem.theme.MateTripColors.Gray_06
+import com.materip.core_designsystem.theme.MateTripColors.Gray_11
+import com.materip.core_designsystem.theme.MateTripColors.Primary
+import com.materip.core_designsystem.theme.MateTripTypographySet
 import com.materip.feature_home.ui.component.ImagePicker
 import com.materip.feature_home.ui.component.TravelDateCalendar
 import com.materip.feature_home.viewModel.HomeViewModel
-import com.materip.matetrip.component.ToggleButton
-import com.materip.matetrip.icon.Icons.fold_icon
-import com.materip.matetrip.icon.Icons.minus_icon
-import com.materip.matetrip.icon.Icons.plus_icon
-import com.materip.matetrip.theme.MateTripColors.ActivatedColor
-import com.materip.matetrip.theme.MateTripColors.Blue_02
-import com.materip.matetrip.theme.MateTripColors.Blue_03
-import com.materip.matetrip.theme.MateTripColors.Blue_04
-import com.materip.matetrip.theme.MateTripColors.Devider
-import com.materip.matetrip.theme.MateTripColors.Gray_03
-import com.materip.matetrip.theme.MateTripColors.Gray_06
-import com.materip.matetrip.theme.MateTripColors.Gray_11
-import com.materip.matetrip.theme.MateTripColors.Primary
-import com.materip.matetrip.theme.MateTripTypographySet
+import com.materip.feature_home3.intent.HomeIntent
+import com.materip.feature_home3.state.HomeUiState
 import java.time.LocalDate
 
 // 동행글 작성 화면

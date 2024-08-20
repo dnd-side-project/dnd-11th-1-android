@@ -1,12 +1,12 @@
-package com.materip.feature_home.viewModel
+package com.materip.feature_home3.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.materip.core_model.accompany_board.BoardListResponse
 import com.materip.core_model.accompany_board.Pageable
 import com.materip.core_repository.repository.home_repository.BoardRepository
-import com.materip.feature_home.intent.BoardListIntent
-import com.materip.feature_home.state.BoardListUiState
+import com.materip.feature_home3.intent.BoardListIntent
+import com.materip.feature_home3.state.BoardListUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

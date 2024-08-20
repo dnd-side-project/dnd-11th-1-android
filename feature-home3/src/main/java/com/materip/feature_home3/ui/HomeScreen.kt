@@ -1,4 +1,4 @@
-package com.materip.feature_home.ui
+package com.materip.feature_home3.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -36,17 +36,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import com.materip.core_designsystem.component.MateTripSearchBar
+import com.materip.core_designsystem.component.RegionTag
+import com.materip.core_designsystem.icon.Badges.fab_add_badge
+import com.materip.core_designsystem.icon.Logo
+import com.materip.core_designsystem.theme.MateTripColors.Blue_02
+import com.materip.core_designsystem.theme.MateTripColors.Blue_04
+import com.materip.core_designsystem.theme.MateTripTypographySet
 import com.materip.core_model.accompany_board.BoardItem
-import com.materip.feature_home.intent.BoardListIntent
-import com.materip.feature_home.state.BoardListUiState
 import com.materip.feature_home.viewModel.BoardViewModel
-import com.materip.matetrip.component.MateTripSearchBar
-import com.materip.matetrip.component.RegionTag
-import com.materip.matetrip.icon.Badges.fab_add_badge
-import com.materip.matetrip.icon.Logo
-import com.materip.matetrip.theme.MateTripColors.Blue_02
-import com.materip.matetrip.theme.MateTripColors.Blue_04
-import com.materip.matetrip.theme.MateTripTypographySet
+import com.materip.feature_home3.intent.BoardListIntent
+import com.materip.feature_home3.state.BoardListUiState
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit

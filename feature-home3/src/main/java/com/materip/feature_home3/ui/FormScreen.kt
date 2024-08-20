@@ -1,4 +1,4 @@
-package com.materip.feature_home.ui
+package com.materip.feature_home3.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,17 +31,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.materip.feature_home.intent.FormIntent
-import com.materip.feature_home.state.FormUiState
-import com.materip.feature_home.viewModel.FormViewModel
-import com.materip.matetrip.component.MateTripHomeButton
-import com.materip.matetrip.icon.Badges
-import com.materip.matetrip.theme.MateTripColors.Blue_03
-import com.materip.matetrip.theme.MateTripColors.Blue_04
-import com.materip.matetrip.theme.MateTripColors.Gray_05
-import com.materip.matetrip.theme.MateTripColors.Gray_07
-import com.materip.matetrip.theme.MateTripColors.Gray_10
-import com.materip.matetrip.theme.MateTripTypographySet
+import com.materip.core_designsystem.component.MateTripHomeButton
+import com.materip.core_designsystem.icon.Badges
+import com.materip.core_designsystem.theme.MateTripColors.Blue_03
+import com.materip.core_designsystem.theme.MateTripColors.Blue_04
+import com.materip.core_designsystem.theme.MateTripColors.Gray_05
+import com.materip.core_designsystem.theme.MateTripColors.Gray_07
+import com.materip.core_designsystem.theme.MateTripColors.Gray_10
+import com.materip.core_designsystem.theme.MateTripTypographySet
+import com.materip.feature_home3.intent.FormIntent
+import com.materip.feature_home3.state.FormUiState
+import com.materip.feature_home3.viewModel.FormViewModel
 
 @Composable
 fun FormScreen(

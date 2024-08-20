@@ -1,4 +1,4 @@
-package com.materip.feature_home.ui
+package com.materip.feature_home3.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -13,11 +13,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.materip.feature_home.state.NotificationUiState
+import com.materip.core_designsystem.icon.Icons.notification_none_icon
+import com.materip.core_designsystem.theme.MateTripColors.Gray_05
+import com.materip.core_designsystem.theme.MateTripTypographySet
 import com.materip.feature_home.viewModel.NotificationViewModel
-import com.materip.matetrip.icon.Icons.notification_none_icon
-import com.materip.matetrip.theme.MateTripColors.Gray_05
-import com.materip.matetrip.theme.MateTripTypographySet
+import com.materip.feature_home3.state.NotificationUiState
 
 // TODO: 로그인 정보가 필요해서 병합 후 작업 예정
 @Composable

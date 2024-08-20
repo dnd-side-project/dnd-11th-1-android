@@ -1,4 +1,4 @@
-package com.materip.feature_home.intent
+package com.materip.feature_home3.intent
 
 import com.materip.core_model.accompany_board.create.BoardRequestDto
 

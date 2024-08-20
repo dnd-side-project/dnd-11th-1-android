@@ -1,9 +1,8 @@
-package com.materip.feature_home.state
+package com.materip.feature_home3.state
 
+import com.materip.core_designsystem.icon.Logo.app_icon_60
 import com.materip.core_model.accompany_board.BoardItem
 import com.materip.core_model.accompany_board.BoardListResponse
-import com.materip.matetrip.icon.Logo
-import com.materip.matetrip.icon.Logo.app_icon_60
 
 sealed class BoardListUiState {
     data object Initial : BoardListUiState() {
