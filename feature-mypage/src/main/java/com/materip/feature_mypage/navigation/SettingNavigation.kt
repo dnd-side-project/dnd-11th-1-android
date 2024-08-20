@@ -11,30 +11,30 @@ import com.materip.feature_mypage.screen.Setting.SettingRoute
 import com.materip.feature_mypage.screen.Setting.SmsVerificationRoute
 
 fun NavController.navigateToSettingGraph() = navigate(SettingRoute.SettingGraph.name)
-fun NavController.navigateToSetting() = navigate(SettingRoute.SettingScreen.name)
-fun NavController.navigateToAccountInfo() = navigate(SettingRoute.AccountInfoScreen.name)
-fun NavController.navigateToAlarmSetting() = navigate(SettingRoute.AlarmSettingScreen.name)
-fun NavController.navigateToGetAuthCode() = navigate(SettingRoute.GetAuthCodeScreen.name)
-fun NavController.navigateToSMSVerification() = navigate(SettingRoute.SMSVerificationScreen.name)
+fun NavController.navigateToSetting() = navigate(SettingRoute.SettingRoute.name)
+fun NavController.navigateToAccountInfo() = navigate(SettingRoute.AccountInfoRoute.name)
+fun NavController.navigateToAlarmSetting() = navigate(SettingRoute.AlarmSettingRoute.name)
+fun NavController.navigateToGetAuthCode() = navigate(SettingRoute.GetAuthCodeRoute.name)
+fun NavController.navigateToSMSVerification() = navigate(SettingRoute.SMSVerificationRoute.name)
 
 fun NavGraphBuilder.setting(){
     navigation(
-        startDestination = SettingRoute.SettingScreen.name,
+        startDestination = SettingRoute.SettingRoute.name,
         route = SettingRoute.SettingGraph.name
     ){
-        composable(SettingRoute.SettingScreen.name){
+        composable(SettingRoute.SettingRoute.name){
             SettingRoute()
         }
-        composable(SettingRoute.AlarmSettingScreen.name){
+        composable(SettingRoute.AlarmSettingRoute.name){
             AlarmSettingRoute()
         }
-        composable(SettingRoute.GetAuthCodeScreen.name){
+        composable(SettingRoute.GetAuthCodeRoute.name){
             GetAuthCodeRoute()
         }
-        composable(SettingRoute.AccountInfoScreen.name){
+        composable(SettingRoute.AccountInfoRoute.name){
             AccountInfoRoute()
         }
-        composable(SettingRoute.SMSVerificationScreen.name){
+        composable(SettingRoute.SMSVerificationRoute.name){
             SmsVerificationRoute()
         }
     }

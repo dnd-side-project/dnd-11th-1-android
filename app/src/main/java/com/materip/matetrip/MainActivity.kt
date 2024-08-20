@@ -20,14 +20,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.materip.feature_home.ui.FabButton
-import com.materip.feature_home.viewModel.HomeViewModel
+import com.materip.feature_home3.ui.FabButton
+import com.materip.feature_home3.viewModel.HomeViewModel
 import com.materip.feature_mypage.navigation.MyPageRoute
 import com.materip.feature_mypage.navigation.SettingRoute
-import com.materip.matetrip.component.BackButtonTopAppBar
-import com.materip.matetrip.component.BackButtonWithTitleTopAppBar
-import com.materip.matetrip.component.MateTripBottomBar
-import com.materip.matetrip.component.MateTripTopAppBar
+import com.materip.core_designsystem.component.BackButtonTopAppBar
+import com.materip.core_designsystem.component.BackButtonWithTitleTopAppBar
+import com.materip.core_designsystem.component.MateTripBottomBar
+import com.materip.core_designsystem.component.MateTripTopAppBar
 import com.materip.matetrip.navigation.Screen
 import com.materip.matetrip.navigation.SetUpNavGraph
 import com.materip.matetrip.navigation.navigateToBack
@@ -37,7 +37,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val viewModel: AppViewModel by viewModels()
-    private val useBottomNavScreen = listOf(Screen.Home.route, MyPageRoute.MyPageRoute.name, SettingRoute.SettingScreen.name)
+    private val useBottomNavScreen = listOf(Screen.Home.route, MyPageRoute.MyPageRoute.name, SettingRoute.SettingRoute.name)
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
