@@ -4,6 +4,7 @@ import com.materip.core_model.accompany_board.create.BoardRequestDto
 import com.materip.core_model.accompany_board.BoardListResponse
 import com.materip.core_model.accompany_board.id.BoardIdDto
 import com.materip.core_model.accompany_board.id.GetBoardDetailDto
+import com.materip.core_model.accompany_board.profile.GetUserProfile
 import com.materip.core_model.accompany_board.request.CompanionRequest
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.Body
@@ -36,4 +37,8 @@ interface BoardService {
     // 동행글 삭제
     @DELETE("/api/v1/accompany/boards/{id}")
     suspend fun deleteBoard(@Path("id") id: Int): ApiResponse<Unit>
+
+    // 프로필 조회
+    @GET("/api/v1/profiles")
+    suspend fun getProfile(): ApiResponse<GetUserProfile>
 }
