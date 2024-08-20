@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalLayoutApi::class)
 
-package com.materip.feature_home.ui.component
+package com.materip.feature_home3.ui.component
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
