@@ -7,6 +7,7 @@ import com.materip.core_model.accompany_board.BoardListResponse
 import com.materip.core_model.accompany_board.Pageable
 import com.materip.core_model.accompany_board.id.BoardIdDto
 import com.materip.core_model.accompany_board.id.GetBoardDetailDto
+import com.materip.core_model.accompany_board.profile.GetUserProfile
 import com.materip.core_model.accompany_board.request.CompanionRequest
 import com.materip.core_network.service.home.BoardService
 import com.skydoves.sandwich.message
@@ -52,6 +53,26 @@ class BoardDataStoreImpl @Inject constructor(
     override suspend fun postCompanionRequest(companionRequest: CompanionRequest): ResultResponse<Unit> {
         val result = ResultResponse<Unit>()
         boardService.postCompanionRequest(companionRequest).suspendOnSuccess {
+            result.data = this.data
+        }.suspendOnError {
+            result.error = Json.decodeFromString<ResponseError>(this.message())
+        }
+        return result
+    }
+
+    override suspend fun deleteBoard(id: Int): ResultResponse<Unit> {
+        val result = ResultResponse<Unit>()
+        boardService.deleteBoard(id).suspendOnSuccess {
+            result.data = this.data
+        }.suspendOnError {
+            result.error = Json.decodeFromString<ResponseError>(this.message())
+        }
+        return result
+    }
+
+    override suspend fun getUserProfile(): ResultResponse<GetUserProfile> {
+        val result = ResultResponse<GetUserProfile>()
+        boardService.getProfile().suspendOnSuccess {
             result.data = this.data
         }.suspendOnError {
             result.error = Json.decodeFromString<ResponseError>(this.message())
