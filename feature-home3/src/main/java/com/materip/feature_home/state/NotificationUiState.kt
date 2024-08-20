@@ -1,15 +1,10 @@
 package com.materip.feature_home.state
 
-import com.materip.core_model.accompany_board.id.ProfileThumbnail
-import com.materip.core_model.accompany_board.notification.Notification
+import com.materip.core_model.accompany_board.profile.GetUserProfile
 
 sealed class NotificationUiState {
     data object Initial : NotificationUiState()
     data object Loading : NotificationUiState()
-    // TODO: 알림에 대한 데이터 모델이 정의 되면 Success에 데이터를 넣어주기
-    data class Success(
-        val notifications: List<Notification>,
-        val profileThumbnail: ProfileThumbnail
-    ) : NotificationUiState()
+    data class Success(val user: GetUserProfile) : NotificationUiState()
     data class Error(val message: String) : NotificationUiState()
 }
