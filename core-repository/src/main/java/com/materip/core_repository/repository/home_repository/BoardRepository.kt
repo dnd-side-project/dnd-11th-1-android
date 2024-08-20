@@ -1,5 +1,4 @@
 package com.materip.core_repository.repository.home_repository
-// repository모듈은 데이터 소스와의 상호작용을 추상화함
 
 import com.materip.core_common.ResultResponse
 import com.materip.core_model.accompany_board.create.BoardRequestDto
@@ -25,5 +24,4 @@ interface BoardRepository {
     suspend fun deleteBoard(id: Int): ResultResponse<Unit>
     // 프로필 조회
     suspend fun getUserProfile(): ResultResponse<GetUserProfile>
-
 }

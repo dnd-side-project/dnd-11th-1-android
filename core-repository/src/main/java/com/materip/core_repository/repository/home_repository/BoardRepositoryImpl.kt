@@ -7,6 +7,7 @@ import com.materip.core_model.accompany_board.BoardListResponse
 import com.materip.core_model.accompany_board.Pageable
 import com.materip.core_model.accompany_board.id.BoardIdDto
 import com.materip.core_model.accompany_board.id.GetBoardDetailDto
+import com.materip.core_model.accompany_board.profile.GetUserProfile
 import com.materip.core_model.accompany_board.request.CompanionRequest
 import javax.inject.Inject
 
@@ -27,5 +28,13 @@ class BoardRepositoryImpl @Inject constructor(
 
     override suspend fun postCompanionRequest(companionRequest: CompanionRequest): ResultResponse<Unit> {
         return boardDataStore.postCompanionRequest(companionRequest)
+    }
+
+    override suspend fun deleteBoard(id: Int): ResultResponse<Unit> {
+        return boardDataStore.deleteBoard(id)
+    }
+
+    override suspend fun getUserProfile(): ResultResponse<GetUserProfile> {
+        return boardDataStore.getUserProfile()
     }
 }
