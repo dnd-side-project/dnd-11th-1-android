@@ -1,3 +1,5 @@
+@file:Suppress("NAME_SHADOWING")
+
 package com.materip.feature_onboarding.view_models
 
 import androidx.lifecycle.ViewModel
