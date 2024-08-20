@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalLayoutApi::class,ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalLayoutApi::class)
 
 package com.materip.feature_home3.ui
 
@@ -405,7 +405,6 @@ fun ShowSchedule(
         }
     }
 }
-
 @Composable
 fun ShowCategory(category: List<String>) {
     Column(

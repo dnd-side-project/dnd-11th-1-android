@@ -34,6 +34,7 @@ import com.materip.core_designsystem.theme.MateTripTypographySet
  */
 
 // 홈 화면의 상단바
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MateTripTopAppBar(
     onNotificationClick: () -> Unit
