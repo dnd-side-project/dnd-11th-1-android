@@ -1,4 +1,4 @@
-package com.materip.matetrip.component
+package com.materip.core_designsystem.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,8 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.materip.matetrip.theme.MateTripTypographySet
-import com.materip.matetrip.theme.OnboardingMessage
+import com.materip.core_designsystem.theme.MateTripTypographySet
+import com.materip.core_designsystem.theme.OnboardingMessage
 
 @Composable
 fun ShowOnboardingMessage(onboardingMessage: OnboardingMessage) {

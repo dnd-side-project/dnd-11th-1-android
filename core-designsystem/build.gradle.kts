@@ -50,8 +50,8 @@ android {
 dependencies {
     implementation(project(":core-model"))
 
-    //coil
-    implementation(libs.bundles.coil)
+    implementation(libs.bundles.coil) // coil
+    implementation(libs.bundles.ui) // ui
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

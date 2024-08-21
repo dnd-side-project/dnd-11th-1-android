@@ -1,4 +1,4 @@
-package com.materip.matetrip.component
+package com.materip.core_designsystem.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -25,8 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.materip.core_designsystem.R
-import com.materip.matetrip.theme.MateTripColors.KakaoButtonColor
-import com.materip.matetrip.theme.MateTripColors.KakaoTextColor
+import com.materip.core_designsystem.theme.MateTripColors.KakaoButtonColor
+import com.materip.core_designsystem.theme.MateTripColors.KakaoTextColor
 
 @Composable
 fun KakaoButton(

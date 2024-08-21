@@ -1,4 +1,4 @@
-package com.materip.matetrip.theme
+package com.materip.core_designsystem.theme
 
 enum class OnboardingMessage(val title: String, val message: String) {
     MESSAGE_1(

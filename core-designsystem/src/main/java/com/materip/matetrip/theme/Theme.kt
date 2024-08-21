@@ -1,2 +1,2 @@
-package com.materip.matetrip.theme
+package com.materip.core_designsystem.theme
 

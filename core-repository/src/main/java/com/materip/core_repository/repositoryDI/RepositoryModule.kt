@@ -1,9 +1,13 @@
 package com.materip.core_repository.repositoryDI
 
+import com.materip.core_repository.repository.image_repository.ImageRepository
+import com.materip.core_repository.repository.image_repository.ImageRepositoryImpl
 import com.materip.core_repository.repository.login_repository.LoginRepository
 import com.materip.core_repository.repository.login_repository.LoginRepositoryImpl
 import com.materip.core_repository.repository.onboarding_repository.OnboardingRepository
 import com.materip.core_repository.repository.onboarding_repository.OnboardingRepositoryImpl
+import com.materip.core_repository.repository.profile_repository.ProfileRepository
+import com.materip.core_repository.repository.profile_repository.ProfileRepositoryImpl
 import com.materip.core_repository.repository.test_repository.TestRepository
 import com.materip.core_repository.repository.test_repository.TestRepositoryImpl
 import dagger.Binds
@@ -26,4 +30,12 @@ interface RepositoryModule {
     @Binds
     @Singleton
     fun bindOnboardingRepositoryImpl(onboardingRepositoryImpl: OnboardingRepositoryImpl): OnboardingRepository
+
+    @Binds
+    @Singleton
+    fun bindProfileRepositoryImpl(profileRepositoryImpl: ProfileRepositoryImpl): ProfileRepository
+
+    @Binds
+    @Singleton
+    fun bindImageRepositoryImpl(imageRepositoryImpl: ImageRepositoryImpl): ImageRepository
 }

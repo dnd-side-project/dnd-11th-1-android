@@ -1,4 +1,4 @@
-package com.materip.matetrip.component
+package com.materip.core_designsystem.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.materip.core_designsystem.R
 import com.materip.core_model.ui_model.InputKeyboardType
-import com.materip.matetrip.theme.MateTripColors.Gray_06
+import com.materip.core_designsystem.theme.MateTripColors.Gray_06
 
 
 @Composable

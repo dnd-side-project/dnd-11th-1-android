@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.materip.matetrip.component
+package com.materip.core_designsystem.component
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -19,11 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.materip.matetrip.icon.Icons
-import com.materip.matetrip.icon.Icons.notification_icon
-import com.materip.matetrip.icon.Logo.splash_icon_02
-import com.materip.matetrip.theme.MateTripColors.Primary
-import com.materip.matetrip.theme.MateTripTypographySet
+import com.materip.core_designsystem.icon.Icons.notification_icon
+import com.materip.core_designsystem.icon.Icons
+import com.materip.core_designsystem.icon.Logo.splash_icon_02
+import com.materip.core_designsystem.theme.MateTripColors.Primary
+import com.materip.core_designsystem.theme.MateTripTypographySet
 
 
 /**
@@ -34,6 +34,7 @@ import com.materip.matetrip.theme.MateTripTypographySet
  */
 
 // 홈 화면의 상단바
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MateTripTopAppBar(
     onNotificationClick: () -> Unit

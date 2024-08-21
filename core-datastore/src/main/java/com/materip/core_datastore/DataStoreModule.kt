@@ -6,6 +6,10 @@ import com.materip.core_datastore.com.materip.core_datastore.login_datastore.Rem
 import com.materip.core_datastore.com.materip.core_datastore.login_datastore.RemoteLoginDataStoreImpl
 import com.materip.core_datastore.com.materip.core_datastore.onboarding_datastore.OnboardingDataStore
 import com.materip.core_datastore.com.materip.core_datastore.onboarding_datastore.OnboardingDataStoreImpl
+import com.materip.core_datastore.image_datastore.ImageDataStore
+import com.materip.core_datastore.image_datastore.ImageDataStoreImpl
+import com.materip.core_datastore.profile_datastore.ProfileDataStore
+import com.materip.core_datastore.profile_datastore.ProfileDataStoreImpl
 import com.materip.core_datastore.test_datastore.TestDataStore
 import com.materip.core_datastore.test_datastore.TestDataStoreImpl
 import dagger.Binds
@@ -32,4 +36,12 @@ interface DataStoreModule {
     @Singleton
     @Binds
     fun provideRemoteOnboardingDataStore(onboardingDataStoreImpl: OnboardingDataStoreImpl): OnboardingDataStore
+
+    @Singleton
+    @Binds
+    fun provideProfileDataStore(profileDataStoreImpl: ProfileDataStoreImpl): ProfileDataStore
+
+    @Singleton
+    @Binds
+    fun provideImageDataStore(imageDataStoreImpl: ImageDataStoreImpl): ImageDataStore
 }

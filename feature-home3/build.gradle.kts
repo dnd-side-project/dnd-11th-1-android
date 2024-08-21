@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.materip.feature_home"
+    namespace = "com.materip.feature_home3"
     compileSdk = 34
 
     defaultConfig {
@@ -67,7 +67,6 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(platform(libs.kotlinx.coroutines.bom))
 
-
     //coil
     implementation(libs.bundles.coil)
 
@@ -76,7 +75,7 @@ dependencies {
 
     //hilt
     implementation(libs.bundles.hilt.impl)
-    implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.material3)
     implementation(libs.androidx.ui.tooling.preview.android)
     kapt(libs.bundles.hilt.kapt)
 

@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.materip.matetrip.component
+package com.materip.core_designsystem.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -17,11 +17,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.materip.matetrip.theme.MateTripColors.Gray_06
-import com.materip.matetrip.theme.MateTripColors.Primary
-import com.materip.matetrip.theme.MateTripTypographySet
+import com.materip.core_designsystem.theme.MateTripColors.Gray_06
+import com.materip.core_designsystem.theme.MateTripColors.Primary
+import com.materip.core_designsystem.theme.MateTripTypographySet
 
 /**
  * SearchBar/Container, Leading icon button, Supporting text

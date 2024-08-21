@@ -1,4 +1,4 @@
-package com.materip.matetrip.theme
+package com.materip.core_designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -7,8 +7,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.materip.core_designsystem.R
-import com.materip.matetrip.theme.MateTripColors.Gray_05
-import com.materip.matetrip.theme.MateTripColors.Gray_11
+import com.materip.core_designsystem.theme.MateTripColors.Gray_05
+import com.materip.core_designsystem.theme.MateTripColors.Gray_11
 
 /**
  * 메이트립 Android Typography

@@ -56,8 +56,8 @@ class OnboardingViewModel @Inject constructor(
             val userInfo = Json.decodeFromString<UserInfo>(userInfo)
             val tripInterests = Json.decodeFromString<SelectInterests>(tripInterests)
             val tripStyles = Json.decodeFromString<SelectStyles>(tripStyles)
-            val travelPreferences = tripInterests.tripInterest.map{it.name}
-            val travelStyles = tripStyles.tripStyle.map{it.name}
+            val travelPreferences = tripInterests.travelInterest.map{it.name}
+            val travelStyles = tripStyles.travelStyle.map{it.name}
 
             val requestDto = SaveOnboardingRequestDto(
                 birthYear = userInfo.birthYear.toInt(),

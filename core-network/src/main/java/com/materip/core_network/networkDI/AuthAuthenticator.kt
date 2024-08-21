@@ -27,6 +27,7 @@ class AuthAuthenticator @Inject constructor(
         val refreshToken = runBlocking{
             tokenManager.getAuthTokenForHeader()
         }
+        Log.d("MATETRIP API TEST", "refresh token : ${refreshToken}")
         val refreshRequest = Request.Builder()
             .url(BuildConfig.BASE_URL)
             .post("".toRequestBody())
@@ -44,7 +45,7 @@ class AuthAuthenticator @Inject constructor(
             }
             val newRequest = originRequest.newBuilder()
                 .removeHeader("Authorization")
-                .addHeader("Authorization", newAccessToken)
+                .addHeader("Authorization", "Bearer ${newAccessToken}")
                 .build()
             return newRequest
         } else {

@@ -1,5 +1,6 @@
 package com.materip.feature_onboarding.screens
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,16 +27,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.materip.core_designsystem.R
+import com.materip.core_designsystem.component.MateTripButton
+import com.materip.core_designsystem.component.OnboardingElevatedCard
+import com.materip.core_designsystem.component.ProgressIndicator
+import com.materip.core_designsystem.icon.Badges
+import com.materip.core_designsystem.theme.MateTripColors
+import com.materip.core_designsystem.theme.MateTripTypographySet
+import com.materip.core_designsystem.theme.OnboardingMessage
 import com.materip.core_model.ui_model.SelectStyles
-import com.materip.core_model.ui_model.TripInterest
-import com.materip.core_model.ui_model.TripStyle
-import com.materip.matetrip.component.MateTripButton
-import com.materip.matetrip.component.OnboardingElevatedCard
-import com.materip.matetrip.component.ProgressIndicator
-import com.materip.matetrip.icon.Badges
-import com.materip.matetrip.theme.MateTripColors.Blue_01
-import com.materip.matetrip.theme.MateTripTypographySet
-import com.materip.matetrip.theme.OnboardingMessage
+import com.materip.core_model.ui_model.TravelStyle
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -58,10 +58,10 @@ fun SelectTripStyleRoute(
 @Composable
 fun SelectTripStyleScreen(
     onBackClick: () -> Unit,
-    onNextClick: (List<TripStyle>) -> Unit,
+    onNextClick: (List<TravelStyle>) -> Unit,
 ){
     val scrollState = rememberScrollState()
-    val styles = remember{ mutableStateListOf<TripStyle>() }
+    val styles = remember{ mutableStateListOf<TravelStyle>() }
     var isEnabled = remember{derivedStateOf{styles.isNotEmpty()}}
     Column(
         modifier = Modifier
@@ -113,13 +113,13 @@ fun SelectTripStyleScreen(
                     text = "맛집탐방",
                     icon = Badges.restaurant_badge,
                     iconSize = 48.dp,
-                    isSelected = TripStyle.RESTAURANT_TOUR in styles,
-                    tint = if(TripStyle.RESTAURANT_TOUR in styles) Color.White else Blue_01,
+                    isSelected = TravelStyle.RESTAURANT_TOUR in styles,
+                    tint = if(TravelStyle.RESTAURANT_TOUR in styles) Color.White else MateTripColors.Blue_01,
                     onClick = {
-                        if(TripStyle.RESTAURANT_TOUR in styles){
-                            styles.remove(TripStyle.RESTAURANT_TOUR)
+                        if(TravelStyle.RESTAURANT_TOUR in styles){
+                            styles.remove(TravelStyle.RESTAURANT_TOUR)
                         } else {
-                            styles.add(TripStyle.RESTAURANT_TOUR)
+                            styles.add(TravelStyle.RESTAURANT_TOUR)
                         }
                     }
                 )
@@ -131,13 +131,13 @@ fun SelectTripStyleScreen(
                     text = "카페투어",
                     icon = Badges.cafe_tour_badge,
                     iconSize = 48.dp,
-                    isSelected = TripStyle.CAFE_TOUR in styles,
-                    tint = if(TripStyle.CAFE_TOUR in styles) Color.White else Blue_01,
+                    isSelected = TravelStyle.CAFE_TOUR in styles,
+                    tint = if(TravelStyle.CAFE_TOUR in styles) Color.White else MateTripColors.Blue_01,
                     onClick = {
-                        if(TripStyle.CAFE_TOUR in styles){
-                            styles.remove(TripStyle.CAFE_TOUR)
+                        if(TravelStyle.CAFE_TOUR in styles){
+                            styles.remove(TravelStyle.CAFE_TOUR)
                         } else {
-                            styles.add(TripStyle.CAFE_TOUR)
+                            styles.add(TravelStyle.CAFE_TOUR)
                         }
                     }
                 )
@@ -153,9 +153,9 @@ fun SelectTripStyleScreen(
                     text = "인생샷",
                     icon = Badges.image_badge,
                     iconSize = 48.dp,
-                    isSelected = TripStyle.LIFE_SHOT in styles,
-                    tint = if(TripStyle.LIFE_SHOT in styles) Color.White else Blue_01,
-                    onClick = {styles.add(TripStyle.LIFE_SHOT)}
+                    isSelected = TravelStyle.LIFE_SHOT in styles,
+                    tint = if(TravelStyle.LIFE_SHOT in styles) Color.White else MateTripColors.Blue_01,
+                    onClick = {styles.add(TravelStyle.LIFE_SHOT)}
                 )
                 Spacer(Modifier.width(10.dp))
                 OnboardingElevatedCard(
@@ -165,13 +165,13 @@ fun SelectTripStyleScreen(
                     text = "관광지",
                     icon = Badges.tourist_badge,
                     iconSize = 48.dp,
-                    isSelected = TripStyle.TOURIST_DESTINATION in styles,
-                    tint = if(TripStyle.TOURIST_DESTINATION in styles) Color.White else Blue_01,
+                    isSelected = TravelStyle.TOURIST_DESTINATION in styles,
+                    tint = if(TravelStyle.TOURIST_DESTINATION in styles) Color.White else MateTripColors.Blue_01,
                     onClick = {
-                        if(TripStyle.TOURIST_DESTINATION in styles){
-                            styles.remove(TripStyle.TOURIST_DESTINATION)
+                        if(TravelStyle.TOURIST_DESTINATION in styles){
+                            styles.remove(TravelStyle.TOURIST_DESTINATION)
                         } else {
-                            styles.add(TripStyle.TOURIST_DESTINATION)
+                            styles.add(TravelStyle.TOURIST_DESTINATION)
                         }
                     }
                 )
@@ -187,13 +187,13 @@ fun SelectTripStyleScreen(
                     text = "액티비티",
                     icon = Badges.activity_badge,
                     iconSize = 48.dp,
-                    isSelected = TripStyle.ACTIVITY in styles,
-                    tint = if(TripStyle.ACTIVITY in styles) Color.White else Blue_01,
+                    isSelected = TravelStyle.ACTIVITY in styles,
+                    tint = if(TravelStyle.ACTIVITY in styles) Color.White else MateTripColors.Blue_01,
                     onClick = {
-                        if(TripStyle.ACTIVITY in styles){
-                            styles.remove(TripStyle.ACTIVITY)
+                        if(TravelStyle.ACTIVITY in styles){
+                            styles.remove(TravelStyle.ACTIVITY)
                         } else {
-                            styles.add(TripStyle.ACTIVITY)
+                            styles.add(TravelStyle.ACTIVITY)
                         }
                     }
                 )
@@ -205,13 +205,13 @@ fun SelectTripStyleScreen(
                     text = "힐링",
                     icon = Badges.healing_badge,
                     iconSize = 48.dp,
-                    isSelected = TripStyle.HEALING in styles,
-                    tint = if(TripStyle.HEALING in styles) Color.White else Blue_01,
+                    isSelected = TravelStyle.HEALING in styles,
+                    tint = if(TravelStyle.HEALING in styles) Color.White else MateTripColors.Blue_01,
                     onClick = {
-                        if(TripStyle.HEALING in styles){
-                            styles.remove(TripStyle.HEALING)
+                        if(TravelStyle.HEALING in styles){
+                            styles.remove(TravelStyle.HEALING)
                         } else {
-                            styles.add(TripStyle.HEALING)
+                            styles.add(TravelStyle.HEALING)
                         }
                     }
                 )
@@ -227,13 +227,13 @@ fun SelectTripStyleScreen(
                     text = "드라이브",
                     icon = Badges.drive_badge,
                     iconSize = 48.dp,
-                    isSelected = TripStyle.DRIVE in styles,
-                    tint = if(TripStyle.DRIVE in styles) Color.White else Blue_01,
+                    isSelected = TravelStyle.DRIVE in styles,
+                    tint = if(TravelStyle.DRIVE in styles) Color.White else MateTripColors.Blue_01,
                     onClick = {
-                        if(TripStyle.DRIVE in styles) {
-                            styles.remove(TripStyle.DRIVE)
+                        if(TravelStyle.DRIVE in styles) {
+                            styles.remove(TravelStyle.DRIVE)
                         } else {
-                            styles.add(TripStyle.DRIVE)
+                            styles.add(TravelStyle.DRIVE)
                         }
                     }
                 )
@@ -245,13 +245,13 @@ fun SelectTripStyleScreen(
                     text = "패키지 여행",
                     icon = Badges.package_badge,
                     iconSize = 48.dp,
-                    isSelected = TripStyle.PACKAGE_TOUR in styles,
-                    tint = if(TripStyle.PACKAGE_TOUR in styles) Color.White else Blue_01,
+                    isSelected = TravelStyle.PACKAGE_TOUR in styles,
+                    tint = if(TravelStyle.PACKAGE_TOUR in styles) Color.White else MateTripColors.Blue_01,
                     onClick = {
-                        if(TripStyle.PACKAGE_TOUR in styles){
-                            styles.remove(TripStyle.PACKAGE_TOUR)
+                        if(TravelStyle.PACKAGE_TOUR in styles){
+                            styles.remove(TravelStyle.PACKAGE_TOUR)
                         } else {
-                            styles.add(TripStyle.PACKAGE_TOUR)
+                            styles.add(TravelStyle.PACKAGE_TOUR)
                         }
                     }
                 )
@@ -267,13 +267,13 @@ fun SelectTripStyleScreen(
                     text = "쇼핑",
                     icon = Badges.shopping_badge,
                     iconSize = 48.dp,
-                    isSelected = TripStyle.SHOPPING in styles,
-                    tint = if(TripStyle.SHOPPING in styles) Color.White else Blue_01,
+                    isSelected = TravelStyle.SHOPPING in styles,
+                    tint = if(TravelStyle.SHOPPING in styles) Color.White else MateTripColors.Blue_01,
                     onClick = {
-                        if(TripStyle.SHOPPING in styles) {
-                            styles.remove(TripStyle.SHOPPING)
+                        if(TravelStyle.SHOPPING in styles) {
+                            styles.remove(TravelStyle.SHOPPING)
                         } else {
-                            styles.add(TripStyle.SHOPPING)
+                            styles.add(TravelStyle.SHOPPING)
                         }
                     }
                 )
@@ -285,13 +285,13 @@ fun SelectTripStyleScreen(
                     text = "문화예술",
                     icon = Badges.art_badge,
                     iconSize = 48.dp,
-                    isSelected = TripStyle.CULTURE_AND_ARTS in styles,
-                    tint = if(TripStyle.CULTURE_AND_ARTS in styles) Color.White else Blue_01,
+                    isSelected = TravelStyle.CULTURE_AND_ARTS in styles,
+                    tint = if(TravelStyle.CULTURE_AND_ARTS in styles) Color.White else MateTripColors.Blue_01,
                     onClick = {
-                        if(TripStyle.CULTURE_AND_ARTS in styles) {
-                            styles.remove(TripStyle.CULTURE_AND_ARTS)
+                        if(TravelStyle.CULTURE_AND_ARTS in styles) {
+                            styles.remove(TravelStyle.CULTURE_AND_ARTS)
                         } else {
-                            styles.add(TripStyle.CULTURE_AND_ARTS)
+                            styles.add(TravelStyle.CULTURE_AND_ARTS)
                         }
                     }
                 )
@@ -299,6 +299,7 @@ fun SelectTripStyleScreen(
         }
         Spacer(Modifier.height(10.dp))
         MateTripButton(
+            modifier = Modifier.fillMaxWidth(),
             onClick = { onNextClick(styles) },
             buttonText = "다음" ,
             enabled = isEnabled.value
