@@ -70,13 +70,14 @@ import com.materip.matetrip.theme.MateTripColors.Gray_12
 import com.materip.matetrip.theme.MateTripColors.Primary
 import com.materip.matetrip.theme.MateTripTypographySet
 
+// TODO: onNavigateToUserProfile은 다른 사람의 프로필을 보여주는 화면임
 // 동행글 상세 화면
 @Composable
 fun NavigateToPostScreen(
     boardId: Int,
     viewModel: HomeViewModel = hiltViewModel(),
     onNavigateToForm: () -> Unit,
-    onNavigateToProfile: () -> Unit
+    onNavigateToUserProfile: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -100,7 +101,7 @@ fun NavigateToPostScreen(
                 birthYear = profileInfo.birthYear,
                 gender = profileInfo.gender,
                 profileImageUrl = profileInfo.profileImageUrl,
-                onNavigateToProfile = onNavigateToProfile
+                onNavigateToProfile = onNavigateToUserProfile
             )
 
             ShowUserBoardInfo(
@@ -135,7 +136,8 @@ fun NavigateToPostScreen(
                 MateTripHomeButton(
                     buttonText = "동행 신청",
                     enabled = true,
-                    onClick = { onNavigateToForm() }
+                    onClick = { onNavigateToForm() },
+                    modifier = Modifier.width(370.dp).height(54.dp)
                 )
                 Spacer(modifier = Modifier.height(30.dp))
             }
@@ -590,7 +592,8 @@ fun NavigateToPostScreenPreview() {
                 MateTripHomeButton(
                     buttonText = "동행 신청",
                     enabled = true,
-                    onClick = {  }
+                    onClick = {  },
+                    modifier = Modifier.width(370.dp).height(54.dp)
                 )
                 Spacer(modifier = Modifier.height(30.dp))
             }
