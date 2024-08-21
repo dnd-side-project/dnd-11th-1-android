@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.kapt)
 }
 
-val localProperties = Properties().apply{
+val localProperties = Properties().apply {
     load(project.file("local.properties").inputStream())
 }
 
@@ -62,8 +62,8 @@ android {
     kapt {
         correctErrorTypes = true
     }
-    java{
-        toolchain{
+    java {
+        toolchain {
             languageVersion.set(JavaLanguageVersion.of(17))
         }
     }

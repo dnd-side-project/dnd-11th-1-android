@@ -1,11 +1,5 @@
 package com.materip.matetrip.navigation
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -39,9 +33,6 @@ import com.materip.feature_onboarding.navigation.navigateToSelectTripStyle
 import com.materip.feature_onboarding.navigation.selectFoodPreference
 import com.materip.feature_onboarding.navigation.selectTripInterest
 import com.materip.feature_onboarding.navigation.selectTripStyle
-import com.materip.matetrip.component.BackButtonTopAppBar
-import com.materip.matetrip.component.BackButtonWithTitleTopAppBar
-import com.materip.matetrip.component.MateTripTopAppBar
 
 @Composable
 fun SetUpNavGraph(
