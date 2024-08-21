@@ -33,16 +33,12 @@ import com.materip.core_designsystem.theme.MateTripTypographySet
 import com.materip.feature_home3.state.NotificationUiState
 import com.materip.feature_home3.viewModel.NotificationViewModel
 import coil.compose.SubcomposeAsyncImage
+import com.materip.core_designsystem.icon.Badges.profile_default_badge
+import com.materip.core_designsystem.theme.MateTripColors.Blue_04
+import com.materip.core_designsystem.theme.MateTripColors.Gray_07
 import com.materip.core_model.accompany_board.notification.Notification
 import com.materip.core_model.accompany_board.profile.GetUserProfile
-import com.materip.feature_home.state.NotificationUiState
-import com.materip.feature_home.viewModel.NotificationViewModel
-import com.materip.matetrip.icon.Badges.profile_default_badge
-import com.materip.matetrip.icon.Icons.notification_none_icon
-import com.materip.matetrip.theme.MateTripColors.Blue_04
-import com.materip.matetrip.theme.MateTripColors.Gray_05
-import com.materip.matetrip.theme.MateTripColors.Gray_07
-import com.materip.matetrip.theme.MateTripTypographySet
+
 
 
 @Composable
