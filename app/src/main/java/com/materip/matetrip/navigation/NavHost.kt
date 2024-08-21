@@ -1,7 +1,5 @@
 package com.materip.matetrip.navigation
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
@@ -16,6 +14,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.materip.core_model.accompany_board.id.BoardIdDto
 import com.materip.feature_home.ui.FormScreen
 import com.materip.feature_home.ui.HomeScreen
 import com.materip.feature_home.ui.NavigateToPostScreen
@@ -42,7 +41,7 @@ import com.materip.matetrip.component.MateTripTopAppBar
 fun SetUpNavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    startDestination: String = Screen.Post.route
+    startDestination: String = Screen.Home.route
 ) {
     NavHost(
         navController = navController,
@@ -56,8 +55,14 @@ fun SetUpNavGraph(
         login(navOnBoarding = navController::navigateToInputUserInfo)
         test()
         inputUserInfo(navSelectTripInterest = navController::navigateToSelectTripInterest)
-        selectTripInterest(onBackClick = navController::navigateToBack, onNextClick = navController::navigateToSelectTripStyle)
-        selectTripStyle(onBackClick = navController::navigateToBack, onNextClick = navController::navigateToSelectFoodPreference)
+        selectTripInterest(
+            onBackClick = navController::navigateToBack,
+            onNextClick = navController::navigateToSelectTripStyle
+        )
+        selectTripStyle(
+            onBackClick = navController::navigateToBack,
+            onNextClick = navController::navigateToSelectFoodPreference
+        )
         selectFoodPreference(onBackClick = navController::navigateToBack)
 
         // 홈
@@ -88,20 +93,15 @@ fun SetUpNavGraph(
             NavigateToPostScreen(
                 boardId = boardId,
                 onNavigateToForm = { navController.navigate(Screen.Form.route + "/$boardId") },
-                onNavigateToProfile = { navController.navigate(Screen.Profile.route) }
+                onNavigateToUserProfile = { navController.navigate(Screen.Profile.route) }
             )
         }
 
         // 게시글_동행 신청
-        composable(
-            route = Screen.Form.route + "/{boardId}",
-            arguments = listOf(navArgument("boardId") { type = NavType.IntType })
-        ) { backStackEntry ->
-            val boardId = backStackEntry.arguments?.getInt("boardId") ?: 0
-            // TODO: 보낸 신청서 내역으로 이동
+        composable(Screen.Form.route + "/{boardId}") {
             FormScreen(
-                boardId = boardId,
-                onNavigateToProfile = { navController.navigate(Screen.Profile.route) }
+                boardId = it.arguments?.getInt("boardId") ?: 0,
+                onNavigateUp = { navController.navigateUp() }
             )
         }
 
@@ -137,8 +137,10 @@ fun GetTopBar(
                 screenTitle = "동행 모집하기",
                 onNavigateUp = { navController.navigateUp() },
                 onPostClick = {
-                    val boardIdDto = viewModel.createPost(viewModel.toBoardRequestDto())
-                    navController.navigate(Screen.NavigateToPost.route + "/${boardIdDto.boardId}")
+                    val boardIdDto: BoardIdDto? =
+                        viewModel.createPost(viewModel.toBoardRequestDto())
+                    val validBoardIdDto = boardIdDto ?: BoardIdDto(boardId = -1)
+                    navController.navigate(Screen.NavigateToPost.route + "/${validBoardIdDto.boardId}")
                 }
             )
         }
