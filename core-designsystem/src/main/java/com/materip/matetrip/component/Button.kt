@@ -61,13 +61,14 @@ fun MateTripButton(
 fun MateTripHomeButton(
     onClick: () -> Unit,
     enabled: Boolean = false,
-    buttonText: String
+    buttonText: String,
+    modifier: Modifier
 ) {
     Button(
         onClick = onClick,
         enabled = enabled,
         shape = RoundedCornerShape(10.dp),
-        modifier = Modifier.size(width = 320.dp, height = 54.dp),
+        modifier = modifier.size(width = 320.dp, height = 54.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = ActivatedColor,
             contentColor = Color.White,
@@ -174,18 +175,6 @@ fun MateTripButtonPreview() {
             onClick = {},
             enabled = true,
             buttonText = "완료"
-        )
-        Spacer(modifier = Modifier.size(16.dp))
-        MateTripHomeButton(
-            onClick = {},
-            enabled = false,
-            buttonText = "작성완료"
-        )
-        Spacer(modifier = Modifier.size(16.dp))
-        MateTripHomeButton(
-            onClick = {},
-            enabled = true,
-            buttonText = "동행신청"
         )
         Spacer(modifier = Modifier.size(16.dp))
         AccessStatusButton(
