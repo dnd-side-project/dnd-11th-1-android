@@ -20,15 +20,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.materip.feature_home3.ui.FabButton
-import com.materip.feature_home3.viewModel.HomeViewModel
-import com.materip.feature_mypage.navigation.MyPageRoute
-import com.materip.feature_mypage.navigation.SettingRoute
 import com.materip.core_designsystem.component.BackButtonTopAppBar
 import com.materip.core_designsystem.component.BackButtonWithTitleTopAppBar
 import com.materip.core_designsystem.component.MateTripBottomBar
 import com.materip.core_designsystem.component.MateTripTopAppBar
+import com.materip.feature_home3.ui.FabButton
+import com.materip.feature_home3.viewModel.HomeViewModel
 import com.materip.feature_login.navigation.LoginRoute
+import com.materip.feature_mypage.navigation.MyPageRoute
+import com.materip.feature_mypage.navigation.SettingRoute
 import com.materip.feature_onboarding.navigation.OnboardingRoute
 import com.materip.matetrip.navigation.Screen
 import com.materip.matetrip.navigation.SetUpNavGraph
@@ -39,7 +39,9 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val viewModel: AppViewModel by viewModels()
-    private val useBottomNavScreen = listOf(Screen.Home.route, MyPageRoute.MyPageRoute.name, SettingRoute.SettingRoute.name)
+    private val useBottomNavScreen =
+        listOf(Screen.Home.route, MyPageRoute.MyPageRoute.name, SettingRoute.SettingRoute.name)
+
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     },
                     bottomBar = {
-                        if(currentRoute in useBottomNavScreen){
+                        if (currentRoute in useBottomNavScreen) {
                             MateTripBottomBar(
                                 onHomeClick = { navController.navigate(Screen.Home.route) },
                                 onMyPageClick = { navController.navigate(Screen.MyPage.route) },
@@ -80,7 +82,7 @@ class MainActivity : AppCompatActivity() {
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(it)
-                    ){
+                    ) {
                         SetUpNavGraph(
                             navController = navController,
                             startDestination = startDestination
@@ -148,8 +150,19 @@ fun GetTopBar(
             )
         }
 
+        // 타이틀 제목이 동행글을 올린 유저의 닉네임인 뒤로가기 상단바
+        Screen.Profile.route -> {
+            val boardId = currentRoute.substringAfterLast("/").toIntOrNull() ?: 0
+            val userId = viewModel.getUserId(boardId)
+            val userNickname = viewModel.getNickname(userId)
+            BackButtonTopAppBar(
+                screenTitle = userNickname,
+                onNavigateUp = navController::navigateToBack
+            )
+        }
+
         //별개 top bar 보유
-        in notHaveTopBar ->{
+        in notHaveTopBar -> {
 
         }
 
