@@ -1,5 +1,7 @@
 package com.materip.core_datastore.com.materip.core_datastore
 
+import com.materip.core_datastore.accompany_datastore.AccompanyDataStore
+import com.materip.core_datastore.accompany_datastore.AccompanyDataStoreImpl
 import com.materip.core_datastore.com.materip.core_datastore.login_datastore.LocalLoginDataStore
 import com.materip.core_datastore.login_datastore.LocalLoginDataStoreImpl
 import com.materip.core_datastore.com.materip.core_datastore.login_datastore.RemoteLoginDataStore
@@ -44,4 +46,8 @@ interface DataStoreModule {
     @Singleton
     @Binds
     fun provideImageDataStore(imageDataStoreImpl: ImageDataStoreImpl): ImageDataStore
+
+    @Singleton
+    @Binds
+    fun provideAccompanyDataStore(accompanyDataStoreImpl: AccompanyDataStoreImpl): AccompanyDataStore
 }
