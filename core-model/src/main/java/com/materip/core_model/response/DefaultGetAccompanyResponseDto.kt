@@ -4,7 +4,7 @@ import com.materip.core_model.accompany_board.BoardItem
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class DefaultGetAccompanyResponseDto (
+data class DefaultGetAccompanyResponseDto<T> (
     val hasNext: Boolean,
-    val data: List<BoardItem>
+    val data: List<T>
 )
