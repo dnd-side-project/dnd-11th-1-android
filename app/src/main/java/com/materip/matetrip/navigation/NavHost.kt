@@ -13,7 +13,6 @@ import com.materip.feature_home3.ui.NavigateToPostScreen
 import com.materip.feature_home3.ui.NotificationScreen
 import com.materip.feature_home3.ui.PostBoardScreen
 import com.materip.feature_home3.ui.ProfileScreen
-import com.materip.feature_home3.ui.ReviewScreen
 import com.materip.feature_login.navigation.login
 import com.materip.feature_mypage.navigation.myPageGraph
 import com.materip.feature_mypage.navigation.navigateToEditProfile
@@ -42,15 +41,21 @@ fun SetUpNavGraph(
     NavHost(
         navController = navController,
         startDestination = startDestination
-    ){
+    ) {
         /** feature-login */
         login(
             navOnBoarding = navController::navigateToInputUserInfo,
             navHome = { navController.navigate(Screen.Home.route) }
         )
         inputUserInfo(navSelectTripInterest = navController::navigateToSelectTripInterest)
-        selectTripInterest(onBackClick = navController::navigateToBack, onNextClick = navController::navigateToSelectTripStyle)
-        selectTripStyle(onBackClick = navController::navigateToBack, onNextClick = navController::navigateToSelectFoodPreference)
+        selectTripInterest(
+            onBackClick = navController::navigateToBack,
+            onNextClick = navController::navigateToSelectTripStyle
+        )
+        selectTripStyle(
+            onBackClick = navController::navigateToBack,
+            onNextClick = navController::navigateToSelectFoodPreference
+        )
         selectFoodPreference(
             onBackClick = navController::navigateToBack,
             navHome = { navController.navigate(Screen.Home.route) }
@@ -100,7 +105,7 @@ fun SetUpNavGraph(
             NavigateToPostScreen(
                 boardId = boardId,
                 onNavigateToForm = { navController.navigate(Screen.Form.route + "/$boardId") },
-                onNavigateToUserProfile = { navController.navigate(Screen.Profile.route) }
+                onNavigateToUserProfile = { navController.navigate(Screen.Profile.route + "/$boardId") }
             )
         }
 
@@ -112,14 +117,13 @@ fun SetUpNavGraph(
             )
         }
 
-        // 게시글_프로필 자세히 보기
-        composable(Screen.Profile.route) {
-            ProfileScreen()
-        }
-
-        // 마이페이지_동행 후기 작성
-        composable(Screen.Review.route) {
-            ReviewScreen()
+        // 게시글_프로필 자세히 보기 (로그인한 유저가 다른 유저의 프로필을 보는 경우)
+        composable(
+            route = Screen.Profile.route + "/{boardId}",
+            arguments = listOf(navArgument("boardId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val boardId = backStackEntry.arguments?.getInt("boardId") ?: 0
+            ProfileScreen(boardId = boardId)
         }
     }
 }
