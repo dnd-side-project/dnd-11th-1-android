@@ -31,7 +31,7 @@ data class AccompanyReceivedItem(
         return ageText
     }
 
-    fun getGender(): String{
+    fun getGenderText(): String{
         return if (gender == "MALE") "남성" else "여성"
     }
 }

@@ -11,7 +11,7 @@ import com.materip.core_common.Result
 import com.materip.core_common.asResult
 import com.materip.core_model.accompany_board.BoardItem
 import com.materip.core_repository.repository.accompany_repository.AccompanyRepository
-import com.materip.feature_mypage.pager.ApplicationPagingSource
+import com.materip.feature_mypage.pager.SendApplicationPagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -65,10 +65,7 @@ class SendTravelApplicationViewModel @Inject constructor(
         }
     ).flow.cachedIn(viewModelScope)
 
-    private fun getSendApplication(type: String) = ApplicationPagingSource(
-        accompanyRepository = accompanyRepository,
-        type = type
-    )
+    private fun getSendApplication(type: String) = SendApplicationPagingSource(accompanyRepository = accompanyRepository)
 
 }
 

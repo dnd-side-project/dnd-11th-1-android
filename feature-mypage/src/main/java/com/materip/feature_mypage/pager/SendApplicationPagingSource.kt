@@ -2,13 +2,14 @@ package com.materip.feature_mypage.pager
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.kakao.sdk.common.KakaoSdk.type
 import com.materip.core_model.accompany_board.BoardItem
 import com.materip.core_model.accompany_board.Pageable
+import com.materip.core_model.response.AccompanyReceivedItem
 import com.materip.core_repository.repository.accompany_repository.AccompanyRepository
 
-class ApplicationPagingSource(
-    val accompanyRepository: AccompanyRepository,
-    val type: String
+class SendApplicationPagingSource(
+    val accompanyRepository: AccompanyRepository
 ): PagingSource<Int, BoardItem>() {
 
     private var total = 0
@@ -18,23 +19,13 @@ class ApplicationPagingSource(
         val pageNumber = params.key ?: 0
         try{
             val response =
-                if(type == "send") {
-                    accompanyRepository.getAccompanySend(
-                        Pageable(
-                            page = cursor,
-                            size = 10,
-                            sort = emptyList()
-                        )
+                accompanyRepository.getAccompanySend(
+                    Pageable(
+                        page = cursor,
+                        size = 10,
+                        sort = emptyList()
                     )
-                } else {
-                    accompanyRepository.getAccompanyReceived(
-                        Pageable(
-                            page = cursor,
-                            size = 10,
-                            sort = emptyList()
-                        )
-                    )
-                }
+                )
             if(response.error != null){
                 return LoadResult.Error(Exception(response.error!!.message))
             }
