@@ -1,17 +1,20 @@
 package com.materip.core_model.response
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class GetProfileDetailsResponseDto(
-    val birthYear: Int,
-    val description: String?,
-    val foodPreferences: List<String>,
-    val gender: String,
-    val grade: String?,
+    val userId: Int,
     val nickname: String,
-    val profileImageUrl: String?,
     val provider: String,
+    val profileImageUrl: String?,
+    val description: String?,
+    val gender: String,
+    val birthYear: Int,
     val socialMediaUrl: String?,
+    val grade: String?,
     val travelPreferences: List<String>,
     val travelStyles: List<String>,
-    val userId: Int,
+    val foodPreferences: List<String>,
     val userImageUrls: List<String>
 )
