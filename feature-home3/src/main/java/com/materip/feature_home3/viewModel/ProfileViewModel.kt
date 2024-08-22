@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.ViewModel
 import com.materip.core_model.response.GetProfileDetailsResponseDto
+import com.materip.core_repository.repository.home_repository.BoardRepository
 import com.materip.feature_home3.intent.ProfileIntent
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val profileRepository: ProfileRepository
+    private val profileRepository: ProfileRepository,
+    private val boardRepository: BoardRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<ProfileUiState>(ProfileUiState.Initial)
@@ -27,6 +29,8 @@ class ProfileViewModel @Inject constructor(
     fun handleIntent(intent: ProfileIntent) {
         when (intent) {
             is ProfileIntent.GetProfileDetails -> getProfileDetails()
+            is ProfileIntent.GetUserId -> getUserId(intent.boardId)
+            is ProfileIntent.GetNickname -> getNickname(intent.userId)
         }
     }
 
@@ -45,5 +49,25 @@ class ProfileViewModel @Inject constructor(
                     ProfileUiState.Error(e.message ?: "프로필 로드 실패")
             }
         }
+    }
+
+    private fun getUserId(boardId: Int): Int {
+        var userId: Int? = null
+        viewModelScope.launch {
+            val result = boardRepository.getBoardDetail(boardId)
+            userId = result.data?.profileThumbnail?.userId
+        }
+        return userId ?: 0
+    }
+
+    private fun getNickname(userId: Int): String {
+        var nickname: String? = null
+        viewModelScope.launch {
+            val result = boardRepository.getUserProfile()
+            if (result.data?.userId == userId) {
+                nickname = result.data!!.nickname
+            }
+        }
+        return nickname ?: ""
     }
 }
