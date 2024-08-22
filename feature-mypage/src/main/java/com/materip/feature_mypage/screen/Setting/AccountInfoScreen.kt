@@ -14,9 +14,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.materip.core_designsystem.component.NormalTopBar
 import com.materip.core_designsystem.icon.Badges
+import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_model.ui_model.AccountInfoClass
 
@@ -218,33 +221,29 @@ private fun LinkSNSView(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            if(isSnsLinked){
-                /** 링크 연결되어 있다면? */
-            } else {
-                Column{
-                    Text(
-                        text = "인스타그램",
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
-                        fontWeight = FontWeight(400),
-                        color = MateTripColors.Gray_11
-                    )
-                    Text(
-                        text = "미등록",
-                        fontSize = 12.sp,
-                        fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
-                        fontWeight = FontWeight(400),
-                        color = MateTripColors.Gray_06
-                    )
-                }
-                Image(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clip(CircleShape),
-                    painter = painterResource(Badges.instagram_badge),
-                    contentDescription = "Instagram Badge"
+            Column{
+                Text(
+                    text = "인스타그램",
+                    fontSize = 14.sp,
+                    fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
+                    fontWeight = FontWeight(400),
+                    color = MateTripColors.Gray_11
+                )
+                Text(
+                    text = if(isSnsLinked) "등록" else "미등록",
+                    fontSize = 12.sp,
+                    fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
+                    fontWeight = FontWeight(400),
+                    color = if(isSnsLinked) Color.Black else MateTripColors.Gray_06
                 )
             }
+            Image(
+                modifier = Modifier
+                    .size(24.dp)
+                    .clip(CircleShape),
+                painter = painterResource(Badges.instagram_badge),
+                contentDescription = "Instagram Badge"
+            )
         }
         Spacer(Modifier.height(12.dp))
         OutlinedTextField(
@@ -274,13 +273,21 @@ private fun LinkSNSView(
                 )
             },
             trailingIcon = {
-                Text(
-                    text = "확인",
-                    fontSize = 14.sp,
-                    fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
-                    fontWeight = FontWeight(400),
-                    color = if(currentInstagram.isNotEmpty()) Color.Black else MateTripColors.Gray_06
-                )
+                if(isSnsLinked){
+                    Icon(
+                        modifier = Modifier.size(14.dp),
+                        painter = painterResource(Icons.check_icon),
+                        contentDescription = "Check Icon"
+                    )
+                } else {
+                    Text(
+                        text = "확인",
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
+                        fontWeight = FontWeight(400),
+                        color = if(currentInstagram.isNotEmpty()) Color.Black else MateTripColors.Gray_06
+                    )
+                }
             }
         )
         Spacer(Modifier.height(10.dp))
