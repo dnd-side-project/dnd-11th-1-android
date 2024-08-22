@@ -10,11 +10,9 @@ import com.materip.core_common.Result
 import com.materip.core_common.asResult
 import com.materip.core_model.request.UpdateMyImagesRequestDto
 import com.materip.core_model.request.UpdateProfileRequestDto
-import com.materip.core_model.ui_model.DefaultImageDto
 import com.materip.core_repository.repository.image_repository.ImageRepository
 import com.materip.core_repository.repository.profile_repository.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
