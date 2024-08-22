@@ -68,10 +68,11 @@ import com.materip.core_designsystem.theme.MateTripTypographySet
 import com.materip.feature_home3.intent.HomeIntent
 import com.materip.feature_home3.state.HomeUiState
 import com.materip.feature_home3.viewModel.HomeViewModel
-import com.materip.feature_home3.R
 
-// TODO: onNavigateToUserProfile은 다른 사람의 프로필을 보여주는 화면임
-// 동행글 상세 화면
+/**
+ * param: onNavigateToForm 동행신청
+ * param: onNavigateToUserProfile 유저프로필상세보기
+ * */
 @Composable
 fun NavigateToPostScreen(
     boardId: Int,
@@ -137,7 +138,9 @@ fun NavigateToPostScreen(
                     buttonText = "동행 신청",
                     enabled = true,
                     onClick = { onNavigateToForm() },
-                    modifier = Modifier.width(370.dp).height(54.dp)
+                    modifier = Modifier
+                        .width(370.dp)
+                        .height(54.dp)
                 )
                 Spacer(modifier = Modifier.height(30.dp))
             }
@@ -592,7 +595,9 @@ fun NavigateToPostScreenPreview() {
                     buttonText = "동행 신청",
                     enabled = true,
                     onClick = {  },
-                    modifier = Modifier.width(370.dp).height(54.dp)
+                    modifier = Modifier
+                        .width(370.dp)
+                        .height(54.dp)
                 )
                 Spacer(modifier = Modifier.height(30.dp))
             }
