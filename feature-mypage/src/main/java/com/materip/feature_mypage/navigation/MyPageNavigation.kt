@@ -15,7 +15,12 @@ import com.materip.feature_mypage.screen.MyPage.ReviewRoute
 import com.materip.feature_mypage.screen.MyPage.SendApplicationRoute
 
 fun NavController.navigateToMyPageGraph() = navigate(MyPageRoute.MyPageGraph.name)
-fun NavController.navigateToMyPage() = navigate(MyPageRoute.MyPageRoute.name)
+fun NavController.navigateToMyPage() = navigate(MyPageRoute.MyPageRoute.name){
+    this.launchSingleTop = true
+    this.popUpTo(graph.startDestinationId){
+        inclusive = true
+    }
+}
 fun NavController.navigateToEditProfile() = navigate(MyPageRoute.EditProfileRoute.name)
 fun NavController.navigateToProfileDescription() = navigate(MyPageRoute.ProfileDescriptionRoute.name)
 fun NavController.navigateToQuiz100() = navigate(MyPageRoute.Quiz100Route.name)

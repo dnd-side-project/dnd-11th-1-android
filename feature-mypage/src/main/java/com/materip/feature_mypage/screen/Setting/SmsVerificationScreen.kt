@@ -30,12 +30,21 @@ import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_model.ui_model.InputKeyboardType
 
 @Composable
-fun SmsVerificationRoute(){
-    SmsVerificationScreen()
+fun SmsVerificationRoute(
+    navGetAuthCode: () -> Unit,
+    navSetting: () -> Unit
+){
+    SmsVerificationScreen(
+        navGetAuthCode = navGetAuthCode,
+        navSetting = navSetting
+    )
 }
 
 @Composable
-fun SmsVerificationScreen(){
+fun SmsVerificationScreen(
+    navGetAuthCode: () -> Unit,
+    navSetting: () -> Unit
+){
     var phoneNumber by remember{mutableStateOf("")}
     var isEnabled = remember{derivedStateOf{phoneNumber.isNotEmpty()}}
     Column(
@@ -46,7 +55,7 @@ fun SmsVerificationScreen(){
     ) {
         NormalTopBar(
             title = "SMS 인증",
-            onBackClick = { /** 뒤로 가기 */ },
+            onBackClick = navSetting,
             onClick = {/* 미사용 */}
         )
         Spacer(Modifier.height(120.dp))
@@ -85,7 +94,10 @@ fun SmsVerificationScreen(){
             textColor = Color.White,
             btnColor = if(isEnabled.value) Color.Black else MateTripColors.loading_color,
             isEnabled = isEnabled.value,
-            onClick = { /** SMS 인증 신청 api */ }
+            onClick = {
+                /** SMS 인증 신청 api */
+                navGetAuthCode()
+            }
         )
     }
 }
@@ -93,5 +105,8 @@ fun SmsVerificationScreen(){
 @Preview
 @Composable
 private fun SmsVerificationUITest(){
-    SmsVerificationScreen()
+    SmsVerificationScreen(
+        navSetting = {},
+        navGetAuthCode = {}
+    )
 }

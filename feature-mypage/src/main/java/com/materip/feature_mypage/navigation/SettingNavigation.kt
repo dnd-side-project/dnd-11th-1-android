@@ -11,31 +11,55 @@ import com.materip.feature_mypage.screen.Setting.SettingRoute
 import com.materip.feature_mypage.screen.Setting.SmsVerificationRoute
 
 fun NavController.navigateToSettingGraph() = navigate(SettingRoute.SettingGraph.name)
-fun NavController.navigateToSetting() = navigate(SettingRoute.SettingRoute.name)
+fun NavController.navigateToSetting() = navigate(SettingRoute.SettingRoute.name){
+    this.launchSingleTop = true
+    this.popUpTo(graph.startDestinationId){
+        inclusive = true
+    }
+}
 fun NavController.navigateToAccountInfo() = navigate(SettingRoute.AccountInfoRoute.name)
 fun NavController.navigateToAlarmSetting() = navigate(SettingRoute.AlarmSettingRoute.name)
 fun NavController.navigateToGetAuthCode() = navigate(SettingRoute.GetAuthCodeRoute.name)
 fun NavController.navigateToSMSVerification() = navigate(SettingRoute.SMSVerificationRoute.name)
 
-fun NavGraphBuilder.settingGraph(){
+fun NavGraphBuilder.settingGraph(
+    navSetting: () -> Unit,
+    navAccountInfo: () -> Unit,
+    navAlarmSetting: () -> Unit,
+    navGetAuthCode: () -> Unit,
+    navSmsVerification: () -> Unit,
+    navBack: () -> Unit
+){
     navigation(
         startDestination = SettingRoute.SettingRoute.name,
         route = SettingRoute.SettingGraph.name
     ){
         composable(SettingRoute.SettingRoute.name){
-            SettingRoute()
+            SettingRoute(
+                navAccountInfo = navAccountInfo,
+                navAlarmSetting = navAlarmSetting
+            )
         }
         composable(SettingRoute.AlarmSettingRoute.name){
             AlarmSettingRoute()
         }
         composable(SettingRoute.GetAuthCodeRoute.name){
-            GetAuthCodeRoute()
+            GetAuthCodeRoute(
+                navSetting = navSetting,
+                navBack = navBack
+            )
         }
         composable(SettingRoute.AccountInfoRoute.name){
-            AccountInfoRoute()
+            AccountInfoRoute(
+                navSmsVerification = navSmsVerification,
+                navBack = navBack
+            )
         }
         composable(SettingRoute.SMSVerificationRoute.name){
-            SmsVerificationRoute()
+            SmsVerificationRoute(
+                navGetAuthCode = navGetAuthCode,
+                navSetting = navSetting,
+            )
         }
     }
 }

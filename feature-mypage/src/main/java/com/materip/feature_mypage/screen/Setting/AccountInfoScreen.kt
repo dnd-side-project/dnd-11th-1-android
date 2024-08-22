@@ -40,12 +40,21 @@ import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_model.ui_model.AccountInfoClass
 
 @Composable
-fun AccountInfoRoute(){
-    AccountInfoScreen()
+fun AccountInfoRoute(
+    navSmsVerification: () -> Unit,
+    navBack: () -> Unit,
+){
+    AccountInfoScreen(
+        navSmsVerification = navSmsVerification,
+        navBack = navBack
+    )
 }
 
 @Composable
-fun AccountInfoScreen(){
+fun AccountInfoScreen(
+    navSmsVerification: () -> Unit,
+    navBack: () -> Unit
+){
     val dummyData = AccountInfoClass(
         kakaoAccount = "asdfasdf@kakao.com",
         isSecondAuthDone = false,
@@ -62,8 +71,8 @@ fun AccountInfoScreen(){
         NormalTopBar(
             title = "개인 정보",
             titleFontWeight = FontWeight(700),
-            onBackClick = { /** 뒤로가기 navigation */ },
-            onClick = {}
+            onBackClick = navBack,
+            onClick = { /* 미사용 */}
         )
         Spacer(Modifier.height(30.dp))
         AccountView(
@@ -72,7 +81,8 @@ fun AccountInfoScreen(){
         Spacer(Modifier.height(40.dp))
         SecondAuthView(
             isSecondAuthDone = dummyData.isSecondAuthDone,
-            phoneNumber = dummyData.phoneNumber
+            phoneNumber = dummyData.phoneNumber,
+            navSmsVerification = navSmsVerification
         )
         Spacer(Modifier.height(40.dp))
         LinkSNSView(
@@ -133,7 +143,8 @@ private fun AccountView(
 @Composable
 private fun SecondAuthView(
     isSecondAuthDone: Boolean,
-    phoneNumber: String?
+    phoneNumber: String?,
+    navSmsVerification: () -> Unit
 ){
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -172,7 +183,7 @@ private fun SecondAuthView(
                 }
                 Text(
                     modifier = Modifier.clickable{
-                        /** 휴대폰 SMS 등록 하는 화면으로 navigation? */
+                        navSmsVerification()
                     },
                     text = "등록",
                     fontSize = 14.sp,
@@ -208,7 +219,7 @@ private fun LinkSNSView(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             if(isSnsLinked){
-
+                /** 링크 연결되어 있다면? */
             } else {
                 Column{
                     Text(
@@ -286,5 +297,8 @@ private fun LinkSNSView(
 @Preview
 @Composable
 private fun AccountInfoUITest(){
-    AccountInfoScreen()
+    AccountInfoScreen(
+        navSmsVerification = {},
+        navBack = {}
+    )
 }

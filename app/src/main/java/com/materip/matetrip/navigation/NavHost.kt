@@ -18,14 +18,19 @@ import com.materip.feature_home3.ui.ProfileScreen
 import com.materip.feature_home3.ui.ReviewScreen
 import com.materip.feature_login.navigation.login
 import com.materip.feature_mypage.navigation.myPageGraph
+import com.materip.feature_mypage.navigation.navigateToAccountInfo
+import com.materip.feature_mypage.navigation.navigateToAlarmSetting
 import com.materip.feature_mypage.navigation.navigateToEditProfile
+import com.materip.feature_mypage.navigation.navigateToGetAuthCode
 import com.materip.feature_mypage.navigation.navigateToPreview
 import com.materip.feature_mypage.navigation.navigateToProfileDescription
 import com.materip.feature_mypage.navigation.navigateToQuiz100
 import com.materip.feature_mypage.navigation.navigateToReview
 import com.materip.feature_mypage.navigation.navigateToReviewDescription
 import com.materip.feature_mypage.navigation.navigateToReviewList
+import com.materip.feature_mypage.navigation.navigateToSMSVerification
 import com.materip.feature_mypage.navigation.navigateToSendApplication
+import com.materip.feature_mypage.navigation.navigateToSetting
 import com.materip.feature_mypage.navigation.settingGraph
 import com.materip.feature_onboarding.navigation.inputUserInfo
 import com.materip.feature_onboarding.navigation.navigateToInputUserInfo
@@ -60,7 +65,14 @@ fun SetUpNavGraph(
         )
 
         /** setting graph */
-        settingGraph()
+        settingGraph(
+            navSetting = navController::navigateToSetting,
+            navAccountInfo = navController::navigateToAccountInfo,
+            navAlarmSetting = navController::navigateToAlarmSetting,
+            navGetAuthCode = navController::navigateToGetAuthCode,
+            navSmsVerification = navController::navigateToSMSVerification,
+            navBack = navController::navigateToBack
+        )
 
         /** my-page graph */
         myPageGraph(
