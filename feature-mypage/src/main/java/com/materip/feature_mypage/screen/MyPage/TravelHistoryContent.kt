@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,6 +36,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.ItemSnapshotList
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.materip.core_designsystem.R
 import com.materip.core_designsystem.component.CircleImageView
 import com.materip.core_designsystem.component.CustomButton
@@ -44,10 +52,13 @@ import com.materip.core_designsystem.component.TravelPostItem
 import com.materip.core_designsystem.icon.Badges
 import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.theme.MateTripColors
+import com.materip.core_model.accompany_board.BoardItem
 import com.materip.core_model.ui_model.TempHumanClass
 import com.materip.core_model.ui_model.TempTravelPost
 import com.materip.core_model.ui_model.TravelHistoryTag
 import com.materip.core_model.ui_model.TravelStyle
+import com.materip.feature_mypage.view_models.MyPage.SendTravelApplicationUiState
+import com.materip.feature_mypage.view_models.MyPage.SendTravelApplicationViewModel
 
 @Composable
 fun TravelHistoryContent(
@@ -84,13 +95,13 @@ fun TravelHistoryContent(
         )
         TravelHistoryTag.SEND_APPLICATION -> {
             SendTravelApplication(
-                applications = dummyData,
-                /** dummy data */ /** dummy data */
                 navSendApplication = navSendApplication
             )
         }
         TravelHistoryTag.RECEIVE_APPLICATION -> {
-            ReceiveTravelApplication()
+            ReceiveTravelApplication(
+                navReceivedApplication = {/** 받은 동행 신청서 navigation */}
+            )
         }
     }
 }
@@ -180,7 +191,35 @@ private fun TravelHistories(records: List<TempTravelPost>){
 
 @Composable
 private fun SendTravelApplication(
-    applications: List<TempTravelPost>,
+    navSendApplication: () -> Unit,
+    viewModel: SendTravelApplicationViewModel = hiltViewModel()
+){
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+    val errState = viewModel.errorState.collectAsStateWithLifecycle().value
+    when(uiState){
+        SendTravelApplicationUiState.Loading -> {
+            CircularProgressIndicator()
+        }
+        SendTravelApplicationUiState.Error -> {
+            Text(
+                text = "Error",
+                fontSize = 100.sp,
+                color = Color.Red
+            )
+        }
+        is SendTravelApplicationUiState.Success -> {
+            SendTravelApplicationContent(
+                applications = uiState.applications.collectAsLazyPagingItems().itemSnapshotList,
+                navSendApplication = navSendApplication
+            )
+        }
+    }
+
+}
+
+@Composable
+private fun SendTravelApplicationContent(
+    applications: ItemSnapshotList<BoardItem>,
     navSendApplication: () -> Unit
 ){
     if(applications.isEmpty()){
@@ -190,27 +229,29 @@ private fun SendTravelApplication(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ){
             items(applications){application ->
-                TravelPostItem(
-                    destination = application.destination,
-                    period = application.period,
-                    title = application.title,
-                    startDate = application.startDate,
-                    endDate = application.endDate,
-                    postImage = application.postImage,
-                    onClick = {/** 해당 글 navigation */}
-                )
-                Spacer(Modifier.height(8.dp))
-                CustomButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(38.dp),
-                    shape = RoundedCornerShape(size = 8.dp),
-                    btnText = "보낸 신청서 보기",
-                    fontSize = 14.sp,
-                    btnColor = MateTripColors.Blue_04,
-                    textColor = MateTripColors.Gray_08,
-                    onClick = navSendApplication
-                )
+                if(application != null){
+                    TravelPostItem(
+                        destination = application.region,
+                        period = application.getDuration(),
+                        title = application.title,
+                        startDate = application.startDate,
+                        endDate = application.endDate,
+                        postImage = application.imageUrls[0],
+                        onClick = {/** 해당 글 navigation */}
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    CustomButton(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(38.dp),
+                        shape = RoundedCornerShape(size = 8.dp),
+                        btnText = "보낸 신청서 보기",
+                        fontSize = 14.sp,
+                        btnColor = MateTripColors.Blue_04,
+                        textColor = MateTripColors.Gray_08,
+                        onClick = navSendApplication
+                    )
+                }
             }
         }
     }
@@ -218,7 +259,9 @@ private fun SendTravelApplication(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun ReceiveTravelApplication(){
+private fun ReceiveTravelApplication(
+    navReceivedApplication: () -> Unit
+){
     val dummyData = listOf(
         TempHumanClass(
             nickname = "닉네임",
@@ -339,7 +382,7 @@ private fun ReceiveTravelApplication(){
                     textColor = MateTripColors.Gray_08,
                     fontSize = 14.sp,
                     btnColor = MateTripColors.Blue_04,
-                    onClick = { /** 받은 신청서 보기 (navigation) */ }
+                    onClick = navReceivedApplication
                 )
             }
         }
