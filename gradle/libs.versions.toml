@@ -27,6 +27,7 @@ hiltNavCompose = "1.2.0"
 kakao = "2.20.0"
 datastore = "1.1.1"
 kapt = "1.8.10"
+paging = "3.3.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -66,8 +67,9 @@ kakao-share= { group = "com.kakao.sdk", name="v2-share", version.ref="kakao"}
 kakao-freind = { group = "com.kakao.sdk", name="v2-friend", version.ref="kakao"}
 kakao-cert = { group = "com.kakao.sdk", name="v2-cert", version.ref="kakao"}
 datastore = { group = "androidx.datastore", name="datastore-preferences", version.ref="datastore"}
-androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigation" }
 androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "androidUI" }
+paging = {group = "androidx.paging", name="paging-runtime", version.ref="paging"}
+paging-compose = {group="androidx.paging", name="paging-compose", version.ref="paging"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -86,3 +88,4 @@ hilt-impl = ["hilt-android", "hilt-navigation"]
 hilt-kapt = ["hilt-android-compiler"]
 kakao = ["kakao-all","kakao-cert","kakao-freind","kakao-share","kakao-talk","kakao-user"]
 ui = ["androidx-ui", "androidx-ui-graphics", "androidx-ui-tooling", "androidx-ui-tooling-preview", "androidx-material3", "material"]
+paging = ["paging", "paging-compose"]
