@@ -2,8 +2,10 @@ package com.materip.feature_mypage.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.navArgument
 import com.materip.feature_mypage.screen.MyPage.EditProfileRoute
 import com.materip.feature_mypage.screen.MyPage.MyPageRoute
 import com.materip.feature_mypage.screen.MyPage.PreviewRoute
@@ -28,7 +30,7 @@ fun NavController.navigateToPreview() = navigate(MyPageRoute.PreviewRoute.name)
 fun NavController.navigateToReview() = navigate(MyPageRoute.ReviewRoute.name)
 fun NavController.navigateToReviewList() = navigate(MyPageRoute.ReviewListRoute.name)
 fun NavController.navigateToReviewDescription() = navigate(MyPageRoute.ReviewDescriptionRoute.name)
-fun NavController.navigateToSendApplication() = navigate(MyPageRoute.SendApplicationRoute.name)
+fun NavController.navigateToSendApplication(applicationId: Int) = navigate("${MyPageRoute.SendApplicationRoute.name}/${applicationId}")
 
 fun NavGraphBuilder.myPageGraph(
     navBack: () -> Unit,
@@ -36,7 +38,7 @@ fun NavGraphBuilder.myPageGraph(
     navProfileDescription: () -> Unit,
     navQuiz100: () -> Unit,
     navPreview: () -> Unit,
-    navSendApplication: () -> Unit,
+    navSendApplication: (Int) -> Unit,
     navReview: () -> Unit,
     navReviewDescription: () -> Unit,
     navReviewList: () -> Unit,
@@ -85,10 +87,15 @@ fun NavGraphBuilder.myPageGraph(
                 navBack = navBack
             )
         }
-        composable(route = MyPageRoute.SendApplicationRoute.name){
+        composable(
+            route = "${MyPageRoute.SendApplicationRoute.name}/{applicationId}",
+            arguments = listOf(navArgument("applicationId"){type = NavType.IntType})
+        ){
+            val id = it.arguments?.getInt("applicationId")
             SendApplicationRoute(
+                id = id,
                 navBack = navBack,
-                navProfileDescription = navProfileDescription
+                navPostDescription = {/** 게시글 상세로 navigation */}
             )
         }
     }

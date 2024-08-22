@@ -62,7 +62,7 @@ import com.materip.feature_mypage.view_models.MyPage.SendTravelApplicationViewMo
 
 @Composable
 fun TravelHistoryContent(
-    navSendApplication: () -> Unit,
+    navSendApplication: (Int) -> Unit,
 ){
     var selectedTag by remember{mutableStateOf(TravelHistoryTag.RECORD)}
     val dummyData = listOf(
@@ -191,7 +191,7 @@ private fun TravelHistories(records: List<TempTravelPost>){
 
 @Composable
 private fun SendTravelApplication(
-    navSendApplication: () -> Unit,
+    navSendApplication: (Int) -> Unit,
     viewModel: SendTravelApplicationViewModel = hiltViewModel()
 ){
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
@@ -220,7 +220,7 @@ private fun SendTravelApplication(
 @Composable
 private fun SendTravelApplicationContent(
     applications: ItemSnapshotList<BoardItem>,
-    navSendApplication: () -> Unit
+    navSendApplication: (Int) -> Unit
 ){
     if(applications.isEmpty()){
         NoDataContent(message = "나와 맞는 동행자에게\n동행 신청서를 보내 보세요.")
@@ -249,7 +249,7 @@ private fun SendTravelApplicationContent(
                         fontSize = 14.sp,
                         btnColor = MateTripColors.Blue_04,
                         textColor = MateTripColors.Gray_08,
-                        onClick = navSendApplication
+                        onClick = { navSendApplication(application.boardId) }
                     )
                 }
             }

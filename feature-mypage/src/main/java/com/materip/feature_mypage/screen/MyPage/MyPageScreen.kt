@@ -38,7 +38,7 @@ fun MyPageRoute(
     navProfileDescription: () -> Unit,
     navQuiz100: () -> Unit,
     navPreview: () -> Unit,
-    navSendApplication: () -> Unit
+    navSendApplication: (Int) -> Unit
 ){
     MyPageScreen(
         navEditProfile = navEditProfile,
@@ -55,7 +55,7 @@ fun MyPageScreen(
     navProfileDescription: () -> Unit,
     navQuiz100: () -> Unit,
     navPreview: () -> Unit,
-    navSendApplication: () -> Unit,
+    navSendApplication: (Int) -> Unit,
 ){
     var selectedTab by remember{mutableStateOf(MyPageTab.Profile)}
     Column(
@@ -170,7 +170,7 @@ fun CustomPagerContent(
     navProfileDescription: () -> Unit,
     navQuiz100: () -> Unit,
     navPreview: () -> Unit,
-    navSendApplication: () -> Unit
+    navSendApplication: (Int) -> Unit
 ){
     Column(
         modifier = Modifier

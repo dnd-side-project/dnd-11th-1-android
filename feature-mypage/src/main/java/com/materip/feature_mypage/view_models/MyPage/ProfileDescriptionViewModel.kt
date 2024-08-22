@@ -68,7 +68,7 @@ sealed interface ProfileDescriptionUiState{
     data class Success(
         val user: GetProfileDetailsResponseDto
     ): ProfileDescriptionUiState {
-        fun getAge(): String{
+        fun getAgeText(): String{
             return when(user.birthYear){
                 in 0..9 -> "${user.birthYear}세"
                 in 10..19 -> "10대"

@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -38,42 +40,78 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.materip.core_common.ErrorState
 import com.materip.core_designsystem.component.CircleImageView
 import com.materip.core_designsystem.component.ConfirmationDialog
 import com.materip.core_designsystem.component.CustomButton
 import com.materip.core_designsystem.component.NormalTag
 import com.materip.core_designsystem.component.NormalTopBar
+import com.materip.core_designsystem.component.ProgressIndicatorPreview
+import com.materip.core_designsystem.component.TravelPostItem
 import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.theme.MateTripColors
+import com.materip.core_model.request.AccompanyApplicationResponseDto
 import com.materip.core_model.ui_model.SendApplicationClass
+import com.materip.feature_mypage.view_models.MyPage.SendApplicationDescUiState
+import com.materip.feature_mypage.view_models.MyPage.SendApplicationDescViewModel
 
 @Composable
 fun SendApplicationRoute(
+    id: Int?,
     navBack: () -> Unit,
-    navProfileDescription: () -> Unit
+    navPostDescription: () -> Unit,
+    viewModel: SendApplicationDescViewModel = hiltViewModel()
 ){
+    viewModel.setId(id)
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val errState = viewModel.errorState.collectAsStateWithLifecycle()
+
     SendApplicationScreen(
-        navBack = navBack,
-        navProfileDescription = navProfileDescription
+        uiState = uiState.value,
+        errState = errState.value,
+        navPostDescription = navPostDescription,
+        navBack = navBack
     )
 }
 
 @Composable
 fun SendApplicationScreen(
+    uiState: SendApplicationDescUiState,
+    errState: ErrorState,
+    navPostDescription: () -> Unit,
     navBack: () -> Unit,
-    navProfileDescription: () -> Unit
+){
+    when(uiState){
+        SendApplicationDescUiState.Loading -> {
+            CircularProgressIndicator()
+        }
+        SendApplicationDescUiState.Error -> {
+            Text(
+                text = "Error",
+                fontSize = 100.sp,
+                color = Color.Red
+            )
+        }
+        is SendApplicationDescUiState.Success -> {
+            SendApplicationContent(
+                data = uiState.data,
+                navBack = navBack
+            )
+        }
+    }
+}
+
+@Composable
+private fun SendApplicationContent(
+    data: AccompanyApplicationResponseDto,
+    navBack: () -> Unit
 ){
     val scrollState = rememberScrollState()
-    val dummyData = SendApplicationClass(
-        nickname = "닉네임",
-        age = "20대 초반",
-        gender = "여자",
-        tags = listOf("맛집탐방","인생샷","액티비티"),
-        profileUrl = "",
-        application = "안녕하세요! 저는 000이에요 저는 ~~~하는 사람이고 이런 여행 스타일을 가지고 있어요.\n\n음식취향은 해산물을 좋아해서 같이 여행 가게 된다면 해산물 먹으러 가고 싶어요!",
-        myNickname = "동행자",
-        snsLink = "http://www.kakaotalk"
-    )
+    val userInfo = data.profileInfo
+    val boardInfo = data.boardThumbnail
+    val requestInfo = data.requestInfo
     val alterText = buildAnnotatedString {
         withStyle(style = SpanStyle(color = Color.Black)){
             append("동행 수락 후 카카오톡 오픈채팅")
@@ -120,22 +158,18 @@ fun SendApplicationScreen(
                 .fillMaxSize()
                 .verticalScroll(state = scrollState)
         ){
-            Text(
-                text = "동행을 수락하기 전,\n동행자의 정보를 확인해 보세요!",
-                fontSize = 20.sp,
-                fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
-                fontWeight = FontWeight(700),
+            TravelPostItem(
+                destination = boardInfo.region,
+                period = boardInfo.getDuration(),
+                title = boardInfo.title,
+                startDate = boardInfo.startDate,
+                endDate = boardInfo.endDate,
+                postImage = boardInfo.imageUrls[0],
+                onClick = {/* 미사용 */}
             )
-            Spacer(Modifier.height(22.dp))
-            ProfileView(
-                nickname = dummyData.nickname,
-                age = dummyData.age,
-                gender = dummyData.gender,
-                imageUrl = dummyData.profileUrl,
-                tags = dummyData.tags,
-                navProfileDescription = navProfileDescription
-            )
-            Spacer(Modifier.height(14.dp))
+            Spacer(Modifier.height(30.dp))
+            HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = MateTripColors.Gray_03)
+            Spacer(Modifier.height(30.dp))
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -147,7 +181,7 @@ fun SendApplicationScreen(
                     .padding(12.dp),
             ){
                 Text(
-                    text = "From. ${dummyData.myNickname}",
+                    text = "From. ${boardInfo.nickname}",
                     fontSize = 14.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                     fontWeight = FontWeight(500),
@@ -155,7 +189,7 @@ fun SendApplicationScreen(
                 )
                 Spacer(Modifier.height(18.dp))
                 Text(
-                    text = dummyData.application,
+                    text = requestInfo.introduce,
                     fontSize = 14.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                     fontWeight = FontWeight(400),
@@ -186,7 +220,7 @@ fun SendApplicationScreen(
                     modifier = Modifier.clickable{
                         /** sns link 클릭 시 이동? */
                     },
-                    text = dummyData.snsLink,
+                    text = requestInfo.chatLink,
                     fontSize = 12.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                     fontWeight = FontWeight(400)
@@ -303,7 +337,9 @@ private fun ProfileView(
 @Preview
 private fun SendApplicationUITest(){
     SendApplicationScreen(
-        navBack = {},
-        navProfileDescription = {}
+        uiState = SendApplicationDescUiState.Loading,
+        errState = ErrorState.Loading,
+        navPostDescription = {},
+        navBack = {}
     )
 }
