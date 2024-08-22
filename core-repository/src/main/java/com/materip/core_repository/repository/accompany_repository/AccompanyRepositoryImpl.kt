@@ -11,10 +11,9 @@ class AccompanyRepositoryImpl @Inject constructor(
     private val accompanyDataStore: AccompanyDataStore
 ): AccompanyRepository{
     override suspend fun getAccompanyApplication(
-        id: Int,
-        applicantId: Int?
+        id: Int
     ): ResultResponse<AccompanyApplicationResponseDto> {
-        return accompanyDataStore.getAccompanyApplication(id, applicantId)
+        return accompanyDataStore.getAccompanyApplication(id)
     }
 
     override suspend fun getAccompanySend(pageable: Pageable): ResultResponse<DefaultGetAccompanyResponseDto> {

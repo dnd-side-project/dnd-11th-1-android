@@ -11,8 +11,7 @@ import retrofit2.http.Query
 interface AccompanyService {
     @GET("/api/v1/accompany/requests/{id}")
     suspend fun getAccompanyApplication(
-        @Path("id") id: Int,
-        @Query("applicantId") applicantId: Int?,
+        @Path("id") id: Int
     ): ApiResponse<AccompanyApplicationResponseDto>
 
     @GET("/api/v1/accompany/requests/sended")

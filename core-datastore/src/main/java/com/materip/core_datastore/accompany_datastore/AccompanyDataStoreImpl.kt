@@ -15,11 +15,10 @@ class AccompanyDataStoreImpl @Inject constructor(
     private val accompanyService: AccompanyService
 ): AccompanyDataStore {
     override suspend fun getAccompanyApplication(
-        id: Int,
-        applicantId: Int?
+        id: Int
     ): ResultResponse<AccompanyApplicationResponseDto> {
         val result = ResultResponse<AccompanyApplicationResponseDto>()
-        accompanyService.getAccompanyApplication(id, applicantId).suspendOnError{
+        accompanyService.getAccompanyApplication(id).suspendOnError{
             result.error = Json.decodeFromString("${this.apiMessage}")
         }.suspendOnSuccess{
             result.data = this.data
