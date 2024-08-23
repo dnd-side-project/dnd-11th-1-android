@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,11 +46,13 @@ import com.materip.core_model.accompany_board.profile.GetUserProfile
 fun NotificationScreen(
     viewModel: NotificationViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+
     LaunchedEffect(Unit) {
         viewModel.fetchNotifications()
     }
 
-    when (val uiState = viewModel.uiState.collectAsState().value) {
+    when (uiState) {
         is NotificationUiState.Initial ->
             DefaultNotification()
 
@@ -62,12 +65,12 @@ fun NotificationScreen(
                 verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top),
                 horizontalAlignment = Alignment.Start,
             ) {
-//            NotificationList(user = uiState.user)
+                // TODO: NotificationList()
             }
         }
 
         is NotificationUiState.Error -> {
-            Text(text = "오류: ${uiState.message}")
+            Text("오류: ${(uiState as NotificationUiState.Error).message}")
         }
     }
 }
