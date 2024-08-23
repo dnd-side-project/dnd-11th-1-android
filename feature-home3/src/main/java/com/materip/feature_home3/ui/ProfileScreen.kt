@@ -13,6 +13,7 @@ import com.materip.feature_home3.ui.component.TabRowComponent
 import com.materip.feature_home3.ui.profile_content.ProfileContent
 import com.materip.feature_home3.ui.profile_content.QnaContent
 import com.materip.feature_home3.ui.profile_content.ReviewContent
+//import com.materip.feature_home3.ui.profile_content.ReviewContent
 import com.materip.feature_home3.viewModel.ProfileViewModel
 
 
@@ -22,6 +23,13 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    val tabs = listOf("프로필", "동행후기", "백문백답")
+    val contentScreens = listOf<@Composable () -> Unit>(
+        { ProfileContent() },
+        { ReviewContent() },
+        { QnaContent() }
+    )
 
     LaunchedEffect(boardId) {
         viewModel.getProfileDetails()
@@ -33,7 +41,10 @@ fun ProfileScreen(
         }
 
         is ProfileUiState.Success -> {
-            ProfileContent()
+            TabRowComponent(
+                tabs = tabs,
+                contentScreens = contentScreens
+            )
         }
 
         is ProfileUiState.Error -> {
@@ -44,7 +55,12 @@ fun ProfileScreen(
             // Handle initial state if needed
         }
     }
+}
 
+
+@Preview(showBackground = true)
+@Composable
+fun ProfileScreenPreview() {
     val tabs = listOf("프로필", "동행후기", "백문백답")
     val contentScreens = listOf<@Composable () -> Unit>(
         { ProfileContent() },
@@ -56,11 +72,4 @@ fun ProfileScreen(
         tabs = tabs,
         contentScreens = contentScreens
     )
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun ProfileScreenPreview() {
-    ProfileScreen(boardId = 1)
 }
