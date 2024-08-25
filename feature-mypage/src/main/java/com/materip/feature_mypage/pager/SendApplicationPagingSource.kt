@@ -2,10 +2,8 @@ package com.materip.feature_mypage.pager
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.kakao.sdk.common.KakaoSdk.type
 import com.materip.core_model.accompany_board.BoardItem
 import com.materip.core_model.accompany_board.Pageable
-import com.materip.core_model.response.AccompanyReceivedItem
 import com.materip.core_repository.repository.accompany_repository.AccompanyRepository
 
 class SendApplicationPagingSource(
@@ -33,7 +31,7 @@ class SendApplicationPagingSource(
             total = result.data.size
             cursor = result.data.last().boardId
             val prevKey = if(pageNumber > 0) pageNumber - 1 else null
-            val nextKey = if(result.hasNext) null else pageNumber + 1
+            val nextKey = if(result.hasNext) pageNumber + 1 else null
             return LoadResult.Page(
                 data = result.data,
                 prevKey = prevKey,
