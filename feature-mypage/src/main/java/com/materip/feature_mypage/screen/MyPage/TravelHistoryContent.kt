@@ -38,8 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.paging.ItemSnapshotList
-import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.materip.core_designsystem.R
@@ -208,20 +206,21 @@ private fun SendTravelApplication(
             )
         }
         is SendTravelApplicationUiState.Success -> {
+            val applications = viewModel.applicationPagingSource().collectAsLazyPagingItems()
             SendTravelApplicationContent(
-                applications = uiState.applications.collectAsLazyPagingItems().itemSnapshotList,
+                applications = applications,
                 navSendApplication = navSendApplication
             )
         }
     }
-
 }
 
 @Composable
 private fun SendTravelApplicationContent(
-    applications: ItemSnapshotList<BoardItem>,
+    applications: LazyPagingItems<BoardItem>,
     navSendApplication: (Int) -> Unit
 ){
+    val applications = applications.itemSnapshotList
     if(applications.isEmpty()){
         NoDataContent(message = "나와 맞는 동행자에게\n동행 신청서를 보내 보세요.")
     } else {
@@ -234,8 +233,8 @@ private fun SendTravelApplicationContent(
                         destination = application.region,
                         period = application.getDuration(),
                         title = application.title,
-                        startDate = application.startDate,
-                        endDate = application.endDate,
+                        startDate = application.getStartDateText(),
+                        endDate = application.getEndDateText(),
                         postImage = application.imageUrls[0],
                         onClick = {/** 해당 글 navigation */}
                     )
