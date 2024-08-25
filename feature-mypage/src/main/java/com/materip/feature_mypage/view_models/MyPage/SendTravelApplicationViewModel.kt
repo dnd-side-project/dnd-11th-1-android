@@ -1,5 +1,6 @@
 package com.materip.feature_mypage.view_models.MyPage
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -18,7 +19,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
@@ -43,14 +43,13 @@ class SendTravelApplicationViewModel @Inject constructor(
         initialValue = ErrorState.Loading
     )
 
-    val uiState: StateFlow<SendTravelApplicationUiState> = combine(applicationPagingSource(), errorState){ applications, errState ->
-        if (errState is ErrorState.AuthError && errState.isInvalid()) {throw Exception("Error")}
-        applications
+    val uiState: StateFlow<SendTravelApplicationUiState> = errorState.map{
+        if (it is ErrorState.AuthError && it.isInvalid()) {throw Exception("Error")}
     }.asResult().map{ result ->
         when(result){
             Result.Loading -> SendTravelApplicationUiState.Loading
+            is Result.Success -> SendTravelApplicationUiState.Success
             is Result.Error -> SendTravelApplicationUiState.Error
-            is Result.Success -> SendTravelApplicationUiState.Success(flow{ result.data })
         }
     }.stateIn(
         scope = viewModelScope,
@@ -60,19 +59,15 @@ class SendTravelApplicationViewModel @Inject constructor(
 
     fun applicationPagingSource(): Flow<PagingData<BoardItem>> = Pager(
         config = PagingConfig(pageSize = 10),
-        pagingSourceFactory = {
-            getSendApplication("send")
-        }
+        pagingSourceFactory = {getSendApplication()},
     ).flow.cachedIn(viewModelScope)
 
-    private fun getSendApplication(type: String) = SendApplicationPagingSource(accompanyRepository = accompanyRepository)
+    private fun getSendApplication() = SendApplicationPagingSource(accompanyRepository = accompanyRepository)
 
 }
 
 sealed interface SendTravelApplicationUiState {
     data object Loading: SendTravelApplicationUiState
     data object Error: SendTravelApplicationUiState
-    data class Success(
-        val applications: Flow<PagingData<BoardItem>>
-    ): SendTravelApplicationUiState
+    data object Success: SendTravelApplicationUiState
 }
