@@ -12,6 +12,8 @@ import com.materip.core_repository.repository.onboarding_repository.OnboardingRe
 import com.materip.core_repository.repository.onboarding_repository.OnboardingRepositoryImpl
 import com.materip.core_repository.repository.profile_repository.ProfileRepository
 import com.materip.core_repository.repository.profile_repository.ProfileRepositoryImpl
+import com.materip.core_repository.repository.review_repository.ReviewRepository
+import com.materip.core_repository.repository.review_repository.ReviewRepositoryImpl
 import com.materip.core_repository.repository.test_repository.TestRepository
 import com.materip.core_repository.repository.test_repository.TestRepositoryImpl
 import dagger.Binds
@@ -50,4 +52,7 @@ interface RepositoryModule {
     @Binds
     @Singleton
     fun bindAccompanyRepositoryImpl(accompanyRepositoryImpl: AccompanyRepositoryImpl): AccompanyRepository
+
+    @Binds
+    fun bindReviewRepositoryImpl(reviewRepositoryImpl: ReviewRepositoryImpl): ReviewRepository
 }
