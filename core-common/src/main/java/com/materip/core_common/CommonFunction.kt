@@ -1,7 +1,11 @@
 package com.materip.core_common
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
+import androidx.core.content.ContextCompat
 import java.io.File
 import java.io.FileOutputStream
 
@@ -30,3 +34,12 @@ fun transformToFile(
     return file
 }
 
+//권한 확인 함수
+fun checkPermission(context: Context, type: String): Boolean{
+    val permission =
+        if (type == "notification" && Build.VERSION.SDK_INT >= 33) Manifest.permission.POST_NOTIFICATIONS
+        else if (type == "gallery" && Build.VERSION.SDK_INT >= 33) Manifest.permission.READ_MEDIA_IMAGES
+        else if (type == "gallery" && Build.VERSION.SDK_INT < 33) Manifest.permission.READ_EXTERNAL_STORAGE
+        else return true
+    return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
+}
