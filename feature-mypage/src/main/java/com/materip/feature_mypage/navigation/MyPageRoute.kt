@@ -10,5 +10,6 @@ enum class MyPageRoute {
     ReviewRoute,
     ReviewListRoute,
     ReviewDescriptionRoute,
-    SendApplicationRoute
+    SendApplicationRoute,
+    WriteReviewRoute
 }
