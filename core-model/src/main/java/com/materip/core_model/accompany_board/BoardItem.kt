@@ -38,7 +38,7 @@ data class BoardItem(
             Region.BUSAN.name -> "부산"
             Region.JEOLLA_GWANGJU.name -> "전라도"
             Region.JEJU.name -> "제주도"
-            else -> "태그 오류"
+            else -> "해외"
         }
     }
 }
