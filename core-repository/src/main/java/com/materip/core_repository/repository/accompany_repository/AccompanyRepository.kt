@@ -11,4 +11,5 @@ interface AccompanyRepository {
     suspend fun getAccompanyApplication(id: Int): ResultResponse<AccompanyApplicationResponseDto>
     suspend fun getAccompanySend(pageable: Pageable): ResultResponse<DefaultGetAccompanyResponseDto<BoardItem>>
     suspend fun getAccompanyReceived(pageable: Pageable): ResultResponse<DefaultGetAccompanyResponseDto<AccompanyReceivedItem>>
+    suspend fun getAccompanyRecords(pageable: Pageable): ResultResponse<DefaultGetAccompanyResponseDto<BoardItem>>
 }

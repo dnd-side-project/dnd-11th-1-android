@@ -1,6 +1,7 @@
 package com.materip.core_network.service.accompany
 
 import com.materip.core_model.accompany_board.BoardItem
+import com.materip.core_model.accompany_board.BoardListResponse
 import com.materip.core_model.accompany_board.Pageable
 import com.materip.core_model.request.AccompanyApplicationResponseDto
 import com.materip.core_model.response.AccompanyReceivedItem
@@ -25,4 +26,9 @@ interface AccompanyService {
     suspend fun getAccompanyReceived(
         @Query("pageable") pageable: Pageable
     ): ApiResponse<DefaultGetAccompanyResponseDto<AccompanyReceivedItem>>
+
+    @GET("/api/v1/accompany/boards/records")
+    suspend fun getAccompanyRecords(
+        @Query("pageable") pageable: Pageable
+    ): ApiResponse<DefaultGetAccompanyResponseDto<BoardItem>>
 }

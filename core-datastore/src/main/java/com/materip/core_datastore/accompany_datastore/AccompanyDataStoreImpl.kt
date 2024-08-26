@@ -47,4 +47,13 @@ class AccompanyDataStoreImpl @Inject constructor(
         }
         return result
     }
+    override suspend fun getAccompanyRecords(pageable: Pageable): ResultResponse<DefaultGetAccompanyResponseDto<BoardItem>> {
+        val result = ResultResponse<DefaultGetAccompanyResponseDto<BoardItem>>()
+        accompanyService.getAccompanyRecords(pageable).suspendOnError{
+            result.error = Json.decodeFromString("${this.apiMessage}")
+        }.suspendOnSuccess{
+            result.data = this.data
+        }
+        return result
+    }
 }

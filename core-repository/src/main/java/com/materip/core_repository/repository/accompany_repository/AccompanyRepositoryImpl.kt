@@ -25,4 +25,8 @@ class AccompanyRepositoryImpl @Inject constructor(
     override suspend fun getAccompanyReceived(pageable: Pageable): ResultResponse<DefaultGetAccompanyResponseDto<AccompanyReceivedItem>> {
         return accompanyDataStore.getAccompanyReceived(pageable)
     }
+
+    override suspend fun getAccompanyRecords(pageable: Pageable): ResultResponse<DefaultGetAccompanyResponseDto<BoardItem>> {
+        return accompanyDataStore.getAccompanyRecords(pageable)
+    }
 }
