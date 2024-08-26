@@ -53,12 +53,21 @@ import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.theme.MateTripColors
 
 @Composable
-fun WriteReviewRoute(){
-    WriteReviewScreen()
+fun WriteReviewRoute(
+    id: Int?,
+    navBack: () -> Unit
+){
+
+
+    WriteReviewScreen(
+        navBack = navBack
+    )
 }
 
 @Composable
-fun WriteReviewScreen(){
+fun WriteReviewScreen(
+    navBack: () -> Unit,
+){
     val scrollState = rememberScrollState()
     var isDone by remember{mutableStateOf(false)}
     Column(
@@ -71,7 +80,7 @@ fun WriteReviewScreen(){
         NormalTopBar(
             title = "동행 후기 작성",
             titleFontWeight = FontWeight(700),
-            onBackClick = {/** 뒤로가기 navigation */},
+            onBackClick = navBack,
             onClick = { /* 미사용 */ }
         )
         Spacer(Modifier.height(20.dp))
@@ -993,5 +1002,7 @@ private fun SharePictures(
 @Preview
 @Composable
 private fun WriteReviewUITest(){
-    WriteReviewScreen()
+    WriteReviewScreen(
+        navBack = {}
+    )
 }
