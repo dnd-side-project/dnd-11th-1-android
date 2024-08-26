@@ -34,4 +34,7 @@ data class AccompanyReceivedItem(
     fun getGenderText(): String{
         return if (gender == "MALE") "남성" else "여성"
     }
+    fun getTags(): List<String>{
+        return travelPreferences.plus(travelStyle).plus(foodPreferences)
+    }
 }
