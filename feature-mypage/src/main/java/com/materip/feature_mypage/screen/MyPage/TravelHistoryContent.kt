@@ -248,7 +248,7 @@ private fun SendTravelApplicationContent(
             items(applications){application ->
                 if(application != null){
                     TravelPostItem(
-                        destination = application.region,
+                        destination = application.getRegionText(),
                         period = application.getDuration(),
                         title = application.title,
                         startDate = application.getStartDateText(),
