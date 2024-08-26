@@ -67,7 +67,7 @@ fun ReviewScreen(
         NormalTopBar(
             title = "받은 동행 평가",
             titleFontWeight = FontWeight(700),
-            onBackClick = {/** 뒤로가기 */},
+            onBackClick = navBack,
             onClick = {/* 미사용 */}
         )
         Spacer(Modifier.height(10.dp))

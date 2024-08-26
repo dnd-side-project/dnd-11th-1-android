@@ -91,7 +91,7 @@ fun ReviewDescriptionScreen(navBack: () -> Unit){
         ){
             NormalTopBar(
                 title = "동행 후기",
-                onBackClick = { /** 뒤로 가기 */ },
+                onBackClick = navBack,
                 onClick = {/* 미사용 */}
             )
             Spacer(Modifier.height(10.dp))
