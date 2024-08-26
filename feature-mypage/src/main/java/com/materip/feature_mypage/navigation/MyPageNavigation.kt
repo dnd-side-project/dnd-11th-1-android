@@ -1,5 +1,6 @@
 package com.materip.feature_mypage.navigation
 
+import androidx.compose.runtime.internal.composableLambda
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -15,6 +16,7 @@ import com.materip.feature_mypage.screen.MyPage.ReviewDescriptionRoute
 import com.materip.feature_mypage.screen.MyPage.ReviewListRoute
 import com.materip.feature_mypage.screen.MyPage.ReviewRoute
 import com.materip.feature_mypage.screen.MyPage.SendApplicationRoute
+import com.materip.feature_mypage.screen.MyPage.WriteReviewRoute
 
 fun NavController.navigateToMyPageGraph() = navigate(MyPageRoute.MyPageGraph.name)
 fun NavController.navigateToMyPage() = navigate(MyPageRoute.MyPageRoute.name){
@@ -31,6 +33,7 @@ fun NavController.navigateToReview() = navigate(MyPageRoute.ReviewRoute.name)
 fun NavController.navigateToReviewList() = navigate(MyPageRoute.ReviewListRoute.name)
 fun NavController.navigateToReviewDescription() = navigate(MyPageRoute.ReviewDescriptionRoute.name)
 fun NavController.navigateToSendApplication(applicationId: Int) = navigate("${MyPageRoute.SendApplicationRoute.name}/${applicationId}")
+fun NavController.navigateToWriteReview(boardId: Int) = navigate("${MyPageRoute.WriteReviewRoute.name}/${boardId}")
 
 fun NavGraphBuilder.myPageGraph(
     navBack: () -> Unit,
@@ -96,6 +99,16 @@ fun NavGraphBuilder.myPageGraph(
                 id = id,
                 navBack = navBack,
                 navPostDescription = {/** 게시글 상세로 navigation */}
+            )
+        }
+        composable(
+            route = "${MyPageRoute.WriteReviewRoute.name}/{boardId}",
+            arguments = listOf(navArgument("boardId"){type = NavType.IntType})
+        ){
+            val id = it.arguments?.getInt("boardId")
+            WriteReviewRoute(
+                id = id,
+                navBack = navBack
             )
         }
     }
