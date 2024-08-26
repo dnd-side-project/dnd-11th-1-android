@@ -56,6 +56,8 @@ import com.materip.core_designsystem.component.ProfileTag
 import com.materip.core_designsystem.icon.Badges
 import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.theme.MateTripColors
+import com.materip.core_model.ui_model.Grade
+import com.materip.core_model.ui_model.GradeTag
 import com.materip.feature_mypage.view_models.MyPage.ProfileMainUiState
 import com.materip.feature_mypage.view_models.MyPage.ProfileMainViewModel
 
@@ -94,11 +96,16 @@ fun ProfileMainTab(
         }
         is ProfileMainUiState.Success -> {
             val user = uiState.user
+            val grade = when(user.grade){
+                GradeTag.ROOKIE.name -> MatetripGrade.level_1
+                GradeTag.ELITE.name -> MatetripGrade.level_2
+                GradeTag.PASSIONATE.name -> MatetripGrade.level_3
+                else -> MatetripGrade.level_4
+            }
             ProfileMainContent(
                 profileImg = user.profileImageUrl,
                 nickname = user.nickname,
-                level = 4,
-                /** 받을 수 있게 */ /** 받을 수 있게 */
+                grade = grade,
                 age = uiState.getAge(),
                 gender = user.gender,
                 introduction = user.description,
@@ -124,7 +131,7 @@ fun ProfileMainTab(
 private fun ProfileMainContent(
     profileImg: String,
     nickname: String,
-    level: Int,
+    grade: Grade,
     age: String,
     gender: String,
     introduction: String?,
@@ -136,16 +143,10 @@ private fun ProfileMainContent(
 ){
     val scrollState = rememberScrollState()
     var isLevelInfoOpen by remember{mutableStateOf(false)}
-    val grade = when(level){
-        1 -> MatetripGrade.level_1
-        2 -> MatetripGrade.level_2
-        3 -> MatetripGrade.level_3
-        else -> MatetripGrade.level_4
-    }
 
     if(isLevelInfoOpen){
         LevelInfoDialog(
-            currentLevel = level,
+            currentLevel = grade,
             onDismissRequest = {isLevelInfoOpen = false}
         )
     }
