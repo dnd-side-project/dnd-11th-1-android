@@ -6,7 +6,7 @@ import com.materip.core_model.accompany_board.Pageable
 import com.materip.core_model.response.AccompanyReceivedItem
 import com.materip.core_repository.repository.accompany_repository.AccompanyRepository
 
-class ReceivedApplicationPagingSource (
+class ReceiveApplicationPagingSource (
     val accompanyRepository: AccompanyRepository
 ): PagingSource<Int, AccompanyReceivedItem>() {
 
