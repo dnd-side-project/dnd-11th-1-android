@@ -124,7 +124,7 @@ private fun TagList(
             notSelectedColor = MateTripColors.InactiveColor,
             onClick = {onTagChange(TravelHistoryTag.RECORD)}
         )
-        Spacer(Modifier.width(12.dp))
+        Spacer(Modifier.width(8.dp))
         CustomClickableTag(
             tagName = "보낸 동행 신청서",
             fontSize = 14.sp,
