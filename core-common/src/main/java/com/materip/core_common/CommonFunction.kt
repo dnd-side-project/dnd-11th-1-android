@@ -5,6 +5,7 @@ import android.net.Uri
 import java.io.File
 import java.io.FileOutputStream
 
+//uri를 file로 변환하는 함수
 fun transformToFile(
     context: Context,
     uri: Uri
@@ -28,3 +29,4 @@ fun transformToFile(
     }
     return file
 }
+
