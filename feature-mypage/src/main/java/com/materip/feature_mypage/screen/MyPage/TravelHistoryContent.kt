@@ -198,7 +198,7 @@ private fun TravelRecordsContent(
                     btnColor = MateTripColors.Blue_04,
                     textColor = MateTripColors.Gray_08,
                     trailingIcon = Icons.review_icon,
-                    onClick = { /** 동행 후기 작성하는 곳으로 navigation */ }
+                    onClick = { /** 동행 후기 작성하는 곳으로 navigation (record.boardId) */ }
                 )
             }
         }
