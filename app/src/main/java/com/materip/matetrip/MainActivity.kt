@@ -1,9 +1,13 @@
 package com.materip.matetrip
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -40,11 +45,21 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val viewModel: AppViewModel by viewModels()
     private val useBottomNavScreen = listOf(Screen.Home.route, MyPageRoute.MyPageRoute.name, SettingRoute.SettingRoute.name)
+    private val requestMultiplePermissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){permission ->
+        permission.entries.forEach{entry ->
+            val permissionName = entry.key
+            val isGranted = entry.value
+            if(!isGranted){
+                Toast.makeText(this, "${permissionName} 권한이 거절되었습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         WindowCompat.setDecorFitsSystemWindows(window, true)
+        requestPermissions()
         setContent {
             MatetripTheme {
                 val navController = rememberNavController()
@@ -90,6 +105,25 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+    private fun requestPermissions(){
+        val permissionArray = if(Build.VERSION.SDK_INT >= 33){
+            arrayOf(
+                Manifest.permission.READ_MEDIA_IMAGES,
+                Manifest.permission.POST_NOTIFICATIONS
+            )
+        } else {
+            arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+        }
+        val permissionsToRequest = permissionArray.filter{permission ->
+            ContextCompat.checkSelfPermission(this@MainActivity, permission) != PackageManager.PERMISSION_GRANTED
+        }
+
+        if (permissionsToRequest.isNotEmpty()){
+            requestMultiplePermissionsLauncher.launch(permissionsToRequest.toTypedArray())
+        }
+    }
 }
 
 @Composable
@@ -107,13 +141,14 @@ fun GetTopBar(
         OnboardingRoute.SelectFoodPreferenceRoute.name,
         MyPageRoute.MyPageRoute.name,
         MyPageRoute.EditProfileRoute.name,
+        MyPageRoute.ProfileDescriptionRoute.name,
+        MyPageRoute.Quiz100Route.name,
+        MyPageRoute.PreviewRoute.name,
         MyPageRoute.ReviewRoute.name,
         MyPageRoute.ReviewListRoute.name,
         MyPageRoute.ReviewDescriptionRoute.name,
-        MyPageRoute.PreviewRoute.name,
         MyPageRoute.SendApplicationRoute.name,
-        MyPageRoute.Quiz100Route.name,
-        MyPageRoute.ProfileDescriptionRoute.name,
+        MyPageRoute.WriteReviewRoute.name,
         SettingRoute.SettingRoute.name,
         SettingRoute.AlarmSettingRoute.name,
         SettingRoute.AccountInfoRoute.name,
