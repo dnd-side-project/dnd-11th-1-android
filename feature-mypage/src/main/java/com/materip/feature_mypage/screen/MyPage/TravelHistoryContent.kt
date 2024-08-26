@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.ItemSnapshotList
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.materip.core_designsystem.R
@@ -57,39 +58,22 @@ import com.materip.core_model.ui_model.TravelHistoryTag
 import com.materip.core_model.ui_model.TravelStyle
 import com.materip.feature_mypage.view_models.MyPage.SendTravelApplicationUiState
 import com.materip.feature_mypage.view_models.MyPage.SendTravelApplicationViewModel
+import com.materip.feature_mypage.view_models.MyPage.TravelRecordViewModel
+import com.materip.feature_mypage.view_models.MyPage.TravelRecordsUiState
 
 @Composable
 fun TravelHistoryContent(
     navSendApplication: (Int) -> Unit,
 ){
     var selectedTag by remember{mutableStateOf(TravelHistoryTag.RECORD)}
-    val dummyData = listOf(
-        TempTravelPost(
-            postImage = null,
-            title = "슈퍼 J를 찾습니다.",
-            destination = "부산",
-            period = "2박3일",
-            startDate = "2024.07.20",
-            endDate = "2024.07.22"
-        ),
-        TempTravelPost(
-            postImage = null,
-            title = "슈퍼 J를 찾습니다.",
-            destination = "부산",
-            period = "2박3일",
-            startDate = "2024.07.20",
-            endDate = "2024.07.22"
-        )
-    )
+
     TagList(
         selectedTag = selectedTag,
         onTagChange = {selectedTag = it}
     )
     Spacer(Modifier.height(20.dp))
     when(selectedTag){
-        TravelHistoryTag.RECORD -> TravelHistories(
-            records = dummyData
-            /** dummy */ /** dummy */
+        TravelHistoryTag.RECORD -> TravelRecords(
         )
         TravelHistoryTag.SEND_APPLICATION -> {
             SendTravelApplication(
@@ -152,7 +136,34 @@ private fun TagList(
 }
 
 @Composable
-private fun TravelHistories(records: List<TempTravelPost>){
+private fun TravelRecords(
+    viewModel: TravelRecordViewModel = hiltViewModel()
+){
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    when(uiState.value){
+        TravelRecordsUiState.Loading -> {
+            CircularProgressIndicator()
+        }
+        TravelRecordsUiState.Error -> {
+            Text(
+                text = "Error",
+                fontSize = 100.sp,
+                color = Color.Red
+            )
+        }
+        TravelRecordsUiState.Success -> {
+            val records = viewModel.recordPagingSource().collectAsLazyPagingItems()
+            TravelRecordsContent(
+                records = records.itemSnapshotList
+            )
+        }
+    }
+}
+
+@Composable
+private fun TravelRecordsContent(
+    records: ItemSnapshotList<BoardItem>
+){
     if(records.isEmpty()){
         NoDataContent("아직 동행 기록이 없어요.\n즐거운 동행 경험을 만들어 보세요.")
     } else {
@@ -160,15 +171,17 @@ private fun TravelHistories(records: List<TempTravelPost>){
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ){
             items(records){record ->
-                TravelPostItem(
-                    destination = record.destination,
-                    period = record.period,
-                    title = record.title,
-                    startDate = record.startDate,
-                    endDate = record.endDate,
-                    postImage = record.postImage,
-                    onClick = {/** 해당 글로 navigation  */}
-                )
+                if (record != null){
+                    TravelPostItem(
+                        destination = record.region,
+                        period = record.getDuration(),
+                        title = record.title,
+                        startDate = record.getStartDateText(),
+                        endDate = record.getEndDateText(),
+                        postImage = record.imageUrls[0],
+                        onClick = {/** 해당 글로 navigation  */}
+                    )
+                }
                 Spacer(Modifier.height(8.dp))
                 CustomButton(
                     modifier = Modifier
