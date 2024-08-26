@@ -7,6 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.materip.core_common.ErrorState
 import com.materip.core_common.transformToFile
 import com.materip.core_model.request.PostReviewRequestDto
+import com.materip.core_model.ui_model.CompanionType
+import com.materip.core_model.ui_model.PersonalityType
+import com.materip.core_model.ui_model.RecommendationStatus
+import com.materip.core_model.ui_model.SatisfactionLevel
+import com.materip.core_model.ui_model.TravelPreferenceForReview
+import com.materip.core_model.ui_model.TravelStyleForReview
 import com.materip.core_repository.repository.image_repository.ImageRepository
 import com.materip.core_repository.repository.review_repository.ReviewRepository
 import kotlinx.coroutines.async
@@ -52,24 +58,24 @@ class WriteReviewViewModel @Inject constructor(
     }
 
     fun writeReview(
-        satisfactionLevel: String,
-        recommendationStatus: String,
-        companionType: String,
-        personalityType: List<String>,
-        travelPreference: List<String>,
-        travelStyle: List<String>,
+        satisfactionLevel: SatisfactionLevel,
+        recommendationStatus: RecommendationStatus,
+        companionType: CompanionType,
+        personalityType: List<PersonalityType>,
+        travelPreference: List<TravelPreferenceForReview>,
+        travelStyle: List<TravelStyleForReview>,
         detailContent: String,
         imageUrl: List<String>
     ){
         viewModelScope.launch{
             val request = PostReviewRequestDto(
                 accompanyBoardId = id.value!!,
-                satisfactionLevel = satisfactionLevel,
-                recommendationStatus = recommendationStatus,
-                companionType = companionType,
-                personalityType = personalityType,
-                travelPreference = travelPreference,
-                travelStyle = travelStyle,
+                satisfactionLevel = satisfactionLevel.name,
+                recommendationStatus = recommendationStatus.name,
+                companionType = companionType.name,
+                personalityType = personalityType.map{it.name},
+                travelPreference = travelPreference.map{it.name},
+                travelStyle = travelStyle.map{it.name},
                 detailContent = detailContent,
                 reviewImageUrls = imageUrl
             )
