@@ -1,5 +1,10 @@
 package com.materip.feature_mypage.screen.MyPage
 
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,15 +30,19 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
@@ -44,6 +53,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.ItemSnapshotList
+import com.materip.core_common.ErrorState
 import com.materip.core_designsystem.component.CustomButton
 import com.materip.core_designsystem.component.CustomClickableTag
 import com.materip.core_designsystem.component.ImageLoadView
@@ -51,77 +64,171 @@ import com.materip.core_designsystem.component.NormalTag
 import com.materip.core_designsystem.component.NormalTopBar
 import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.theme.MateTripColors
+import com.materip.core_model.ui_model.CompanionType
+import com.materip.core_model.ui_model.PersonalityType
+import com.materip.core_model.ui_model.RecommendationStatus
+import com.materip.core_model.ui_model.SatisfactionLevel
+import com.materip.core_model.ui_model.TravelPreferenceForReview
+import com.materip.core_model.ui_model.TravelStyleForReview
+import com.materip.feature_mypage.view_models.MyPage.WriteReviewViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun WriteReviewRoute(
     id: Int?,
-    navBack: () -> Unit
+    navBack: () -> Unit,
+    viewModel: WriteReviewViewModel = hiltViewModel()
 ){
+    viewModel.setId(id)
 
+    val context = LocalContext.current
+    val errState = viewModel.errorState.collectAsStateWithLifecycle()
+    val isDone by viewModel.isDone.collectAsStateWithLifecycle()
 
     WriteReviewScreen(
+        errState = errState.value,
+        onClickDone = { satisfactionLevel, recommendationStatus, companionType, personalityType, travelPreferences, travelStyle, detailContent, reviewImageUrls ->
+            viewModel.writeReview(
+                satisfactionLevel = satisfactionLevel,
+                recommendationStatus = recommendationStatus,
+                companionType = companionType,
+                personalityType = personalityType,
+                travelPreference = travelPreferences,
+                travelStyle = travelStyle,
+                detailContent = detailContent,
+                imageUrl = reviewImageUrls
+            )
+        },
+        onUploadImage = {viewModel.uploadImageToS3(context, it)},
         navBack = navBack
     )
+    LaunchedEffect(isDone){
+        if (isDone) {navBack()}
+    }
 }
 
 @Composable
 fun WriteReviewScreen(
+    errState: ErrorState,
+    onClickDone: (SatisfactionLevel, RecommendationStatus, CompanionType,
+                  List<PersonalityType>, List<TravelPreferenceForReview>, List<TravelStyleForReview>, String, List<String>) -> Unit,
+    onUploadImage: suspend (uri: Uri) -> String,
     navBack: () -> Unit,
 ){
-    val scrollState = rememberScrollState()
-    var isDone by remember{mutableStateOf(false)}
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color.White)
-            .padding(horizontal = 20.dp)
-            .padding(bottom = 35.dp)
-    ){
-        NormalTopBar(
-            title = "동행 후기 작성",
-            titleFontWeight = FontWeight(700),
-            onBackClick = navBack,
-            onClick = { /* 미사용 */ }
+    if(errState is ErrorState.AuthError && errState.isInvalid()){
+        Text(
+            text = "Error",
+            fontSize = 100.sp,
+            color = Color.Red
         )
-        Spacer(Modifier.height(20.dp))
+    } else {
+        val scrollState = rememberScrollState()
+        val context = LocalContext.current
+        var selectedSatisfactionLevel by remember{mutableStateOf(SatisfactionLevel.GOOD)}
+        var selectedRecommendationStatus by remember{mutableStateOf(RecommendationStatus.SUGGESTION)}
+        var selectedCompanionType by remember{mutableStateOf(CompanionType.ALL_ACCOMPANYING)}
+        val selectedPersonalityType = remember{mutableStateListOf<PersonalityType>()}
+        val selectedTravelPreference = remember{mutableStateListOf<TravelPreferenceForReview>()}
+        val selectedTravelStyle = remember{mutableStateListOf<TravelStyleForReview>()}
+        var detailContent by remember{mutableStateOf("")}
+        val imageUrls = remember{mutableStateListOf<String>()}
+        var isEnabled = remember{
+            derivedStateOf{
+                selectedPersonalityType.isNotEmpty() && selectedTravelPreference.isNotEmpty()
+                        && selectedTravelStyle.isNotEmpty()
+            }
+        }
+        val coroutineScope = rememberCoroutineScope()
+        val cameraLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.PickMultipleVisualMedia(),
+            onResult = {
+                if(imageUrls.size + it.size <= 5){
+                    it.forEach{
+                        coroutineScope.launch{
+                            val path = onUploadImage(it)
+                            imageUrls.add(path)
+                        }
+                    }
+                } else {
+                    Toast.makeText(context, "사진은 5장까지 가능합니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        )
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(state = scrollState)
+                .background(color = Color.White)
+                .padding(horizontal = 20.dp)
+                .padding(bottom = 35.dp)
         ){
-            TravelSatisfiedSurvey()
-            Spacer(Modifier.height(60.dp))
-            RecommendNextSurvey()
-            Spacer(Modifier.height(60.dp))
-            SelectTravelType()
-            Spacer(Modifier.height(60.dp))
-            SelectReviewTag()
-            Spacer(Modifier.height(60.dp))
-            WriteReviewDetails()
-            Spacer(Modifier.height(60.dp))
-            SharePictures(
-                pictures = SnapshotStateList(),
-                onDeleteImage = {},
-                onCameraClick = {}
+            NormalTopBar(
+                title = "동행 후기 작성",
+                titleFontWeight = FontWeight(700),
+                onBackClick = navBack,
+                onClick = { /* 미사용 */ }
             )
-            Spacer(Modifier.height(60.dp))
-            CustomButton(
-                modifier = Modifier.fillMaxWidth().height(54.dp),
-                shape = RoundedCornerShape(size = 8.dp),
-                btnText = "작성완료",
-                fontSize = 14.sp,
-                btnColor = if(isDone) MateTripColors.ActivatedColor else MateTripColors.InactiveColor,
-                textColor = MateTripColors.Gray_06,
-                onClick = { /*TODO*/ }
-            )
+            Spacer(Modifier.height(20.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(state = scrollState)
+            ){
+                TravelSatisfiedSurvey(
+                    selectedSatisfactionLevel = selectedSatisfactionLevel,
+                    onUpdateSatisfactionLevel = {selectedSatisfactionLevel = it}
+                )
+                Spacer(Modifier.height(60.dp))
+                RecommendNextSurvey(
+                    selectedRecommendationStatus = selectedRecommendationStatus,
+                    onUpdateRecommendationStatus = {selectedRecommendationStatus = it}
+                )
+                Spacer(Modifier.height(60.dp))
+                SelectTravelType(
+                    selectedCompanionType = selectedCompanionType,
+                    onUpdateCompanionType = {selectedCompanionType = it}
+                )
+                Spacer(Modifier.height(60.dp))
+                SelectReviewTag(
+                    selectedPersonalityType = selectedPersonalityType,
+                    selectedTravelPreference = selectedTravelPreference,
+                    selectedTravelStyle = selectedTravelStyle
+                )
+                Spacer(Modifier.height(60.dp))
+                WriteReviewDetails(
+                    detailContent = detailContent,
+                    onUpdateDetailContent = {detailContent = it}
+                )
+                Spacer(Modifier.height(60.dp))
+                SharePictures(
+                    pictures = imageUrls,
+                    onCameraClick = {cameraLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))},
+                    onDeleteImage = {imageUrls.remove(it)}
+                )
+                Spacer(Modifier.height(60.dp))
+                CustomButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(54.dp),
+                    shape = RoundedCornerShape(size = 8.dp),
+                    btnText = "작성완료",
+                    fontSize = 14.sp,
+                    isEnabled = isEnabled.value,
+                    btnColor = if(isEnabled.value) MateTripColors.ActivatedColor else MateTripColors.InactiveColor,
+                    textColor = MateTripColors.Gray_06,
+                    onClick = {
+                        onClickDone(selectedSatisfactionLevel, selectedRecommendationStatus, selectedCompanionType, selectedPersonalityType, selectedTravelPreference, selectedTravelStyle, detailContent, imageUrls)
+                    }
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun TravelSatisfiedSurvey(){
-    var satisfiedGrade by remember{mutableStateOf("만족")}
-
+private fun TravelSatisfiedSurvey(
+    selectedSatisfactionLevel: SatisfactionLevel,
+    onUpdateSatisfactionLevel: (SatisfactionLevel) -> Unit,
+){
     Column(
         modifier = Modifier.fillMaxWidth()
     ){
@@ -142,7 +249,9 @@ private fun TravelSatisfiedSurvey(){
             )
             Spacer(Modifier.width(12.dp))
             NormalTag(
-                modifier = Modifier.width(42.dp).height(21.dp),
+                modifier = Modifier
+                    .width(42.dp)
+                    .height(21.dp),
                 tagName = "필수",
                 shape = RoundedCornerShape(size = 55.dp),
                 color = MateTripColors.Gray_11,
@@ -169,10 +278,10 @@ private fun TravelSatisfiedSurvey(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = satisfiedGrade == "만족",
+                isSelected = selectedSatisfactionLevel == SatisfactionLevel.GOOD,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {satisfiedGrade = "만족"}
+                onClick = {onUpdateSatisfactionLevel(SatisfactionLevel.GOOD)}
             )
             Spacer(Modifier.width(10.dp))
             CustomClickableTag(
@@ -181,10 +290,10 @@ private fun TravelSatisfiedSurvey(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = satisfiedGrade == "보통",
+                isSelected = selectedSatisfactionLevel == SatisfactionLevel.COMMONLY,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {satisfiedGrade = "보통"}
+                onClick = {onUpdateSatisfactionLevel(SatisfactionLevel.COMMONLY)}
             )
             Spacer(Modifier.width(10.dp))
             CustomClickableTag(
@@ -193,19 +302,20 @@ private fun TravelSatisfiedSurvey(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = satisfiedGrade == "불만족",
+                isSelected = selectedSatisfactionLevel == SatisfactionLevel.DISSATISFACTION,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {satisfiedGrade = "불만족"}
+                onClick = { onUpdateSatisfactionLevel(SatisfactionLevel.DISSATISFACTION) }
             )
         }
     }
 }
 
 @Composable
-private fun RecommendNextSurvey(){
-    var isRecommend by remember{mutableStateOf("추천")}
-
+private fun RecommendNextSurvey(
+    selectedRecommendationStatus: RecommendationStatus,
+    onUpdateRecommendationStatus: (RecommendationStatus) -> Unit,
+){
     Column(
         modifier = Modifier.fillMaxWidth()
     ){
@@ -226,7 +336,9 @@ private fun RecommendNextSurvey(){
             )
             Spacer(Modifier.width(12.dp))
             NormalTag(
-                modifier = Modifier.width(42.dp).height(21.dp),
+                modifier = Modifier
+                    .width(42.dp)
+                    .height(21.dp),
                 tagName = "필수",
                 shape = RoundedCornerShape(size = 55.dp),
                 color = MateTripColors.Gray_11,
@@ -251,10 +363,10 @@ private fun RecommendNextSurvey(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = isRecommend == "추천",
+                isSelected = selectedRecommendationStatus == RecommendationStatus.SUGGESTION,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {isRecommend = "추천"}
+                onClick = {onUpdateRecommendationStatus(RecommendationStatus.SUGGESTION)}
             )
             Spacer(Modifier.width(10.dp))
             CustomClickableTag(
@@ -263,10 +375,10 @@ private fun RecommendNextSurvey(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = isRecommend == "비추천",
+                isSelected = selectedRecommendationStatus == RecommendationStatus.NOT_RECOMMENDED,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {isRecommend = "비추천"}
+                onClick = {onUpdateRecommendationStatus(RecommendationStatus.NOT_RECOMMENDED)}
             )
         }
     }
@@ -274,9 +386,10 @@ private fun RecommendNextSurvey(){
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun SelectTravelType(){
-    var travelType by remember{mutableStateOf("부분동행")}
-
+private fun SelectTravelType(
+    selectedCompanionType: CompanionType,
+    onUpdateCompanionType: (CompanionType) -> Unit,
+){
     Column(
         modifier = Modifier.fillMaxWidth()
     ){
@@ -297,7 +410,9 @@ private fun SelectTravelType(){
             )
             Spacer(Modifier.width(12.dp))
             NormalTag(
-                modifier = Modifier.width(42.dp).height(21.dp),
+                modifier = Modifier
+                    .width(42.dp)
+                    .height(21.dp),
                 tagName = "필수",
                 shape = RoundedCornerShape(size = 55.dp),
                 color = MateTripColors.Gray_11,
@@ -324,10 +439,10 @@ private fun SelectTravelType(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = travelType == "추천",
+                isSelected = selectedCompanionType == CompanionType.ALL_ACCOMPANYING,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {travelType = "추천"}
+                onClick = {onUpdateCompanionType(CompanionType.ALL_ACCOMPANYING)}
             )
             Spacer(Modifier.width(10.dp))
             CustomClickableTag(
@@ -336,10 +451,10 @@ private fun SelectTravelType(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = travelType == "부분동행",
+                isSelected = selectedCompanionType == CompanionType.PARTIAL_COMPANIONSHIP,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {travelType = "비추천"}
+                onClick = {onUpdateCompanionType(CompanionType.PARTIAL_COMPANIONSHIP)}
             )
             Spacer(Modifier.width(10.dp))
             CustomClickableTag(
@@ -348,10 +463,10 @@ private fun SelectTravelType(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = travelType == "숙소공유",
+                isSelected = selectedCompanionType == CompanionType.ACCOMMODATION_SHARING,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {travelType = "숙소공유"}
+                onClick = {onUpdateCompanionType(CompanionType.ACCOMMODATION_SHARING)}
             )
             Spacer(Modifier.width(10.dp))
             CustomClickableTag(
@@ -360,10 +475,10 @@ private fun SelectTravelType(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = travelType == "투어동행",
+                isSelected = selectedCompanionType == CompanionType.ACCOMPANYING_TOUR,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {travelType = "투어동행"}
+                onClick = {onUpdateCompanionType(CompanionType.ACCOMPANYING_TOUR)}
             )
         }
     }
@@ -371,11 +486,23 @@ private fun SelectTravelType(){
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun SelectReviewTag(){
-    val personality = remember{mutableStateListOf<String>()}
-    val preferences = remember{mutableStateListOf<String>()}
-    val styles = remember{mutableStateListOf<String>()}
-
+private fun SelectReviewTag(
+    selectedPersonalityType: SnapshotStateList<PersonalityType>,
+    selectedTravelPreference: SnapshotStateList<TravelPreferenceForReview>,
+    selectedTravelStyle: SnapshotStateList<TravelStyleForReview>
+){
+    val onClickPersonalityType: (PersonalityType) -> Unit = {
+        if(it in selectedPersonalityType) selectedPersonalityType.remove(it)
+        else selectedPersonalityType.add(it)
+    }
+    val onClickTravelPreference: (TravelPreferenceForReview) -> Unit = {
+        if(it in selectedTravelPreference) selectedTravelPreference.remove(it)
+        else selectedTravelPreference.add(it)
+    }
+    val onClickTravelStyle: (TravelStyleForReview) -> Unit = {
+        if(it in selectedTravelStyle) selectedTravelStyle.remove(it)
+        else selectedTravelStyle.add(it)
+    }
     Column(
         modifier = Modifier.fillMaxWidth()
     ){
@@ -392,7 +519,9 @@ private fun SelectReviewTag(){
             )
             Spacer(Modifier.width(12.dp))
             NormalTag(
-                modifier = Modifier.width(42.dp).height(21.dp),
+                modifier = Modifier
+                    .width(42.dp)
+                    .height(21.dp),
                 tagName = "필수",
                 shape = RoundedCornerShape(size = 55.dp),
                 color = MateTripColors.Gray_11,
@@ -435,13 +564,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "친절해요" in personality,
+                isSelected = PersonalityType.KIND in selectedPersonalityType,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("친절해요" in personality) personality.remove("친절해요")
-                    else personality.add("친절해요")
-                }
+                onClick = {onClickPersonalityType(PersonalityType.KIND)}
             )
             CustomClickableTag(
                 tagName = "밝아요",
@@ -449,13 +575,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "밝아요" in personality,
+                isSelected = PersonalityType.BRIGHT in selectedPersonalityType,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("밝아요" in personality) personality.remove("밝아요")
-                    else personality.add("밝아요")
-                }
+                onClick = {onClickPersonalityType(PersonalityType.BRIGHT)}
             )
             CustomClickableTag(
                 tagName = "재밌어요",
@@ -463,13 +586,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "재밌어요" in personality,
+                isSelected = PersonalityType.FUN in selectedPersonalityType,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("재밌어요" in personality) personality.remove("재밌어요")
-                    else personality.add("재밌어요")
-                }
+                onClick = {onClickPersonalityType(PersonalityType.FUN)}
             )
             CustomClickableTag(
                 tagName = "편안해요",
@@ -477,13 +597,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "편안해요" in personality,
+                isSelected = PersonalityType.COMFORTABLE in selectedPersonalityType,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("편안해요" in personality) personality.remove("편안해요")
-                    else personality.add("편안해요")
-                }
+                onClick = {onClickPersonalityType(PersonalityType.COMFORTABLE)}
             )
             CustomClickableTag(
                 tagName = "신뢰가 가요",
@@ -491,13 +608,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "신뢰가 가요" in personality,
+                isSelected = PersonalityType.TRUSTWORTHY in selectedPersonalityType,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("신뢰가 가요" in personality) personality.remove("신뢰가 가요")
-                    else personality.add("신뢰가 가요")
-                }
+                onClick = {onClickPersonalityType(PersonalityType.TRUSTWORTHY)}
             )
             CustomClickableTag(
                 tagName = "긍정적이에요",
@@ -505,13 +619,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "긍정적이에요" in personality,
+                isSelected = PersonalityType.POSITIVE in selectedPersonalityType,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("긍정적이에요" in personality) personality.remove("긍정적이에요")
-                    else personality.add("긍정적이에요")
-                }
+                onClick = {onClickPersonalityType(PersonalityType.POSITIVE)}
             )
             CustomClickableTag(
                 tagName = "센스있어요",
@@ -519,13 +630,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "센스있어요" in personality,
+                isSelected = PersonalityType.SENSE in selectedPersonalityType,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("센스있어요" in personality) personality.remove("센스있어요")
-                    else personality.add("센스있어요")
-                }
+                onClick = {onClickPersonalityType(PersonalityType.SENSE)}
             )
             CustomClickableTag(
                 tagName = "감성적이에요",
@@ -533,13 +641,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "감성적이에요" in personality,
+                isSelected = PersonalityType.EMOTIONAL in selectedPersonalityType,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("감성적이에요" in personality) personality.remove("감성적이에요")
-                    else personality.add("감성적이에요")
-                }
+                onClick = {onClickPersonalityType(PersonalityType.EMOTIONAL)}
             )
             CustomClickableTag(
                 tagName = "이성적이에요",
@@ -547,13 +652,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "이성적이에요" in personality,
+                isSelected = PersonalityType.RATIONAL in selectedPersonalityType,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("이성적이에요" in personality) personality.remove("이성적이에요")
-                    else personality.add("이성적이에요")
-                }
+                onClick = {onClickPersonalityType(PersonalityType.RATIONAL)}
             )
             CustomClickableTag(
                 tagName = "열정적이에요",
@@ -561,13 +663,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "열정적이에요" in personality,
+                isSelected = PersonalityType.PASSIONATE in selectedPersonalityType,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("열정적이에요" in personality) personality.remove("열정적이에요")
-                    else personality.add("열정적이에요")
-                }
+                onClick = {onClickPersonalityType(PersonalityType.PASSIONATE)}
             )
             CustomClickableTag(
                 tagName = "붙임성이 좋아요",
@@ -575,13 +674,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "붙임성이 좋아요" in personality,
+                isSelected = PersonalityType.GOOD_ATTACHMENT in selectedPersonalityType,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("붙임성이 좋아요" in personality) personality.remove("붙임성이 좋아요")
-                    else personality.add("붙임성이 좋아요")
-                }
+                onClick = {onClickPersonalityType(PersonalityType.GOOD_ATTACHMENT)}
             )
         }
         Spacer(Modifier.height(46.dp))
@@ -604,13 +700,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "계획적이에요" in preferences,
+                isSelected = TravelPreferenceForReview.PLANNED in selectedTravelPreference,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("계획적이에요" in preferences) preferences.remove("계획적이에요")
-                    else preferences.add("계획적이에요")
-                }
+                onClick = {onClickTravelPreference(TravelPreferenceForReview.PLANNED)}
             )
             CustomClickableTag(
                 tagName = "즉흥적이에요",
@@ -618,13 +711,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "즉흥적이에요" in preferences,
+                isSelected = TravelPreferenceForReview.SPONTANEOUS in selectedTravelPreference,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("즉흥적이에요" in preferences) preferences.remove("즉흥적이에요")
-                    else preferences.add("즉흥적이에요")
-                }
+                onClick = {onClickTravelPreference(TravelPreferenceForReview.SPONTANEOUS)}
             )
             CustomClickableTag(
                 tagName = "공금이 편해요",
@@ -632,13 +722,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "공금이 편해요" in preferences,
+                isSelected = TravelPreferenceForReview.PUBLIC_MONEY_CONVENIENT in selectedTravelPreference,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("공금이 편해요" in preferences) preferences.remove("공금이 편해요")
-                    else preferences.add("공금이 편해요")
-                }
+                onClick = {onClickTravelPreference(TravelPreferenceForReview.PUBLIC_MONEY_CONVENIENT)}
             )
             CustomClickableTag(
                 tagName = "더치페이 해요",
@@ -646,13 +733,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "더치페이 해요" in preferences,
+                isSelected = TravelPreferenceForReview.DUTCH_PAY in selectedTravelPreference,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("더치페이 해요" in preferences) preferences.remove("더치페이 해요")
-                    else preferences.add("더치페이 해요")
-                }
+                onClick = {onClickTravelPreference(TravelPreferenceForReview.DUTCH_PAY)}
             )
             CustomClickableTag(
                 tagName = "부지런해요",
@@ -660,13 +744,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "부지런해요" in preferences,
+                isSelected = TravelPreferenceForReview.DILIGENT in selectedTravelPreference,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("부지런해요" in preferences) preferences.remove("부지런해요")
-                    else preferences.add("부지런해요")
-                }
+                onClick = {onClickTravelPreference(TravelPreferenceForReview.DILIGENT)}
             )
             CustomClickableTag(
                 tagName = "느긋해요",
@@ -674,13 +755,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "느긋해요" in preferences,
+                isSelected = TravelPreferenceForReview.RELAXED in selectedTravelPreference,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("느긋해요" in preferences) preferences.remove("느긋해요")
-                    else preferences.add("느긋해요")
-                }
+                onClick = {onClickTravelPreference(TravelPreferenceForReview.RELAXED)}
             )
         }
         Spacer(Modifier.height(46.dp))
@@ -703,13 +781,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "맛집을 좋아해요" in styles,
+                isSelected = TravelStyleForReview.LIKE_RESTAURANTS in selectedTravelStyle,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("맛집을 좋아해요" in styles) styles.remove("맛집을 좋아해요")
-                    else styles.add("맛집을 좋아해요")
-                }
+                onClick = {onClickTravelStyle(TravelStyleForReview.LIKE_RESTAURANTS)}
             )
             CustomClickableTag(
                 tagName = "맛집이 아니어도 돼요",
@@ -717,13 +792,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "맛집이 아니어도 돼요" in styles,
+                isSelected = TravelStyleForReview.DOES_NOT_HAVE_TO_BE_RESTAURANT in selectedTravelStyle,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("맛집이 아니어도 돼요" in styles) styles.remove("맛집이 아니어도 돼요")
-                    else styles.add("맛집이 아니어도 돼요")
-                }
+                onClick = {onClickTravelStyle(TravelStyleForReview.DOES_NOT_HAVE_TO_BE_RESTAURANT)}
             )
             CustomClickableTag(
                 tagName = "핫플을 선호해요",
@@ -731,13 +803,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "핫플을 선호해요" in styles,
+                isSelected = TravelStyleForReview.PREFER_HOTPLE in selectedTravelStyle,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("핫플을 선호해요" in styles) styles.remove("핫플을 선호해요")
-                    else styles.add("핫플을 선호해요")
-                }
+                onClick = {onClickTravelStyle(TravelStyleForReview.PREFER_HOTPLE)}
             )
             CustomClickableTag(
                 tagName = "고즈넉한 곳을 좋아해요",
@@ -745,13 +814,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "고즈넉한 곳을 좋아해요" in styles,
+                isSelected = TravelStyleForReview.LIKE_QUIET_PLACES in selectedTravelStyle,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("고즈넉한 곳을 좋아해요" in styles) styles.remove("고즈넉한 곳을 좋아해요")
-                    else styles.add("고즈넉한 곳을 좋아해요")
-                }
+                onClick = {onClickTravelStyle(TravelStyleForReview.LIKE_QUIET_PLACES)}
             )
             CustomClickableTag(
                 tagName = "사진 찍는 걸 좋아해요",
@@ -759,13 +825,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "사진 찍는 걸 좋아해요" in styles,
+                isSelected = TravelStyleForReview.LIKE_TAKING_PICTURES in selectedTravelStyle,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("사진 찍는 걸 좋아해요" in styles) styles.remove("사진 찍는 걸 좋아해요")
-                    else styles.add("사진 찍는 걸 좋아해요")
-                }
+                onClick = {onClickTravelStyle(TravelStyleForReview.LIKE_TAKING_PICTURES)}
             )
             CustomClickableTag(
                 tagName = "관광지를 선호해요",
@@ -773,13 +836,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "관광지를 선호해요" in styles,
+                isSelected = TravelStyleForReview.PREFER_TOURIST_DESTINATIONS in selectedTravelStyle,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("관광지를 선호해요" in styles) styles.remove("관광지를 선호해요")
-                    else styles.add("관광지를 선호해요")
-                }
+                onClick = {onClickTravelStyle(TravelStyleForReview.PREFER_TOURIST_DESTINATIONS)}
             )
             CustomClickableTag(
                 tagName = "힐링을 선호해요",
@@ -787,13 +847,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "힐링을 선호해요" in styles,
+                isSelected = TravelStyleForReview.PREFER_HEALING in selectedTravelStyle,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("힐링을 선호해요" in styles) styles.remove("힐링을 선호해요")
-                    else styles.add("힐링을 선호해요")
-                }
+                onClick = {onClickTravelStyle(TravelStyleForReview.PREFER_HEALING)}
             )
             CustomClickableTag(
                 tagName = "액티비티를 즐겨요",
@@ -801,13 +858,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "액티비티를 즐겨요" in styles,
+                isSelected = TravelStyleForReview.ENJOY_ACTIVITY in selectedTravelStyle,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("액티비티를 즐겨요" in styles) styles.remove("액티비티를 즐겨요")
-                    else styles.add("액티비티를 즐겨요")
-                }
+                onClick = {onClickTravelStyle(TravelStyleForReview.ENJOY_ACTIVITY)}
             )
             CustomClickableTag(
                 tagName = "쇼핑을 좋아해요",
@@ -815,13 +869,10 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "쇼핑을 좋아해요" in styles,
+                isSelected = TravelStyleForReview.LIKE_SHOPPING in selectedTravelStyle,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("쇼핑을 좋아해요" in styles) styles.remove("쇼핑을 좋아해요")
-                    else styles.add("쇼핑을 좋아해요")
-                }
+                onClick = {onClickTravelStyle(TravelStyleForReview.LIKE_SHOPPING)}
             )
             CustomClickableTag(
                 tagName = "카페를 좋아해요",
@@ -829,22 +880,20 @@ private fun SelectReviewTag(){
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
-                isSelected = "카페를 좋아해요" in styles,
+                isSelected = TravelStyleForReview.LIKE_CAFES in selectedTravelStyle,
                 selectedColor = MateTripColors.Primary,
                 notSelectedColor = MateTripColors.Blue_04,
-                onClick = {
-                    if("카페를 좋아해요" in styles) styles.remove("카페를 좋아해요")
-                    else styles.add("카페를 좋아해요")
-                }
+                onClick = {onClickTravelStyle(TravelStyleForReview.LIKE_CAFES)}
             )
         }
     }
 }
 
 @Composable
-private fun WriteReviewDetails(){
-    var reviewDetails by remember{mutableStateOf("")}
-
+private fun WriteReviewDetails(
+    detailContent: String,
+    onUpdateDetailContent: (String) -> Unit,
+){
     Column(
         modifier = Modifier.fillMaxWidth()
     ){
@@ -861,7 +910,9 @@ private fun WriteReviewDetails(){
             )
             Spacer(Modifier.width(12.dp))
             NormalTag(
-                modifier = Modifier.width(42.dp).height(21.dp),
+                modifier = Modifier
+                    .width(42.dp)
+                    .height(21.dp),
                 tagName = "선택",
                 shape = RoundedCornerShape(size = 55.dp),
                 color = MateTripColors.Gray_03,
@@ -878,10 +929,11 @@ private fun WriteReviewDetails(){
         }
         Spacer(Modifier.height(12.dp))
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .height(180.dp),
-            value = reviewDetails,
-            onValueChange = {reviewDetails = it},
+            value = detailContent,
+            onValueChange = onUpdateDetailContent,
             shape = RoundedCornerShape(size = 10.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = MateTripColors.Blue_03,
@@ -938,7 +990,9 @@ private fun SharePictures(
             )
             Spacer(Modifier.width(12.dp))
             NormalTag(
-                modifier = Modifier.width(42.dp).height(21.dp),
+                modifier = Modifier
+                    .width(42.dp)
+                    .height(21.dp),
                 tagName = "선택",
                 shape = RoundedCornerShape(size = 55.dp),
                 color = MateTripColors.Gray_03,
@@ -965,9 +1019,7 @@ private fun SharePictures(
                             color = MateTripColors.Blue_04,
                             shape = RoundedCornerShape(size = 10.dp)
                         )
-                        .clickable {
-                            onCameraClick()
-                        },
+                        .clickable {onCameraClick()},
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ){
@@ -1003,6 +1055,12 @@ private fun SharePictures(
 @Composable
 private fun WriteReviewUITest(){
     WriteReviewScreen(
-        navBack = {}
+        navBack = {},
+        errState = ErrorState.Loading,
+        onClickDone = {a, b, c, d, e, f, g, h ->
+        },
+        onUploadImage = {
+            ""
+        }
     )
 }
