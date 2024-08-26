@@ -120,12 +120,8 @@ class EditProfileViewModel @Inject constructor(
             }
         }
     }
-    suspend fun updateProfileImg(context: Context, uri: Uri?): String {
+    suspend fun updateProfileImg(context: Context, uri: Uri): String {
         return viewModelScope.async {
-            if (uri == null) {
-                generalError.update { Pair(true, "파일 경로를 찾을 수 없습니다.") }
-                return@async ""
-            }
             val file = transformToFile(context, uri)
             if (file == null) {
                 generalError.update { Pair(true, "파일 경로를 찾을 수 없습니다.") }
@@ -144,11 +140,7 @@ class EditProfileViewModel @Inject constructor(
         }.await()
     }
 
-    fun saveImageToS3(context: Context, path: Uri?){
-        if (path == null) {
-            generalError.update{Pair(true, "파일 경로를 찾을 수 없습니다.")}
-            return
-        }
+    fun saveImageToS3(context: Context, path: Uri){
         val file = transformToFile(context, path)
         if (file == null) {
             generalError.update { Pair(true, "파일 경로를 찾을 수 없습니다.") }

@@ -3,6 +3,7 @@ package com.materip.feature_mypage.screen.MyPage
 import android.Manifest
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -120,9 +121,9 @@ fun EditProfileScreen(
     onEditClick: (profileImg: String, nickname: String, description: String, birthYear: Int, gender: String,
                   travelPreferences: SnapshotStateList<String>, travelStyles: SnapshotStateList<String>,
                   foodPreference: SnapshotStateList<String>, snsLink: String?, images: SnapshotStateList<String>) -> Unit,
-    onUploadImage: (List<Uri?>) -> Unit,
+    onUploadImage: (List<Uri>) -> Unit,
     onDeleteImage: (String) -> Unit,
-    onUpdateProfileImg: suspend (Uri?) -> String,
+    onUpdateProfileImg: suspend (Uri) -> String,
     navBack: () -> Unit
 ){
     when(uiState){
@@ -150,6 +151,7 @@ fun EditProfileScreen(
         }
         EditProfileUiState.Error -> {
             /** Error view로 변환해야 함 */
+            Log.d("TAG TEST", "edit profile screen : ${errState}")
             Text(
                 text = "Error",
                 fontSize = 100.sp,
@@ -174,9 +176,9 @@ private fun EditProfileMainContent(
     onEditClick: (profileImg: String, nickname: String, description: String, birthYear: Int, gender: String,
                   travelPreferences: SnapshotStateList<String>, travelStyles: SnapshotStateList<String>,
                   foodPreferences: SnapshotStateList<String>, snsLink: String?, images: SnapshotStateList<String>) -> Unit,
-    onUploadImage: (List<Uri?>) -> Unit,
+    onUploadImage: (List<Uri>) -> Unit,
     onDeleteImage: (String) -> Unit,
-    onUpdateProfileImg: suspend (Uri?) -> String,
+    onUpdateProfileImg: suspend (Uri) -> String,
     navBack: () -> Unit,
 ){
     val scrollState = rememberScrollState()
@@ -207,8 +209,10 @@ private fun EditProfileMainContent(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
             coroutine.launch{
-                val path = onUpdateProfileImg(uri)
-                profileImg = path
+                if (uri != null){
+                    val path = onUpdateProfileImg(uri)
+                    profileImg = path
+                }
             }
         }
     )

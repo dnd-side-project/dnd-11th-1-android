@@ -1,5 +1,6 @@
 package com.materip.feature_mypage.screen.MyPage
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -117,6 +118,7 @@ fun ProfileMainTab(
             )
         }
         ProfileMainUiState.Error -> {
+            Log.d("TAG TEST", "err state : ${errState}")
             Text(
                 text = "Error",
                 fontSize = 100.sp,
