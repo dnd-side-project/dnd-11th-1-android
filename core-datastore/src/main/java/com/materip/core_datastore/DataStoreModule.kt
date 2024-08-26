@@ -12,6 +12,8 @@ import com.materip.core_datastore.image_datastore.ImageDataStore
 import com.materip.core_datastore.image_datastore.ImageDataStoreImpl
 import com.materip.core_datastore.profile_datastore.ProfileDataStore
 import com.materip.core_datastore.profile_datastore.ProfileDataStoreImpl
+import com.materip.core_datastore.review_datastore.ReviewDataStore
+import com.materip.core_datastore.review_datastore.ReviewDataStoreImpl
 import com.materip.core_datastore.test_datastore.TestDataStore
 import com.materip.core_datastore.test_datastore.TestDataStoreImpl
 import dagger.Binds
@@ -50,4 +52,8 @@ interface DataStoreModule {
     @Singleton
     @Binds
     fun provideAccompanyDataStore(accompanyDataStoreImpl: AccompanyDataStoreImpl): AccompanyDataStore
+
+    @Singleton
+    @Binds
+    fun provideReviewDataStore(reviewDataStoreImpl: ReviewDataStoreImpl): ReviewDataStore
 }
