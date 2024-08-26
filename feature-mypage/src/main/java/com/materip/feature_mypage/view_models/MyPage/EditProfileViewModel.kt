@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.materip.core_common.ErrorState
 import com.materip.core_common.Result
 import com.materip.core_common.asResult
+import com.materip.core_common.transformToFile
 import com.materip.core_model.request.UpdateMyImagesRequestDto
 import com.materip.core_model.request.UpdateProfileRequestDto
 import com.materip.core_repository.repository.image_repository.ImageRepository
@@ -167,29 +168,6 @@ class EditProfileViewModel @Inject constructor(
     }
     fun deleteImage(path: String){
         images.remove(path)
-    }
-    private fun transformToFile(
-        context: Context,
-        uri: Uri
-    ): File? {
-        val contentResolver = context.contentResolver
-
-        val filePath = (context.applicationInfo.dataDir + File.separator + System.currentTimeMillis())
-        val file = File(filePath)
-
-        try{
-            val inputStream = contentResolver.openInputStream(uri) ?: return null
-            val outputStream = FileOutputStream(file)
-
-            val buf = ByteArray(1024)
-            var len: Int
-            while(inputStream.read(buf).also{len = it} > 0) outputStream.write(buf, 0, len)
-            outputStream.close()
-            inputStream.close()
-        } catch (ignore: Exception){
-            return null
-        }
-        return file
     }
 }
 
