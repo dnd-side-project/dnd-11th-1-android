@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -26,6 +27,8 @@ import com.materip.core_designsystem.component.MateTripBottomBar
 import com.materip.core_designsystem.component.MateTripTopAppBar
 import com.materip.feature_home3.ui.FabButton
 import com.materip.feature_home3.viewModel.HomeViewModel
+import com.materip.feature_home3.viewModel.PostBoardViewModel
+import com.materip.feature_home3.viewModel.ProfileViewModel
 import com.materip.feature_login.navigation.LoginRoute
 import com.materip.feature_mypage.navigation.MyPageRoute
 import com.materip.feature_mypage.navigation.SettingRoute
@@ -99,7 +102,8 @@ fun GetTopBar(
     currentRoute: String?,
     navController: NavHostController
 ) {
-    val viewModel: HomeViewModel = hiltViewModel()
+    val viewModel: PostBoardViewModel = hiltViewModel()
+    val profileViewModel: ProfileViewModel = hiltViewModel()
 
     val notHaveTopBar = listOf(
         LoginRoute.LoginRoute.name,
@@ -135,11 +139,17 @@ fun GetTopBar(
             BackButtonWithTitleTopAppBar(
                 screenTitle = "동행 모집하기",
                 onNavigateUp = { navController.navigateUp() },
-                onPostClick = {
-                    val boardIdDto = viewModel.createPost(viewModel.toBoardRequestDto())
-                    navController.navigate(Screen.NavigateToPost.route + "/${boardIdDto.boardId}")
-                }
+                onPostClick = { viewModel.createPost(viewModel.toBoardRequestDto()) }
             )
+
+            LaunchedEffect(viewModel.createdBoardIds) {
+                viewModel.createdBoardIds.collect { boardIds ->
+                    val newBoardId = boardIds.lastOrNull()
+                    newBoardId?.let {
+                        navController.navigate(Screen.NavigateToPost.route + "/${it}")
+                    }
+                }
+            }
         }
 
         // 타이틀 제목이 필요한 뒤로가기 상단바
@@ -153,8 +163,8 @@ fun GetTopBar(
         // 타이틀 제목이 동행글을 올린 유저의 닉네임인 뒤로가기 상단바
         Screen.Profile.route -> {
             val boardId = currentRoute.substringAfterLast("/").toIntOrNull() ?: 0
-            val userId = viewModel.getUserId(boardId)
-            val userNickname = viewModel.getNickname(userId)
+            val userId = profileViewModel.getUserId(boardId)
+            val userNickname = profileViewModel.getNickname(userId)
             BackButtonTopAppBar(
                 screenTitle = userNickname,
                 onNavigateUp = navController::navigateToBack
