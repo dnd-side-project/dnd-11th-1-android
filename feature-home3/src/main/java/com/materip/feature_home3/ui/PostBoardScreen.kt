@@ -90,123 +90,133 @@ fun PostBoardScreen(
     var capacity by remember { mutableIntStateOf(2) }
     var imageUris by remember { mutableStateOf(listOf<String>()) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 20.dp, end = 20.dp),
-        verticalArrangement = Arrangement.spacedBy(30.dp)
-    ) {
-        // 카메라, 사진 가져오기 버튼
-        // TODO: 이미지 업로드 API 연동
-        ImagePicker(
-            imageUris = imageUris,
-            onImageUrisChange = {
-                imageUris = it
-                viewModel.handleIntent(PostBoardIntent.UpdateImageUris(it))
-            }
-        )
+    when (uiState) {
+        is PostBoardUiState.Loading -> CircularProgressIndicator()
+        is PostBoardUiState.Success -> {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(start = 20.dp, end = 20.dp),
+                verticalArrangement = Arrangement.spacedBy(30.dp)
+            ) {
+                // 카메라, 사진 가져오기 버튼
+                // TODO: 이미지 업로드 API 연동
+                ImagePicker(
+                    imageUris = imageUris,
+                    onImageUrisChange = {
+                        imageUris = it
+                        viewModel.handleIntent(PostBoardIntent.UpdateImageUris(it))
+                    }
+                )
 
-        // 제목 입력
-        AccompanyTitleInput(
-            title = title,
-            onTitleChange = {
-                title = it
-                viewModel.handleIntent(PostBoardIntent.UpdateTitle(it))
-            }
-        )
+                // 제목 입력
+                AccompanyTitleInput(
+                    title = title,
+                    onTitleChange = {
+                        title = it
+                        viewModel.handleIntent(PostBoardIntent.UpdateTitle(it))
+                    }
+                )
 
-        // 내용 입력
-        AccompanyContentInput(
-            content = content,
-            onContentChange = {
-                content = it
-                viewModel.handleIntent(PostBoardIntent.UpdateContent(it))
-            }
-        )
+                // 내용 입력
+                AccompanyContentInput(
+                    content = content,
+                    onContentChange = {
+                        content = it
+                        viewModel.handleIntent(PostBoardIntent.UpdateContent(it))
+                    }
+                )
 
-        // 태그 등록
-        AccompanyTagInput(
-            tagInput = tagInput,
-            onTagInputChange = { tagInput = it },
-            tags = tags,
-            onTagAdd = { newTag ->
-                if (newTag.isNotEmpty() && tags.size < 5 && !tags.contains(newTag)) {
-                    tags = tags + newTag
-                    tagInput = ""
-                    viewModel.handleIntent(PostBoardIntent.UpdateTagNames(tags))
+                // 태그 등록
+                AccompanyTagInput(
+                    tagInput = tagInput,
+                    onTagInputChange = { tagInput = it },
+                    tags = tags,
+                    onTagAdd = { newTag ->
+                        if (newTag.isNotEmpty() && tags.size < 5 && !tags.contains(newTag)) {
+                            tags = tags + newTag
+                            tagInput = ""
+                            viewModel.handleIntent(PostBoardIntent.UpdateTagNames(tags))
+                        }
+                    },
+                    onTagRemove = { tagToRemove ->
+                        tags = tags.filter { it != tagToRemove }
+                        viewModel.handleIntent(PostBoardIntent.UpdateTagNames(tags))
+                    }
+                )
+
+                // 여행 지역
+                AccompanyRegionButton(
+                    selectedRegion = selectedRegion,
+                    onRegionSelected = { newSelectedRegion ->
+                        selectedRegion = newSelectedRegion
+                        viewModel.handleIntent(PostBoardIntent.UpdateRegion(newSelectedRegion))
+                    }
+                )
+
+                // 여행 일정
+                TravelDateCalendar { start, end ->
+                    startDate = start
+                    endDate = end
+                    viewModel.handleIntent(PostBoardIntent.UpdateStartDate(start.toString()))
+                    viewModel.handleIntent(PostBoardIntent.UpdateEndDate(end.toString()))
                 }
-            },
-            onTagRemove = { tagToRemove ->
-                tags = tags.filter { it != tagToRemove }
-                viewModel.handleIntent(PostBoardIntent.UpdateTagNames(tags))
-            }
-        )
 
-        // 여행 지역
-        AccompanyRegionButton(
-            selectedRegion = selectedRegion,
-            onRegionSelected = { newSelectedRegion ->
-                selectedRegion = newSelectedRegion
-                viewModel.handleIntent(PostBoardIntent.UpdateRegion(newSelectedRegion))
-            }
-        )
+                // 동행 유형
+                AccompanyTypeButton(
+                    selectedType = selectedType,
+                    onTypeSelected = { newSelectedType ->
+                        selectedType = newSelectedType
+                        viewModel.handleIntent(
+                            PostBoardIntent.UpdateCategory(
+                                listOfNotNull(
+                                    newSelectedType
+                                )
+                            )
+                        )
+                    }
+                )
 
-        // 여행 일정
-        TravelDateCalendar { start, end ->
-            startDate = start
-            endDate = end
-            viewModel.handleIntent(PostBoardIntent.UpdateStartDate(start.toString()))
-            viewModel.handleIntent(PostBoardIntent.UpdateEndDate(end.toString()))
+                // 모집 인원
+                SetCapacity(
+                    capacity = capacity,
+                    onCapacityChange = { newCapacity ->
+                        capacity = newCapacity
+                        viewModel.handleIntent(PostBoardIntent.UpdateCapacity(newCapacity))
+                    }
+                )
+
+                // 모집 연령
+                AccompanyAgeButton(
+                    selectedAge = age,
+                    onAgeChange = {
+                        age = it
+                        viewModel.handleIntent(PostBoardIntent.UpdateAge(it))
+                    }
+                )
+
+                // 모집 성별
+                AccompanyGenderButton(
+                    selectedGender = gender,
+                    onGenderChange = {
+                        gender = it
+                        viewModel.handleIntent(PostBoardIntent.UpdateGender(it))
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(50.dp))
+            }
         }
 
-        // 동행 유형
-        AccompanyTypeButton(
-            selectedType = selectedType,
-            onTypeSelected = { newSelectedType ->
-                selectedType = newSelectedType
-                viewModel.handleIntent(PostBoardIntent.UpdateCategory(listOfNotNull(newSelectedType)))
-            }
-        )
+        is PostBoardUiState.Error
+        -> Text("오류: \${(uiState as HomeUiState.Error).message}")
 
-        // 모집 인원
-        SetCapacity(
-            capacity = capacity,
-            onCapacityChange = { newCapacity ->
-                capacity = newCapacity
-                viewModel.handleIntent(PostBoardIntent.UpdateCapacity(newCapacity))
-            }
-        )
-
-        // 모집 연령
-        AccompanyAgeButton(
-            selectedAge = age,
-            onAgeChange = {
-                age = it
-                viewModel.handleIntent(PostBoardIntent.UpdateAge(it))
-            }
-        )
-
-        // 모집 성별
-        AccompanyGenderButton(
-            selectedGender = gender,
-            onGenderChange = {
-                gender = it
-                viewModel.handleIntent(PostBoardIntent.UpdateGender(it))
-            }
-        )
-
-        Spacer(modifier = Modifier.height(50.dp))
-
-        when (uiState) {
-            is PostBoardUiState.Loading -> CircularProgressIndicator()
-            is PostBoardUiState.Success -> Text("동행글이 성공적으로 작성되었습니다.")
-            is PostBoardUiState.Error -> Text("오류: \${(uiState as HomeUiState.Error).message}")
-            else -> {
-
-            }
+        is PostBoardUiState.Initial -> {
+            // Handle initial state if needed
         }
     }
 }
+
 
 @Composable
 private fun AccompanyTitleInput(
