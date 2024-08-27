@@ -35,7 +35,7 @@ class HomeViewModel @Inject constructor(
             _uiState.value = if (boardDetail != null) {
                 HomeUiState.SuccessLoad(boardDetail)
             } else {
-                HomeUiState.Error(result.error?.message ?: "게시글 상세 정보를 불러오는데 실패했습니다.")
+                HomeUiState.Error(result.error?.message ?: "동행글 상세 정보를 불러오는데 실패했습니다.")
             }
         }
     }
