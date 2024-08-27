@@ -58,29 +58,33 @@ import com.materip.core_designsystem.theme.MateTripColors.Gray_06
 import com.materip.core_designsystem.theme.MateTripColors.Gray_11
 import com.materip.core_designsystem.theme.MateTripColors.Primary
 import com.materip.core_designsystem.theme.MateTripTypographySet
+import com.materip.core_model.accompany_board.create.Category
+import com.materip.core_model.accompany_board.create.PreferredAge
+import com.materip.core_model.accompany_board.create.PreferredGender
+import com.materip.core_model.accompany_board.create.Region
+import com.materip.feature_home3.intent.PostBoardIntent
+import com.materip.feature_home3.state.PostBoardUiState
 import com.materip.feature_home3.ui.component.ImagePicker
-import com.materip.feature_home3.intent.HomeIntent
-import com.materip.feature_home3.state.HomeUiState
 import com.materip.feature_home3.ui.component.TravelDateCalendar
-import com.materip.feature_home3.viewModel.HomeViewModel
+import com.materip.feature_home3.viewModel.PostBoardViewModel
 import java.time.LocalDate
 
 // 동행글 작성 화면
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun PostBoardScreen(
-    viewModel: HomeViewModel = hiltViewModel(),
+    viewModel: PostBoardViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
-    var gender by remember { mutableStateOf("") }
-    var age by remember { mutableStateOf("") }
+    var gender by remember { mutableStateOf(PreferredGender.ANY) }
+    var age by remember { mutableStateOf(PreferredAge.ANY) }
     var tagInput by remember { mutableStateOf("") }
     var tags by remember { mutableStateOf(listOf<String>()) }
-    var selectedType by remember { mutableStateOf("") }
-    var selectedRegion by remember { mutableStateOf("") }
+    var selectedType by remember { mutableStateOf<Category?>(null) }
+    var selectedRegion by remember { mutableStateOf(Region.SEOUL) }
     var startDate by remember { mutableStateOf<LocalDate?>(null) }
     var endDate by remember { mutableStateOf<LocalDate?>(null) }
     var capacity by remember { mutableIntStateOf(2) }
@@ -93,11 +97,12 @@ fun PostBoardScreen(
         verticalArrangement = Arrangement.spacedBy(30.dp)
     ) {
         // 카메라, 사진 가져오기 버튼
+        // TODO: 이미지 업로드 API 연동
         ImagePicker(
             imageUris = imageUris,
             onImageUrisChange = {
                 imageUris = it
-                viewModel.onHomeIntent(HomeIntent.UpdateImageUris(it))
+                viewModel.handleIntent(PostBoardIntent.UpdateImageUris(it))
             }
         )
 
@@ -106,7 +111,7 @@ fun PostBoardScreen(
             title = title,
             onTitleChange = {
                 title = it
-                viewModel.onHomeIntent(HomeIntent.UpdateTitle(it))
+                viewModel.handleIntent(PostBoardIntent.UpdateTitle(it))
             }
         )
 
@@ -115,7 +120,7 @@ fun PostBoardScreen(
             content = content,
             onContentChange = {
                 content = it
-                viewModel.onHomeIntent(HomeIntent.UpdateContent(it))
+                viewModel.handleIntent(PostBoardIntent.UpdateContent(it))
             }
         )
 
@@ -128,21 +133,21 @@ fun PostBoardScreen(
                 if (newTag.isNotEmpty() && tags.size < 5 && !tags.contains(newTag)) {
                     tags = tags + newTag
                     tagInput = ""
-                    viewModel.onHomeIntent(HomeIntent.UpdateTagNames(tags))
+                    viewModel.handleIntent(PostBoardIntent.UpdateTagNames(tags))
                 }
             },
             onTagRemove = { tagToRemove ->
                 tags = tags.filter { it != tagToRemove }
-                viewModel.onHomeIntent(HomeIntent.UpdateTagNames(tags))
+                viewModel.handleIntent(PostBoardIntent.UpdateTagNames(tags))
             }
         )
 
         // 여행 지역
         AccompanyRegionButton(
             selectedRegion = selectedRegion,
-            onRegionSelected = {
-                selectedRegion = it
-                viewModel.onHomeIntent(HomeIntent.UpdateRegion(it))
+            onRegionSelected = { newSelectedRegion ->
+                selectedRegion = newSelectedRegion
+                viewModel.handleIntent(PostBoardIntent.UpdateRegion(newSelectedRegion))
             }
         )
 
@@ -150,16 +155,16 @@ fun PostBoardScreen(
         TravelDateCalendar { start, end ->
             startDate = start
             endDate = end
-            viewModel.onHomeIntent(HomeIntent.UpdateStartDate(start.toString()))
-            viewModel.onHomeIntent(HomeIntent.UpdateEndDate(end.toString()))
+            viewModel.handleIntent(PostBoardIntent.UpdateStartDate(start.toString()))
+            viewModel.handleIntent(PostBoardIntent.UpdateEndDate(end.toString()))
         }
 
         // 동행 유형
         AccompanyTypeButton(
             selectedType = selectedType,
-            onTypeSelected = {
-                selectedType = it
-                viewModel.onHomeIntent(HomeIntent.UpdateCategory(listOf(it)))
+            onTypeSelected = { newSelectedType ->
+                selectedType = newSelectedType
+                viewModel.handleIntent(PostBoardIntent.UpdateCategory(listOfNotNull(newSelectedType)))
             }
         )
 
@@ -168,7 +173,7 @@ fun PostBoardScreen(
             capacity = capacity,
             onCapacityChange = { newCapacity ->
                 capacity = newCapacity
-                viewModel.onHomeIntent(HomeIntent.UpdateCapacity(newCapacity))
+                viewModel.handleIntent(PostBoardIntent.UpdateCapacity(newCapacity))
             }
         )
 
@@ -177,7 +182,7 @@ fun PostBoardScreen(
             selectedAge = age,
             onAgeChange = {
                 age = it
-                viewModel.onHomeIntent(HomeIntent.UpdateAge(it))
+                viewModel.handleIntent(PostBoardIntent.UpdateAge(it))
             }
         )
 
@@ -186,17 +191,19 @@ fun PostBoardScreen(
             selectedGender = gender,
             onGenderChange = {
                 gender = it
-                viewModel.onHomeIntent(HomeIntent.UpdateGender(it))
+                viewModel.handleIntent(PostBoardIntent.UpdateGender(it))
             }
         )
 
         Spacer(modifier = Modifier.height(50.dp))
 
         when (uiState) {
-            is HomeUiState.Loading -> CircularProgressIndicator()
-            is HomeUiState.SuccessPost -> Text("게시글이 성공적으로 작성되었습니다.")
-            is HomeUiState.Error -> Text("오류: \${(uiState as HomeUiState.Error).message}")
-            else -> {}
+            is PostBoardUiState.Loading -> CircularProgressIndicator()
+            is PostBoardUiState.Success -> Text("동행글이 성공적으로 작성되었습니다.")
+            is PostBoardUiState.Error -> Text("오류: \${(uiState as HomeUiState.Error).message}")
+            else -> {
+
+            }
         }
     }
 }
@@ -297,8 +304,8 @@ private fun AccompanyContentInput(
 
 @Composable
 private fun AccompanyGenderButton(
-    selectedGender: String,
-    onGenderChange: (String) -> Unit
+    selectedGender: PreferredGender,
+    onGenderChange: (PreferredGender) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top),
@@ -316,13 +323,13 @@ private fun AccompanyGenderButton(
         ) {
             ToggleButton(
                 buttonText = "동일 성별",
-                isSelected = selectedGender == "동일 성별",
-                onClick = { onGenderChange("동일 성별") }
+                isSelected = selectedGender == PreferredGender.SAME,
+                onClick = { onGenderChange(PreferredGender.SAME) }
             )
             ToggleButton(
                 buttonText = "상관없음",
-                isSelected = selectedGender == "상관없음",
-                onClick = { onGenderChange("상관없음") }
+                isSelected = selectedGender == PreferredGender.ANY,
+                onClick = { onGenderChange(PreferredGender.ANY) }
             )
         }
     }
@@ -331,8 +338,8 @@ private fun AccompanyGenderButton(
 
 @Composable
 private fun AccompanyAgeButton(
-    selectedAge: String,
-    onAgeChange: (String) -> Unit
+    selectedAge: PreferredAge,
+    onAgeChange: (PreferredAge) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top),
@@ -350,13 +357,13 @@ private fun AccompanyAgeButton(
         ) {
             ToggleButton(
                 buttonText = "동일 나이대",
-                isSelected = selectedAge == "동일 나이대",
-                onClick = { onAgeChange("동일 나이대") }
+                isSelected = selectedAge == PreferredAge.SAME,
+                onClick = { onAgeChange(PreferredAge.SAME) }
             )
             ToggleButton(
                 buttonText = "상관없음",
-                isSelected = selectedAge == "상관없음",
-                onClick = { onAgeChange("상관없음") }
+                isSelected = selectedAge == PreferredAge.ANY,
+                onClick = { onAgeChange(PreferredAge.ANY) }
             )
         }
     }
@@ -463,11 +470,11 @@ fun AccompanyTagInput(
 
 @Composable
 fun AccompanyTypeButton(
-    selectedType: String,
-    onTypeSelected: (String) -> Unit
+    selectedType: Category?,
+    onTypeSelected: (Category?) -> Unit
 ) {
     var showDialog by remember { mutableStateOf(false) }
-    val options = listOf("동행 유형을 선택해주세요", "전체 동행", "부분 동행", "식사 동행", "투어 동행", "숙박 공유")
+    val options = listOf("전체 동행", "부분 동행", "식사 동행", "투어 동행", "숙박 공유")
 
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top),
@@ -483,10 +490,9 @@ fun AccompanyTypeButton(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            // 태그 입력
             BasicTextField(
-                value = selectedType,
-                onValueChange = onTypeSelected,
+                value = selectedType?.name ?: "",
+                onValueChange = {},
                 readOnly = true,
                 modifier = Modifier
                     .width(330.dp)
@@ -496,7 +502,7 @@ fun AccompanyTypeButton(
                     Box(
                         contentAlignment = Alignment.CenterStart
                     ) {
-                        if (selectedType.isEmpty()) {
+                        if (selectedType == null) {
                             Text(
                                 text = "동행 유형을 선택해주세요.",
                                 style = MateTripTypographySet.body04,
@@ -515,15 +521,13 @@ fun AccompanyTypeButton(
                     .clickable { showDialog = true }
             )
         }
-        // 구분선
         SimpleDivider()
     }
-    // 동행 목록
     if (showDialog) {
         CustomRadioButtonDialog(
             options = options,
             selectedOption = selectedType,
-            onOptionSelected = {
+            onOptionsSelected = {
                 onTypeSelected(it)
                 showDialog = false
             },
@@ -534,12 +538,11 @@ fun AccompanyTypeButton(
 
 @Composable
 fun AccompanyRegionButton(
-    selectedRegion: String,
-    onRegionSelected: (String) -> Unit
+    selectedRegion: Region,
+    onRegionSelected: (Region) -> Unit
 ) {
     var showDialog by remember { mutableStateOf(false) }
-    val options =
-        listOf("여행 지역을 선택해주세요", "서울", "경기·인천", "충청·대전·세종", "강원", "전라·광주", "경상·대구", "부산", "제주")
+    val options = listOf("서울", "경기·인천", "충청·대전·세종", "강원", "전라·광주", "경상·대구", "부산", "제주")
 
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top),
@@ -555,10 +558,9 @@ fun AccompanyRegionButton(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            // 태그 입력
             BasicTextField(
-                value = selectedRegion,
-                onValueChange = onRegionSelected,
+                value = selectedRegion.name,
+                onValueChange = {},
                 readOnly = true,
                 modifier = Modifier
                     .width(330.dp)
@@ -568,9 +570,9 @@ fun AccompanyRegionButton(
                     Box(
                         contentAlignment = Alignment.CenterStart
                     ) {
-                        if (selectedRegion.isEmpty()) {
+                        if (selectedRegion.name.isEmpty()) {
                             Text(
-                                text = "동행 유형을 선택해주세요.",
+                                text = "여행 지역을 선택해주세요.",
                                 style = MateTripTypographySet.body04,
                                 color = Gray_06
                             )
@@ -587,15 +589,13 @@ fun AccompanyRegionButton(
                     .clickable { showDialog = true }
             )
         }
-        // 구분선
         SimpleDivider()
     }
-    // 동행 목록
     if (showDialog) {
-        CustomRadioButtonDialog(
+        RegionRadioButtonDialog(
             options = options,
             selectedOption = selectedRegion,
-            onOptionSelected = {
+            onOptionsSelected = {
                 onRegionSelected(it)
                 showDialog = false
             },
@@ -605,10 +605,10 @@ fun AccompanyRegionButton(
 }
 
 @Composable
-fun CustomRadioButtonDialog(
+fun RegionRadioButtonDialog(
     options: List<String>,
-    selectedOption: String,
-    onOptionSelected: (String) -> Unit,
+    selectedOption: Region,
+    onOptionsSelected: (Region) -> Unit,
     onDismissRequest: () -> Unit
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
@@ -619,27 +619,70 @@ fun CustomRadioButtonDialog(
                 .padding(10.dp)
         ) {
             options.forEachIndexed { index, option ->
+                val region = Region.entries[index]
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(48.dp, Alignment.Start),
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .width(320.dp)
                         .height(47.dp)
-                        .clickable { onOptionSelected(option) }
+                        .clickable { onOptionsSelected(region) }
                         .padding(start = 10.dp, top = 10.dp, end = 12.dp, bottom = 11.dp)
                 ) {
                     OptionText(option)
                     RadioButton(
-                        selected = option == selectedOption,
-                        onClick = { onOptionSelected(option) },
+                        selected = selectedOption == region,
+                        onClick = { onOptionsSelected(region) },
                         colors = RadioButtonDefaults.colors(
                             selectedColor = Primary,
                             unselectedColor = Blue_02
-
                         )
                     )
                 }
                 if (index < options.size - 1) {
+                    SimpleDivider(Gray_03)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun CustomRadioButtonDialog(
+    options: List<String>,
+    selectedOption: Category?,
+    onOptionsSelected: (Category?) -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    Dialog(onDismissRequest = onDismissRequest) {
+        Column(
+            modifier = Modifier
+                .width(320.dp)
+                .background(Color.White, shape = RoundedCornerShape(10.dp))
+                .padding(10.dp)
+        ) {
+            options.forEach { option ->
+                val category = Category.valueOf(option)
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(48.dp, Alignment.Start),
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .width(320.dp)
+                        .height(47.dp)
+                        .clickable { onOptionsSelected(category) }
+                        .padding(start = 10.dp, top = 10.dp, end = 12.dp, bottom = 11.dp)
+                ) {
+                    OptionText(option)
+                    RadioButton(
+                        selected = selectedOption == category,
+                        onClick = { onOptionsSelected(category) },
+                        colors = RadioButtonDefaults.colors(
+                            selectedColor = Primary,
+                            unselectedColor = Blue_02
+                        )
+                    )
+                }
+                if (options.indexOf(option) < options.size - 1) {
                     SimpleDivider(Gray_03)
                 }
             }
