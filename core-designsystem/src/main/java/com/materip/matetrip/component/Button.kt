@@ -94,6 +94,33 @@ fun MateTripHomeButton(
     }
 }
 
+@Composable
+fun DeleteButton(
+    onClick: () -> Unit,
+    enabled: Boolean = false,
+    buttonText: String,
+    containerColor: Color,
+    contentColor: Color
+) {
+    Button(
+        onClick = onClick,
+        enabled = enabled,
+        shape = RoundedCornerShape(10.dp),
+        modifier = Modifier.size(width = 143.dp, height = 54.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = containerColor,
+            contentColor = contentColor,
+            disabledContainerColor = InactiveColor,
+            disabledContentColor = MateTripColors.Gray_06
+        )
+    ) {
+        Text(
+            text = buttonText,
+            style = MateTripTypographySet.title04,
+        )
+    }
+}
+
 // 홈 게시글 작성, 모집 연령, 성별 버튼
 @Composable
 fun ToggleButton(
