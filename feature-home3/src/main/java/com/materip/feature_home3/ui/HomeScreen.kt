@@ -46,6 +46,7 @@ import com.materip.core_designsystem.theme.MateTripTypographySet
 import com.materip.core_model.accompany_board.BoardItem
 import com.materip.feature_home3.intent.BoardListIntent
 import com.materip.feature_home3.state.BoardListUiState
+import com.materip.feature_home3.ui.component.toDisplayString
 import com.materip.feature_home3.viewModel.BoardViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -71,7 +72,7 @@ fun HomeScreen(
     val filteredBoardItems = if (selectedRegion == "전체") {
         boardListState.value.data
     } else {
-        boardListState.value.data.filter { it.region == selectedRegion }
+        boardListState.value.data.filter { it.region.toDisplayString() == selectedRegion }
     }
 
     Column(
@@ -203,7 +204,7 @@ fun PostItem(
                     .height(26.dp),
             ) {
                 Text(
-                    text = boardItem.region,
+                    text = boardItem.region.toDisplayString(),
                     color = Color.White,
                     style = MateTripTypographySet.title05,
                     modifier = Modifier
