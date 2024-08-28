@@ -8,10 +8,8 @@ import com.materip.core_model.accompany_board.create.Category
 import com.materip.core_model.accompany_board.create.PreferredAge
 import com.materip.core_model.accompany_board.create.PreferredGender
 import com.materip.core_model.accompany_board.create.Region
-import com.materip.core_model.accompany_board.id.BoardIdDto
 import com.materip.core_repository.repository.home_repository.BoardRepository
 import com.materip.feature_home3.intent.PostBoardIntent
-import com.materip.feature_home3.state.HomeUiState
 import com.materip.feature_home3.state.PostBoardUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
