@@ -24,7 +24,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -97,52 +96,54 @@ fun FormScreen(
 
     when (uiState) {
         is FormUiState.Initial -> {
-            var introduce by remember { mutableStateOf("") }
-            var chatLink by remember { mutableStateOf("") }
+            Column {
+                var introduce by remember { mutableStateOf("") }
+                var chatLink by remember { mutableStateOf("") }
 
-            // 동행신청에 대한 안내 문구
-            FormOverview()
+                // 동행신청에 대한 안내 문구
+                FormOverview()
 
-            // 소개를 받는 텍스트 필드
-            FormContentInput(
-                introduce = introduce,
-                onIntroduceChange = {
-                    introduce = it
-                    viewModel.onFormIntent(FormIntent.UpdateIntroduce(it))
-                }
-            )
-
-            // 경고 문구
-            FormContentWarning()
-
-            // 채팅 링크를 받는 텍스트 필드
-            FormOpenChatLink(
-                chatLink = chatLink,
-                onChatLinkChange = {
-                    chatLink = it
-                    viewModel.onFormIntent(FormIntent.UpdateChatLink(it))
-                }
-            )
-
-            // 보내기 버튼
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 20.dp, end = 20.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                MateTripHomeButton(
-                    buttonText = "보내기",
-                    enabled = isButtonEnabled,
-                    onClick = {
-                        viewModel.onFormIntent(FormIntent.SubmitCompanionRequest(boardId))
-                        showDialogState = true
-                    },
-                    modifier = Modifier
-                        .width(370.dp)
-                        .height(54.dp)
+                // 소개를 받는 텍스트 필드
+                FormContentInput(
+                    introduce = introduce,
+                    onIntroduceChange = {
+                        introduce = it
+                        viewModel.onFormIntent(FormIntent.UpdateIntroduce(it))
+                    }
                 )
-                Spacer(modifier = Modifier.height(30.dp))
+
+                // 경고 문구
+                FormContentWarning()
+
+                // 채팅 링크를 받는 텍스트 필드
+                FormOpenChatLink(
+                    chatLink = chatLink,
+                    onChatLinkChange = {
+                        chatLink = it
+                        viewModel.onFormIntent(FormIntent.UpdateChatLink(it))
+                    }
+                )
+
+                // 보내기 버튼
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, end = 20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    MateTripHomeButton(
+                        buttonText = "보내기",
+                        enabled = isButtonEnabled,
+                        onClick = {
+                            viewModel.onFormIntent(FormIntent.SubmitCompanionRequest(boardId))
+                            showDialogState = true
+                        },
+                        modifier = Modifier
+                            .width(370.dp)
+                            .height(54.dp)
+                    )
+                    Spacer(modifier = Modifier.height(30.dp))
+                }
             }
         }
 
@@ -151,21 +152,51 @@ fun FormScreen(
         }
 
         is FormUiState.Success -> {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 20.dp, end = 20.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                MateTripHomeButton(
-                    buttonText = "보내기",
-                    enabled = false,
-                    onClick = { /* 버튼 비활성화로 클릭 불가 */ },
-                    modifier = Modifier
-                        .width(370.dp)
-                        .height(54.dp)
+            Column {
+                var introduce by remember { mutableStateOf("") }
+                var chatLink by remember { mutableStateOf("") }
+
+                // 동행신청에 대한 안내 문구
+                FormOverview()
+
+                // 소개를 받는 텍스트 필드
+                FormContentInput(
+                    introduce = introduce,
+                    onIntroduceChange = {
+                        introduce = it
+                        viewModel.onFormIntent(FormIntent.UpdateIntroduce(it))
+                    }
                 )
-                Spacer(modifier = Modifier.height(30.dp))
+
+                // 경고 문구
+                FormContentWarning()
+
+                // 채팅 링크를 받는 텍스트 필드
+                FormOpenChatLink(
+                    chatLink = chatLink,
+                    onChatLinkChange = {
+                        chatLink = it
+                        viewModel.onFormIntent(FormIntent.UpdateChatLink(it))
+                    }
+                )
+
+                // 보내기 버튼
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, end = 20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    MateTripHomeButton(
+                        buttonText = "보내기",
+                        enabled = false,
+                        onClick = { /* 버튼 비활성화로 클릭 불가 */ },
+                        modifier = Modifier
+                            .width(370.dp)
+                            .height(54.dp)
+                    )
+                    Spacer(modifier = Modifier.height(30.dp))
+                }
             }
         }
 
@@ -310,29 +341,36 @@ private fun FormOpenChatLink(
     }
 }
 
-//@Preview
+@Preview(showBackground = true)
 @Composable
-fun FormScreenPreview() {
-    var introduce by remember { mutableStateOf("") }
-    var chatLink by remember { mutableStateOf("") }
+fun Preview() {
+    Column {
+        var introduce by remember { mutableStateOf("") }
+        var chatLink by remember { mutableStateOf("") }
 
-    Column(
-        modifier = Modifier
-            .background(Color.White)
-    ) {
         // 동행신청에 대한 안내 문구
         FormOverview()
 
         // 소개를 받는 텍스트 필드
         FormContentInput(
             introduce = introduce,
-            onIntroduceChange = { introduce = it }
+            onIntroduceChange = {
+                introduce = it
+            }
         )
+
+        // 경고 문구
         FormContentWarning()
+
+        // 채팅 링크를 받는 텍스트 필드
         FormOpenChatLink(
             chatLink = chatLink,
-            onChatLinkChange = { chatLink = it }
+            onChatLinkChange = {
+                chatLink = it
+            }
         )
+
+        // 보내기 버튼
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -342,7 +380,8 @@ fun FormScreenPreview() {
             MateTripHomeButton(
                 buttonText = "보내기",
                 enabled = true,
-                onClick = { },
+                onClick = {
+                },
                 modifier = Modifier
                     .width(370.dp)
                     .height(54.dp)
@@ -350,42 +389,4 @@ fun FormScreenPreview() {
             Spacer(modifier = Modifier.height(30.dp))
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun AlertDialogPreview() {
-    var showDialogState by remember { mutableStateOf(true) }
-
-    AlertDialog(
-        onDismissRequest = { showDialogState = false },
-        confirmButton = {
-            MateTripHomeButton(
-                buttonText = "확인",
-                enabled = true,
-                onClick = { showDialogState = false },
-                modifier = Modifier
-                    .width(296.dp)
-                    .height(54.dp)
-            )
-        },
-        text = {
-            Box(
-                modifier = Modifier
-                    .height(80.dp)
-                    .width(320.dp)
-                    .background(Color.White),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "동행 신청을 보냈어요 :)",
-                    style = MateTripTypographySet.title03,
-                    color = Color.Black,
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
-        },
-        containerColor = Color.White,
-        shape = RoundedCornerShape(size = 10.dp)
-    )
 }
