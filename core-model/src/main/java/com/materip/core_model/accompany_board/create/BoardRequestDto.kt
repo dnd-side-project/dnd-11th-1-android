@@ -30,6 +30,7 @@ enum class Region {
     JEJU
 }
 
+// TODO: 글 상태에 따라서 상태값을 변경해야함
 enum class BoardStatus {
     RECRUITING,
     RECRUITMENT_COMPLETED,
