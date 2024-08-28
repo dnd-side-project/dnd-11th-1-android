@@ -104,16 +104,10 @@ fun HomeScreen(
                     )
                 }
                 is BoardListUiState.Success -> {
-                    // 성공 상태일 때 더미 데이터로 UI 표시
                     ShowAccompanyPost(
-                        boardItems = (uiState as BoardListUiState.Success).dummyData,
+                        boardItems = filteredBoardItems,
                         onPostClick = onNavigateToPostDetail
                     )
-                    // TODO: 성공 상태일 때 실제 데이터로 UI 표시
-//                    ShowAccompanyPost(
-//                        boardItems = filteredBoardItems,
-//                        onPostClick = onNavigateToPostDetail
-//                    )
                 }
                 is BoardListUiState.Error -> {
                     // 오류 상태일 때 더미 데이터로 UI 표시
