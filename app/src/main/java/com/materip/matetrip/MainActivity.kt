@@ -23,6 +23,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.materip.core_designsystem.component.BackButtonTopAppBar
 import com.materip.core_designsystem.component.BackButtonWithTitleTopAppBar
+import com.materip.core_designsystem.component.BoardDetailTopAppBar
 import com.materip.core_designsystem.component.MateTripBottomBar
 import com.materip.core_designsystem.component.MateTripTopAppBar
 import com.materip.feature_home3.ui.FabButton
@@ -104,6 +105,7 @@ fun GetTopBar(
 ) {
     val viewModel: PostBoardViewModel = hiltViewModel()
     val profileViewModel: ProfileViewModel = hiltViewModel()
+    val homeViewModel: HomeViewModel = hiltViewModel()
 
     val notHaveTopBar = listOf(
         LoginRoute.LoginRoute.name,
@@ -174,6 +176,14 @@ fun GetTopBar(
         //별개 top bar 보유
         in notHaveTopBar -> {
 
+        }
+
+        // 뒤로가기, 액션이 필요한 상단바
+        Screen.NavigateToPost.route -> {
+            BoardDetailTopAppBar(
+                onNavigateUp = navController::navigateToBack,
+                showDialogState = homeViewModel.showDialogState,
+            )
         }
 
         // 뒤로가기만 있는 상단바
