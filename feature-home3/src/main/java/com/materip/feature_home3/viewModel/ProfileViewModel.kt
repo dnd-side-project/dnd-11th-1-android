@@ -51,7 +51,7 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    private fun getUserId(boardId: Int): Int {
+    fun getUserId(boardId: Int): Int {
         var userId: Int? = null
         viewModelScope.launch {
             val result = boardRepository.getBoardDetail(boardId)
@@ -60,7 +60,7 @@ class ProfileViewModel @Inject constructor(
         return userId ?: 0
     }
 
-    private fun getNickname(userId: Int): String {
+    fun getNickname(userId: Int): String {
         var nickname: String? = null
         viewModelScope.launch {
             val result = boardRepository.getUserProfile()
