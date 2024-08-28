@@ -22,6 +22,7 @@ class HomeViewModel @Inject constructor(
     fun onHomeIntent(intent: HomeIntent) {
         when (intent) {
             is HomeIntent.LoadBoardDetail -> loadBoardDetail(intent.boardId)
+            is HomeIntent.DeleteBoard -> deleteBoard(intent.boardId)
         }
     }
 
@@ -36,6 +37,22 @@ class HomeViewModel @Inject constructor(
                 HomeUiState.SuccessLoad(boardDetail)
             } else {
                 HomeUiState.Error(result.error?.message ?: "동행글 상세 정보를 불러오는데 실패했습니다.")
+            }
+        }
+    }
+
+    // 동행글 삭제하는 로직
+    private fun deleteBoard(boardId: Int) {
+        viewModelScope.launch {
+            _uiState.value = HomeUiState.Loading
+
+            val result = boardRepository.deleteBoard(boardId)
+            val deleteBoardResult = result.data
+
+            _uiState.value = if (deleteBoardResult != null) {
+                HomeUiState.SuccessDelete(deleteBoardResult)
+            } else {
+                HomeUiState.Error(result.error?.message ?: "동행글 삭제에 실패했습니다.")
             }
         }
     }
