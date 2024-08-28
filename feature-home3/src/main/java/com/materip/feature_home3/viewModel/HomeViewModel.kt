@@ -1,5 +1,6 @@
 package com.materip.feature_home3.viewModel
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.materip.core_repository.repository.home_repository.BoardRepository
@@ -18,6 +19,8 @@ class HomeViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Initial)
     val uiState: StateFlow<HomeUiState> = _uiState
+
+    val showDialogState = mutableStateOf(false)
 
     fun onHomeIntent(intent: HomeIntent) {
         when (intent) {
