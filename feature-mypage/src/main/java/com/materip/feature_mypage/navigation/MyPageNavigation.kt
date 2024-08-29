@@ -1,6 +1,5 @@
 package com.materip.feature_mypage.navigation
 
-import androidx.compose.runtime.internal.composableLambda
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -18,12 +17,13 @@ import com.materip.feature_mypage.screen.MyPage.ReviewRoute
 import com.materip.feature_mypage.screen.MyPage.SendApplicationRoute
 import com.materip.feature_mypage.screen.MyPage.WriteReviewRoute
 
-fun NavController.navigateToMyPageGraph() = navigate(MyPageRoute.MyPageGraph.name)
+fun NavController.navigateToMyPageGraph() = navigate(MyPageRoute.MyPageGraph.name){
+    launchSingleTop = true
+    popUpTo(graph.id){inclusive = true}
+}
 fun NavController.navigateToMyPage() = navigate(MyPageRoute.MyPageRoute.name){
-    this.launchSingleTop = true
-    this.popUpTo(graph.startDestinationId){
-        inclusive = true
-    }
+    launchSingleTop = true
+    popUpTo(graph.id){inclusive = true}
 }
 fun NavController.navigateToEditProfile() = navigate(MyPageRoute.EditProfileRoute.name)
 fun NavController.navigateToProfileDescription() = navigate(MyPageRoute.ProfileDescriptionRoute.name)
