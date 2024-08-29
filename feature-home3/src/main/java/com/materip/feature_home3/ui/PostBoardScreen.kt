@@ -63,6 +63,7 @@ import com.materip.core_model.accompany_board.create.PreferredAge
 import com.materip.core_model.accompany_board.create.PreferredGender
 import com.materip.core_model.accompany_board.create.Region
 import com.materip.feature_home3.intent.PostBoardIntent
+import com.materip.feature_home3.state.ImageUploadState
 import com.materip.feature_home3.state.PostBoardUiState
 import com.materip.feature_home3.ui.component.ImagePicker
 import com.materip.feature_home3.ui.component.TravelDateCalendar
@@ -76,6 +77,7 @@ fun PostBoardScreen(
     viewModel: PostBoardViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val imageUploadState by viewModel.imageUploadState.collectAsState()
 
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
@@ -100,12 +102,17 @@ fun PostBoardScreen(
                 verticalArrangement = Arrangement.spacedBy(30.dp)
             ) {
                 // 카메라, 사진 가져오기 버튼
-                // TODO: 이미지 업로드 API 연동
                 ImagePicker(
                     imageUris = imageUris,
                     onImageUrisChange = {
                         imageUris = it
                         viewModel.handleIntent(PostBoardIntent.UpdateImageUris(it))
+                    },
+                    onUploadImage = { context, uri ->
+                        viewModel.handleIntent(PostBoardIntent.UploadImage(context, uri))
+                    },
+                    onDeleteImage = { imagePath ->
+                        viewModel.handleIntent(PostBoardIntent.DeleteImage(imagePath))
                     }
                 )
 
@@ -214,6 +221,14 @@ fun PostBoardScreen(
         is PostBoardUiState.Initial -> {
             // Handle initial state if needed
         }
+    }
+    when (imageUploadState) {
+        is ImageUploadState.Loading -> CircularProgressIndicator()
+        is ImageUploadState.Error -> Text("이미지 업로드 오류: ${(imageUploadState as ImageUploadState.Error).error}")
+        is ImageUploadState.Success -> {
+            // Handle success state if needed
+        }
+        else -> {}
     }
 }
 
