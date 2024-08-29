@@ -1,5 +1,7 @@
 package com.materip.feature_home3.intent
 
+import android.content.Context
+import android.net.Uri
 import com.materip.core_model.accompany_board.create.BoardRequestDto
 import com.materip.core_model.accompany_board.create.BoardStatus
 import com.materip.core_model.accompany_board.create.Category
@@ -20,6 +22,8 @@ sealed class PostBoardIntent {
     data class UpdateCapacity(val capacity: Int) : PostBoardIntent()
     data class UpdateBoardStatus(val boardStatus: BoardStatus) : PostBoardIntent()
     data class UpdateImageUris(val imageUris: List<String>) : PostBoardIntent()
-
     data class CreatePost(val boardRequestDto: BoardRequestDto) : PostBoardIntent()
+    data class UploadImage(val context: Context, val uri: Uri?) : PostBoardIntent()
+    data class DeleteImage(val imagePath: String) : PostBoardIntent()
+    data class TransformToFile(val context: Context, val uri: Uri) : PostBoardIntent()
 }
