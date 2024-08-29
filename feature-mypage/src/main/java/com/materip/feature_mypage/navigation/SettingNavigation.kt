@@ -1,6 +1,7 @@
 package com.materip.feature_mypage.navigation
 
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
@@ -10,12 +11,13 @@ import com.materip.feature_mypage.screen.Setting.GetAuthCodeRoute
 import com.materip.feature_mypage.screen.Setting.SettingRoute
 import com.materip.feature_mypage.screen.Setting.SmsVerificationRoute
 
-fun NavController.navigateToSettingGraph() = navigate(SettingRoute.SettingGraph.name)
+fun NavController.navigateToSettingGraph() = navigate(SettingRoute.SettingGraph.name){
+    launchSingleTop = true
+    popUpTo(graph.id){inclusive = true}
+}
 fun NavController.navigateToSetting() = navigate(SettingRoute.SettingRoute.name){
-    this.launchSingleTop = true
-    this.popUpTo(graph.startDestinationId){
-        inclusive = true
-    }
+    launchSingleTop = true
+    popUpTo(graph.id){inclusive = true}
 }
 fun NavController.navigateToAccountInfo() = navigate(SettingRoute.AccountInfoRoute.name)
 fun NavController.navigateToAlarmSetting() = navigate(SettingRoute.AlarmSettingRoute.name)
