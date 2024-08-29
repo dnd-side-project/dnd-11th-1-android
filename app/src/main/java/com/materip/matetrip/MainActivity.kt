@@ -34,6 +34,8 @@ import com.materip.core_designsystem.component.BackButtonWithTitleTopAppBar
 import com.materip.core_designsystem.component.MateTripBottomBar
 import com.materip.core_designsystem.component.MateTripTopAppBar
 import com.materip.feature_login.navigation.LoginRoute
+import com.materip.feature_mypage.navigation.navigateToMyPageGraph
+import com.materip.feature_mypage.navigation.navigateToSettingGraph
 import com.materip.feature_onboarding.navigation.OnboardingRoute
 import com.materip.matetrip.navigation.Screen
 import com.materip.matetrip.navigation.SetUpNavGraph
@@ -59,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         WindowCompat.setDecorFitsSystemWindows(window, true)
-        requestPermissions()
+        requestPermissions() //권한 요청 함수
         setContent {
             MatetripTheme {
                 val navController = rememberNavController()
@@ -84,9 +86,10 @@ class MainActivity : AppCompatActivity() {
                     bottomBar = {
                         if(currentRoute in useBottomNavScreen){
                             MateTripBottomBar(
+                                currentRoute = currentRoute ?: "home",
                                 onHomeClick = { navController.navigate(Screen.Home.route) },
-                                onMyPageClick = { navController.navigate(Screen.MyPage.route) },
-                                onSettingClick = { navController.navigate(Screen.Setting.route) }
+                                onMyPageClick = navController::navigateToMyPageGraph,
+                                onSettingClick = navController::navigateToSettingGraph
                             )
                         }
                     },
