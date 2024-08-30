@@ -1,13 +1,16 @@
 package com.materip.feature_mypage.navigation
 
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.materip.feature_mypage.screen.Setting.AccountDeletionNoticeRoute
 import com.materip.feature_mypage.screen.Setting.AccountInfoRoute
 import com.materip.feature_mypage.screen.Setting.AlarmSettingRoute
+import com.materip.feature_mypage.screen.Setting.DeleteAccountDoneRoute
+import com.materip.feature_mypage.screen.Setting.DeleteAccountRoute
 import com.materip.feature_mypage.screen.Setting.GetAuthCodeRoute
+import com.materip.feature_mypage.screen.Setting.LogoutRoute
 import com.materip.feature_mypage.screen.Setting.SettingRoute
 import com.materip.feature_mypage.screen.Setting.SmsVerificationRoute
 
@@ -23,13 +26,22 @@ fun NavController.navigateToAccountInfo() = navigate(SettingRoute.AccountInfoRou
 fun NavController.navigateToAlarmSetting() = navigate(SettingRoute.AlarmSettingRoute.name)
 fun NavController.navigateToGetAuthCode() = navigate(SettingRoute.GetAuthCodeRoute.name)
 fun NavController.navigateToSMSVerification() = navigate(SettingRoute.SMSVerificationRoute.name)
+fun NavController.navigateToAccountDeletionNotice() = navigate(SettingRoute.AccountDeletionNoticeRoute.name)
+fun NavController.navigateToDeleteAccountDone() = navigate(SettingRoute.DeleteAccountDoneRoute.name)
+fun NavController.navigateToDeleteAccount() = navigate(SettingRoute.DeleteAccountRoute.name)
+fun NavController.navigateToLogout() = navigate(SettingRoute.LogoutRoute.name)
 
 fun NavGraphBuilder.settingGraph(
+    navHome: ()-> Unit,
+    navLogin: () -> Unit,
     navSetting: () -> Unit,
     navAccountInfo: () -> Unit,
     navAlarmSetting: () -> Unit,
     navGetAuthCode: () -> Unit,
     navSmsVerification: () -> Unit,
+    navLogout: () -> Unit,
+    navDeleteAccount: () -> Unit,
+    navAccountDeletionNotice: () -> Unit,
     navBack: () -> Unit
 ){
     navigation(
@@ -54,13 +66,33 @@ fun NavGraphBuilder.settingGraph(
         composable(SettingRoute.AccountInfoRoute.name){
             AccountInfoRoute(
                 navSmsVerification = navSmsVerification,
-                navBack = navBack
+                navBack = navBack,
+                navLogout = navLogout,
+                navDeleteAccount = navDeleteAccount
             )
         }
         composable(SettingRoute.SMSVerificationRoute.name){
             SmsVerificationRoute(
                 navGetAuthCode = navGetAuthCode,
                 navSetting = navSetting,
+            )
+        }
+        composable(SettingRoute.AccountDeletionNoticeRoute.name){
+            AccountDeletionNoticeRoute()
+        }
+        composable(SettingRoute.DeleteAccountDoneRoute.name){
+            DeleteAccountDoneRoute()
+        }
+        composable(SettingRoute.DeleteAccountRoute.name){
+            DeleteAccountRoute(
+                navHome = navHome,
+                navAccountDeletionNotice = navAccountDeletionNotice,
+                navBack = navBack
+            )
+        }
+        composable(SettingRoute.LogoutRoute.name){
+            LogoutRoute(
+                navLogin = navLogin
             )
         }
     }
