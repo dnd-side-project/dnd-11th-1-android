@@ -17,11 +17,15 @@ import com.materip.feature_home3.ui.PostBoardScreen
 import com.materip.feature_home3.ui.ProfileScreen
 import com.materip.feature_home3.ui.ReviewScreen
 import com.materip.feature_login.navigation.login
+import com.materip.feature_login.navigation.navigateToLogin
 import com.materip.feature_mypage.navigation.myPageGraph
+import com.materip.feature_mypage.navigation.navigateToAccountDeletionNotice
 import com.materip.feature_mypage.navigation.navigateToAccountInfo
 import com.materip.feature_mypage.navigation.navigateToAlarmSetting
+import com.materip.feature_mypage.navigation.navigateToDeleteAccount
 import com.materip.feature_mypage.navigation.navigateToEditProfile
 import com.materip.feature_mypage.navigation.navigateToGetAuthCode
+import com.materip.feature_mypage.navigation.navigateToLogout
 import com.materip.feature_mypage.navigation.navigateToPreview
 import com.materip.feature_mypage.navigation.navigateToProfileDescription
 import com.materip.feature_mypage.navigation.navigateToQuiz100
@@ -66,12 +70,17 @@ fun SetUpNavGraph(
 
         /** setting graph */
         settingGraph(
+            navHome = { navController.navigate(Screen.Home.route) },
+            navLogin = navController::navigateToLogin,
             navSetting = navController::navigateToSetting,
             navAccountInfo = navController::navigateToAccountInfo,
             navAlarmSetting = navController::navigateToAlarmSetting,
             navGetAuthCode = navController::navigateToGetAuthCode,
             navSmsVerification = navController::navigateToSMSVerification,
-            navBack = navController::navigateToBack
+            navLogout = navController::navigateToLogout,
+            navDeleteAccount = navController::navigateToDeleteAccount,
+            navAccountDeletionNotice = navController::navigateToAccountDeletionNotice,
+            navBack = navController::navigateToBack,
         )
 
         /** my-page graph */
