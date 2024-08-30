@@ -7,18 +7,19 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.materip.core_designsystem.component.ConfirmationDialog
 import com.materip.core_designsystem.component.NormalTopBar
 import com.materip.core_designsystem.icon.Badges
 import com.materip.core_designsystem.icon.Icons
@@ -46,8 +48,12 @@ import com.materip.core_model.ui_model.AccountInfoClass
 fun AccountInfoRoute(
     navSmsVerification: () -> Unit,
     navBack: () -> Unit,
+    navLogout: () -> Unit,
+    navDeleteAccount: () -> Unit
 ){
     AccountInfoScreen(
+        navLogout = navLogout,
+        navDeleteAccount = navDeleteAccount,
         navSmsVerification = navSmsVerification,
         navBack = navBack
     )
@@ -55,9 +61,12 @@ fun AccountInfoRoute(
 
 @Composable
 fun AccountInfoScreen(
+    navLogout: () -> Unit,
+    navDeleteAccount: () -> Unit,
     navSmsVerification: () -> Unit,
-    navBack: () -> Unit
+    navBack: () -> Unit,
 ){
+    var showLogoutDialog by remember{mutableStateOf(false)}
     val dummyData = AccountInfoClass(
         kakaoAccount = "asdfasdf@kakao.com",
         isSecondAuthDone = false,
@@ -65,6 +74,13 @@ fun AccountInfoScreen(
         isSnsLinked = false,
         instagram = null
     )
+    if (showLogoutDialog){
+        ConfirmationDialog(
+            dialogMsg = "정말 로그아웃 하시나요?",
+            onOkClick = { navLogout() },
+            onDismissRequest = {showLogoutDialog = false}
+        )
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -92,6 +108,38 @@ fun AccountInfoScreen(
             isSnsLinked = dummyData.isSnsLinked,
             instagram = dummyData.instagram
         )
+        Spacer(Modifier.height(40.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(30.dp)
+                .clickable { showLogoutDialog = true },
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(
+                text = "로그아웃",
+                fontSize = 14.sp,
+                fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
+                fontWeight = FontWeight(400),
+                color = MateTripColors.Gray_11
+            )
+        }        
+        Spacer(Modifier.height(40.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(30.dp)
+                .clickable { navDeleteAccount() },
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(
+                text = "탈퇴하기",
+                fontSize = 14.sp,
+                fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
+                fontWeight = FontWeight(400),
+                color = MateTripColors.Gray_11
+            )
+        }
     }
 }
 
@@ -305,6 +353,8 @@ private fun LinkSNSView(
 @Composable
 private fun AccountInfoUITest(){
     AccountInfoScreen(
+        navLogout = {},
+        navDeleteAccount = {},
         navSmsVerification = {},
         navBack = {}
     )
