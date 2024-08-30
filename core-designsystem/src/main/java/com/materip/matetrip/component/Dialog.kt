@@ -495,13 +495,16 @@ fun WarningDialog(
         )
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .background(color = MateTripColors.Red_01)
                 .padding(12.dp),
             horizontalArrangement = Arrangement.Center
         ){
             Icon(
-                modifier = Modifier.size(24.dp).clip(CircleShape),
+                modifier = Modifier
+                    .size(24.dp)
+                    .clip(CircleShape),
                 painter = painterResource(Badges.warning_badge),
                 contentDescription = "Warning Icon"
             )
@@ -536,10 +539,15 @@ private fun DialogUITest(){
         Text(value)
     }
     if(isOpen){
-        SelectableDialog(
-            value = value,
-            onValueChange = {value = it},
-            options = options,
+//        SelectableDialog(
+//            value = value,
+//            onValueChange = {value = it},
+//            options = options,
+//            onDismissRequest = {isOpen = false}
+//        )
+        ConfirmationDialog(
+            dialogMsg = "정말 로그아웃 하시나요?",
+            onOkClick = { isOpen = false },
             onDismissRequest = {isOpen = false}
         )
     }
