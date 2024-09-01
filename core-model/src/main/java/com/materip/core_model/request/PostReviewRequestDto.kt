@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PostReviewRequestDto(
+    val receiverId: Int,
     val accompanyBoardId: Int,
     val satisfactionLevel: String,
     val recommendationStatus: String,
