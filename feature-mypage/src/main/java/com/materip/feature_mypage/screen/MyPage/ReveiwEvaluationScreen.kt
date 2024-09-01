@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,37 +23,74 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.materip.core_common.ErrorState
 import com.materip.core_designsystem.component.NormalTopBar
 import com.materip.core_designsystem.component.ReviewItem
+import com.materip.core_model.response.EvaluationItem
+import com.materip.core_model.response.GetReviewEvaluationsResponseDto
+import com.materip.core_model.ui_model.PersonalityType
 import com.materip.core_model.ui_model.ReviewClass
+import com.materip.core_model.ui_model.TravelPreferenceForReview
+import com.materip.core_model.ui_model.TravelStyleForReview
+import com.materip.feature_mypage.view_models.MyPage.ReviewEvaluationUiState
+import com.materip.feature_mypage.view_models.MyPage.ReviewEvaluationViewModel
 
 @Composable
 fun ReviewEvaluationRoute(
     navBack: () -> Unit,
+    viewModel: ReviewEvaluationViewModel = hiltViewModel()
 ){
-    ReviewEvaluationScreen(navBack = navBack)
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val errState = viewModel.errorState.collectAsStateWithLifecycle()
+    ReviewEvaluationScreen(
+        uiState = uiState.value,
+        errState = errState.value,
+        navBack = navBack
+    )
 }
 
 @Composable
 fun ReviewEvaluationScreen(
+    uiState: ReviewEvaluationUiState,
+    errState: ErrorState,
     navBack: () -> Unit,
 ){
-    val dummyReview = ReviewClass(
-        totalCount = 14,
-        review = listOf(
-            Pair(5, "붙임성이 좋아요."),
-            Pair(3, "친절해요."),
-            Pair(3, "계획적이에요."),
-            Pair(2, "열정적이에요."),
-            Pair(1, "이성적이에요."),
-        )
-    )
+    when(uiState){
+        ReviewEvaluationUiState.Loading -> {
+            CircularProgressIndicator()
+        }
+        ReviewEvaluationUiState.Error -> {
+            Text(
+                text = "Error",
+                fontSize = 100.sp,
+                color = Color.Red
+            )
+        }
+        is ReviewEvaluationUiState.Success -> {
+            ReviewEvaluationMainContent(
+                totalCount = uiState.reviewEvaluations.evaluationCount,
+                reviewEvaluations = uiState.reviewEvaluations.evaluationResponse,
+                navBack = navBack
+            )
+        }
+    }
+
+}
+
+@Composable
+private fun ReviewEvaluationMainContent(
+    totalCount: Int,
+    reviewEvaluations: List<EvaluationItem>,
+    navBack: () -> Unit
+){
     val totalCountText = buildAnnotatedString {
         withStyle(style = SpanStyle(fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)))){
             append("총 ")
         }
         withStyle(style = SpanStyle(fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.roboto_medium)))){
-            append(dummyReview.totalCount.toString())
+            append("${totalCount}")
         }
         withStyle(style = SpanStyle(fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)))){
             append("개")
@@ -81,8 +119,11 @@ fun ReviewEvaluationScreen(
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ){
-            items(dummyReview.review){
-                ReviewItem(review = it)
+            items(reviewEvaluations){evaluation ->
+                ReviewItem(
+                    message = evaluation.getKoreanType(),
+                    count = evaluation.count
+                )
             }
         }
     }
@@ -91,5 +132,35 @@ fun ReviewEvaluationScreen(
 @Preview
 @Composable
 private fun ReviewUiTest(){
-    ReviewEvaluationScreen(navBack = {})
+    ReviewEvaluationScreen(
+        uiState = ReviewEvaluationUiState.Success(
+            reviewEvaluations = GetReviewEvaluationsResponseDto(
+                evaluationCount = 14,
+                evaluationResponse = listOf(
+                    EvaluationItem(
+                        type = PersonalityType.GOOD_ATTACHMENT.name,
+                        count = 5
+                    ),
+                    EvaluationItem(
+                        type = PersonalityType.KIND.name,
+                        count = 3
+                    ),
+                    EvaluationItem(
+                        type = TravelPreferenceForReview.PLANNED.name,
+                        count = 3
+                    ),
+                    EvaluationItem(
+                        type = PersonalityType.PASSIONATE.name,
+                        count = 2
+                    ),
+                    EvaluationItem(
+                        type = PersonalityType.RATIONAL.name,
+                        count = 1
+                    ),
+                )
+            ),
+        ),
+        errState = ErrorState.Loading,
+        navBack = {}
+    )
 }
