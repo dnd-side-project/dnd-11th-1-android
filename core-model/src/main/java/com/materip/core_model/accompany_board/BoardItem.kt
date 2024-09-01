@@ -11,8 +11,8 @@ data class BoardItem(
     val boardId: Int,
     val title: String,
     val region: String,
-    var startDate: String,
-    var endDate: String,
+    val startDate: String,
+    val endDate: String,
     val nickname: String,
     val imageUrls: List<String>
 ){
