@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -64,6 +65,9 @@ class SendApplicationDescViewModel @Inject constructor(
     fun setId(id: Int?){
         if (id == null) generalError.update{Pair(true, "해당 신청을 찾지 못했습니다.")}
         applicationId.update{ id }
+    }
+
+    fun cancelApplication(){
     }
 }
 

@@ -71,6 +71,7 @@ fun SendApplicationRoute(
     SendApplicationScreen(
         uiState = uiState.value,
         errState = errState.value,
+        onClickCancel = { viewModel.cancelApplication() },
         navPostDescription = navPostDescription,
         navBack = navBack
     )
@@ -80,6 +81,7 @@ fun SendApplicationRoute(
 fun SendApplicationScreen(
     uiState: SendApplicationDescUiState,
     errState: ErrorState,
+    onClickCancel: () -> Unit,
     navPostDescription: () -> Unit,
     navBack: () -> Unit,
 ){
@@ -97,6 +99,7 @@ fun SendApplicationScreen(
         is SendApplicationDescUiState.Success -> {
             SendApplicationContent(
                 data = uiState.data,
+                onClickCancel = onClickCancel,
                 navBack = navBack
             )
         }
@@ -106,6 +109,7 @@ fun SendApplicationScreen(
 @Composable
 private fun SendApplicationContent(
     data: AccompanyApplicationResponseDto,
+    onClickCancel: () -> Unit,
     navBack: () -> Unit
 ){
     val scrollState = rememberScrollState()
@@ -132,9 +136,9 @@ private fun SendApplicationContent(
         ConfirmationDialog(
             dialogMsg = "취소된 동행 신청은 복구가 불가능해요.\n동행 신청을 취소하시나요?",
             onOkClick = {
-                /** 동행 취소 신청 api */
                 isOpen = false
                 isCancellable = false
+                onClickCancel()
             },
             onDismissRequest = {isOpen = false}
         )
@@ -339,6 +343,7 @@ private fun SendApplicationUITest(){
     SendApplicationScreen(
         uiState = SendApplicationDescUiState.Loading,
         errState = ErrorState.Loading,
+        onClickCancel = {},
         navPostDescription = {},
         navBack = {}
     )
