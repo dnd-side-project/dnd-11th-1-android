@@ -37,7 +37,7 @@ import com.materip.feature_mypage.view_models.MyPage.ReviewListViewModel
 @Composable
 fun ReviewListRoute(
     navBack: () -> Unit,
-    navReviewDescription: () -> Unit,
+    navReviewDescription: (Int) -> Unit,
     viewModel: ReviewListViewModel = hiltViewModel()
 ){
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
@@ -56,7 +56,7 @@ fun ReviewListScreen(
     uiState: ReviewListUiState,
     errState: ErrorState,
     navBack: () -> Unit,
-    navReviewDescription: () -> Unit,
+    navReviewDescription: (Int) -> Unit,
 ){
     when(uiState){
         ReviewListUiState.Loading -> {
@@ -85,7 +85,7 @@ private fun ReviewListMainContent(
     reviews: List<ReviewItem>,
     totalCount: Int,
     navBack: () -> Unit,
-    navReviewDescription: () -> Unit
+    navReviewDescription: (Int) -> Unit
 ){
     val totalCountText = buildAnnotatedString {
         withStyle(style = SpanStyle(fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)))){
@@ -131,7 +131,7 @@ private fun ReviewListMainContent(
                     age = "review.age", /** 받아오는 데이터로 변경 */
                     gender = "review.gender", /** 받아오는 데이터로 변경 */
                     content = review.detailContent,
-                    onClick = navReviewDescription
+                    onClick = { navReviewDescription(0) /** review id 또한 받아와서 0 대신 넣어야 함 */}
                 )
             }
         }

@@ -31,7 +31,7 @@ fun NavController.navigateToQuiz100() = navigate(MyPageRoute.Quiz100Route.name)
 fun NavController.navigateToPreview() = navigate(MyPageRoute.PreviewRoute.name)
 fun NavController.navigateToReviewEvaluation() = navigate(MyPageRoute.ReviewEvaluationRoute.name)
 fun NavController.navigateToReviewList() = navigate(MyPageRoute.ReviewListRoute.name)
-fun NavController.navigateToReviewDescription() = navigate(MyPageRoute.ReviewDescriptionRoute.name)
+fun NavController.navigateToReviewDescription(reviewId: Int) = navigate("${MyPageRoute.ReviewDescriptionRoute.name}/${reviewId}")
 fun NavController.navigateToSendApplication(applicationId: Int) = navigate("${MyPageRoute.SendApplicationRoute.name}/${applicationId}")
 fun NavController.navigateToWriteReview(boardId: Int) = navigate("${MyPageRoute.WriteReviewRoute.name}/${boardId}")
 
@@ -42,9 +42,10 @@ fun NavGraphBuilder.myPageGraph(
     navQuiz100: () -> Unit,
     navPreview: () -> Unit,
     navSendApplication: (Int) -> Unit,
-    navReview: () -> Unit,
-    navReviewDescription: () -> Unit,
+    navReviewEvaluation: () -> Unit,
+    navReviewDescription: (Int) -> Unit,
     navReviewList: () -> Unit,
+    navReviewWrite: (Int) -> Unit,
 ){
     navigation(
         startDestination = MyPageRoute.MyPageRoute.name,
@@ -56,7 +57,8 @@ fun NavGraphBuilder.myPageGraph(
                 navProfileDescription = navProfileDescription,
                 navQuiz100 = navQuiz100,
                 navPreview = navPreview,
-                navSendApplication = navSendApplication
+                navSendApplication = navSendApplication,
+                navReviewWrite = navReviewWrite
             )
         }
         composable(route = MyPageRoute.EditProfileRoute.name){
@@ -71,7 +73,7 @@ fun NavGraphBuilder.myPageGraph(
         composable(route = MyPageRoute.PreviewRoute.name){
             PreviewRoute(
                 navBack = navBack,
-                navReview = navReview,
+                navReviewEvaluation = navReviewEvaluation,
                 navReviewList = navReviewList,
                 navReviewDescription = navReviewDescription
             )
@@ -85,8 +87,13 @@ fun NavGraphBuilder.myPageGraph(
                 navReviewDescription = navReviewDescription
             )
         }
-        composable(route = MyPageRoute.ReviewDescriptionRoute.name){
+        composable(
+            route = "${MyPageRoute.ReviewDescriptionRoute.name}/{reviewId}",
+            arguments = listOf(navArgument("reviewId"){type = NavType.IntType})
+        ){
+            val reviewId = it.arguments?.getInt("reviewId")
             ReviewDescriptionRoute(
+                id = reviewId,
                 navBack = navBack
             )
         }

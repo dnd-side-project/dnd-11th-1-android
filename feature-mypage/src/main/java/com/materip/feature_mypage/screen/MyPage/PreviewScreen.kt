@@ -46,9 +46,9 @@ import com.materip.feature_mypage.view_models.MyPage.PreviewViewModel
 @Composable
 fun PreviewRoute(
     navBack: () -> Unit,
-    navReview: () -> Unit,
+    navReviewEvaluation: () -> Unit,
     navReviewList: () -> Unit,
-    navReviewDescription: () -> Unit,
+    navReviewDescription: (Int) -> Unit,
     viewModel: PreviewViewModel = hiltViewModel()
 ){
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
@@ -58,7 +58,7 @@ fun PreviewRoute(
         uiState = uiState.value,
         errState = errState.value,
         navBack = navBack,
-        navReview = navReview,
+        navReviewEvaluation = navReviewEvaluation,
         navReviewList = navReviewList,
         navReviewDescription = navReviewDescription
     )
@@ -69,9 +69,9 @@ fun PreviewScreen(
     uiState: PreviewUiState,
     errState: ErrorState,
     navBack: () -> Unit,
-    navReview: () -> Unit,
+    navReviewEvaluation: () -> Unit,
     navReviewList: () -> Unit,
-    navReviewDescription: () -> Unit,
+    navReviewDescription: (Int) -> Unit,
 ){
     when(uiState){
         PreviewUiState.Loading -> {
@@ -90,7 +90,7 @@ fun PreviewScreen(
                 reviewTotal = uiState.reviews.totalCount,
                 evaluations = uiState.evaluations.evaluationResponse,
                 evaluationTotal = uiState.evaluations.evaluationCount,
-                navReview = navReview,
+                navReviewEvaluation = navReviewEvaluation,
                 navReviewList = navReviewList,
                 navReviewDescription = navReviewDescription,
                 navBack = navBack
@@ -105,10 +105,10 @@ private fun PreviewMainContent(
     reviewTotal: Int,
     evaluations: List<EvaluationItem>,
     evaluationTotal: Int,
-    navReview: () -> Unit,
+    navReviewEvaluation: () -> Unit,
     navBack: () -> Unit,
     navReviewList: () -> Unit,
-    navReviewDescription: () -> Unit,
+    navReviewDescription: (Int) -> Unit,
 ){
     Column(
         modifier = Modifier
@@ -126,7 +126,7 @@ private fun PreviewMainContent(
         ReviewEvaluations(
             evaluations = evaluations,
             evaluationTotal = evaluationTotal,
-            navReview = navReview
+            navReviewEvaluation = navReviewEvaluation
         )
         Spacer(Modifier.height(40.dp))
         ReviewsContent(
@@ -142,7 +142,7 @@ private fun PreviewMainContent(
 private fun ReviewEvaluations(
     evaluations: List<EvaluationItem>,
     evaluationTotal: Int,
-    navReview: () -> Unit
+    navReviewEvaluation: () -> Unit
 ){
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -171,7 +171,7 @@ private fun ReviewEvaluations(
             }
             IconButton(
                 modifier = Modifier.size(24.dp),
-                onClick = navReview
+                onClick = navReviewEvaluation
             ) {
                 Icon(
                     modifier = Modifier.fillMaxSize(),
@@ -198,7 +198,7 @@ fun ReviewsContent(
     reviews: List<ReviewItem>,
     reviewTotal: Int,
     navReviewList: () -> Unit,
-    navReviewDescription: () -> Unit
+    navReviewDescription: (Int) -> Unit
 ){
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -248,7 +248,7 @@ fun ReviewsContent(
                 age = "20대 중반", /** 받은 데이터로 변경 */
                 gender = "여성", /** 받은 데이터로 변경 */
                 content = review.detailContent,
-                onClick = navReviewDescription
+                onClick = { navReviewDescription(0) /** 받은 데이터 id 값을 넣어줘야 함 */ }
             )
             if(reviews.indexOf(review) != reviews.lastIndex){
                 Spacer(Modifier.height(10.dp))
@@ -311,7 +311,7 @@ private fun PreviewUITest(){
         ),
         errState = ErrorState.Loading,
         navBack = {},
-        navReview = {},
+        navReviewEvaluation = {},
         navReviewDescription = {},
         navReviewList = {}
     )

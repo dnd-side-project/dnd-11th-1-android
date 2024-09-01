@@ -68,6 +68,7 @@ import com.materip.feature_mypage.view_models.MyPage.TravelRecordsUiState
 
 @Composable
 fun TravelHistoryContent(
+    navReviewWrite: (Int) -> Unit,
     navSendApplication: (Int) -> Unit,
 ){
     var selectedTag by remember{mutableStateOf(TravelHistoryTag.RECORD)}
@@ -79,6 +80,7 @@ fun TravelHistoryContent(
     Spacer(Modifier.height(20.dp))
     when(selectedTag){
         TravelHistoryTag.RECORD -> TravelRecords(
+            navReviewWrite = navReviewWrite
         )
         TravelHistoryTag.SEND_APPLICATION -> {
             SendTravelApplication(
@@ -142,6 +144,7 @@ private fun TagList(
 
 @Composable
 private fun TravelRecords(
+    navReviewWrite: (Int) -> Unit,
     viewModel: TravelRecordViewModel = hiltViewModel()
 ){
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
@@ -159,7 +162,8 @@ private fun TravelRecords(
         TravelRecordsUiState.Success -> {
             val records = viewModel.recordPagingSource().collectAsLazyPagingItems()
             TravelRecordsContent(
-                records = records.itemSnapshotList
+                records = records.itemSnapshotList,
+                navReviewWrite = navReviewWrite
             )
         }
     }
@@ -167,7 +171,8 @@ private fun TravelRecords(
 
 @Composable
 private fun TravelRecordsContent(
-    records: ItemSnapshotList<BoardItem>
+    records: ItemSnapshotList<BoardItem>,
+    navReviewWrite: (Int) -> Unit
 ){
     if(records.isEmpty()){
         NoDataContent("아직 동행 기록이 없어요.\n즐거운 동행 경험을 만들어 보세요.")
@@ -186,20 +191,20 @@ private fun TravelRecordsContent(
                         postImage = record.imageUrls[0],
                         onClick = {/** 해당 글로 navigation  */}
                     )
+                    Spacer(Modifier.height(8.dp))
+                    CustomButton(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(38.dp),
+                        shape = RoundedCornerShape(size = 8.dp),
+                        btnText = "동행 후기 작성",
+                        fontSize = 14.sp,
+                        btnColor = MateTripColors.Blue_04,
+                        textColor = MateTripColors.Gray_08,
+                        trailingIcon = Icons.review_icon,
+                        onClick = { navReviewWrite(record.boardId) }
+                    )
                 }
-                Spacer(Modifier.height(8.dp))
-                CustomButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(38.dp),
-                    shape = RoundedCornerShape(size = 8.dp),
-                    btnText = "동행 후기 작성",
-                    fontSize = 14.sp,
-                    btnColor = MateTripColors.Blue_04,
-                    textColor = MateTripColors.Gray_08,
-                    trailingIcon = Icons.review_icon,
-                    onClick = { /** 동행 후기 작성하는 곳으로 navigation (record.boardId) */ }
-                )
             }
         }
     }

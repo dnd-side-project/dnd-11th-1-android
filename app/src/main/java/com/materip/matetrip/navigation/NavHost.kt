@@ -31,10 +31,12 @@ import com.materip.feature_mypage.navigation.navigateToProfileDescription
 import com.materip.feature_mypage.navigation.navigateToQuiz100
 import com.materip.feature_mypage.navigation.navigateToReview
 import com.materip.feature_mypage.navigation.navigateToReviewDescription
+import com.materip.feature_mypage.navigation.navigateToReviewEvaluation
 import com.materip.feature_mypage.navigation.navigateToReviewList
 import com.materip.feature_mypage.navigation.navigateToSMSVerification
 import com.materip.feature_mypage.navigation.navigateToSendApplication
 import com.materip.feature_mypage.navigation.navigateToSetting
+import com.materip.feature_mypage.navigation.navigateToWriteReview
 import com.materip.feature_mypage.navigation.settingGraph
 import com.materip.feature_onboarding.navigation.inputUserInfo
 import com.materip.feature_onboarding.navigation.navigateToInputUserInfo
@@ -91,9 +93,10 @@ fun SetUpNavGraph(
             navProfileDescription = navController::navigateToProfileDescription,
             navQuiz100 = navController::navigateToQuiz100,
             navSendApplication = navController::navigateToSendApplication,
-            navReview = navController::navigateToReview,
+            navReviewEvaluation = navController::navigateToReviewEvaluation,
             navReviewList = navController::navigateToReviewList,
-            navReviewDescription = navController::navigateToReviewDescription
+            navReviewDescription = navController::navigateToReviewDescription,
+            navReviewWrite = navController::navigateToWriteReview
         )
 
         // 홈

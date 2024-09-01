@@ -44,7 +44,10 @@ import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_model.ui_model.ReviewDescClass
 
 @Composable
-fun ReviewDescriptionRoute(navBack: () -> Unit){
+fun ReviewDescriptionRoute(
+    id: Int?,
+    navBack: () -> Unit
+){
     ReviewDescriptionScreen(navBack = navBack)
 }
 
