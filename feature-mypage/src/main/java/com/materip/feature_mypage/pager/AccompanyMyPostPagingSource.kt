@@ -17,7 +17,7 @@ class AccompanyMyPostPagingSource (
         val pageNumber = params.key ?: 0
         try{
             val response =
-                accompanyRepository.getAccompanyRecords(
+                accompanyRepository.getAccompanyMyPost(
                     PagingRequestDto(cursor)
                 )
             if(response.error != null){
