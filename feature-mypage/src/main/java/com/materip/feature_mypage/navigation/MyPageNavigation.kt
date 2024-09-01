@@ -46,6 +46,7 @@ fun NavGraphBuilder.myPageGraph(
     navReviewDescription: (Int) -> Unit,
     navReviewList: () -> Unit,
     navReviewWrite: (Int) -> Unit,
+    navReceivedApplication: (Int) -> Unit,
 ){
     navigation(
         startDestination = MyPageRoute.MyPageRoute.name,
@@ -58,7 +59,8 @@ fun NavGraphBuilder.myPageGraph(
                 navQuiz100 = navQuiz100,
                 navPreview = navPreview,
                 navSendApplication = navSendApplication,
-                navReviewWrite = navReviewWrite
+                navReviewWrite = navReviewWrite,
+                navReceivedApplication = navReceivedApplication
             )
         }
         composable(route = MyPageRoute.EditProfileRoute.name){
