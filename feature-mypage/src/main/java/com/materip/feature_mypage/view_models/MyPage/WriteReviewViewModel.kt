@@ -69,6 +69,7 @@ class WriteReviewViewModel @Inject constructor(
     ){
         viewModelScope.launch{
             val request = PostReviewRequestDto(
+                receiverId = 0, /** 받아온 id를 기반으로 넣어야 함 */
                 accompanyBoardId = id.value!!,
                 satisfactionLevel = satisfactionLevel.name,
                 recommendationStatus = recommendationStatus.name,
