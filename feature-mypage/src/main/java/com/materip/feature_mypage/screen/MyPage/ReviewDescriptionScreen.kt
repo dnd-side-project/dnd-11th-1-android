@@ -22,6 +22,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,49 +37,89 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.materip.core_common.ErrorState
 import com.materip.core_designsystem.component.NormalTag
 import com.materip.core_designsystem.component.NormalTopBar
 import com.materip.core_designsystem.icon.Badges
 import com.materip.core_designsystem.theme.MateTripColors
+import com.materip.core_model.response.GetReviewDescriptionResponseDto
 import com.materip.core_model.ui_model.ReviewDescClass
+import com.materip.feature_mypage.view_models.MyPage.ReviewDescriptionUiState
+import com.materip.feature_mypage.view_models.MyPage.ReviewDescriptionViewModel
 
 @Composable
 fun ReviewDescriptionRoute(
     id: Int?,
-    navBack: () -> Unit
+    navBack: () -> Unit,
+    viewModel: ReviewDescriptionViewModel = hiltViewModel()
 ){
-    ReviewDescriptionScreen(navBack = navBack)
+    viewModel.setReviewId(id)
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val errState = viewModel.errorState.collectAsStateWithLifecycle()
+
+    ReviewDescriptionScreen(
+        uiState = uiState.value,
+        errState = errState.value,
+        navBack = navBack
+    )
 }
 
 @Composable
-fun ReviewDescriptionScreen(navBack: () -> Unit){
+fun ReviewDescriptionScreen(
+    uiState: ReviewDescriptionUiState,
+    errState: ErrorState,
+    navBack: () -> Unit
+){
+    when(uiState){
+        ReviewDescriptionUiState.Loading -> {
+            CircularProgressIndicator()
+        }
+        ReviewDescriptionUiState.Error -> {
+            Text(
+                text = "Error",
+                fontSize = 100.sp,
+                color = Color.Red
+            )
+        }
+        is ReviewDescriptionUiState.Success -> {
+            val data = uiState.result
+            ReviewDescriptionMainContent(
+                nickname = data.writerNickname,
+                destination = data.getRegionText(),
+                period = data.getDuration(),
+                startDate = data.getStartDateText(),
+                endDate = data.getEndDateText(),
+                images = data.reviewImageUrls,
+                mate = "메이트", /** 나의 닉네임 정보가 있어야 함 */
+                reviewContent = data.detailContent,
+                tags = data.getTags(),
+                navBack = navBack
+            )
+        }
+    }
+}
+
+@Composable
+private fun ReviewDescriptionMainContent(
+    nickname: String,
+    destination: String,
+    period: String,
+    startDate: String,
+    endDate: String,
+    images: List<String>,
+    mate: String,
+    reviewContent: String,
+    tags: List<String>,
+    navBack: () -> Unit
+){
     val scrollState = rememberScrollState()
-    val dummyData = ReviewDescClass(
-        destination = "부산",
-        period = "2박3일",
-        startDate = "2024.07.20",
-        endDate = "2024.07.22",
-        profileUrl = "",
-        nickname = "닉네임",
-        age = "20대 초반",
-        gender = "여자",
-        content = "같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰",
-        images = listOf("Test", "test", "tttt")
-    )
-    val mate = "메이트" /** 상대방의 닉네임 */
-    val reviewContent = "같이 여행해서 좋았다는 내용 같이 여행해서 좋았다는 내용 같이 여행해서 좋았다는 내용 " /** 리뷰 내용 */
-    val tags = listOf(
-        "부분동행",
-        "맛집을 좋아해요",
-        "친절해요",
-        "밝아요",
-        "계획적이에요",
-        "즉흥적이에요",
-        "공금이 편해요",
-    )
+
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .background(color = Color.White),
         contentAlignment = Alignment.BottomEnd
     ){
@@ -104,7 +145,7 @@ fun ReviewDescriptionScreen(navBack: () -> Unit){
                     .verticalScroll(state = scrollState)
             ){
                 Text(
-                    text = "${dummyData.nickname} 님이 보내주신\n따끈 따끈한 동행 후기에요!",
+                    text = "${nickname} 님이 보내주신\n따끈 따끈한 동행 후기에요!",
                     fontSize = 20.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                     fontWeight = FontWeight(700),
@@ -126,7 +167,7 @@ fun ReviewDescriptionScreen(navBack: () -> Unit){
                                 .padding(horizontal = 10.dp, vertical = 5.dp),
                         ){
                             Text(
-                                text = dummyData.destination,
+                                text = destination,
                                 fontSize = 12.sp,
                                 fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                                 fontWeight = FontWeight(500),
@@ -144,7 +185,7 @@ fun ReviewDescriptionScreen(navBack: () -> Unit){
                                 .padding(horizontal = 10.dp, vertical = 5.dp),
                         ){
                             Text(
-                                text = dummyData.period,
+                                text = period,
                                 fontSize = 12.sp,
                                 fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                                 fontWeight = FontWeight(500),
@@ -153,16 +194,16 @@ fun ReviewDescriptionScreen(navBack: () -> Unit){
                         }
                     }
                     Text(
-                        text = "${dummyData.startDate} - ${dummyData.endDate}",
+                        text = "${startDate} - ${endDate}",
                         fontSize = 14.sp,
                         fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.roboto_medium)),
                         fontWeight = FontWeight(400),
                         color = MateTripColors.Gray_06
                     )
                 }
-                if(dummyData.images.isNotEmpty()){
+                if(images.isNotEmpty()){
                     Spacer(Modifier.height(10.dp))
-                    ImagePagerView(dummyData.images)
+                    ImagePagerView(images)
                 }
                 Spacer(Modifier.height(17.dp))
                 Column(
@@ -207,7 +248,8 @@ private fun ImagePagerView(
 ){
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { images.size })
     Box(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .height(200.dp)
             .background(color = MateTripColors.Blue_04, shape = RoundedCornerShape(10.dp)),
         contentAlignment = Alignment.BottomCenter
@@ -220,15 +262,20 @@ private fun ImagePagerView(
             )
         }
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(bottom = 14.dp),
             horizontalArrangement = Arrangement.Center
         ){
             images.forEachIndexed{idx, image ->
                 val isSelected = idx == pagerState.currentPage
                 Box(
-                    modifier = Modifier.size(6.dp)
-                        .background(if(isSelected) MateTripColors.icon_color else MateTripColors.icon_loading_color, shape = CircleShape)
+                    modifier = Modifier
+                        .size(6.dp)
+                        .background(
+                            if (isSelected) MateTripColors.icon_color else MateTripColors.icon_loading_color,
+                            shape = CircleShape
+                        )
                         .clip(CircleShape)
                 )
                 if(idx != images.size-1){
@@ -265,5 +312,22 @@ private fun TagList(tags: List<String>){
 @Preview
 @Composable
 fun ReviewDescriptionUITest(){
-    ReviewDescriptionScreen(navBack = {})
+    ReviewDescriptionScreen(
+        uiState = ReviewDescriptionUiState.Success(
+            result = GetReviewDescriptionResponseDto(
+                writerNickname = "닉네임",
+                region = "부산",
+                startDate = "2024.07.20",
+                endDate = "2024.07.22",
+                companionType = "ALL_ACCOMPANYING",
+                reviewImageUrls = listOf(),
+                personalityType = listOf("KIND"),
+                travelPreference = listOf("PLANNED"),
+                travelStyle = listOf("LIKE_RESTAURANTS"),
+                detailContent = "같이 여행해서 좋았다는 내용 같이 여행해서 좋았다는 내용 같이 여행해서 좋았다는 내용 "
+            )
+        ),
+        errState = ErrorState.Loading,
+        navBack = {}
+    )
 }
