@@ -260,7 +260,7 @@ fun DeleteAccountScreen(
                         ),
                         placeholder = {
                             Text(
-                                text = "내용을 입력해주세요",
+                                text = "내용을 입력해주세요. (110자)",
                                 fontSize = 14.sp,
                                 fontFamily = customFontFamily.notoSansKr,
                                 fontWeight = FontWeight(400),
