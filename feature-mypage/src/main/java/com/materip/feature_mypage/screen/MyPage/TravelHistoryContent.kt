@@ -54,6 +54,7 @@ import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_model.accompany_board.BoardItem
 import com.materip.core_model.response.AccompanyReceivedItem
+import com.materip.core_model.response.BoardItemWithRequestId
 import com.materip.core_model.response.BoardItemWithReviewId
 import com.materip.core_model.ui_model.GradeTag
 import com.materip.core_model.ui_model.TempHumanClass
@@ -71,6 +72,7 @@ import com.materip.feature_mypage.view_models.MyPage.TravelRecordsUiState
 fun TravelHistoryContent(
     navReviewWrite: (Int) -> Unit,
     navSendApplication: (Int) -> Unit,
+    navReceivedApplication: (Int) -> Unit
 ){
     var selectedTag by remember{mutableStateOf(TravelHistoryTag.RECORD)}
 
@@ -90,7 +92,7 @@ fun TravelHistoryContent(
         }
         TravelHistoryTag.RECEIVE_APPLICATION -> {
             ReceiveTravelApplication(
-                navReceivedApplication = {/** 받은 동행 신청서 navigation */}
+                navReceivedApplication = navReceivedApplication
             )
         }
     }
@@ -242,7 +244,7 @@ private fun SendTravelApplication(
 
 @Composable
 private fun SendTravelApplicationContent(
-    applications: LazyPagingItems<BoardItem>,
+    applications: LazyPagingItems<BoardItemWithRequestId>,
     navSendApplication: (Int) -> Unit
 ){
     val applications = applications.itemSnapshotList
@@ -261,6 +263,7 @@ private fun SendTravelApplicationContent(
                         startDate = application.getStartDateText(),
                         endDate = application.getEndDateText(),
                         postImage = application.imageUrls[0],
+                        /** 여기에는 application에서 받아온 board id 를 기반으로 navigation 해야 함 */
                         onClick = {/** 해당 글 navigation */}
                     )
                     Spacer(Modifier.height(8.dp))
@@ -273,7 +276,7 @@ private fun SendTravelApplicationContent(
                         fontSize = 14.sp,
                         btnColor = MateTripColors.Blue_04,
                         textColor = MateTripColors.Gray_08,
-                        onClick = { navSendApplication(application.boardId) }
+                        onClick = { navSendApplication(application.requestId) }
                     )
                 }
             }
@@ -284,7 +287,7 @@ private fun SendTravelApplicationContent(
 @Composable
 private fun ReceiveTravelApplication(
     viewModel: ReceiveTravelApplicationViewModel = hiltViewModel(),
-    navReceivedApplication: () -> Unit
+    navReceivedApplication: (Int) -> Unit
 ){
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     when(uiState.value){
@@ -312,7 +315,7 @@ private fun ReceiveTravelApplication(
 @Composable
 private fun ReceiveTravelApplicationContent(
     applications: ItemSnapshotList<AccompanyReceivedItem>,
-    navReceivedApplication: () -> Unit
+    navReceivedApplication: (Int) -> Unit
 ){
     if (applications.isEmpty()){
         NoDataContent(message = "아직 동행 신청서가 없어요.")
@@ -420,7 +423,7 @@ private fun ReceiveTravelApplicationContent(
                         textColor = MateTripColors.Gray_08,
                         fontSize = 14.sp,
                         btnColor = MateTripColors.Blue_04,
-                        onClick = navReceivedApplication
+                        onClick = { navReceivedApplication(application.requestId) }
                     )
                 }
             }

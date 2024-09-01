@@ -11,6 +11,7 @@ import com.materip.core_common.ErrorState
 import com.materip.core_common.Result
 import com.materip.core_common.asResult
 import com.materip.core_model.accompany_board.BoardItem
+import com.materip.core_model.response.BoardItemWithRequestId
 import com.materip.core_repository.repository.accompany_repository.AccompanyRepository
 import com.materip.feature_mypage.pager.SendApplicationPagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -57,7 +58,7 @@ class SendTravelApplicationViewModel @Inject constructor(
         initialValue = SendTravelApplicationUiState.Loading
     )
 
-    fun applicationPagingSource(): Flow<PagingData<BoardItem>> = Pager(
+    fun applicationPagingSource(): Flow<PagingData<BoardItemWithRequestId>> = Pager(
         config = PagingConfig(pageSize = 10),
         pagingSourceFactory = {getSendApplication()},
     ).flow.cachedIn(viewModelScope)
