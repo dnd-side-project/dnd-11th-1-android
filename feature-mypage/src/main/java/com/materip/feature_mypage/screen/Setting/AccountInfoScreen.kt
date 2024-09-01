@@ -16,11 +16,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,21 +39,33 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.materip.core_common.ErrorState
 import com.materip.core_designsystem.component.ConfirmationDialog
 import com.materip.core_designsystem.component.NormalTopBar
 import com.materip.core_designsystem.icon.Badges
 import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.theme.MateTripColors
+import com.materip.core_model.response.GetProfileResponseDto
 import com.materip.core_model.ui_model.AccountInfoClass
+import com.materip.feature_mypage.view_models.Setting.AccountInfoUiState
+import com.materip.feature_mypage.view_models.Setting.AccountInfoViewModel
 
 @Composable
 fun AccountInfoRoute(
     navSmsVerification: () -> Unit,
     navBack: () -> Unit,
     navLogout: () -> Unit,
-    navDeleteAccount: () -> Unit
+    navDeleteAccount: () -> Unit,
+    viewModel: AccountInfoViewModel = hiltViewModel()
 ){
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val errState = viewModel.errorState.collectAsStateWithLifecycle()
+
     AccountInfoScreen(
+        uiState = uiState.value,
+        errState = errState.value,
         navLogout = navLogout,
         navDeleteAccount = navDeleteAccount,
         navSmsVerification = navSmsVerification,
@@ -61,12 +75,42 @@ fun AccountInfoRoute(
 
 @Composable
 fun AccountInfoScreen(
+    uiState: AccountInfoUiState,
+    errState: ErrorState,
     navLogout: () -> Unit,
     navDeleteAccount: () -> Unit,
     navSmsVerification: () -> Unit,
     navBack: () -> Unit,
 ){
-    var showLogoutDialog by remember{mutableStateOf(false)}
+    when(uiState){
+        AccountInfoUiState.Loading -> {
+            CircularProgressIndicator()
+        }
+        AccountInfoUiState.Error -> {
+            Text(
+                text = "Error",
+                fontSize = 100.sp,
+                color = Color.Red
+            )
+        }
+        is AccountInfoUiState.Success -> {
+            AccountInfoMainContent(
+                navLogout = navLogout,
+                navSmsVerification = navSmsVerification,
+                navDeleteAccount = navDeleteAccount,
+                navBack = navBack
+            )
+        }
+    }
+}
+
+@Composable
+private fun AccountInfoMainContent(
+    navSmsVerification: () -> Unit,
+    navDeleteAccount: () -> Unit,
+    navLogout: () -> Unit,
+    navBack: () -> Unit
+){
     val dummyData = AccountInfoClass(
         kakaoAccount = "asdfasdf@kakao.com",
         isSecondAuthDone = false,
@@ -74,6 +118,9 @@ fun AccountInfoScreen(
         isSnsLinked = false,
         instagram = null
     )
+
+    var showLogoutDialog by remember{mutableStateOf(false)}
+
     if (showLogoutDialog){
         ConfirmationDialog(
             dialogMsg = "정말 로그아웃 하시나요?",
@@ -123,7 +170,7 @@ fun AccountInfoScreen(
                 fontWeight = FontWeight(400),
                 color = MateTripColors.Gray_11
             )
-        }        
+        }
         Spacer(Modifier.height(40.dp))
         Row(
             modifier = Modifier
@@ -356,6 +403,8 @@ private fun AccountInfoUITest(){
         navLogout = {},
         navDeleteAccount = {},
         navSmsVerification = {},
-        navBack = {}
+        navBack = {},
+        uiState = AccountInfoUiState.Loading,
+        errState = ErrorState.Loading
     )
 }
