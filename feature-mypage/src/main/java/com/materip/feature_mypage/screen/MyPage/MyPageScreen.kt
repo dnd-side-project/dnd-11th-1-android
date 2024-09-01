@@ -40,6 +40,7 @@ fun MyPageRoute(
     navPreview: () -> Unit,
     navSendApplication: (Int) -> Unit,
     navReviewWrite: (Int) -> Unit,
+    navReceivedApplication: (Int) -> Unit
 ){
     MyPageScreen(
         navEditProfile = navEditProfile,
@@ -47,7 +48,8 @@ fun MyPageRoute(
         navQuiz100 = navQuiz100,
         navPreview = navPreview,
         navSendApplication = navSendApplication,
-        navReviewWrite = navReviewWrite
+        navReviewWrite = navReviewWrite,
+        navReceivedApplication = navReceivedApplication
     )
 }
 
@@ -59,6 +61,7 @@ fun MyPageScreen(
     navPreview: () -> Unit,
     navSendApplication: (Int) -> Unit,
     navReviewWrite: (Int) -> Unit,
+    navReceivedApplication: (Int) -> Unit
 ){
     var selectedTab by remember{mutableStateOf(MyPageTab.Profile)}
     Column(
@@ -81,7 +84,8 @@ fun MyPageScreen(
             navQuiz100 = navQuiz100,
             navPreview = navPreview,
             navSendApplication = navSendApplication,
-            navReviewWrite = navReviewWrite
+            navReviewWrite = navReviewWrite,
+            navReceivedApplication = navReceivedApplication
         )
     }
 }
@@ -175,7 +179,8 @@ fun CustomPagerContent(
     navQuiz100: () -> Unit,
     navPreview: () -> Unit,
     navSendApplication: (Int) -> Unit,
-    navReviewWrite: (Int) -> Unit
+    navReviewWrite: (Int) -> Unit,
+    navReceivedApplication: (Int) -> Unit
 ){
     Column(
         modifier = Modifier
@@ -193,7 +198,8 @@ fun CustomPagerContent(
             MyPageTab.TravelPost -> TravelPostContent()
             MyPageTab.TravelHistory -> TravelHistoryContent(
                 navSendApplication = navSendApplication,
-                navReviewWrite = navReviewWrite
+                navReviewWrite = navReviewWrite,
+                navReceivedApplication = navReceivedApplication,
             )
         }
     }
@@ -207,6 +213,7 @@ private fun MyPageUITest(){
         navQuiz100 = {},
         navEditProfile = {},
         navSendApplication = {},
-        navReviewWrite = {}
+        navReviewWrite = {},
+        navReceivedApplication = {}
     )
 }
