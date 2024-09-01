@@ -43,4 +43,7 @@ data class GetReviewDescriptionResponseDto(
             else -> "해외"
         }
     }
+    fun getTags(): List<String>{
+        return personalityType.plus(travelPreference).plus(travelStyle)
+    }
 }
