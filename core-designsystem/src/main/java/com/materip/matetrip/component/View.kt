@@ -203,7 +203,10 @@ fun TravelPostItem(
                 modifier = Modifier
                     .size(84.dp)
                     .clip(RoundedCornerShape(size = 10.dp))
-                    .background(color = MateTripColors.loading_color, shape = RoundedCornerShape(size = 10.dp)),
+                    .background(
+                        color = MateTripColors.loading_color,
+                        shape = RoundedCornerShape(size = 10.dp)
+                    ),
                 contentScale = ContentScale.Crop,
                 model = postImage,
                 contentDescription = "Post Image",
@@ -516,7 +519,9 @@ fun ReviewDescItem(
         )
         Spacer(Modifier.height(14.dp))
         CustomButton(
-            modifier = Modifier.fillMaxWidth().height(36.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(36.dp),
             shape = RoundedCornerShape(size = 8.dp),
             btnText = "상세 후기 보기",
             fontSize = 12.sp,
@@ -529,7 +534,8 @@ fun ReviewDescItem(
 
 @Composable
 fun ReviewItem(
-    review: Pair<Int, String>
+    message: String,
+    count: Int,
 ){
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -543,7 +549,7 @@ fun ReviewItem(
         )
         Text(
             modifier = Modifier.width(30.dp),
-            text = review.first.toString(),
+            text = message,
             fontSize = 16.sp,
             fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.roboto_medium)),
             fontWeight = FontWeight(700),
@@ -557,7 +563,7 @@ fun ReviewItem(
                 .padding(horizontal = 12.dp, vertical = 10.dp)
         ){
             Text(
-                text = review.second,
+                text = "${count}",
                 fontSize = 14.sp,
                 fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                 fontWeight = FontWeight(500),
