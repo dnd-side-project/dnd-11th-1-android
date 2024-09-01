@@ -7,7 +7,7 @@ enum class MyPageRoute {
     ProfileDescriptionRoute,
     Quiz100Route,
     PreviewRoute,
-    ReviewRoute,
+    ReviewEvaluationRoute,
     ReviewListRoute,
     ReviewDescriptionRoute,
     SendApplicationRoute,

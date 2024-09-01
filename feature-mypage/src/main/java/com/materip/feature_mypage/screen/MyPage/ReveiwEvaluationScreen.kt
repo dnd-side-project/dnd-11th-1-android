@@ -27,14 +27,14 @@ import com.materip.core_designsystem.component.ReviewItem
 import com.materip.core_model.ui_model.ReviewClass
 
 @Composable
-fun ReviewRoute(
+fun ReviewEvaluationRoute(
     navBack: () -> Unit,
 ){
-    ReviewScreen(navBack = navBack)
+    ReviewEvaluationScreen(navBack = navBack)
 }
 
 @Composable
-fun ReviewScreen(
+fun ReviewEvaluationScreen(
     navBack: () -> Unit,
 ){
     val dummyReview = ReviewClass(
@@ -91,5 +91,5 @@ fun ReviewScreen(
 @Preview
 @Composable
 private fun ReviewUiTest(){
-    ReviewScreen(navBack = {})
+    ReviewEvaluationScreen(navBack = {})
 }

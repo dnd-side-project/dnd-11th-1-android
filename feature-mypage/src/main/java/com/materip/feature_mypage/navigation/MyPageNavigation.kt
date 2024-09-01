@@ -12,8 +12,8 @@ import com.materip.feature_mypage.screen.MyPage.PreviewRoute
 import com.materip.feature_mypage.screen.MyPage.ProfileDescriptionRoute
 import com.materip.feature_mypage.screen.MyPage.Quiz100Route
 import com.materip.feature_mypage.screen.MyPage.ReviewDescriptionRoute
+import com.materip.feature_mypage.screen.MyPage.ReviewEvaluationRoute
 import com.materip.feature_mypage.screen.MyPage.ReviewListRoute
-import com.materip.feature_mypage.screen.MyPage.ReviewRoute
 import com.materip.feature_mypage.screen.MyPage.SendApplicationRoute
 import com.materip.feature_mypage.screen.MyPage.WriteReviewRoute
 
@@ -29,7 +29,7 @@ fun NavController.navigateToEditProfile() = navigate(MyPageRoute.EditProfileRout
 fun NavController.navigateToProfileDescription() = navigate(MyPageRoute.ProfileDescriptionRoute.name)
 fun NavController.navigateToQuiz100() = navigate(MyPageRoute.Quiz100Route.name)
 fun NavController.navigateToPreview() = navigate(MyPageRoute.PreviewRoute.name)
-fun NavController.navigateToReview() = navigate(MyPageRoute.ReviewRoute.name)
+fun NavController.navigateToReviewEvaluation() = navigate(MyPageRoute.ReviewEvaluationRoute.name)
 fun NavController.navigateToReviewList() = navigate(MyPageRoute.ReviewListRoute.name)
 fun NavController.navigateToReviewDescription() = navigate(MyPageRoute.ReviewDescriptionRoute.name)
 fun NavController.navigateToSendApplication(applicationId: Int) = navigate("${MyPageRoute.SendApplicationRoute.name}/${applicationId}")
@@ -76,8 +76,8 @@ fun NavGraphBuilder.myPageGraph(
                 navReviewDescription = navReviewDescription
             )
         }
-        composable(route = MyPageRoute.ReviewRoute.name){
-            ReviewRoute(navBack = navBack)
+        composable(route = MyPageRoute.ReviewEvaluationRoute.name){
+            ReviewEvaluationRoute(navBack = navBack)
         }
         composable(route = MyPageRoute.ReviewListRoute.name){
             ReviewListRoute(
