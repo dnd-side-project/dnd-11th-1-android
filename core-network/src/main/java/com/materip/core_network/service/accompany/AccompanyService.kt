@@ -6,6 +6,7 @@ import com.materip.core_model.accompany_board.Pageable
 import com.materip.core_model.request.AccompanyApplicationResponseDto
 import com.materip.core_model.request.PagingRequestDto
 import com.materip.core_model.response.AccompanyReceivedItem
+import com.materip.core_model.response.BoardItemWithRequestId
 import com.materip.core_model.response.BoardItemWithReviewId
 import com.materip.core_model.response.DefaultGetAccompanyResponseDto
 import com.skydoves.sandwich.ApiResponse
@@ -24,7 +25,7 @@ interface AccompanyService {
     @GET("/api/v1/accompany/requests/sended")
     suspend fun getAccompanySend(
         @Body requestDto: PagingRequestDto
-    ): ApiResponse<DefaultGetAccompanyResponseDto<BoardItem>>
+    ): ApiResponse<DefaultGetAccompanyResponseDto<BoardItemWithRequestId>>
 
     @GET("/api/v1/accompany/requests/received")
     suspend fun getAccompanyReceived(

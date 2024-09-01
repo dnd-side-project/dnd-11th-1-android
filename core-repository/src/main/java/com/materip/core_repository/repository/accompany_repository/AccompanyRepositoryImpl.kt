@@ -7,6 +7,7 @@ import com.materip.core_model.accompany_board.Pageable
 import com.materip.core_model.request.AccompanyApplicationResponseDto
 import com.materip.core_model.request.PagingRequestDto
 import com.materip.core_model.response.AccompanyReceivedItem
+import com.materip.core_model.response.BoardItemWithRequestId
 import com.materip.core_model.response.BoardItemWithReviewId
 import com.materip.core_model.response.DefaultGetAccompanyResponseDto
 import javax.inject.Inject
@@ -20,7 +21,7 @@ class AccompanyRepositoryImpl @Inject constructor(
         return accompanyDataStore.getAccompanyApplication(id)
     }
 
-    override suspend fun getAccompanySend(requestDto: PagingRequestDto): ResultResponse<DefaultGetAccompanyResponseDto<BoardItem>> {
+    override suspend fun getAccompanySend(requestDto: PagingRequestDto): ResultResponse<DefaultGetAccompanyResponseDto<BoardItemWithRequestId>> {
         return accompanyDataStore.getAccompanySend(requestDto)
     }
 

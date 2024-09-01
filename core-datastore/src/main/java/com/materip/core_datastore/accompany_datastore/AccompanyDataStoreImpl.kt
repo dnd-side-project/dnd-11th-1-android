@@ -6,6 +6,7 @@ import com.materip.core_model.accompany_board.Pageable
 import com.materip.core_model.request.AccompanyApplicationResponseDto
 import com.materip.core_model.request.PagingRequestDto
 import com.materip.core_model.response.AccompanyReceivedItem
+import com.materip.core_model.response.BoardItemWithRequestId
 import com.materip.core_model.response.BoardItemWithReviewId
 import com.materip.core_model.response.DefaultGetAccompanyResponseDto
 import com.materip.core_network.service.accompany.AccompanyService
@@ -30,8 +31,8 @@ class AccompanyDataStoreImpl @Inject constructor(
         return result
     }
 
-    override suspend fun getAccompanySend(requestDto: PagingRequestDto): ResultResponse<DefaultGetAccompanyResponseDto<BoardItem>> {
-        val result = ResultResponse<DefaultGetAccompanyResponseDto<BoardItem>>()
+    override suspend fun getAccompanySend(requestDto: PagingRequestDto): ResultResponse<DefaultGetAccompanyResponseDto<BoardItemWithRequestId>> {
+        val result = ResultResponse<DefaultGetAccompanyResponseDto<BoardItemWithRequestId>>()
         accompanyService.getAccompanySend(requestDto).suspendOnError{
             result.error = Json.decodeFromString("${this.apiMessage}")
         }.suspendOnSuccess{
