@@ -55,4 +55,14 @@ class ReviewDataStoreImpl @Inject constructor(
         }
         return result
     }
+
+    override suspend fun getReviewEvaluationAll(): ResultResponse<GetReviewEvaluationsResponseDto> {
+        val result = ResultResponse<GetReviewEvaluationsResponseDto>()
+        reviewService.getReviewEvaluationAll().suspendOnError{
+            result.error = Json.decodeFromString("${this.apiMessage}")
+        }.suspendOnSuccess{
+            result.data = this.data
+        }
+        return result
+    }
 }

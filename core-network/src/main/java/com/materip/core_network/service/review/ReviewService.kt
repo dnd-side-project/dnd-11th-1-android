@@ -24,4 +24,6 @@ interface ReviewService {
     ): ApiResponse<GetReviewDescriptionResponseDto>
     @GET("/api/v1/reviews/evaluations")
     suspend fun getReviewEvaluations(): ApiResponse<GetReviewEvaluationsResponseDto>
+    @GET("/api/v1/reviews/evaluations/all")
+    suspend fun getReviewEvaluationAll(): ApiResponse<GetReviewEvaluationsResponseDto>
 }

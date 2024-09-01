@@ -21,10 +21,14 @@ class ReviewRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getReviewDescription(id: Int): ResultResponse<GetReviewDescriptionResponseDto> {
-        return getReviewDescription(id)
+        return reviewDataStore.getReviewDescription(id)
     }
 
     override suspend fun getReviewEvaluation(): ResultResponse<GetReviewEvaluationsResponseDto> {
-        return getReviewEvaluation()
+        return reviewDataStore.getReviewEvaluation()
+    }
+
+    override suspend fun getReviewEvaluationAll(): ResultResponse<GetReviewEvaluationsResponseDto> {
+        return reviewDataStore.getReviewEvaluationAll()
     }
 }

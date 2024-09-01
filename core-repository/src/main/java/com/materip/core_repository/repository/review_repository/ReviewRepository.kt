@@ -12,4 +12,5 @@ interface ReviewRepository {
     suspend fun postReview(requestDto: PostReviewRequestDto): ResultResponse<Any>
     suspend fun getReviewDescription(id: Int): ResultResponse<GetReviewDescriptionResponseDto>
     suspend fun getReviewEvaluation(): ResultResponse<GetReviewEvaluationsResponseDto>
+    suspend fun getReviewEvaluationAll(): ResultResponse<GetReviewEvaluationsResponseDto>
 }
