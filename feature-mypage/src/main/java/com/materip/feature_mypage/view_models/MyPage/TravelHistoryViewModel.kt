@@ -10,6 +10,7 @@ import com.materip.core_common.ErrorState
 import com.materip.core_common.Result
 import com.materip.core_common.asResult
 import com.materip.core_model.accompany_board.BoardItem
+import com.materip.core_model.response.BoardItemWithReviewId
 import com.materip.core_repository.repository.accompany_repository.AccompanyRepository
 import com.materip.feature_mypage.pager.AccompanyRecordPagingSource
 import com.materip.feature_mypage.pager.SendApplicationPagingSource
@@ -57,7 +58,7 @@ class TravelRecordViewModel @Inject constructor(
         initialValue = TravelRecordsUiState.Loading
     )
 
-    fun recordPagingSource(): Flow<PagingData<BoardItem>> = Pager(
+    fun recordPagingSource(): Flow<PagingData<BoardItemWithReviewId>> = Pager(
         config = PagingConfig(pageSize = 10),
         pagingSourceFactory = {getRecords()},
     ).flow.cachedIn(viewModelScope)
