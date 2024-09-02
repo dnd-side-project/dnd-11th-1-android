@@ -2,6 +2,7 @@
 
 package com.materip.feature_home3.ui.component
 
+import android.content.Context
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -13,14 +14,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -49,7 +48,9 @@ import com.materip.core_designsystem.theme.MateTripTypographySet
 @Composable
 fun ImagePicker(
     imageUris: List<String> = emptyList(),
-    onImageUrisChange: (List<String>) -> Unit
+    onImageUrisChange: (List<String>) -> Unit,
+    onUploadImage: (Context, Uri?) -> Unit,
+    onDeleteImage: (String) -> Unit
 ) {
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     var imageCount by remember { mutableIntStateOf(imageUris.size) }
@@ -60,6 +61,7 @@ fun ImagePicker(
     ) { uri: Uri? ->
         if (uri != null && imageCount < 5) {
             imageUri = uri
+            onUploadImage(context, uri)
             onImageUrisChange(imageUris + uri.toString())
             imageCount++
         }
@@ -120,6 +122,7 @@ fun ImagePicker(
                 )
                 IconButton(
                     onClick = {
+                        onDeleteImage(uri)
                         onImageUrisChange(imageUris - uri)
                         imageCount--
                     },

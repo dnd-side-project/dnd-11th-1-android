@@ -1,5 +1,6 @@
 package com.materip.core_model.accompany_board.id
 
+import com.materip.core_model.ui_model.Gender
 import kotlinx.serialization.Serializable
 
 // 동행글 상세 조회 ProfileThumbnail
@@ -9,5 +10,5 @@ data class ProfileThumbnail(
     val nickname: String,
     val profileImageUrl: String,
     val birthYear: Int,
-    val gender: String,
+    val gender: Gender,
 )
