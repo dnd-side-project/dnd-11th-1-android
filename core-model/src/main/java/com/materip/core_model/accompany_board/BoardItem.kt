@@ -28,17 +28,4 @@ data class BoardItem(
         val duration = ChronoUnit.DAYS.between(start, end)
         return "${duration}박 ${duration + 1}일"
     }
-    fun getRegionText(): String{
-        return when(region){
-            Region.SEOUL.name -> "수도권"
-            Region.GYEONGGI_INCHEON.name -> "경기·인천"
-            Region.GANGWON.name -> "강원도"
-            Region.CHUNGCHEONG_DAEJON_SEJONG.name -> "충청도"
-            Region.GYEONGSANG_DAEGU_ULSAN.name -> "경상도"
-            Region.BUSAN.name -> "부산"
-            Region.JEOLLA_GWANGJU.name -> "전라도"
-            Region.JEJU.name -> "제주도"
-            else -> "해외"
-        }
-    }
 }
