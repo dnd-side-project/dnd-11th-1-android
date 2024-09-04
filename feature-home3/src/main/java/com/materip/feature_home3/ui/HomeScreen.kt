@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -25,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,7 +46,8 @@ import com.materip.core_designsystem.icon.Logo
 import com.materip.core_designsystem.theme.MateTripColors.Blue_02
 import com.materip.core_designsystem.theme.MateTripColors.Blue_04
 import com.materip.core_designsystem.theme.MateTripTypographySet
-import com.materip.core_model.accompany_board.BoardItem
+import com.materip.core_model.accompany_board.all.BoardItem
+import com.materip.core_model.request.PagingRequestDto
 import com.materip.feature_home3.intent.BoardListIntent
 import com.materip.feature_home3.state.BoardListUiState
 import com.materip.feature_home3.viewModel.BoardViewModel
@@ -60,19 +63,46 @@ fun HomeScreen(
     viewModel: BoardViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val pageable by viewModel.pageable.collectAsState()
     val boardListState = viewModel.boardList.collectAsState()
 
+    val listState = rememberLazyListState()
+
+    var isLoading by remember { mutableStateOf(false) }
+    var cursor: String? by remember { mutableStateOf(null) }
+    val size = 10
+
     LaunchedEffect(Unit) {
-        viewModel.handleIntent(BoardListIntent.LoadBoardList(pageable))
+        val initialRequest = PagingRequestDto(cursor = null, size = size)
+        viewModel.handleIntent(BoardListIntent.LoadBoardList(initialRequest))
     }
 
     var selectedRegion by remember { mutableStateOf("전체") }
 
     val filteredBoardItems = if (selectedRegion == "전체") {
-        boardListState.value.data
+        boardListState.value?.data ?: emptyList()
     } else {
-        boardListState.value.data.filter {it.region.toDisplayString() == selectedRegion}
+        boardListState.value?.data?.filter { it.region.toDisplayString() == selectedRegion }
+            ?: emptyList()
+    }
+
+    LaunchedEffect(listState) {
+        snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
+            .collect { lastVisibleItemIndex ->
+                val totalItemCount = listState.layoutInfo.totalItemsCount
+                val boardListResponse = boardListState.value
+                if (
+                    lastVisibleItemIndex != null &&
+                    lastVisibleItemIndex >= totalItemCount - 1 &&
+                    !isLoading &&
+                    boardListResponse?.hasNext == true
+                ) {
+                    isLoading = true
+                    cursor = boardListResponse.cursor
+                    val pagingRequestDto = PagingRequestDto(cursor = cursor, size = size)
+                    viewModel.handleIntent(BoardListIntent.LoadBoardList(pagingRequestDto))
+                    isLoading = false
+                }
+            }
     }
 
     Column(
@@ -104,12 +134,14 @@ fun HomeScreen(
                         onPostClick = onNavigateToPostDetail
                     )
                 }
+
                 is BoardListUiState.Success -> {
                     ShowAccompanyPost(
                         boardItems = filteredBoardItems,
                         onPostClick = onNavigateToPostDetail
                     )
                 }
+
                 is BoardListUiState.Error -> {
                     // 오류 상태일 때 더미 데이터로 UI 표시
                     ShowAccompanyPost(
@@ -117,6 +149,7 @@ fun HomeScreen(
                         onPostClick = onNavigateToPostDetail
                     )
                 }
+
                 else -> {
                     // ELSE 상태일 때 더미 데이터로 보여줄 UI
                     ShowAccompanyPost(
