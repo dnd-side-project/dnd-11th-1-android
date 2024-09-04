@@ -147,7 +147,7 @@ fun GetTopBar(
         MyPageRoute.ProfileDescriptionRoute.name,
         MyPageRoute.Quiz100Route.name,
         MyPageRoute.PreviewRoute.name,
-        MyPageRoute.ReviewRoute.name,
+        MyPageRoute.ReviewEvaluationRoute.name,
         MyPageRoute.ReviewListRoute.name,
         MyPageRoute.ReviewDescriptionRoute.name,
         MyPageRoute.SendApplicationRoute.name,
