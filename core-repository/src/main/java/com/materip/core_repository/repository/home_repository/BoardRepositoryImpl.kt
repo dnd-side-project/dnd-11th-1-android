@@ -2,20 +2,20 @@ package com.materip.core_repository.repository.home_repository
 
 import com.materip.core_common.ResultResponse
 import com.materip.core_datastore.home_datastore.BoardDataStore
+import com.materip.core_model.accompany_board.all.BoardListResponse
 import com.materip.core_model.accompany_board.create.BoardRequestDto
-import com.materip.core_model.accompany_board.BoardListResponse
-import com.materip.core_model.accompany_board.Pageable
 import com.materip.core_model.accompany_board.id.BoardIdDto
 import com.materip.core_model.accompany_board.id.GetBoardDetailDto
 import com.materip.core_model.accompany_board.profile.GetUserProfile
 import com.materip.core_model.accompany_board.request.CompanionRequest
+import com.materip.core_model.request.PagingRequestDto
 import javax.inject.Inject
 
 class BoardRepositoryImpl @Inject constructor(
     private val boardDataStore: BoardDataStore
 ) : BoardRepository {
-    override suspend fun getBoard(pageable: Pageable): ResultResponse<BoardListResponse> {
-        return boardDataStore.getBoard(pageable)
+    override suspend fun getBoard(boardRequest: PagingRequestDto): ResultResponse<BoardListResponse> {
+        return boardDataStore.getBoard(boardRequest)
     }
 
     override suspend fun postBoard(board: BoardRequestDto): ResultResponse<BoardIdDto> {
