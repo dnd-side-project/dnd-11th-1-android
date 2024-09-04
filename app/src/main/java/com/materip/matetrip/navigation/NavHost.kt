@@ -1,7 +1,5 @@
 package com.materip.matetrip.navigation
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -15,7 +13,6 @@ import com.materip.feature_home3.ui.NavigateToPostScreen
 import com.materip.feature_home3.ui.NotificationScreen
 import com.materip.feature_home3.ui.PostBoardScreen
 import com.materip.feature_home3.ui.ProfileScreen
-import com.materip.feature_home3.ui.ReviewScreen
 import com.materip.feature_login.navigation.login
 import com.materip.feature_login.navigation.navigateToLogin
 import com.materip.feature_mypage.navigation.myPageGraph
@@ -46,7 +43,6 @@ import com.materip.feature_onboarding.navigation.selectFoodPreference
 import com.materip.feature_onboarding.navigation.selectTripInterest
 import com.materip.feature_onboarding.navigation.selectTripStyle
 
-@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
 fun SetUpNavGraph(
     navController: NavHostController,
@@ -55,15 +51,21 @@ fun SetUpNavGraph(
     NavHost(
         navController = navController,
         startDestination = startDestination
-    ){
+    ) {
         /** feature-login */
         login(
             navOnBoarding = navController::navigateToInputUserInfo,
             navHome = { navController.navigate(Screen.Home.route) }
         )
         inputUserInfo(navSelectTripInterest = navController::navigateToSelectTripInterest)
-        selectTripInterest(onBackClick = navController::navigateToBack, onNextClick = navController::navigateToSelectTripStyle)
-        selectTripStyle(onBackClick = navController::navigateToBack, onNextClick = navController::navigateToSelectFoodPreference)
+        selectTripInterest(
+            onBackClick = navController::navigateToBack,
+            onNextClick = navController::navigateToSelectTripStyle
+        )
+        selectTripStyle(
+            onBackClick = navController::navigateToBack,
+            onNextClick = navController::navigateToSelectFoodPreference
+        )
         selectFoodPreference(
             onBackClick = navController::navigateToBack,
             navHome = { navController.navigate(Screen.Home.route) }
@@ -127,31 +129,25 @@ fun SetUpNavGraph(
             NavigateToPostScreen(
                 boardId = boardId,
                 onNavigateToForm = { navController.navigate(Screen.Form.route + "/$boardId") },
-                onNavigateToProfile = { navController.navigate(Screen.Profile.route) }
+                onNavigateToUserProfile = { navController.navigate(Screen.Profile.route + "/$boardId") }
             )
         }
 
         // 게시글_동행 신청
-        composable(
-            route = Screen.Form.route + "/{boardId}",
-            arguments = listOf(navArgument("boardId") { type = NavType.IntType })
-        ) { backStackEntry ->
-            val boardId = backStackEntry.arguments?.getInt("boardId") ?: 0
-            // TODO: 보낸 신청서 내역으로 이동
+        composable(Screen.Form.route + "/{boardId}") {
             FormScreen(
-                boardId = boardId,
-                onNavigateToProfile = { navController.navigate(Screen.Profile.route) }
+                boardId = it.arguments?.getInt("boardId") ?: 0,
+                onNavigateUp = { navController.navigateUp() }
             )
         }
 
-        // 게시글_프로필 자세히 보기
-        composable(Screen.Profile.route) {
-            ProfileScreen()
-        }
-
-        // 마이페이지_동행 후기 작성
-        composable(Screen.Review.route) {
-            ReviewScreen()
+        // 게시글_프로필 자세히 보기 (로그인한 유저가 다른 유저의 프로필을 보는 경우)
+        composable(
+            route = Screen.Profile.route + "/{boardId}",
+            arguments = listOf(navArgument("boardId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val boardId = backStackEntry.arguments?.getInt("boardId") ?: 0
+            ProfileScreen(boardId = boardId)
         }
     }
 }

@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -25,15 +26,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.materip.feature_home3.ui.FabButton
-import com.materip.feature_home3.viewModel.HomeViewModel
-import com.materip.feature_mypage.navigation.MyPageRoute
-import com.materip.feature_mypage.navigation.SettingRoute
 import com.materip.core_designsystem.component.BackButtonTopAppBar
 import com.materip.core_designsystem.component.BackButtonWithTitleTopAppBar
+import com.materip.core_designsystem.component.BoardDetailTopAppBar
 import com.materip.core_designsystem.component.MateTripBottomBar
 import com.materip.core_designsystem.component.MateTripTopAppBar
+import com.materip.feature_home3.ui.FabButton
+import com.materip.feature_home3.viewModel.HomeViewModel
+import com.materip.feature_home3.viewModel.PostBoardViewModel
+import com.materip.feature_home3.viewModel.ProfileViewModel
 import com.materip.feature_login.navigation.LoginRoute
+import com.materip.feature_mypage.navigation.MyPageRoute
+import com.materip.feature_mypage.navigation.SettingRoute
 import com.materip.feature_mypage.navigation.navigateToMyPageGraph
 import com.materip.feature_mypage.navigation.navigateToSettingGraph
 import com.materip.feature_onboarding.navigation.OnboardingRoute
@@ -56,6 +60,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+    private val useBottomNavScreen =
+        listOf(Screen.Home.route, MyPageRoute.MyPageRoute.name, SettingRoute.SettingRoute.name)
+
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     },
                     bottomBar = {
-                        if(currentRoute in useBottomNavScreen){
+                        if (currentRoute in useBottomNavScreen) {
                             MateTripBottomBar(
                                 currentRoute = currentRoute ?: "home",
                                 onHomeClick = { navController.navigate(Screen.Home.route) },
@@ -98,7 +105,7 @@ class MainActivity : AppCompatActivity() {
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(it)
-                    ){
+                    ) {
                         SetUpNavGraph(
                             navController = navController,
                             startDestination = startDestination
@@ -134,7 +141,9 @@ fun GetTopBar(
     currentRoute: String?,
     navController: NavHostController
 ) {
-    val viewModel: HomeViewModel = hiltViewModel()
+    val viewModel: PostBoardViewModel = hiltViewModel()
+    val profileViewModel: ProfileViewModel = hiltViewModel()
+    val homeViewModel: HomeViewModel = hiltViewModel()
 
     val notHaveTopBar = listOf(
         LoginRoute.LoginRoute.name,
@@ -171,11 +180,17 @@ fun GetTopBar(
             BackButtonWithTitleTopAppBar(
                 screenTitle = "동행 모집하기",
                 onNavigateUp = { navController.navigateUp() },
-                onPostClick = {
-                    val boardIdDto = viewModel.createPost(viewModel.toBoardRequestDto())
-                    navController.navigate(Screen.NavigateToPost.route + "/${boardIdDto.boardId}")
-                }
+                onPostClick = { viewModel.createPost(viewModel.toBoardRequestDto()) }
             )
+
+            LaunchedEffect(viewModel.createdBoardIds) {
+                viewModel.createdBoardIds.collect { boardIds ->
+                    val newBoardId = boardIds.lastOrNull()
+                    newBoardId?.let {
+                        navController.navigate(Screen.NavigateToPost.route + "/${it}")
+                    }
+                }
+            }
         }
 
         // 타이틀 제목이 필요한 뒤로가기 상단바
@@ -186,9 +201,28 @@ fun GetTopBar(
             )
         }
 
-        //별개 top bar 보유
-        in notHaveTopBar ->{
+        // 타이틀 제목이 동행글을 올린 유저의 닉네임인 뒤로가기 상단바
+        Screen.Profile.route -> {
+            val boardId = currentRoute.substringAfterLast("/").toIntOrNull() ?: 0
+            val userId = profileViewModel.getUserId(boardId)
+            val userNickname = profileViewModel.getNickname(userId)
+            BackButtonTopAppBar(
+                screenTitle = userNickname,
+                onNavigateUp = navController::navigateToBack
+            )
+        }
 
+        //별개 top bar 보유
+        in notHaveTopBar -> {
+
+        }
+
+        // 뒤로가기, 액션이 필요한 상단바
+        Screen.NavigateToPost.route -> {
+            BoardDetailTopAppBar(
+                onNavigateUp = navController::navigateToBack,
+                showDialogState = homeViewModel.showDialogState,
+            )
         }
 
         // 뒤로가기만 있는 상단바

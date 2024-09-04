@@ -1,4 +1,4 @@
-package com.materip.core_datastore.com.materip.core_datastore
+package com.materip.core_datastore
 
 import com.materip.core_datastore.accompany_datastore.AccompanyDataStore
 import com.materip.core_datastore.accompany_datastore.AccompanyDataStoreImpl

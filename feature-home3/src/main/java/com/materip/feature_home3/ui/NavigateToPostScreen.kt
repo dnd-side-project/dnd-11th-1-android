@@ -35,6 +35,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
@@ -50,6 +51,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
+import com.materip.core_designsystem.component.DeleteButton
 import com.materip.core_designsystem.component.MateTripHomeButton
 import com.materip.core_designsystem.icon.Badges.profile_default_badge
 import com.materip.core_designsystem.icon.Icons.date_icon
@@ -63,22 +65,72 @@ import com.materip.core_designsystem.theme.MateTripColors.Gray_02
 import com.materip.core_designsystem.theme.MateTripColors.Gray_10
 import com.materip.core_designsystem.theme.MateTripColors.Gray_11
 import com.materip.core_designsystem.theme.MateTripColors.Gray_12
+import com.materip.core_designsystem.theme.MateTripColors.NoColor
+import com.materip.core_designsystem.theme.MateTripColors.NoTextColor
 import com.materip.core_designsystem.theme.MateTripColors.Primary
 import com.materip.core_designsystem.theme.MateTripTypographySet
 import com.materip.feature_home3.intent.HomeIntent
 import com.materip.feature_home3.state.HomeUiState
+import com.materip.feature_home3.ui.component.toDisplayString
 import com.materip.feature_home3.viewModel.HomeViewModel
-import com.materip.feature_home3.R
 
-// 동행글 상세 화면
+/**
+ * 동행글 상세 화면
+ * param: onNavigateToForm 동행신청
+ * param: onNavigateToUserProfile 유저프로필상세보기
+ * */
 @Composable
 fun NavigateToPostScreen(
     boardId: Int,
     viewModel: HomeViewModel = hiltViewModel(),
     onNavigateToForm: () -> Unit,
-    onNavigateToProfile: () -> Unit
+    onNavigateToUserProfile: () -> Unit,
+    onNavigateUp: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    if (viewModel.showDialogState.value) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceAround,
+            modifier = Modifier
+                .width(320.dp)
+                .height(172.dp)
+                .background(Color.White, shape = RoundedCornerShape(size = 10.dp)),
+        ) {
+            Text(
+                text = "정말 게시글을 삭제하시나요?",
+                style = MateTripTypographySet.title03,
+                color = Color.Black,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 41.dp, bottom = 41.dp)
+            )
+            Row(
+                modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                DeleteButton(
+                    buttonText = "아니요",
+                    enabled = true,
+                    onClick = { viewModel.showDialogState.value = false },
+                    containerColor = NoColor,
+                    contentColor = NoTextColor
+                )
+                DeleteButton(
+                    buttonText = "예",
+                    enabled = true,
+                    onClick = {
+                        viewModel.onHomeIntent(HomeIntent.DeleteBoard(boardId))
+                        viewModel.showDialogState.value = false
+                        onNavigateUp()
+                    },
+                    containerColor = Color.Black,
+                    contentColor = Color.White
+                )
+            }
+        }
+    }
 
     LaunchedEffect(boardId) {
         viewModel.onHomeIntent(HomeIntent.LoadBoardDetail(boardId))
@@ -93,14 +145,14 @@ fun NavigateToPostScreen(
             val boardInfo = (uiState as HomeUiState.SuccessLoad).boardDetail.boardInfo
             val profileInfo = (uiState as HomeUiState.SuccessLoad).boardDetail.profileThumbnail
 
-            ShowImageList(imageUris = boardInfo.imageUris)
+            ShowImageList(imageUris = boardInfo.imageUrls)
 
             ShowUserProfile(
                 nickname = profileInfo.nickname,
                 birthYear = profileInfo.birthYear,
-                gender = profileInfo.gender,
+                gender = profileInfo.gender.toDisplayString(),
                 profileImageUrl = profileInfo.profileImageUrl,
-                onNavigateToProfile = onNavigateToProfile
+                onNavigateToProfile = onNavigateToUserProfile
             )
 
             ShowUserBoardInfo(
@@ -110,18 +162,18 @@ fun NavigateToPostScreen(
             )
 
             ShowSchedule(
-                region = boardInfo.region,
+                region = boardInfo.region.toDisplayString(),
                 startDate = boardInfo.startDate,
                 endDate = boardInfo.endDate
             )
 
-            ShowCategory(category = boardInfo.category)
+            ShowCategory(category = boardInfo.categories.map { it.toDisplayString() })
 
             ShowPreferredPerson(
-                preferredAge = boardInfo.preferredAge,
-                preferredGender = boardInfo.preferredGender,
+                preferredAge = boardInfo.preferredAge.toDisplayString(),
+                preferredGender = boardInfo.preferredGender.toDisplayString(),
                 birthYear = profileInfo.birthYear,
-                userGender = profileInfo.gender
+                userGender = profileInfo.gender.toDisplayString()
             )
 
             ShowRecruitment(boardInfo.headCount, boardInfo.capacity)
@@ -135,7 +187,10 @@ fun NavigateToPostScreen(
                 MateTripHomeButton(
                     buttonText = "동행 신청",
                     enabled = true,
-                    onClick = { onNavigateToForm() }
+                    onClick = { onNavigateToForm() },
+                    modifier = Modifier
+                        .width(370.dp)
+                        .height(54.dp)
                 )
                 Spacer(modifier = Modifier.height(30.dp))
             }
@@ -274,7 +329,8 @@ fun ShowImageList(imageUris: List<String>) {
                 }
             } else {
                 // 로컬 리소스 이미지 처리
-                val resourceId = imageUri.toIntOrNull() ?: com.materip.core_designsystem.R.drawable.profile_default
+                val resourceId = imageUri.toIntOrNull()
+                    ?: com.materip.core_designsystem.R.drawable.profile_default
                 Image(
                     painter = painterResource(id = resourceId),
                     contentDescription = "Local Image $page",
@@ -405,6 +461,7 @@ fun ShowSchedule(
         }
     }
 }
+
 @Composable
 fun ShowCategory(category: List<String>) {
     Column(
@@ -534,7 +591,7 @@ fun ShowRecruitment(headCount: Int, capacity: Int) {
 }
 
 
-@Preview
+//@Preview
 @Composable
 fun NavigateToPostScreenPreview() {
     val imageList = List(5) { com.materip.core_designsystem.R.drawable.profile_default.toString() }
@@ -575,7 +632,7 @@ fun NavigateToPostScreenPreview() {
                 preferredAge = "20대",
                 preferredGender = "상관없음",
                 birthYear = 2003,
-                userGender = "남성"
+                userGender = "MALE"
             )
         }
         item { ShowRecruitment(headCount = 1, capacity = 4) }
@@ -589,9 +646,63 @@ fun NavigateToPostScreenPreview() {
                 MateTripHomeButton(
                     buttonText = "동행 신청",
                     enabled = true,
-                    onClick = {  }
+                    onClick = { },
+                    modifier = Modifier
+                        .width(370.dp)
+                        .height(54.dp)
                 )
                 Spacer(modifier = Modifier.height(30.dp))
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewCustomDialog() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black)
+    ) {
+        var showDialogState by remember { mutableStateOf(true) }
+
+        if (showDialogState) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceAround,
+                modifier = Modifier
+                    .width(320.dp)
+                    .height(172.dp)
+                    .background(Color.White, shape = RoundedCornerShape(size = 10.dp)),
+            ) {
+                Text(
+                    text = "정말 게시글을 삭제하시나요?",
+                    style = MateTripTypographySet.title03,
+                    color = Color.Black,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(top = 41.dp, bottom = 41.dp)
+                )
+                Row(
+                    modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    DeleteButton(
+                        buttonText = "아니요",
+                        enabled = true,
+                        onClick = { showDialogState = false },
+                        containerColor = NoColor,
+                        contentColor = NoTextColor
+                    )
+                    DeleteButton(
+                        buttonText = "예",
+                        enabled = true,
+                        onClick = { showDialogState = false },
+                        containerColor = Color.Black,
+                        contentColor = Color.White
+                    )
+                }
             }
         }
     }

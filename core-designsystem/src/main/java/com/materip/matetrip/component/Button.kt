@@ -72,13 +72,14 @@ fun MateTripButton(
 fun MateTripHomeButton(
     onClick: () -> Unit,
     enabled: Boolean = false,
-    buttonText: String
+    buttonText: String,
+    modifier: Modifier
 ) {
     Button(
         onClick = onClick,
         enabled = enabled,
         shape = RoundedCornerShape(10.dp),
-        modifier = Modifier.size(width = 320.dp, height = 54.dp),
+        modifier = modifier.size(width = 320.dp, height = 54.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = ActivatedColor,
             contentColor = Color.White,
@@ -89,6 +90,33 @@ fun MateTripHomeButton(
         Text(
             text = buttonText,
             style = MateTripTypographySet.headline06,
+        )
+    }
+}
+
+@Composable
+fun DeleteButton(
+    onClick: () -> Unit,
+    enabled: Boolean = false,
+    buttonText: String,
+    containerColor: Color,
+    contentColor: Color
+) {
+    Button(
+        onClick = onClick,
+        enabled = enabled,
+        shape = RoundedCornerShape(10.dp),
+        modifier = Modifier.size(width = 143.dp, height = 54.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = containerColor,
+            contentColor = contentColor,
+            disabledContainerColor = InactiveColor,
+            disabledContentColor = MateTripColors.Gray_06
+        )
+    ) {
+        Text(
+            text = buttonText,
+            style = MateTripTypographySet.title04,
         )
     }
 }
@@ -245,18 +273,6 @@ fun MateTripButtonPreview() {
             onClick = {},
             enabled = true,
             buttonText = "완료"
-        )
-        Spacer(modifier = Modifier.size(16.dp))
-        MateTripHomeButton(
-            onClick = {},
-            enabled = false,
-            buttonText = "작성완료"
-        )
-        Spacer(modifier = Modifier.size(16.dp))
-        MateTripHomeButton(
-            onClick = {},
-            enabled = true,
-            buttonText = "동행신청"
         )
         Spacer(modifier = Modifier.size(16.dp))
         AccessStatusButton(

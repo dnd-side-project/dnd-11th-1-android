@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.kapt)
 }
 
-val localProperties = Properties().apply{
+val localProperties = Properties().apply {
     load(project.file("local.properties").inputStream())
 }
 
@@ -59,11 +59,11 @@ android {
             excludes += "/META-INF/gradle/incremental.annotation.processors"
         }
     }
-    kapt{
+    kapt {
         correctErrorTypes = true
     }
-    java{
-        toolchain{
+    java {
+        toolchain {
             languageVersion.set(JavaLanguageVersion.of(17))
         }
     }
@@ -83,11 +83,16 @@ dependencies {
 
     //navigation
     implementation(libs.navigation)
-    implementation(libs.bundles.kakao) //kakao
+    implementation(libs.androidx.navigation.runtime.ktx)
+
+    //kakao
+    implementation(libs.bundles.kakao)
 
     //hilt
     implementation(libs.bundles.hilt.impl)
     kapt(libs.bundles.hilt.kapt)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt.android)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

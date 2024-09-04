@@ -1,7 +1,5 @@
 package com.materip.feature_home3.ui.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -37,7 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.materip.core_designsystem.theme.MateTripColors.Blue_02
+import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_designsystem.theme.MateTripColors.Blue_04
 import com.materip.core_designsystem.theme.MateTripColors.Gray_05
 import com.materip.core_designsystem.theme.MateTripColors.Gray_11
@@ -50,7 +48,17 @@ import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
 
-@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+@Composable
+fun TravelDateScreen() {
+    var startDate by remember { mutableStateOf<LocalDate?>(null) }
+    var endDate by remember { mutableStateOf<LocalDate?>(null) }
+
+    TravelDateCalendar { start, end ->
+        startDate = start
+        endDate = end
+    }
+}
+
 @Composable
 fun TravelDateCalendar(
     onDateRangeSelected: (LocalDate?, LocalDate?) -> Unit
@@ -164,7 +172,7 @@ fun CalendarDays(
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(7),
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxWidth()
     ) {
         items(firstDayOfWeek) {
             Box(modifier = Modifier.size(34.dp))
@@ -190,28 +198,25 @@ fun CalendarDays(
             ) {
                 if (isInRange) {
                     Canvas(modifier = Modifier.fillMaxSize()) {
-                        if (isRangeStart) {
-                            drawRect(
-                                color = Blue_02, // Light Blue color
+                        when {
+                            isRangeStart -> drawRect(
+                                color = MateTripColors.Blue_02,
                                 topLeft = Offset(size.width / 2, 0f),
                                 size = Size(size.width / 2, size.height)
                             )
-                        } else if (isRangeEnd) {
-                            drawRect(
-                                color = Blue_02, // Light Blue color
+                            isRangeEnd -> drawRect(
+                                color = MateTripColors.Blue_02,
                                 topLeft = Offset(0f, 0f),
                                 size = Size(size.width / 2, size.height)
                             )
-                        } else if (isInMiddleRange) {
-                            drawRect(
-                                color = Blue_02, // Light Blue color
+                            isInMiddleRange -> drawRect(
+                                color = MateTripColors.Blue_02,
                                 topLeft = Offset(0f, 0f),
                                 size = Size(size.width, size.height)
                             )
                         }
                     }
                 }
-                // 선택된 날짜들 강조
                 if (isRangeStart || isRangeEnd) {
                     Box(
                         modifier = Modifier
@@ -238,85 +243,8 @@ fun CalendarDays(
     }
 }
 
-
-//@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-//@Composable
-//fun CalendarDays(
-//    currentMonth: YearMonth,
-//    startDate: LocalDate?,
-//    endDate: LocalDate?,
-//    onDateSelected: (LocalDate) -> Unit
-//) {
-//    val firstDayOfMonth = currentMonth.atDay(1)
-//    val lastDayOfMonth = currentMonth.atEndOfMonth()
-//    val daysInMonth = (1..lastDayOfMonth.dayOfMonth).toList()
-//    val firstDayOfWeek = firstDayOfMonth.dayOfWeek.value % 7
-//    val today = LocalDate.now()
-//
-//    LazyVerticalGrid(
-//        columns = GridCells.Fixed(7),
-//        modifier = Modifier.fillMaxSize()
-//    ) {
-//        items(firstDayOfWeek) {
-//            Box(modifier = Modifier.size(34.dp))
-//        }
-//
-//        items(daysInMonth.size) { index ->
-//            val day = index + 1
-//            val date = currentMonth.atDay(day)
-//            val isSelected = startDate != null && endDate != null && date in startDate..endDate
-//            val isRangeStart = date == startDate
-//            val isRangeEnd = date == endDate
-//            val isPastDate = date < today
-//            val isSunday = date.dayOfWeek == DayOfWeek.SUNDAY
-//
-//            Box(
-//                modifier = Modifier
-//                    .padding(top = 7.dp)
-//                    .size(34.dp)
-//                    .clip(if (isRangeStart || isRangeEnd) CircleShape else RoundedCornerShape(0.dp))
-//                    .background(
-//                        when {
-//                            isRangeStart || isRangeEnd -> Primary
-//                            isSelected -> Blue_02
-//                            else -> Color.Transparent
-//                        }
-//                    )
-//                    .clickable(enabled = !isPastDate) { onDateSelected(date) },
-//                contentAlignment = Alignment.Center
-//            ) {
-//                Text(
-//                    text = day.toString(),
-//                    style = MateTripTypographySet.numberMedium3,
-//                    color = when {
-//                        isRangeStart || isRangeEnd -> Color.White
-//                        isPastDate -> Gray_05
-//                        isSunday -> Red_01
-//                        else -> Gray_11
-//                    },
-//                    textAlign = TextAlign.Center,
-//                    modifier = Modifier.align(Alignment.Center)
-//                )
-//            }
-//        }
-//    }
-//}
-
-@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+@Preview
 @Composable
-fun TravelDateScreen() {
-    var startDate by remember { mutableStateOf<LocalDate?>(null) }
-    var endDate by remember { mutableStateOf<LocalDate?>(null) }
-
-    TravelDateCalendar { start, end ->
-        startDate = start
-        endDate = end
-    }
-}
-
-@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-@Preview(showBackground = true)
-@Composable
-fun TravelDateScreenPreview() {
+fun TravelDateCalendarPreview() {
     TravelDateScreen()
 }

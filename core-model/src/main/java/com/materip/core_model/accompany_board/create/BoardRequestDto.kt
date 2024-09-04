@@ -7,22 +7,44 @@ import kotlinx.serialization.Serializable
 data class BoardRequestDto(
     val title: String,
     val content: String,
-    val region: String,
+    val region: Region,
     val startDate: String,
     val endDate: String,
     val capacity: Int,
-    val category: List<String>,
-    val preferredAge: String,
-    val preferredGender: String,
+    val boardStatus: BoardStatus,
+    val categories: List<Category>,
+    val preferredAge: PreferredAge,
+    val preferredGender: PreferredGender,
     val imageUrls: List<String>,
     val tagNames: List<String>
 )
 
-// 임시로 만든 데이터 클래스
-data class CompanionPost(
-    val image: String,
-    val tags: List<String>,
-    val username: String,
-    val title: String,
-    val duration: String
-)
+enum class Region {
+    SEOUL,
+    GYEONGGI_INCHEON,
+    CHUNGCHEONG_DAEJEON_SEJONG,
+    GANGWON,
+    JEOLLA_GWANGJU,
+    GYEONGSANG_DAEGU_ULSAN,
+    BUSAN,
+    JEJU
+}
+
+// TODO: 글 상태에 따라서 상태값을 변경해야함
+enum class BoardStatus {
+    RECRUITING,
+    RECRUITMENT_COMPLETED,
+    REMOVED
+}
+
+enum class Category {
+    FULL, PART, LODGING, TOUR, MEAL
+}
+
+enum class PreferredAge {
+    SAME, ANY
+}
+
+enum class PreferredGender {
+    SAME, ANY
+}

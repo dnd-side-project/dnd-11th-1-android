@@ -16,6 +16,8 @@ object MateTripColors {
     // Button Color
     val ActivatedColor = Color(0xFF020514)
     val InactiveColor = Color(0xFFDDDFEA)
+    val NoColor = Color(0xFFEEEEEE)
+    val NoTextColor = Color(0xFF555555)
 
     // Typography Color
     val Gray_13 = Color(0xFF939094)
