@@ -3,11 +3,11 @@ package com.materip.feature_home3.intent
 import android.content.Context
 import android.net.Uri
 import com.materip.core_model.accompany_board.create.BoardRequestDto
-import com.materip.core_model.accompany_board.create.BoardStatus
-import com.materip.core_model.accompany_board.create.Category
-import com.materip.core_model.accompany_board.create.PreferredAge
-import com.materip.core_model.accompany_board.create.PreferredGender
-import com.materip.core_model.accompany_board.create.Region
+import com.materip.core_model.ui_model.BoardStatus
+import com.materip.core_model.ui_model.Category
+import com.materip.core_model.ui_model.PreferredAge
+import com.materip.core_model.ui_model.PreferredGender
+import com.materip.core_model.ui_model.Region
 
 sealed class PostBoardIntent {
     data class UpdateTitle(val title: String) : PostBoardIntent()

@@ -80,7 +80,7 @@ fun ProfileDescriptionScreen(
             ProfileDescriptionContent(
                 profileImg = user.profileImageUrl,
                 nickname = user.nickname,
-                age = uiState.getAge(),
+                age = uiState.getAgeText(),
                 gender = user.gender,
                 introduction = user.description,
                 provider = user.provider,

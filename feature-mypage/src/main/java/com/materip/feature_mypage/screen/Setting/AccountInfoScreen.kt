@@ -7,17 +7,22 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,18 +39,78 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.materip.core_common.ErrorState
+import com.materip.core_designsystem.component.ConfirmationDialog
 import com.materip.core_designsystem.component.NormalTopBar
 import com.materip.core_designsystem.icon.Badges
+import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.theme.MateTripColors
+import com.materip.core_model.response.GetProfileResponseDto
 import com.materip.core_model.ui_model.AccountInfoClass
+import com.materip.feature_mypage.view_models.Setting.AccountInfoUiState
+import com.materip.feature_mypage.view_models.Setting.AccountInfoViewModel
 
 @Composable
-fun AccountInfoRoute(){
-    AccountInfoScreen()
+fun AccountInfoRoute(
+    navSmsVerification: () -> Unit,
+    navBack: () -> Unit,
+    navLogout: () -> Unit,
+    navDeleteAccount: () -> Unit,
+    viewModel: AccountInfoViewModel = hiltViewModel()
+){
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val errState = viewModel.errorState.collectAsStateWithLifecycle()
+
+    AccountInfoScreen(
+        uiState = uiState.value,
+        errState = errState.value,
+        navLogout = navLogout,
+        navDeleteAccount = navDeleteAccount,
+        navSmsVerification = navSmsVerification,
+        navBack = navBack
+    )
 }
 
 @Composable
-fun AccountInfoScreen(){
+fun AccountInfoScreen(
+    uiState: AccountInfoUiState,
+    errState: ErrorState,
+    navLogout: () -> Unit,
+    navDeleteAccount: () -> Unit,
+    navSmsVerification: () -> Unit,
+    navBack: () -> Unit,
+){
+    when(uiState){
+        AccountInfoUiState.Loading -> {
+            CircularProgressIndicator()
+        }
+        AccountInfoUiState.Error -> {
+            Text(
+                text = "Error",
+                fontSize = 100.sp,
+                color = Color.Red
+            )
+        }
+        is AccountInfoUiState.Success -> {
+            AccountInfoMainContent(
+                navLogout = navLogout,
+                navSmsVerification = navSmsVerification,
+                navDeleteAccount = navDeleteAccount,
+                navBack = navBack
+            )
+        }
+    }
+}
+
+@Composable
+private fun AccountInfoMainContent(
+    navSmsVerification: () -> Unit,
+    navDeleteAccount: () -> Unit,
+    navLogout: () -> Unit,
+    navBack: () -> Unit
+){
     val dummyData = AccountInfoClass(
         kakaoAccount = "asdfasdf@kakao.com",
         isSecondAuthDone = false,
@@ -53,6 +118,16 @@ fun AccountInfoScreen(){
         isSnsLinked = false,
         instagram = null
     )
+
+    var showLogoutDialog by remember{mutableStateOf(false)}
+
+    if (showLogoutDialog){
+        ConfirmationDialog(
+            dialogMsg = "정말 로그아웃 하시나요?",
+            onOkClick = { navLogout() },
+            onDismissRequest = {showLogoutDialog = false}
+        )
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -62,8 +137,8 @@ fun AccountInfoScreen(){
         NormalTopBar(
             title = "개인 정보",
             titleFontWeight = FontWeight(700),
-            onBackClick = { /** 뒤로가기 navigation */ },
-            onClick = {}
+            onBackClick = navBack,
+            onClick = { /* 미사용 */}
         )
         Spacer(Modifier.height(30.dp))
         AccountView(
@@ -72,13 +147,46 @@ fun AccountInfoScreen(){
         Spacer(Modifier.height(40.dp))
         SecondAuthView(
             isSecondAuthDone = dummyData.isSecondAuthDone,
-            phoneNumber = dummyData.phoneNumber
+            phoneNumber = dummyData.phoneNumber,
+            navSmsVerification = navSmsVerification
         )
         Spacer(Modifier.height(40.dp))
         LinkSNSView(
             isSnsLinked = dummyData.isSnsLinked,
             instagram = dummyData.instagram
         )
+        Spacer(Modifier.height(40.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(30.dp)
+                .clickable { showLogoutDialog = true },
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(
+                text = "로그아웃",
+                fontSize = 14.sp,
+                fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
+                fontWeight = FontWeight(400),
+                color = MateTripColors.Gray_11
+            )
+        }
+        Spacer(Modifier.height(40.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(30.dp)
+                .clickable { navDeleteAccount() },
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(
+                text = "탈퇴하기",
+                fontSize = 14.sp,
+                fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
+                fontWeight = FontWeight(400),
+                color = MateTripColors.Gray_11
+            )
+        }
     }
 }
 
@@ -133,7 +241,8 @@ private fun AccountView(
 @Composable
 private fun SecondAuthView(
     isSecondAuthDone: Boolean,
-    phoneNumber: String?
+    phoneNumber: String?,
+    navSmsVerification: () -> Unit
 ){
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -172,7 +281,7 @@ private fun SecondAuthView(
                 }
                 Text(
                     modifier = Modifier.clickable{
-                        /** 휴대폰 SMS 등록 하는 화면으로 navigation? */
+                        navSmsVerification()
                     },
                     text = "등록",
                     fontSize = 14.sp,
@@ -207,33 +316,29 @@ private fun LinkSNSView(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            if(isSnsLinked){
-
-            } else {
-                Column{
-                    Text(
-                        text = "인스타그램",
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
-                        fontWeight = FontWeight(400),
-                        color = MateTripColors.Gray_11
-                    )
-                    Text(
-                        text = "미등록",
-                        fontSize = 12.sp,
-                        fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
-                        fontWeight = FontWeight(400),
-                        color = MateTripColors.Gray_06
-                    )
-                }
-                Image(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clip(CircleShape),
-                    painter = painterResource(Badges.instagram_badge),
-                    contentDescription = "Instagram Badge"
+            Column{
+                Text(
+                    text = "인스타그램",
+                    fontSize = 14.sp,
+                    fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
+                    fontWeight = FontWeight(400),
+                    color = MateTripColors.Gray_11
+                )
+                Text(
+                    text = if(isSnsLinked) "등록" else "미등록",
+                    fontSize = 12.sp,
+                    fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
+                    fontWeight = FontWeight(400),
+                    color = if(isSnsLinked) Color.Black else MateTripColors.Gray_06
                 )
             }
+            Image(
+                modifier = Modifier
+                    .size(24.dp)
+                    .clip(CircleShape),
+                painter = painterResource(Badges.instagram_badge),
+                contentDescription = "Instagram Badge"
+            )
         }
         Spacer(Modifier.height(12.dp))
         OutlinedTextField(
@@ -263,13 +368,21 @@ private fun LinkSNSView(
                 )
             },
             trailingIcon = {
-                Text(
-                    text = "확인",
-                    fontSize = 14.sp,
-                    fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
-                    fontWeight = FontWeight(400),
-                    color = if(currentInstagram.isNotEmpty()) Color.Black else MateTripColors.Gray_06
-                )
+                if(isSnsLinked){
+                    Icon(
+                        modifier = Modifier.size(14.dp),
+                        painter = painterResource(Icons.check_icon),
+                        contentDescription = "Check Icon"
+                    )
+                } else {
+                    Text(
+                        text = "확인",
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
+                        fontWeight = FontWeight(400),
+                        color = if(currentInstagram.isNotEmpty()) Color.Black else MateTripColors.Gray_06
+                    )
+                }
             }
         )
         Spacer(Modifier.height(10.dp))
@@ -286,5 +399,12 @@ private fun LinkSNSView(
 @Preview
 @Composable
 private fun AccountInfoUITest(){
-    AccountInfoScreen()
+    AccountInfoScreen(
+        navLogout = {},
+        navDeleteAccount = {},
+        navSmsVerification = {},
+        navBack = {},
+        uiState = AccountInfoUiState.Loading,
+        errState = ErrorState.Loading
+    )
 }

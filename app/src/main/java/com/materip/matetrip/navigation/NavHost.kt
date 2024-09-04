@@ -14,15 +14,25 @@ import com.materip.feature_home3.ui.NotificationScreen
 import com.materip.feature_home3.ui.PostBoardScreen
 import com.materip.feature_home3.ui.ProfileScreen
 import com.materip.feature_login.navigation.login
+import com.materip.feature_login.navigation.navigateToLogin
 import com.materip.feature_mypage.navigation.myPageGraph
+import com.materip.feature_mypage.navigation.navigateToAccountDeletionNotice
+import com.materip.feature_mypage.navigation.navigateToAccountInfo
+import com.materip.feature_mypage.navigation.navigateToAlarmSetting
+import com.materip.feature_mypage.navigation.navigateToDeleteAccount
 import com.materip.feature_mypage.navigation.navigateToEditProfile
+import com.materip.feature_mypage.navigation.navigateToGetAuthCode
+import com.materip.feature_mypage.navigation.navigateToLogout
 import com.materip.feature_mypage.navigation.navigateToPreview
 import com.materip.feature_mypage.navigation.navigateToProfileDescription
 import com.materip.feature_mypage.navigation.navigateToQuiz100
-import com.materip.feature_mypage.navigation.navigateToReview
 import com.materip.feature_mypage.navigation.navigateToReviewDescription
+import com.materip.feature_mypage.navigation.navigateToReviewEvaluation
 import com.materip.feature_mypage.navigation.navigateToReviewList
+import com.materip.feature_mypage.navigation.navigateToSMSVerification
 import com.materip.feature_mypage.navigation.navigateToSendApplication
+import com.materip.feature_mypage.navigation.navigateToSetting
+import com.materip.feature_mypage.navigation.navigateToWriteReview
 import com.materip.feature_mypage.navigation.settingGraph
 import com.materip.feature_onboarding.navigation.inputUserInfo
 import com.materip.feature_onboarding.navigation.navigateToInputUserInfo
@@ -62,7 +72,19 @@ fun SetUpNavGraph(
         )
 
         /** setting graph */
-        settingGraph()
+        settingGraph(
+            navHome = { navController.navigate(Screen.Home.route) },
+            navLogin = navController::navigateToLogin,
+            navSetting = navController::navigateToSetting,
+            navAccountInfo = navController::navigateToAccountInfo,
+            navAlarmSetting = navController::navigateToAlarmSetting,
+            navGetAuthCode = navController::navigateToGetAuthCode,
+            navSmsVerification = navController::navigateToSMSVerification,
+            navLogout = navController::navigateToLogout,
+            navDeleteAccount = navController::navigateToDeleteAccount,
+            navAccountDeletionNotice = navController::navigateToAccountDeletionNotice,
+            navBack = navController::navigateToBack,
+        )
 
         /** my-page graph */
         myPageGraph(
@@ -72,9 +94,11 @@ fun SetUpNavGraph(
             navProfileDescription = navController::navigateToProfileDescription,
             navQuiz100 = navController::navigateToQuiz100,
             navSendApplication = navController::navigateToSendApplication,
-            navReview = navController::navigateToReview,
+            navReviewEvaluation = navController::navigateToReviewEvaluation,
             navReviewList = navController::navigateToReviewList,
-            navReviewDescription = navController::navigateToReviewDescription
+            navReviewDescription = navController::navigateToReviewDescription,
+            navReviewWrite = navController::navigateToWriteReview,
+            navReceivedApplication = {/** 받은 신청서 화면으로 이동 */}
         )
 
         // 홈
@@ -105,7 +129,8 @@ fun SetUpNavGraph(
             NavigateToPostScreen(
                 boardId = boardId,
                 onNavigateToForm = { navController.navigate(Screen.Form.route + "/$boardId") },
-                onNavigateToUserProfile = { navController.navigate(Screen.Profile.route + "/$boardId") }
+                onNavigateToUserProfile = { navController.navigate(Screen.Profile.route + "/$boardId") },
+                onNavigateUp = navController::navigateToBack
             )
         }
 

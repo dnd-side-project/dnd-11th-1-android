@@ -1,35 +1,40 @@
 package com.materip.core_model.response
 
 import kotlinx.serialization.Serializable
+import java.time.LocalDate
 
 @Serializable
 data class GetProfileDetailsResponseDto(
     val userId: Int,
     val nickname: String,
     val provider: String,
+    val profileImageUrl: String?,
+    val description: String?,
     val gender: String,
     val birthYear: Int,
-    val description: String?,
-    val grade: String?,
-    val profileImageUrl: String?,
     val socialMediaUrl: String?,
+    val grade: String?,
     val travelPreferences: List<String>,
     val travelStyles: List<String>,
-    val userImageUrls: List<String>,
-    val foodPreferences: List<String>
-) {
-    fun getAge(): String{
-        return when(birthYear){
-            in 0..9 -> "${birthYear}세"
-            in 10..19 -> "10대"
-            in 20..29 -> "20대"
-            in 30..39 -> "30대"
-            in 40..49 -> "40대"
-            in 50..59 -> "50대"
-            in 60..69 -> "60대"
-            in 70..79 -> "70대"
-            in 80..89 -> "80대"
-            else -> "90대"
+    val foodPreferences: List<String>,
+    val userImageUrls: List<String>
+){
+    fun getAgeText(): String{
+        val age = LocalDate.now().year - birthYear
+        val temp = when(age%10){
+            in 0..4 -> "초반"
+            in 5..6 -> "중반"
+            else -> "후반"
         }
+        val ageText = "${(age/10)}0대 ${temp}"
+        return ageText
+    }
+
+    fun getGenderText(): String{
+        return if(gender == "MALE") "남성" else "여성"
+    }
+
+    fun getTags(): List<String>{
+        return travelStyles.plus(travelPreferences).plus(foodPreferences)
     }
 }

@@ -40,17 +40,6 @@ android {
     }
     packaging {
         resources {
-            excludes += "/META-INF/gradle/incremental.annotation.processors"
-        }
-    }
-    buildFeatures{
-        compose = true
-    }
-    composeOptions{
-        kotlinCompilerExtensionVersion = "1.5.2"
-    }
-    packaging {
-        resources {
             excludes += "META-INF/gradle/incremental.annotation.processors"
         }
     }

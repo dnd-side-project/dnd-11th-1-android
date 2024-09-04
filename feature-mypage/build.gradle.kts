@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.bundles.kakao) //kakao
     implementation(libs.bundles.ui) //ui
     implementation(libs.androidx.lifecycle) //lifecycle
+    implementation(libs.bundles.paging) //paging
     //hilt
     implementation(libs.bundles.hilt.impl)
     kapt(libs.bundles.hilt.kapt)

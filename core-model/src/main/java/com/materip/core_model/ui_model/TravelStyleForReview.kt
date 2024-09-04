@@ -1,0 +1,14 @@
+package com.materip.core_model.ui_model
+
+enum class TravelStyleForReview {
+    LIKE_RESTAURANTS,
+    DOES_NOT_HAVE_TO_BE_RESTAURANT,
+    PREFER_HOTPLE,
+    LIKE_QUIET_PLACES,
+    LIKE_TAKING_PICTURES,
+    PREFER_TOURIST_DESTINATIONS,
+    PREFER_HEALING,
+    ENJOY_ACTIVITY,
+    LIKE_SHOPPING,
+    LIKE_CAFES
+}

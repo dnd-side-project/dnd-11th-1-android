@@ -51,6 +51,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
+import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.component.DeleteButton
 import com.materip.core_designsystem.component.MateTripHomeButton
 import com.materip.core_designsystem.icon.Badges.profile_default_badge
@@ -71,7 +72,6 @@ import com.materip.core_designsystem.theme.MateTripColors.Primary
 import com.materip.core_designsystem.theme.MateTripTypographySet
 import com.materip.feature_home3.intent.HomeIntent
 import com.materip.feature_home3.state.HomeUiState
-import com.materip.feature_home3.ui.component.toDisplayString
 import com.materip.feature_home3.viewModel.HomeViewModel
 
 /**

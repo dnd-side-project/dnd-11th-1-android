@@ -8,13 +8,12 @@ import androidx.lifecycle.viewModelScope
 import com.materip.core_common.ErrorState
 import com.materip.core_common.Result
 import com.materip.core_common.asResult
+import com.materip.core_common.transformToFile
 import com.materip.core_model.request.UpdateMyImagesRequestDto
 import com.materip.core_model.request.UpdateProfileRequestDto
-import com.materip.core_model.ui_model.DefaultImageDto
 import com.materip.core_repository.repository.image_repository.ImageRepository
 import com.materip.core_repository.repository.profile_repository.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -121,12 +120,8 @@ class EditProfileViewModel @Inject constructor(
             }
         }
     }
-    suspend fun updateProfileImg(context: Context, uri: Uri?): String {
+    suspend fun updateProfileImg(context: Context, uri: Uri): String {
         return viewModelScope.async {
-            if (uri == null) {
-                generalError.update { Pair(true, "파일 경로를 찾을 수 없습니다.") }
-                return@async ""
-            }
             val file = transformToFile(context, uri)
             if (file == null) {
                 generalError.update { Pair(true, "파일 경로를 찾을 수 없습니다.") }
@@ -145,11 +140,7 @@ class EditProfileViewModel @Inject constructor(
         }.await()
     }
 
-    fun saveImageToS3(context: Context, path: Uri?){
-        if (path == null) {
-            generalError.update{Pair(true, "파일 경로를 찾을 수 없습니다.")}
-            return
-        }
+    fun saveImageToS3(context: Context, path: Uri){
         val file = transformToFile(context, path)
         if (file == null) {
             generalError.update { Pair(true, "파일 경로를 찾을 수 없습니다.") }
@@ -169,29 +160,6 @@ class EditProfileViewModel @Inject constructor(
     }
     fun deleteImage(path: String){
         images.remove(path)
-    }
-    private fun transformToFile(
-        context: Context,
-        uri: Uri
-    ): File? {
-        val contentResolver = context.contentResolver
-
-        val filePath = (context.applicationInfo.dataDir + File.separator + System.currentTimeMillis())
-        val file = File(filePath)
-
-        try{
-            val inputStream = contentResolver.openInputStream(uri) ?: return null
-            val outputStream = FileOutputStream(file)
-
-            val buf = ByteArray(1024)
-            var len: Int
-            while(inputStream.read(buf).also{len = it} > 0) outputStream.write(buf, 0, len)
-            outputStream.close()
-            inputStream.close()
-        } catch (ignore: Exception){
-            return null
-        }
-        return file
     }
 }
 

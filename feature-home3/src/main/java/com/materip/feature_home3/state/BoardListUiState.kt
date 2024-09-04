@@ -3,8 +3,7 @@ package com.materip.feature_home3.state
 import com.materip.core_designsystem.icon.Logo.app_icon_60
 import com.materip.core_model.accompany_board.BoardItem
 import com.materip.core_model.accompany_board.BoardListResponse
-import com.materip.core_model.accompany_board.create.Region
-import com.materip.feature_home3.ui.component.toDisplayString
+import com.materip.core_model.ui_model.Region
 
 sealed class BoardListUiState {
     data object Initial : BoardListUiState() {

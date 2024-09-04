@@ -6,5 +6,9 @@ enum class SettingRoute {
     AlarmSettingRoute,
     GetAuthCodeRoute,
     SMSVerificationRoute,
-    SettingRoute
+    SettingRoute,
+    AccountDeletionNoticeRoute,
+    DeleteAccountDoneRoute,
+    DeleteAccountRoute,
+    LogoutRoute,
 }

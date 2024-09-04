@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -25,23 +26,39 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.materip.core_common.ErrorState
 import com.materip.core_designsystem.component.NormalTopBar
+import com.materip.core_designsystem.component.ProgressIndicatorPreview
 import com.materip.core_designsystem.component.ReviewDescItem
 import com.materip.core_designsystem.component.ReviewItem
 import com.materip.core_designsystem.icon.Icons
+import com.materip.core_model.response.DefaultListResponseDto
+import com.materip.core_model.response.EvaluationItem
+import com.materip.core_model.response.GetReviewEvaluationsResponseDto
+import com.materip.core_model.response.ReviewItem
 import com.materip.core_model.ui_model.ReviewClass
 import com.materip.core_model.ui_model.ReviewDescClass
+import com.materip.feature_mypage.view_models.MyPage.PreviewUiState
+import com.materip.feature_mypage.view_models.MyPage.PreviewViewModel
 
 @Composable
 fun PreviewRoute(
     navBack: () -> Unit,
-    navReview: () -> Unit,
+    navReviewEvaluation: () -> Unit,
     navReviewList: () -> Unit,
-    navReviewDescription: () -> Unit,
+    navReviewDescription: (Int) -> Unit,
+    viewModel: PreviewViewModel = hiltViewModel()
 ){
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val errState = viewModel.errorState.collectAsStateWithLifecycle()
+
     PreviewScreen(
+        uiState = uiState.value,
+        errState = errState.value,
         navBack = navBack,
-        navReview = navReview,
+        navReviewEvaluation = navReviewEvaluation,
         navReviewList = navReviewList,
         navReviewDescription = navReviewDescription
     )
@@ -49,54 +66,50 @@ fun PreviewRoute(
 
 @Composable
 fun PreviewScreen(
+    uiState: PreviewUiState,
+    errState: ErrorState,
     navBack: () -> Unit,
-    navReview: () -> Unit,
+    navReviewEvaluation: () -> Unit,
     navReviewList: () -> Unit,
-    navReviewDescription: () -> Unit,
+    navReviewDescription: (Int) -> Unit,
 ){
-    val dummyReview = ReviewClass(
-        totalCount = 14,
-        review = listOf(
-            Pair(5, "붙임성이 좋아요."),
-            Pair(3, "친절해요."),
-            Pair(3, "계획적이에요.")
-        )
-    )
-    val dummyReviewDesc = listOf(
-        ReviewDescClass(
-            destination = "부산",
-            period = "2박3일",
-            startDate = "2024.07.20",
-            endDate = "2024.07.22",
-            profileUrl = "",
-            nickname = "닉네임",
-            age = "20대 초반",
-            gender = "여자",
-            content = "같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰"
-        ),
-        ReviewDescClass(
-            destination = "부산",
-            period = "2박3일",
-            startDate = "2024.07.20",
-            endDate = "2024.07.22",
-            profileUrl = "",
-            nickname = "닉네임",
-            age = "20대 초반",
-            gender = "여자",
-            content = "같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰"
-        ),
-        ReviewDescClass(
-            destination = "부산",
-            period = "2박3일",
-            startDate = "2024.07.20",
-            endDate = "2024.07.22",
-            profileUrl = "",
-            nickname = "닉네임",
-            age = "20대 초반",
-            gender = "여자",
-            content = "같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰"
-        )
-    )
+    when(uiState){
+        PreviewUiState.Loading -> {
+            CircularProgressIndicator()
+        }
+        PreviewUiState.Error -> {
+            Text(
+                text = "Error",
+                fontSize = 100.sp,
+                color = Color.Red
+            )
+        }
+        is PreviewUiState.Success -> {
+            PreviewMainContent(
+                reviews = uiState.reviews.result,
+                reviewTotal = uiState.reviews.totalCount,
+                evaluations = uiState.evaluations.evaluationResponse,
+                evaluationTotal = uiState.evaluations.evaluationCount,
+                navReviewEvaluation = navReviewEvaluation,
+                navReviewList = navReviewList,
+                navReviewDescription = navReviewDescription,
+                navBack = navBack
+            )
+        }
+    }
+}
+
+@Composable
+private fun PreviewMainContent(
+    reviews: List<ReviewItem>,
+    reviewTotal: Int,
+    evaluations: List<EvaluationItem>,
+    evaluationTotal: Int,
+    navReviewEvaluation: () -> Unit,
+    navBack: () -> Unit,
+    navReviewList: () -> Unit,
+    navReviewDescription: (Int) -> Unit,
+){
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -110,13 +123,15 @@ fun PreviewScreen(
             onClick = {/* 미사용 */}
         )
         Spacer(Modifier.height(10.dp))
-        ReviewFeedback(
-            dummyReview = dummyReview,
-            navReview = navReview
+        ReviewEvaluations(
+            evaluations = evaluations,
+            evaluationTotal = evaluationTotal,
+            navReviewEvaluation = navReviewEvaluation
         )
         Spacer(Modifier.height(40.dp))
-        ReviewFeedbackDesc(
-            dummyReviewDesc = dummyReviewDesc,
+        ReviewsContent(
+            reviews = reviews,
+            reviewTotal = reviewTotal,
             navReviewList = navReviewList,
             navReviewDescription = navReviewDescription
         )
@@ -124,9 +139,10 @@ fun PreviewScreen(
 }
 
 @Composable
-fun ReviewFeedback(
-    dummyReview: ReviewClass,
-    navReview: () -> Unit
+private fun ReviewEvaluations(
+    evaluations: List<EvaluationItem>,
+    evaluationTotal: Int,
+    navReviewEvaluation: () -> Unit
 ){
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -147,7 +163,7 @@ fun ReviewFeedback(
                 )
                 Spacer(Modifier.width(5.dp))
                 Text(
-                    text = "(${dummyReview.totalCount})",
+                    text = "( ${evaluationTotal} )",
                     fontSize = 16.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.roboto_medium)),
                     fontWeight = FontWeight(700)
@@ -155,7 +171,7 @@ fun ReviewFeedback(
             }
             IconButton(
                 modifier = Modifier.size(24.dp),
-                onClick = navReview
+                onClick = navReviewEvaluation
             ) {
                 Icon(
                     modifier = Modifier.fillMaxSize(),
@@ -165,9 +181,12 @@ fun ReviewFeedback(
             }
         }
         Spacer(Modifier.height(14.dp))
-        dummyReview.review.forEach{
-            ReviewItem(review = it)
-            if(dummyReview.review.indexOf(it) != dummyReview.review.lastIndex){
+        evaluations.forEach{evaluation ->
+            ReviewItem(
+                message = evaluation.getKoreanType(),
+                count = evaluation.count
+            )
+            if(evaluations.indexOf(evaluation) != evaluations.lastIndex){
                 Spacer(Modifier.height(10.dp))
             }
         }
@@ -175,10 +194,11 @@ fun ReviewFeedback(
 }
 
 @Composable
-fun ReviewFeedbackDesc(
-    dummyReviewDesc: List<ReviewDescClass>,
+fun ReviewsContent(
+    reviews: List<ReviewItem>,
+    reviewTotal: Int,
     navReviewList: () -> Unit,
-    navReviewDescription: () -> Unit
+    navReviewDescription: (Int) -> Unit
 ){
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -199,7 +219,7 @@ fun ReviewFeedbackDesc(
                 )
                 Spacer(Modifier.width(5.dp))
                 Text(
-                    text = dummyReviewDesc.size.toString(),
+                    text = "( ${reviewTotal} )",
                     fontSize = 16.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.roboto_medium)),
                     fontWeight = FontWeight(700),
@@ -217,20 +237,20 @@ fun ReviewFeedbackDesc(
             }
         }
         Spacer(Modifier.height(14.dp))
-        dummyReviewDesc.forEach{
+        reviews.forEach{ review ->
             ReviewDescItem(
-                destination = it.destination,
-                period = it.period,
-                startDate = it.startDate,
-                endDate = it.endDate,
-                profileUrl = it.profileUrl,
-                nickname = it.nickname,
-                age = it.age,
-                gender = it.gender,
-                content = it.content,
-                onClick = navReviewDescription
+                destination = review.getRegionText(),
+                period = review.getDuration(),
+                startDate = review.getStartDateText(),
+                endDate = review.getEndDateText(),
+                profileUrl = review.profileImageUrl,
+                nickname = review.nickname,
+                age = "20대 중반", /** 받은 데이터로 변경 */
+                gender = "여성", /** 받은 데이터로 변경 */
+                content = review.detailContent,
+                onClick = { navReviewDescription(0) /** 받은 데이터 id 값을 넣어줘야 함 */ }
             )
-            if(dummyReviewDesc.indexOf(it) != dummyReviewDesc.lastIndex){
+            if(reviews.indexOf(review) != reviews.lastIndex){
                 Spacer(Modifier.height(10.dp))
             }
         }
@@ -241,8 +261,57 @@ fun ReviewFeedbackDesc(
 @Composable
 private fun PreviewUITest(){
     PreviewScreen(
+        uiState = PreviewUiState.Success(
+            GetReviewEvaluationsResponseDto(
+                evaluationCount = 14,
+                evaluationResponse = listOf(
+                    EvaluationItem(
+                        type = "붙임성이 좋아요",
+                        count = 5
+                    ),
+                    EvaluationItem(
+                        type = "친절해요",
+                        count = 3
+                    ),
+                    EvaluationItem(
+                        type = "계획적이에요",
+                        count = 3
+                    )
+                )
+            ),
+            reviews = DefaultListResponseDto<ReviewItem>(
+                result = listOf(
+                    ReviewItem(
+                        startDate = "2024.07.20",
+                        endDate = "2024.07.22",
+                        nickname = "닉네임",
+                        region = "부산",
+                        detailContent = "같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰",
+                        profileImageUrl = ""
+                    ),
+                    ReviewItem(
+                        startDate = "2024.07.20",
+                        endDate = "2024.07.22",
+                        nickname = "닉네임",
+                        region = "부산",
+                        detailContent = "같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰",
+                        profileImageUrl = ""
+                    ),
+                    ReviewItem(
+                        startDate = "2024.07.20",
+                        endDate = "2024.07.22",
+                        nickname = "닉네임",
+                        region = "부산",
+                        detailContent = "같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰",
+                        profileImageUrl = ""
+                    )
+                ),
+                totalCount = 3
+            )
+        ),
+        errState = ErrorState.Loading,
         navBack = {},
-        navReview = {},
+        navReviewEvaluation = {},
         navReviewDescription = {},
         navReviewList = {}
     )

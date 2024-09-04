@@ -41,12 +41,21 @@ import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_model.ui_model.InputKeyboardType
 
 @Composable
-fun GetAuthCodeRoute(){
-    GetAuthCodeScreen()
+fun GetAuthCodeRoute(
+    navSetting: () -> Unit,
+    navBack: () -> Unit,
+){
+    GetAuthCodeScreen(
+        navSetting = navSetting,
+        navBack = navBack
+    )
 }
 
 @Composable
-fun GetAuthCodeScreen(){
+fun GetAuthCodeScreen(
+    navSetting: () -> Unit,
+    navBack: () -> Unit
+){
     var authCode by remember{ mutableStateOf("") }
     var isEnabled = remember{derivedStateOf{authCode.isNotEmpty()} }
     var retryCode by remember{mutableStateOf(false)}
@@ -70,12 +79,12 @@ fun GetAuthCodeScreen(){
     ) {
         NormalTopBar(
             title = "SMS 인증",
-            onBackClick = { /** 뒤로 가기 */ },
+            onBackClick = navBack,
             onClick = {/* 미사용 */}
         )
         Spacer(Modifier.height(20.dp))
         if(isDone){
-            DoneAuthContent()
+            DoneAuthContent(navSetting = navSetting)
         } else {
             AuthProcessContent(
                 authCode = authCode,
@@ -142,7 +151,7 @@ private fun AuthProcessContent(
 }
 
 @Composable
-private fun DoneAuthContent(){
+private fun DoneAuthContent(navSetting: () -> Unit){
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -177,7 +186,7 @@ private fun DoneAuthContent(){
             btnText = "확인",
             fontSize = 14.sp,
             btnColor = Color.White,
-            onClick = { /** 뒤로가기 navigation */}
+            onClick = navSetting
         )
     }
 }
@@ -185,5 +194,8 @@ private fun DoneAuthContent(){
 @Preview
 @Composable
 private fun GetAuthCodeUiTest(){
-    GetAuthCodeScreen()
+    GetAuthCodeScreen(
+        navSetting = {},
+        navBack = {}
+    )
 }

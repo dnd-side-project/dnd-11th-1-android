@@ -120,7 +120,7 @@ fun ProfileContent(
                             )
                         }
                         Text(
-                            text = "${userInfo.getAge()} · ${userInfo.gender}",
+                            text = "${userInfo.getAgeText()} · ${userInfo.gender}",
                             fontSize = 12.sp,
                             color = MateTripColors.Gray_06,
                             fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
@@ -209,7 +209,7 @@ fun ProfileContent(
                 BasicInfo(
                     nickname = userInfo.nickname,
                     gender = userInfo.gender,
-                    age = userInfo.getAge(),
+                    age = userInfo.getAgeText(),
                     authenticatorType = userInfo.provider
                 )
                 Spacer(Modifier.height(40.dp))

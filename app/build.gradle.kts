@@ -81,15 +81,9 @@ dependencies {
     implementation(project(":feature-mypage"))
     implementation(project(":feature-onboarding"))
 
-    //navigation
-    implementation(libs.navigation)
-    implementation(libs.androidx.navigation.runtime.ktx)
-
-    //kakao
-    implementation(libs.bundles.kakao)
-
-    //hilt
-    implementation(libs.bundles.hilt.impl)
+    implementation(libs.navigation) //navigation
+    implementation(libs.bundles.kakao) //kakao
+    implementation(libs.bundles.hilt.impl) //hilt
     kapt(libs.bundles.hilt.kapt)
     kapt(libs.hilt.android.compiler)
     implementation(libs.hilt.android)

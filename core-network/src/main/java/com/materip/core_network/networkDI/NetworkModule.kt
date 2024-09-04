@@ -6,10 +6,12 @@ import com.materip.core_network.networkDI.AuthAuthenticator
 import com.materip.core_network.networkDI.HeaderInterceptor
 import com.materip.core_network.service.image.ImageService
 import com.materip.core_network.BuildConfig
+import com.materip.core_network.service.accompany.AccompanyService
 import com.materip.core_network.service.home.BoardService
 import com.materip.core_network.service.login.LoginService
 import com.materip.core_network.service.onboarding.OnboardingService
 import com.materip.core_network.service.profile.ProfileService
+import com.materip.core_network.service.review.ReviewService
 import com.materip.core_network.service.test.TestService
 import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
 import dagger.Module
@@ -90,5 +92,17 @@ object NetworkModule {
     @Singleton
     fun provideBoardService(retrofit: Retrofit): BoardService {
         return retrofit.create(BoardService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAccompanyService(retrofit: Retrofit): AccompanyService{
+        return retrofit.create(AccompanyService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideReviewService(retrofit: Retrofit): ReviewService {
+        return retrofit.create(ReviewService::class.java)
     }
 }

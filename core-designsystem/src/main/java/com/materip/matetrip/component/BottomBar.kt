@@ -29,12 +29,11 @@ import com.materip.core_designsystem.theme.MateTripColors.Gray_06
 
 @Composable
 fun MateTripBottomBar(
+    currentRoute: String,
     onHomeClick: () -> Unit,
     onMyPageClick: () -> Unit,
     onSettingClick: () -> Unit
 ) {
-    var selectedTab by remember { mutableStateOf("home") }
-
     BottomAppBar(
         modifier = Modifier
             .fillMaxWidth()
@@ -44,11 +43,8 @@ fun MateTripBottomBar(
         BottomBarItem(
             iconRes = Icons.home_icon,
             label = "홈",
-            isSelected = selectedTab == "home",
-            onClick = {
-                selectedTab = "home"
-                onHomeClick()
-            },
+            isSelected = currentRoute == "home",
+            onClick = onHomeClick,
             modifier = Modifier
                 .weight(1f)
                 .padding(top = 10.dp)
@@ -56,11 +52,8 @@ fun MateTripBottomBar(
         BottomBarItem(
             iconRes = Icons.my_page_icon,
             label = "마이페이지",
-            isSelected = selectedTab == "my_page",
-            onClick = {
-                selectedTab = "my_page"
-                onMyPageClick()
-            },
+            isSelected = currentRoute == "MyPageRoute",
+            onClick = onMyPageClick,
             modifier = Modifier
                 .weight(1f)
                 .padding(top = 10.dp)
@@ -68,11 +61,8 @@ fun MateTripBottomBar(
         BottomBarItem(
             iconRes = Icons.setting_icon,
             label = "설정",
-            isSelected = selectedTab == "setting",
-            onClick = {
-                selectedTab = "setting"
-                onSettingClick()
-            },
+            isSelected = currentRoute == "SettingRoute",
+            onClick = onSettingClick,
             modifier = Modifier
                 .weight(1f)
                 .padding(top = 10.dp)
@@ -114,6 +104,7 @@ fun BottomBarItem(
 @Composable
 fun PreviewMateTripBottomBar() {
     MateTripBottomBar(
+        currentRoute = "",
         onHomeClick = {},
         onMyPageClick = {},
         onSettingClick = {}

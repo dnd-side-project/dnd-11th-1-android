@@ -1,5 +1,10 @@
 package com.materip.core_model.accompany_board.create
 
+import com.materip.core_model.ui_model.BoardStatus
+import com.materip.core_model.ui_model.Category
+import com.materip.core_model.ui_model.PreferredAge
+import com.materip.core_model.ui_model.PreferredGender
+import com.materip.core_model.ui_model.Region
 import kotlinx.serialization.Serializable
 
 // 동행글 생성 BoardRequestDto
@@ -18,33 +23,3 @@ data class BoardRequestDto(
     val imageUrls: List<String>,
     val tagNames: List<String>
 )
-
-enum class Region {
-    SEOUL,
-    GYEONGGI_INCHEON,
-    CHUNGCHEONG_DAEJEON_SEJONG,
-    GANGWON,
-    JEOLLA_GWANGJU,
-    GYEONGSANG_DAEGU_ULSAN,
-    BUSAN,
-    JEJU
-}
-
-// TODO: 글 상태에 따라서 상태값을 변경해야함
-enum class BoardStatus {
-    RECRUITING,
-    RECRUITMENT_COMPLETED,
-    REMOVED
-}
-
-enum class Category {
-    FULL, PART, LODGING, TOUR, MEAL
-}
-
-enum class PreferredAge {
-    SAME, ANY
-}
-
-enum class PreferredGender {
-    SAME, ANY
-}

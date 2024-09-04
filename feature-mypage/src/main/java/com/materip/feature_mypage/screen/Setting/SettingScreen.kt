@@ -28,12 +28,21 @@ import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.theme.MateTripColors
 
 @Composable
-fun SettingRoute(){
-    SettingScreen()
+fun SettingRoute(
+    navAccountInfo: () -> Unit,
+    navAlarmSetting: () -> Unit,
+){
+    SettingScreen(
+        navAccountInfo = navAccountInfo,
+        navAlarmSetting = navAlarmSetting
+    )
 }
 
 @Composable
-fun SettingScreen(){
+fun SettingScreen(
+    navAccountInfo: () -> Unit,
+    navAlarmSetting: () -> Unit,
+){
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -76,7 +85,7 @@ fun SettingScreen(){
             Spacer(Modifier.weight(1f))
             IconButton(
                 modifier= Modifier.size(18.dp),
-                onClick = { /** 계정 정보로 navigation */ }
+                onClick = navAccountInfo
             ) {
                 Icon(
                     modifier = Modifier.fillMaxSize(),
@@ -108,7 +117,7 @@ fun SettingScreen(){
             Spacer(Modifier.weight(1f))
             IconButton(
                 modifier= Modifier.size(18.dp),
-                onClick = { /** 알림 설정으로 navigation */ }
+                onClick = navAlarmSetting
             ) {
                 Icon(
                     modifier = Modifier.fillMaxSize(),
@@ -123,5 +132,8 @@ fun SettingScreen(){
 @Preview
 @Composable
 private fun SettingUITest(){
-    SettingScreen()
+    SettingScreen(
+        navAlarmSetting = {},
+        navAccountInfo = {}
+    )
 }

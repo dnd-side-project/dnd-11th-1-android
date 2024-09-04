@@ -51,10 +51,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.materip.core_designsystem.MatetripGrade
 import com.materip.core_designsystem.R
 import com.materip.core_designsystem.icon.Badges
 import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.theme.MateTripColors
+import com.materip.core_model.ui_model.Grade
+import com.materip.core_model.ui_model.GradeTag
 import kotlinx.coroutines.delay
 
 @Composable
@@ -114,24 +117,18 @@ fun SelectableDialog(
 
 @Composable
 fun LevelInfoDialog(
-    currentLevel: Int,
+    currentLevel: Grade,
     onDismissRequest: () -> Unit,
 ){
-    val currentLevelInfo = when(currentLevel){
-        1 -> Triple(MateTripColors.level_1_color, Badges.level_1_badge, "새싹 메이트")
-        2 -> Triple(MateTripColors.level_2_color, Badges.level_2_badge, "우수 메이트")
-        3 -> Triple(MateTripColors.level_3_color, Badges.level_3_badge, "열정 메이트")
-        else -> Triple(MateTripColors.level_4_color, Badges.level_4_badge, "베테랑 메이트")
-    }
-    val nextLevelInfo = when(currentLevel + 1){
-        2 -> Pair(MateTripColors.level_2_color, "우수 메이트")
-        3 -> Pair(MateTripColors.level_3_color, "열정 메이트")
-        else -> Pair(MateTripColors.level_4_color, "베테랑 메이트")
+    val nextLevelInfo = when(currentLevel.gradeName){
+        GradeTag.ROOKIE.name -> MatetripGrade.level_2
+        GradeTag.ELITE.name -> MatetripGrade.level_3
+        else -> MatetripGrade.level_4
     }
     val nextLevelText = buildAnnotatedString {
-        if(currentLevel != 4) {
-            withStyle(style = SpanStyle(color = nextLevelInfo.first)){
-                append(nextLevelInfo.second)
+        if(currentLevel.gradeName != GradeTag.VETERAN.name) {
+            withStyle(style = SpanStyle(color = nextLevelInfo.color as Color)){
+                append(nextLevelInfo.gradeKoName)
             }
             withStyle(style = SpanStyle(color = Color.Black)){
                 append("까지 한 발자국 남았어요")
@@ -149,7 +146,7 @@ fun LevelInfoDialog(
         }
     }
     val nextLevelDescText = buildAnnotatedString {
-        if (currentLevel != 4){
+        if (currentLevel.gradeName != GradeTag.VETERAN.name){
             withStyle(style = SpanStyle(color = MateTripColors.Primary)){
                 append("동행 후기")
             }
@@ -212,16 +209,16 @@ fun LevelInfoDialog(
             ){
                 Image(
                     modifier = Modifier.size(38.dp),
-                    painter = painterResource(currentLevelInfo.second),
+                    painter = painterResource(currentLevel.badge),
                     contentDescription = "Level Badge"
                 )
                 Spacer(Modifier.height(10.dp))
                 Text(
-                    text = currentLevelInfo.third,
+                    text = currentLevel.gradeKoName,
                     fontSize = 14.sp,
                     fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                     fontWeight = FontWeight(500),
-                    color = currentLevelInfo.first
+                    color = currentLevel.color as Color
                 )
             }
             Spacer(Modifier.height(20.dp))
@@ -498,13 +495,16 @@ fun WarningDialog(
         )
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .background(color = MateTripColors.Red_01)
                 .padding(12.dp),
             horizontalArrangement = Arrangement.Center
         ){
             Icon(
-                modifier = Modifier.size(24.dp).clip(CircleShape),
+                modifier = Modifier
+                    .size(24.dp)
+                    .clip(CircleShape),
                 painter = painterResource(Badges.warning_badge),
                 contentDescription = "Warning Icon"
             )
@@ -539,10 +539,15 @@ private fun DialogUITest(){
         Text(value)
     }
     if(isOpen){
-        SelectableDialog(
-            value = value,
-            onValueChange = {value = it},
-            options = options,
+//        SelectableDialog(
+//            value = value,
+//            onValueChange = {value = it},
+//            options = options,
+//            onDismissRequest = {isOpen = false}
+//        )
+        ConfirmationDialog(
+            dialogMsg = "정말 로그아웃 하시나요?",
+            onOkClick = { isOpen = false },
             onDismissRequest = {isOpen = false}
         )
     }

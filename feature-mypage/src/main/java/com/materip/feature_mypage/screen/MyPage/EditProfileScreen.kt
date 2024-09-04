@@ -1,6 +1,9 @@
 package com.materip.feature_mypage.screen.MyPage
 
+import android.Manifest
 import android.net.Uri
+import android.os.Build
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -58,6 +61,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_common.ErrorState
+import com.materip.core_common.checkPermission
 import com.materip.core_designsystem.component.CustomClickableTag
 import com.materip.core_designsystem.component.ImageLoadView
 import com.materip.core_designsystem.component.NormalTopBar
@@ -117,9 +121,9 @@ fun EditProfileScreen(
     onEditClick: (profileImg: String, nickname: String, description: String, birthYear: Int, gender: String,
                   travelPreferences: SnapshotStateList<String>, travelStyles: SnapshotStateList<String>,
                   foodPreference: SnapshotStateList<String>, snsLink: String?, images: SnapshotStateList<String>) -> Unit,
-    onUploadImage: (List<Uri?>) -> Unit,
+    onUploadImage: (List<Uri>) -> Unit,
     onDeleteImage: (String) -> Unit,
-    onUpdateProfileImg: suspend (Uri?) -> String,
+    onUpdateProfileImg: suspend (Uri) -> String,
     navBack: () -> Unit
 ){
     when(uiState){
@@ -147,6 +151,7 @@ fun EditProfileScreen(
         }
         EditProfileUiState.Error -> {
             /** Error view로 변환해야 함 */
+            Log.d("TAG TEST", "edit profile screen : ${errState}")
             Text(
                 text = "Error",
                 fontSize = 100.sp,
@@ -171,14 +176,15 @@ private fun EditProfileMainContent(
     onEditClick: (profileImg: String, nickname: String, description: String, birthYear: Int, gender: String,
                   travelPreferences: SnapshotStateList<String>, travelStyles: SnapshotStateList<String>,
                   foodPreferences: SnapshotStateList<String>, snsLink: String?, images: SnapshotStateList<String>) -> Unit,
-    onUploadImage: (List<Uri?>) -> Unit,
+    onUploadImage: (List<Uri>) -> Unit,
     onDeleteImage: (String) -> Unit,
-    onUpdateProfileImg: suspend (Uri?) -> String,
+    onUpdateProfileImg: suspend (Uri) -> String,
     navBack: () -> Unit,
 ){
     val scrollState = rememberScrollState()
     val coroutine = rememberCoroutineScope()
     val context = LocalContext.current
+    var selected by remember{mutableStateOf("")}
     var profileImg by remember{mutableStateOf(initProfileImg)}
     var nickname by remember{mutableStateOf(initNickname)}
     var introduction by remember{mutableStateOf(initDescription ?: "")}
@@ -203,11 +209,24 @@ private fun EditProfileMainContent(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
             coroutine.launch{
-                val path = onUpdateProfileImg(uri)
-                profileImg = path
+                if (uri != null){
+                    val path = onUpdateProfileImg(uri)
+                    profileImg = path
+                }
             }
         }
     )
+    val requestPermissionLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestPermission()) {isGranted ->
+        if (isGranted){
+            if (selected == "profile"){
+                profileLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            } else {
+                myImageLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            }
+        } else {
+            Toast.makeText(context, "권한이 거절되어 갤러리에 연동이 불가능합니다", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -240,11 +259,18 @@ private fun EditProfileMainContent(
                         .size(80.dp)
                         .background(color = MateTripColors.Blue_04, shape = CircleShape)
                         .clickable {
-                            profileLauncher.launch(
-                                PickVisualMediaRequest(
-                                    ActivityResultContracts.PickVisualMedia.ImageOnly
+                            selected = "profile"
+                            if(checkPermission(context, "camera")){
+                                profileLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                            } else {
+                                requestPermissionLauncher.launch(
+                                    if (Build.VERSION.SDK_INT >= 33){
+                                        Manifest.permission.READ_MEDIA_IMAGES
+                                    } else {
+                                        Manifest.permission.READ_EXTERNAL_STORAGE
+                                    }
                                 )
-                            )
+                            }
                         },
                     contentAlignment = Alignment.Center
                 ){
@@ -298,7 +324,20 @@ private fun EditProfileMainContent(
             Spacer(Modifier.height(40.dp))
             MyImages(
                 pictures = images,
-                onCameraClick = {myImageLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))},
+                onCameraClick = {
+                    selected = "gallery"
+                    if(checkPermission(context, "camera")){
+                        myImageLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    } else {
+                        requestPermissionLauncher.launch(
+                            if (Build.VERSION.SDK_INT >= 33){
+                                Manifest.permission.READ_MEDIA_IMAGES
+                            } else {
+                                Manifest.permission.READ_EXTERNAL_STORAGE
+                            }
+                        )
+                    }
+                },
                 onDeleteImage = {
                     images.remove(it)
                     onDeleteImage(it)
@@ -365,7 +404,10 @@ private fun MyIntroductionEdit(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(102.dp)
-                .background(color = MateTripColors.Blue_04, shape = RoundedCornerShape(size = 10.dp))
+                .background(
+                    color = MateTripColors.Blue_04,
+                    shape = RoundedCornerShape(size = 10.dp)
+                )
                 .padding(12.dp),
             value = introduction,
             onValueChange = onIntroductionUpdate,
