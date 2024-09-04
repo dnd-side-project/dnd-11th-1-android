@@ -41,6 +41,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.ItemSnapshotList
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.materip.core_common.toDisplayDateString
 import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.MatetripGrade
 import com.materip.core_designsystem.R
@@ -183,11 +184,11 @@ private fun TravelRecordsContent(
             items(records){record ->
                 if (record != null){
                     TravelPostItem(
-                        destination = record.region,
+                        destination = record.region.toDisplayString(),
                         period = record.getDuration(),
                         title = record.title,
-                        startDate = record.getStartDateText(),
-                        endDate = record.getEndDateText(),
+                        startDate = record.startDate.toDisplayDateString(),
+                        endDate = record.endDate.toDisplayDateString(),
                         postImage = record.imageUrls[0],
                         onClick = {/** 해당 글로 navigation  */}
                     )
@@ -257,8 +258,8 @@ private fun SendTravelApplicationContent(
                         destination = application.region.toDisplayString(),
                         period = application.getDuration(),
                         title = application.title,
-                        startDate = application.getStartDateText(),
-                        endDate = application.getEndDateText(),
+                        startDate = application.startDate.toDisplayDateString(),
+                        endDate = application.endDate.toDisplayDateString(),
                         postImage = application.imageUrls[0],
                         /** 여기에는 application에서 받아온 board id 를 기반으로 navigation 해야 함 */
                         onClick = {/** 해당 글 navigation */}
