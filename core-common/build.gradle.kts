@@ -39,6 +39,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core-model"))
     //serializable
     implementation(libs.serialization)
     implementation(libs.androidx.core.ktx)
