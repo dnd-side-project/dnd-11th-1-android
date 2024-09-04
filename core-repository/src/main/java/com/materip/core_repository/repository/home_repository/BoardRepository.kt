@@ -1,19 +1,17 @@
 package com.materip.core_repository.repository.home_repository
 
 import com.materip.core_common.ResultResponse
+import com.materip.core_model.accompany_board.all.BoardListResponse
 import com.materip.core_model.accompany_board.create.BoardRequestDto
-import com.materip.core_model.accompany_board.BoardListResponse
-import com.materip.core_model.accompany_board.Pageable
 import com.materip.core_model.accompany_board.id.BoardIdDto
 import com.materip.core_model.accompany_board.id.GetBoardDetailDto
-import com.materip.core_model.accompany_board.notification.Notification
 import com.materip.core_model.accompany_board.profile.GetUserProfile
 import com.materip.core_model.accompany_board.request.CompanionRequest
+import com.materip.core_model.request.PagingRequestDto
 
-// 게시글 생성 메서드를 정의
 interface BoardRepository {
     // 동행글 목록 조회
-    suspend fun getBoard(pageable: Pageable): ResultResponse<BoardListResponse>
+    suspend fun getBoard(boardRequest: PagingRequestDto): ResultResponse<BoardListResponse>
     // 동행글 생성
     suspend fun postBoard(board: BoardRequestDto): ResultResponse<BoardIdDto>
     // 동행글 상세 조회
