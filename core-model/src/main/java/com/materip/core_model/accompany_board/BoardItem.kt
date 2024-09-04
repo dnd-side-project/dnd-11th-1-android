@@ -10,7 +10,7 @@ import java.time.temporal.ChronoUnit
 data class BoardItem(
     val boardId: Int,
     val title: String,
-    val region: String,
+    val region: Region,
     val startDate: String,
     val endDate: String,
     val nickname: String,
