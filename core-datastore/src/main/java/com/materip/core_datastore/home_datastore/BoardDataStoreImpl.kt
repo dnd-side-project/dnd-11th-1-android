@@ -11,6 +11,7 @@ import com.materip.core_model.accompany_board.profile.GetUserProfile
 import com.materip.core_model.accompany_board.request.CompanionRequest
 import com.materip.core_network.service.home.BoardService
 import com.skydoves.sandwich.message
+import com.skydoves.sandwich.retrofit.apiMessage
 import com.skydoves.sandwich.suspendOnError
 import com.skydoves.sandwich.suspendOnSuccess
 import kotlinx.serialization.json.Json
@@ -25,7 +26,7 @@ class BoardDataStoreImpl @Inject constructor(
         boardService.getBoard().suspendOnSuccess {
             result.data = this.data
         }.suspendOnError {
-            result.error = Json.decodeFromString<ResponseError>(this.message())
+            result.error = Json.decodeFromString<ResponseError>("${this.apiMessage}")
         }
         return result
     }
@@ -35,7 +36,7 @@ class BoardDataStoreImpl @Inject constructor(
         boardService.postBoard(board).suspendOnSuccess{
             result.data = this.data
         }.suspendOnError{
-            result.error = Json.decodeFromString<ResponseError>(this.message())
+            result.error = Json.decodeFromString<ResponseError>("${this.apiMessage}")
         }
         return result
     }
@@ -45,7 +46,7 @@ class BoardDataStoreImpl @Inject constructor(
         boardService.getBoardDetail(id).suspendOnSuccess {
             result.data = this.data
         }.suspendOnError {
-            result.error = Json.decodeFromString<ResponseError>(this.message())
+            result.error = Json.decodeFromString<ResponseError>("${this.apiMessage}")
         }
         return result
     }
@@ -55,7 +56,7 @@ class BoardDataStoreImpl @Inject constructor(
         boardService.postCompanionRequest(companionRequest).suspendOnSuccess {
             result.data = this.data
         }.suspendOnError {
-            result.error = Json.decodeFromString<ResponseError>(this.message())
+            result.error = Json.decodeFromString<ResponseError>("${this.apiMessage}")
         }
         return result
     }
@@ -65,7 +66,7 @@ class BoardDataStoreImpl @Inject constructor(
         boardService.deleteBoard(id).suspendOnSuccess {
             result.data = this.data
         }.suspendOnError {
-            result.error = Json.decodeFromString<ResponseError>(this.message())
+            result.error = Json.decodeFromString<ResponseError>("${this.apiMessage}")
         }
         return result
     }
@@ -75,7 +76,7 @@ class BoardDataStoreImpl @Inject constructor(
         boardService.getProfile().suspendOnSuccess {
             result.data = this.data
         }.suspendOnError {
-            result.error = Json.decodeFromString<ResponseError>(this.message())
+            result.error = Json.decodeFromString<ResponseError>("${this.apiMessage}")
         }
         return result
     }
