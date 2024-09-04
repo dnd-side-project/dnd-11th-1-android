@@ -1,9 +1,9 @@
 package com.materip.core_model.accompany_board.id
 
-import com.materip.core_model.accompany_board.create.Category
-import com.materip.core_model.accompany_board.create.PreferredAge
-import com.materip.core_model.accompany_board.create.PreferredGender
-import com.materip.core_model.accompany_board.create.Region
+import com.materip.core_model.ui_model.Category
+import com.materip.core_model.ui_model.PreferredAge
+import com.materip.core_model.ui_model.PreferredGender
+import com.materip.core_model.ui_model.Region
 import kotlinx.serialization.Serializable
 
 // 동행글 상세 조회 BoardInfo

@@ -36,6 +36,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.component.MateTripSearchBar
 import com.materip.core_designsystem.component.RegionTag
 import com.materip.core_designsystem.icon.Badges.fab_add_badge
@@ -46,7 +47,6 @@ import com.materip.core_designsystem.theme.MateTripTypographySet
 import com.materip.core_model.accompany_board.BoardItem
 import com.materip.feature_home3.intent.BoardListIntent
 import com.materip.feature_home3.state.BoardListUiState
-import com.materip.feature_home3.ui.component.toDisplayString
 import com.materip.feature_home3.viewModel.BoardViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -72,7 +72,7 @@ fun HomeScreen(
     val filteredBoardItems = if (selectedRegion == "전체") {
         boardListState.value.data
     } else {
-        boardListState.value.data.filter { it.region.toDisplayString() == selectedRegion }
+        boardListState.value.data.filter {it.region.toDisplayString() == selectedRegion}
     }
 
     Column(

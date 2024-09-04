@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_common.ErrorState
+import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.component.CircleImageView
 import com.materip.core_designsystem.component.ConfirmationDialog
 import com.materip.core_designsystem.component.CustomButton
@@ -163,7 +164,7 @@ private fun SendApplicationContent(
                 .verticalScroll(state = scrollState)
         ){
             TravelPostItem(
-                destination = boardInfo.region,
+                destination = boardInfo.region.toDisplayString(),
                 period = boardInfo.getDuration(),
                 title = boardInfo.title,
                 startDate = boardInfo.startDate,

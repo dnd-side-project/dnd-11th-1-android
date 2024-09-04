@@ -60,9 +60,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-    private val useBottomNavScreen =
-        listOf(Screen.Home.route, MyPageRoute.MyPageRoute.name, SettingRoute.SettingRoute.name)
-
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

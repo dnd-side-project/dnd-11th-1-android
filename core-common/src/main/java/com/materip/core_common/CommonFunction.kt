@@ -6,10 +6,10 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import androidx.core.content.ContextCompat
-import com.materip.core_model.accompany_board.create.Category
-import com.materip.core_model.accompany_board.create.PreferredAge
-import com.materip.core_model.accompany_board.create.PreferredGender
+import com.materip.core_model.ui_model.Category
 import com.materip.core_model.ui_model.Gender
+import com.materip.core_model.ui_model.PreferredAge
+import com.materip.core_model.ui_model.PreferredGender
 import com.materip.core_model.ui_model.Region
 import java.io.File
 import java.io.FileOutputStream

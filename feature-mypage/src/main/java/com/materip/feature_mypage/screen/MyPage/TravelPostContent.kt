@@ -15,6 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.ItemSnapshotList
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.component.NoDataContent
 import com.materip.core_designsystem.component.TravelPostItem
 import com.materip.core_model.accompany_board.BoardItem
@@ -62,7 +63,7 @@ private fun TravelPostMainContent(
                 if (post != null){
                     TravelPostItem(
                         modifier = Modifier.fillMaxWidth(),
-                        destination = post.getRegionText(),
+                        destination = post.region.toDisplayString(),
                         period = post.getDuration(),
                         title = post.title,
                         startDate = post.getStartDateText(),

@@ -58,10 +58,10 @@ import com.materip.core_designsystem.theme.MateTripColors.Gray_06
 import com.materip.core_designsystem.theme.MateTripColors.Gray_11
 import com.materip.core_designsystem.theme.MateTripColors.Primary
 import com.materip.core_designsystem.theme.MateTripTypographySet
-import com.materip.core_model.accompany_board.create.Category
-import com.materip.core_model.accompany_board.create.PreferredAge
-import com.materip.core_model.accompany_board.create.PreferredGender
-import com.materip.core_model.accompany_board.create.Region
+import com.materip.core_model.ui_model.Category
+import com.materip.core_model.ui_model.PreferredAge
+import com.materip.core_model.ui_model.PreferredGender
+import com.materip.core_model.ui_model.Region
 import com.materip.feature_home3.intent.PostBoardIntent
 import com.materip.feature_home3.state.ImageUploadState
 import com.materip.feature_home3.state.PostBoardUiState

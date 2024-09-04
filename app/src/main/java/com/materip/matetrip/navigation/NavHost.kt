@@ -129,7 +129,8 @@ fun SetUpNavGraph(
             NavigateToPostScreen(
                 boardId = boardId,
                 onNavigateToForm = { navController.navigate(Screen.Form.route + "/$boardId") },
-                onNavigateToUserProfile = { navController.navigate(Screen.Profile.route + "/$boardId") }
+                onNavigateToUserProfile = { navController.navigate(Screen.Profile.route + "/$boardId") },
+                onNavigateUp = navController::navigateToBack
             )
         }
 
