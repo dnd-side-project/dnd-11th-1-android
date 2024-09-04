@@ -6,7 +6,7 @@ import com.materip.core_model.ui_model.PreferredGender
 import com.materip.core_model.ui_model.Region
 import kotlinx.serialization.Serializable
 
-// 동행글 상세 조회 BoardInfo
+// 동행글 상세 조회 /api/v1/accompany/boards/{id}
 @Serializable
 data class BoardInfo(
     val boardId: Int, // 게시글 ID
