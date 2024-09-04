@@ -41,12 +41,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.materip.core_common.ErrorState
+import com.materip.core_common.toDisplayDateString
+import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.component.NormalTag
 import com.materip.core_designsystem.component.NormalTopBar
 import com.materip.core_designsystem.icon.Badges
 import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_model.response.GetReviewDescriptionResponseDto
-import com.materip.core_model.ui_model.ReviewDescClass
+import com.materip.core_model.ui_model.Region
 import com.materip.feature_mypage.view_models.MyPage.ReviewDescriptionUiState
 import com.materip.feature_mypage.view_models.MyPage.ReviewDescriptionViewModel
 
@@ -88,10 +90,10 @@ fun ReviewDescriptionScreen(
             val data = uiState.result
             ReviewDescriptionMainContent(
                 nickname = data.writerNickname,
-                destination = data.getRegionText(),
+                destination = data.region.toDisplayString(),
                 period = data.getDuration(),
-                startDate = data.getStartDateText(),
-                endDate = data.getEndDateText(),
+                startDate = data.startDate.toDisplayDateString(),
+                endDate = data.startDate.toDisplayDateString(),
                 images = data.reviewImageUrls,
                 mate = "메이트", /** 나의 닉네임 정보가 있어야 함 */
                 reviewContent = data.detailContent,
@@ -316,7 +318,7 @@ fun ReviewDescriptionUITest(){
         uiState = ReviewDescriptionUiState.Success(
             result = GetReviewDescriptionResponseDto(
                 writerNickname = "닉네임",
-                region = "부산",
+                region = Region.BUSAN,
                 startDate = "2024.07.20",
                 endDate = "2024.07.22",
                 companionType = "ALL_ACCOMPANYING",

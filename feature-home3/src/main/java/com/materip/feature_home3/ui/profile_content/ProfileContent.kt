@@ -38,6 +38,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.materip.core_common.toDisplayAgeString
+import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.MatetripGrade
 import com.materip.core_designsystem.R
 import com.materip.core_designsystem.component.CircleImageView
@@ -120,7 +122,7 @@ fun ProfileContent(
                             )
                         }
                         Text(
-                            text = "${userInfo.getAgeText()} · ${userInfo.gender}",
+                            text = "${userInfo.birthYear.toDisplayAgeString()} · ${userInfo.gender}",
                             fontSize = 12.sp,
                             color = MateTripColors.Gray_06,
                             fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
@@ -208,8 +210,8 @@ fun ProfileContent(
                 Spacer(Modifier.height(30.dp))
                 BasicInfo(
                     nickname = userInfo.nickname,
-                    gender = userInfo.gender,
-                    age = userInfo.getAgeText(),
+                    gender = userInfo.gender.toDisplayString(),
+                    age = userInfo.birthYear.toDisplayAgeString(),
                     authenticatorType = userInfo.provider
                 )
                 Spacer(Modifier.height(40.dp))
