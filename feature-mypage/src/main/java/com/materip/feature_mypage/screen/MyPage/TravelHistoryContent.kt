@@ -41,6 +41,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.ItemSnapshotList
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.MatetripGrade
 import com.materip.core_designsystem.R
 import com.materip.core_designsystem.component.CircleImageView
@@ -52,15 +53,11 @@ import com.materip.core_designsystem.component.TravelPostItem
 import com.materip.core_designsystem.icon.Badges
 import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.theme.MateTripColors
-import com.materip.core_model.accompany_board.BoardItem
 import com.materip.core_model.response.AccompanyReceivedItem
 import com.materip.core_model.response.BoardItemWithRequestId
 import com.materip.core_model.response.BoardItemWithReviewId
 import com.materip.core_model.ui_model.GradeTag
-import com.materip.core_model.ui_model.TempHumanClass
-import com.materip.core_model.ui_model.TempTravelPost
 import com.materip.core_model.ui_model.TravelHistoryTag
-import com.materip.core_model.ui_model.TravelStyle
 import com.materip.feature_mypage.view_models.MyPage.ReceiveTravelApplicationUiState
 import com.materip.feature_mypage.view_models.MyPage.ReceiveTravelApplicationViewModel
 import com.materip.feature_mypage.view_models.MyPage.SendTravelApplicationUiState
@@ -257,7 +254,7 @@ private fun SendTravelApplicationContent(
             items(applications){application ->
                 if(application != null){
                     TravelPostItem(
-                        destination = application.getRegionText(),
+                        destination = application.region.toDisplayString(),
                         period = application.getDuration(),
                         title = application.title,
                         startDate = application.getStartDateText(),

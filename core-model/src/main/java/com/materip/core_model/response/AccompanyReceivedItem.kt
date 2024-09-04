@@ -1,5 +1,6 @@
 package com.materip.core_model.response
 
+import com.materip.core_model.ui_model.Gender
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
 
@@ -11,7 +12,7 @@ data class AccompanyReceivedItem(
     val provider: String,
     val profileImageUrl: String?,
     val description: String?,
-    val gender: String,
+    val gender: Gender,
     val birthYear: Int,
     val socialMediaUrl: String,
     val grade: String,
@@ -20,20 +21,6 @@ data class AccompanyReceivedItem(
     val foodPreferences: List<String>,
     val userImageUrl: List<String>
 ){
-    fun getAgeText(): String{
-        val age = LocalDate.now().year - birthYear
-        val temp = when(age%10){
-            in 0..4 -> "초반"
-            in 5..6 -> "중반"
-            else -> "후반"
-        }
-        val ageText = "${age/10}대 ${temp}"
-        return ageText
-    }
-
-    fun getGenderText(): String{
-        return if (gender == "MALE") "남성" else "여성"
-    }
     fun getTags(): List<String>{
         return travelPreferences.plus(travelStyle).plus(foodPreferences)
     }

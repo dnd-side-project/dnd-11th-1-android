@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.materip.core_repository.repository.login_repository.LoginRepository
 import com.materip.core_repository.repository.onboarding_repository.OnboardingRepository
 import com.materip.feature_login.navigation.LoginRoute
+import com.materip.feature_mypage.navigation.MyPageRoute
 import com.materip.feature_onboarding.navigation.OnboardingRoute
 import com.materip.matetrip.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,7 +39,7 @@ class AppViewModel @Inject constructor(
         return if (authToken.value == null) {
             LoginRoute.LoginRoute.name
         } else {
-            if (isOnboardingCompleted.value) Screen.Home.route
+            if (isOnboardingCompleted.value) MyPageRoute.MyPageGraph.name // Screen.Home.route
             else OnboardingRoute.InputUserInfoRoute.name
         }
     }

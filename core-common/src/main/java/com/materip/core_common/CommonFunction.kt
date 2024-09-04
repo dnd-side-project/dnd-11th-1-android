@@ -8,11 +8,14 @@ import android.os.Build
 import androidx.core.content.ContextCompat
 import com.materip.core_model.ui_model.Category
 import com.materip.core_model.ui_model.Gender
+import com.materip.core_model.ui_model.Grade
+import com.materip.core_model.ui_model.GradeTag
 import com.materip.core_model.ui_model.PreferredAge
 import com.materip.core_model.ui_model.PreferredGender
 import com.materip.core_model.ui_model.Region
 import java.io.File
 import java.io.FileOutputStream
+import java.time.LocalDate
 
 //uri를 file로 변환하는 함수
 fun transformToFile(
@@ -54,6 +57,21 @@ fun PreferredGender.toDisplayString(): String {
         PreferredGender.SAME -> "동일 성별"
         PreferredGender.ANY -> "상관없음"
     }
+}
+
+fun Int.toDisplayAgeString(): String{
+    val age = LocalDate.now().year - this
+    val temp = when(age%10){
+        in 0..4 -> "초반"
+        in 5..6 -> "중반"
+        else -> "후반"
+    }
+    val ageText = "${age/10}대 ${temp}"
+    return ageText
+}
+
+fun String.toDisplayDateString(): String{
+    return this.substring(0, 10)
 }
 
 fun Gender.toDisplayString(): String {
