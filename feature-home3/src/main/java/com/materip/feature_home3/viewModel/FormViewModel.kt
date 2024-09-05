@@ -23,9 +23,6 @@ class FormViewModel @Inject constructor(
     private val _introduce = MutableStateFlow("")
     private val _chatLink = MutableStateFlow("")
 
-    private val _isButtonEnabled = MutableStateFlow(true)
-    val isButtonEnabled: StateFlow<Boolean> = _isButtonEnabled
-
     fun onFormIntent(intent: FormIntent) {
         when (intent) {
             is FormIntent.UpdateIntroduce -> onIntroduceChange(intent.introduce)
