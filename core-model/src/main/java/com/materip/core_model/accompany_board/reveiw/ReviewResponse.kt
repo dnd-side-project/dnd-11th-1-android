@@ -20,4 +20,8 @@ data class ReviewResponse(
     val travelStyle: List<TravelStyle>,
     val detailContent: String,
     val reviewImageUrls: List<String>
-)
+) {
+    fun hasContent(): Boolean {
+        return writerNickname.isNotEmpty() && detailContent.isNotEmpty()
+    }
+}
