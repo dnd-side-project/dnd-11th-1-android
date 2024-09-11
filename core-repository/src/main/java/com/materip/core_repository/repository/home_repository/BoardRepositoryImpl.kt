@@ -8,6 +8,8 @@ import com.materip.core_model.accompany_board.id.BoardIdDto
 import com.materip.core_model.accompany_board.id.GetBoardDetailDto
 import com.materip.core_model.accompany_board.profile.GetUserProfile
 import com.materip.core_model.accompany_board.request.CompanionRequest
+import com.materip.core_model.accompany_board.search.QueryRequestDto
+import com.materip.core_model.accompany_board.search.SearchListResponse
 import com.materip.core_model.request.PagingRequestDto
 import javax.inject.Inject
 
@@ -36,5 +38,9 @@ class BoardRepositoryImpl @Inject constructor(
 
     override suspend fun getUserProfile(): ResultResponse<GetUserProfile> {
         return boardDataStore.getUserProfile()
+    }
+
+    override suspend fun searchBoardList(queryRequestDto: QueryRequestDto): ResultResponse<SearchListResponse> {
+        return boardDataStore.searchBoardList(queryRequestDto)
     }
 }
