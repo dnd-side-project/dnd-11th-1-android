@@ -30,14 +30,12 @@ class BoardViewModel @Inject constructor(
 
             try {
                 val result = boardRepository.getBoard(pagingRequestDto)
-
                 val boardListResponse = result.data
                 val currentData = _boardList.value?.data ?: emptyList()
                 val newData = currentData + (boardListResponse?.data ?: emptyList())
-
                 val updatedBoardList = boardListResponse?.copy(data = newData)
-                _boardList.value = updatedBoardList
 
+                _boardList.value = updatedBoardList
                 _uiState.value = BoardListUiState.Success(updatedBoardList)
             } catch (e: Exception) {
                 _uiState.value = BoardListUiState.Error(e.message ?: "동행글 목록 로드 실패")
@@ -45,9 +43,26 @@ class BoardViewModel @Inject constructor(
         }
     }
 
+    // 검색 메서드 추가
+    private fun searchBoardList(query: String) {
+        viewModelScope.launch {
+            _uiState.value = BoardListUiState.Loading
+
+            try {
+                val result = boardRepository.searchBoardList(query)
+                val searchBoardData = result.data
+
+                _uiState.value = BoardListUiState.SearchSuccess(searchBoardData)
+            } catch (e: Exception) {
+                _uiState.value = BoardListUiState.Error("동행글 검색 실패")
+            }
+        }
+    }
+
     fun handleIntent(intent: BoardListIntent) {
         when (intent) {
             is BoardListIntent.LoadBoardList -> loadBoardList(intent.pagingRequestDto)
+            is BoardListIntent.SearchBoardList -> searchBoardList(intent.query)
         }
     }
 }
