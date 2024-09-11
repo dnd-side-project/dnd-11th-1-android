@@ -4,6 +4,8 @@ import androidx.annotation.StringRes
 import com.materip.matetrip.R
 import com.materip.core_designsystem.icon.Logo
 import com.materip.core_designsystem.icon.Icons
+import com.materip.core_model.navigation.MyPageRoute
+import com.materip.core_model.navigation.OnboardingRoute
 import com.materip.core_model.navigation.SettingRoute
 
 sealed class Screen(val route: String, @StringRes val resourceId: Int, val icon: Int? = null) {
