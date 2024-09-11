@@ -183,6 +183,7 @@ private fun TravelRecordsContent(
         ){
             items(records){record ->
                 if (record != null){
+                    val isEnabled = record.reviewId == null
                     TravelPostItem(
                         destination = record.region.toDisplayString(),
                         period = record.getDuration(),
@@ -198,12 +199,12 @@ private fun TravelRecordsContent(
                             .fillMaxWidth()
                             .height(38.dp),
                         shape = RoundedCornerShape(size = 8.dp),
-                        btnText = "동행 후기 작성",
-//                        isEnabled = record.isWritten, /** 작성했는지 안했는지에 대한 boolean값 */
+                        btnText = if(isEnabled) "동행 후기 작성" else "동행 후기 작성 완료",
+                        isEnabled = isEnabled,
                         fontSize = 14.sp,
-                        btnColor = MateTripColors.Blue_04, //isEnabled이 false 일 경우 MateTripColors.InactiveColor
+                        btnColor = if(isEnabled) MateTripColors.Blue_04 else MateTripColors.InactiveColor,
                         textColor = MateTripColors.Gray_08,
-                        trailingIcon = Icons.review_icon, //isEnabled가 false 일 경우 null
+                        trailingIcon = if(isEnabled) Icons.review_icon else null,
                         onClick = { navReviewWrite(record.boardId) }
                     )
                 }
