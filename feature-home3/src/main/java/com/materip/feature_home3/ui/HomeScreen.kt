@@ -66,23 +66,42 @@ fun HomeScreen(
     val boardListState = viewModel.boardList.collectAsState()
 
     val listState = rememberLazyListState()
-
     var isLoading by remember { mutableStateOf(false) }
     var cursor: String? by remember { mutableStateOf(null) }
     val size = 10
+
+    var query by remember { mutableStateOf("") }
+    var isSearching by remember { mutableStateOf(false) }
+    var selectedRegion by remember { mutableStateOf("전체") }
+
+    val onSearch: (String) -> Unit = { searchQuery ->
+        if (searchQuery.isNotEmpty()) {
+            isSearching = true
+            viewModel.handleIntent(BoardListIntent.SearchBoardList(searchQuery))
+        }
+    }
+
+    val onClearSearch = {
+        query = ""
+        isSearching = false
+        val initialRequest = PagingRequestDto(cursor = null, size = size)
+        viewModel.handleIntent(BoardListIntent.LoadBoardList(initialRequest))
+    }
 
     LaunchedEffect(Unit) {
         val initialRequest = PagingRequestDto(cursor = null, size = size)
         viewModel.handleIntent(BoardListIntent.LoadBoardList(initialRequest))
     }
 
-    var selectedRegion by remember { mutableStateOf("전체") }
-
-    val filteredBoardItems = if (selectedRegion == "전체") {
+    val filteredBoardItems = if (isSearching) {
         boardListState.value?.data ?: emptyList()
     } else {
-        boardListState.value?.data?.filter { it.region.toDisplayString() == selectedRegion }
-            ?: emptyList()
+        if (selectedRegion == "전체") {
+            boardListState.value?.data ?: emptyList()
+        } else {
+            boardListState.value?.data?.filter { it.region.toDisplayString() == selectedRegion }
+                ?: emptyList()
+        }
     }
 
     LaunchedEffect(listState) {
@@ -119,7 +138,12 @@ fun HomeScreen(
         HomeTitle()
 
         // 동행글 검색바
-        MateTripSearchBar()
+        MateTripSearchBar(
+            query = query,
+            onQueryChange = { query = it },
+            onSearch = onSearch,
+            onClear = onClearSearch
+        )
 
         // 지역으로 태그해서 동행글 보여주기
         CompanionLounge(onRegionSelected = { selectedRegion = it })
@@ -128,7 +152,6 @@ fun HomeScreen(
         Box(modifier = Modifier.weight(1f)) {
             when (uiState) {
                 is BoardListUiState.Loading -> {
-                    // 로딩 상태일 때 더미 데이터로 UI 표시
                     ShowAccompanyPost(
                         boardItems = BoardListUiState.Loading.dummyData,
                         onPostClick = onNavigateToPostDetail
@@ -143,7 +166,6 @@ fun HomeScreen(
                 }
 
                 is BoardListUiState.Error -> {
-                    // 오류 상태일 때 더미 데이터로 UI 표시
                     ShowAccompanyPost(
                         boardItems = BoardListUiState.Error("").dummyData,
                         onPostClick = onNavigateToPostDetail
@@ -151,7 +173,6 @@ fun HomeScreen(
                 }
 
                 else -> {
-                    // ELSE 상태일 때 더미 데이터로 보여줄 UI
                     ShowAccompanyPost(
                         boardItems = (uiState as BoardListUiState.Initial).dummyData,
                         onPostClick = onNavigateToPostDetail
