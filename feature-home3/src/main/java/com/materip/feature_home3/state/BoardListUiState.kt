@@ -3,6 +3,7 @@ package com.materip.feature_home3.state
 import com.materip.core_designsystem.icon.Logo.app_icon_60
 import com.materip.core_model.accompany_board.all.BoardItem
 import com.materip.core_model.accompany_board.all.BoardListResponse
+import com.materip.core_model.accompany_board.search.SearchListResponse
 import com.materip.core_model.ui_model.Region
 
 sealed class BoardListUiState {
@@ -89,6 +90,8 @@ sealed class BoardListUiState {
     }
 
     data class Success(val boardList: BoardListResponse?) : BoardListUiState()
+
+    data class SearchSuccess(val searchBoardList: SearchListResponse?) : BoardListUiState()
 
     data class Error(val message: String) : BoardListUiState() {
         val dummyData = listOf(
