@@ -1,12 +1,11 @@
 package com.materip.matetrip
 
 import androidx.lifecycle.ViewModel
+import com.materip.core_model.navigation.LoginRoute
+import com.materip.core_model.navigation.MyPageRoute
+import com.materip.core_model.navigation.OnboardingRoute
 import com.materip.core_repository.repository.login_repository.LoginRepository
 import com.materip.core_repository.repository.onboarding_repository.OnboardingRepository
-import com.materip.feature_login.navigation.LoginRoute
-import com.materip.feature_mypage.navigation.MyPageRoute
-import com.materip.feature_onboarding.navigation.OnboardingRoute
-import com.materip.matetrip.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.firstOrNull
