@@ -3,6 +3,7 @@ package com.materip.feature_home3.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.materip.core_model.accompany_board.all.BoardListResponse
+import com.materip.core_model.accompany_board.search.QueryRequestDto
 import com.materip.core_model.request.PagingRequestDto
 import com.materip.core_repository.repository.home_repository.BoardRepository
 import com.materip.feature_home3.intent.BoardListIntent
@@ -44,7 +45,7 @@ class BoardViewModel @Inject constructor(
     }
 
     // 검색 메서드 추가
-    private fun searchBoardList(query: String) {
+    private fun searchBoardList(query: QueryRequestDto) {
         viewModelScope.launch {
             _uiState.value = BoardListUiState.Loading
 
