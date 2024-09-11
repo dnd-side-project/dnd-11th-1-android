@@ -8,6 +8,8 @@ import com.materip.core_model.accompany_board.id.BoardIdDto
 import com.materip.core_model.accompany_board.id.GetBoardDetailDto
 import com.materip.core_model.accompany_board.profile.GetUserProfile
 import com.materip.core_model.accompany_board.request.CompanionRequest
+import com.materip.core_model.accompany_board.search.QueryRequestDto
+import com.materip.core_model.accompany_board.search.SearchListResponse
 import com.materip.core_model.request.PagingRequestDto
 import com.materip.core_network.service.home.BoardService
 import com.skydoves.sandwich.message
@@ -73,6 +75,16 @@ class BoardDataStoreImpl @Inject constructor(
     override suspend fun getUserProfile(): ResultResponse<GetUserProfile> {
         val result = ResultResponse<GetUserProfile>()
         boardService.getProfile().suspendOnSuccess {
+            result.data = this.data
+        }.suspendOnError {
+            result.error = Json.decodeFromString<ResponseError>(this.message())
+        }
+        return result
+    }
+
+    override suspend fun searchBoardList(query: QueryRequestDto): ResultResponse<SearchListResponse> {
+        val result = ResultResponse<SearchListResponse>()
+        boardService.searchBoardList(query).suspendOnSuccess {
             result.data = this.data
         }.suspendOnError {
             result.error = Json.decodeFromString<ResponseError>(this.message())
