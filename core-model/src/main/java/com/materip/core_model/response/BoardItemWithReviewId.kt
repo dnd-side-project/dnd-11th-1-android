@@ -12,7 +12,7 @@ data class BoardItemWithReviewId(
     val region: Region,
     val startDate: String,
     val endDate: String,
-    val reviewId: Int,
+    val reviewId: Int?,
     val nickname: String,
     val imageUrls: List<String>
 ){

@@ -4,9 +4,7 @@ import androidx.annotation.StringRes
 import com.materip.matetrip.R
 import com.materip.core_designsystem.icon.Logo
 import com.materip.core_designsystem.icon.Icons
-import com.materip.feature_mypage.navigation.MyPageRoute
-import com.materip.feature_mypage.navigation.SettingRoute
-import com.materip.feature_onboarding.navigation.OnboardingRoute
+import com.materip.core_model.navigation.SettingRoute
 
 sealed class Screen(val route: String, @StringRes val resourceId: Int, val icon: Int? = null) {
     data object SignIn : Screen("sign_in", R.string.sign_in)

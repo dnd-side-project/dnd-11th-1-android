@@ -10,6 +10,7 @@ import com.materip.feature_onboarding.screens.InputUserInfoRoute
 import com.materip.feature_onboarding.screens.SelectFoodStyleRoute
 import com.materip.feature_onboarding.screens.SelectTripInterestRoute
 import com.materip.feature_onboarding.screens.SelectTripStyleRoute
+import com.materip.core_model.navigation.OnboardingRoute
 
 fun NavController.navigateToInputUserInfo() = navigate(OnboardingRoute.InputUserInfoRoute.name)
 fun NavController.navigateToSelectTripInterest(userInfo: String) = navigate("${OnboardingRoute.SelectTripInterestRoute.name}/${userInfo}")

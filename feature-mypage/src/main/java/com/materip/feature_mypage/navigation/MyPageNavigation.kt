@@ -16,6 +16,7 @@ import com.materip.feature_mypage.screen.MyPage.ReviewEvaluationRoute
 import com.materip.feature_mypage.screen.MyPage.ReviewListRoute
 import com.materip.feature_mypage.screen.MyPage.SendApplicationRoute
 import com.materip.feature_mypage.screen.MyPage.WriteReviewRoute
+import com.materip.core_model.navigation.MyPageRoute
 
 fun NavController.navigateToMyPageGraph() = navigate(MyPageRoute.MyPageGraph.name){
     launchSingleTop = true
