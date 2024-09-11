@@ -7,6 +7,7 @@ import com.materip.core_model.accompany_board.id.BoardIdDto
 import com.materip.core_model.accompany_board.id.GetBoardDetailDto
 import com.materip.core_model.accompany_board.profile.GetUserProfile
 import com.materip.core_model.accompany_board.request.CompanionRequest
+import com.materip.core_model.accompany_board.search.QueryRequestDto
 import com.materip.core_model.accompany_board.search.SearchListResponse
 import com.materip.core_model.request.PagingRequestDto
 
@@ -24,5 +25,5 @@ interface BoardRepository {
     // 프로필 조회
     suspend fun getUserProfile(): ResultResponse<GetUserProfile>
     // 동행글 검색
-    suspend fun searchBoardList(query: String): ResultResponse<SearchListResponse>
+    suspend fun searchBoardList(query: QueryRequestDto): ResultResponse<SearchListResponse>
 }
