@@ -2,13 +2,15 @@ package com.materip.core_datastore.home_datastore
 
 import com.materip.core_common.ResponseError
 import com.materip.core_common.ResultResponse
+import com.materip.core_model.accompany_board.all.BoardListResponse
 import com.materip.core_model.accompany_board.create.BoardRequestDto
-import com.materip.core_model.accompany_board.BoardListResponse
-import com.materip.core_model.accompany_board.Pageable
 import com.materip.core_model.accompany_board.id.BoardIdDto
 import com.materip.core_model.accompany_board.id.GetBoardDetailDto
 import com.materip.core_model.accompany_board.profile.GetUserProfile
 import com.materip.core_model.accompany_board.request.CompanionRequest
+import com.materip.core_model.accompany_board.search.QueryRequestDto
+import com.materip.core_model.accompany_board.search.SearchListResponse
+import com.materip.core_model.request.PagingRequestDto
 import com.materip.core_network.service.home.BoardService
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.suspendOnError
@@ -20,7 +22,7 @@ import javax.inject.Inject
 class BoardDataStoreImpl @Inject constructor(
     private val boardService: BoardService
 ) : BoardDataStore {
-    override suspend fun getBoard(pageable: Pageable): ResultResponse<BoardListResponse> {
+    override suspend fun getBoard(boardRequest: PagingRequestDto): ResultResponse<BoardListResponse> {
         val result = ResultResponse<BoardListResponse>()
         boardService.getBoard().suspendOnSuccess {
             result.data = this.data
@@ -73,6 +75,16 @@ class BoardDataStoreImpl @Inject constructor(
     override suspend fun getUserProfile(): ResultResponse<GetUserProfile> {
         val result = ResultResponse<GetUserProfile>()
         boardService.getProfile().suspendOnSuccess {
+            result.data = this.data
+        }.suspendOnError {
+            result.error = Json.decodeFromString<ResponseError>(this.message())
+        }
+        return result
+    }
+
+    override suspend fun searchBoardList(query: QueryRequestDto): ResultResponse<SearchListResponse> {
+        val result = ResultResponse<SearchListResponse>()
+        boardService.searchBoardList(query).suspendOnSuccess {
             result.data = this.data
         }.suspendOnError {
             result.error = Json.decodeFromString<ResponseError>(this.message())

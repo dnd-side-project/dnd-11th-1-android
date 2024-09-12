@@ -7,7 +7,7 @@ import com.materip.core_model.ui_model.PreferredGender
 import com.materip.core_model.ui_model.Region
 import kotlinx.serialization.Serializable
 
-// 동행글 생성 BoardRequestDto
+// 동행글 생성 /api/v1/accompany/boards
 @Serializable
 data class BoardRequestDto(
     val title: String,

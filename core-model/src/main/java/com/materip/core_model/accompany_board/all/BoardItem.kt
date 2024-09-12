@@ -1,11 +1,11 @@
-package com.materip.core_model.accompany_board
+package com.materip.core_model.accompany_board.all
 
 import com.materip.core_model.ui_model.Region
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
-// 동행글 목록 조회 Data
+// 동행글 목록 조회 /api/v1/accompany/boards/all
 @Serializable
 data class BoardItem(
     val boardId: Int,
@@ -15,7 +15,7 @@ data class BoardItem(
     val endDate: String,
     val nickname: String,
     val imageUrls: List<String>
-){
+) {
     fun getStartDateText(): String{
         return startDate.substring(0, 10)
     }

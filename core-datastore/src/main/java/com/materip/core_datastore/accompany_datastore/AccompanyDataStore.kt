@@ -1,8 +1,7 @@
 package com.materip.core_datastore.accompany_datastore
 
 import com.materip.core_common.ResultResponse
-import com.materip.core_model.accompany_board.BoardItem
-import com.materip.core_model.accompany_board.Pageable
+import com.materip.core_model.accompany_board.all.BoardItem
 import com.materip.core_model.request.AccompanyApplicationResponseDto
 import com.materip.core_model.request.PagingRequestDto
 import com.materip.core_model.response.AccompanyReceivedItem

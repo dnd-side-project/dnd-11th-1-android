@@ -5,6 +5,7 @@ package com.materip.core_designsystem.component
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DockedSearchBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,22 +23,23 @@ import com.materip.core_designsystem.theme.MateTripColors.Gray_06
 import com.materip.core_designsystem.theme.MateTripColors.Primary
 import com.materip.core_designsystem.theme.MateTripTypographySet
 
-/**
- * SearchBar/Container, Leading icon button, Supporting text
- */
 @ExperimentalMaterial3Api
 @Composable
-fun MateTripSearchBar() {
-    val query = remember { mutableStateOf("") }
+fun MateTripSearchBar(
+    query: String,
+    onQueryChange: (String) -> Unit,
+    onSearch: (String) -> Unit,
+    onClear: () -> Unit
+) {
     val active = remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.padding(bottom = 30.dp)
     ) {
         DockedSearchBar(
-            query = query.value,
-            onQueryChange = { query.value = it },
-            onSearch = { /* Handle search */ },
+            query = query,
+            onQueryChange = onQueryChange,
+            onSearch = { onSearch(query) },
             active = active.value,
             onActiveChange = { active.value = it },
             placeholder = { Text(
@@ -45,7 +47,7 @@ fun MateTripSearchBar() {
                 style = MateTripTypographySet.body04
             ) },
             leadingIcon = {
-                IconButton(onClick = { /* Handle click */ }) {
+                IconButton(onClick = { onSearch(query) }) {
                     Icon(
                         imageVector = Icons.Default.Search,
                         contentDescription = "Search Icon",
@@ -53,18 +55,23 @@ fun MateTripSearchBar() {
                     )
                 }
             },
+            trailingIcon = {
+                if (query.isNotEmpty()) {
+                    IconButton(onClick = onClear) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Clear Search",
+                            tint = if (active.value) Primary else Gray_06
+                        )
+                    }
+                }
+            },
             colors = SearchBarDefaults.colors(
                 containerColor = Color.White,
                 dividerColor = Gray_06,
             ),
             shadowElevation = 6.dp,
-            content = {
-                Text(
-                    text = "검색한 게 보이게 하기",
-                    style = MateTripTypographySet.body04,
-                    modifier = Modifier.padding(22.dp)
-                )
-            }
+            content = {}
         )
     }
 }

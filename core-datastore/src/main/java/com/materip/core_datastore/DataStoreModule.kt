@@ -8,6 +8,8 @@ import com.materip.core_datastore.com.materip.core_datastore.login_datastore.Rem
 import com.materip.core_datastore.com.materip.core_datastore.login_datastore.RemoteLoginDataStoreImpl
 import com.materip.core_datastore.com.materip.core_datastore.onboarding_datastore.OnboardingDataStore
 import com.materip.core_datastore.com.materip.core_datastore.onboarding_datastore.OnboardingDataStoreImpl
+import com.materip.core_datastore.home_datastore.BoardDataStore
+import com.materip.core_datastore.home_datastore.BoardDataStoreImpl
 import com.materip.core_datastore.image_datastore.ImageDataStore
 import com.materip.core_datastore.image_datastore.ImageDataStoreImpl
 import com.materip.core_datastore.profile_datastore.ProfileDataStore
@@ -56,4 +58,8 @@ interface DataStoreModule {
     @Singleton
     @Binds
     fun provideReviewDataStore(reviewDataStoreImpl: ReviewDataStoreImpl): ReviewDataStore
+
+    @Singleton
+    @Binds
+    fun provideBoardDataStore(boardDataStoreImpl: BoardDataStoreImpl): BoardDataStore
 }

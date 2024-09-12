@@ -18,8 +18,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.component.NoDataContent
 import com.materip.core_designsystem.component.TravelPostItem
-import com.materip.core_model.accompany_board.BoardItem
-import com.materip.core_model.ui_model.TempTravelPost
+import com.materip.core_model.accompany_board.all.BoardItem
 import com.materip.feature_mypage.view_models.MyPage.TravelPostUiState
 import com.materip.feature_mypage.view_models.MyPage.TravelPostViewModel
 
