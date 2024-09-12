@@ -2,8 +2,9 @@ package com.materip.feature_home3.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.materip.core_model.accompany_board.BoardListResponse
-import com.materip.core_model.accompany_board.Pageable
+import com.materip.core_model.accompany_board.all.BoardListResponse
+import com.materip.core_model.accompany_board.search.QueryRequestDto
+import com.materip.core_model.request.PagingRequestDto
 import com.materip.core_repository.repository.home_repository.BoardRepository
 import com.materip.feature_home3.intent.BoardListIntent
 import com.materip.feature_home3.state.BoardListUiState
@@ -18,38 +19,51 @@ class BoardViewModel @Inject constructor(
     private val boardRepository: BoardRepository
 ) : ViewModel() {
 
-    // UI 상태를 관리하는 StateFlow
     private val _uiState = MutableStateFlow<BoardListUiState>(BoardListUiState.Initial)
     val uiState: StateFlow<BoardListUiState> = _uiState
 
-    // 게시판 목록을 관리하는 StateFlow
-    private val _boardList = MutableStateFlow(BoardListResponse(false, emptyList()))
-    val boardList: StateFlow<BoardListResponse> = _boardList
+    private val _boardList = MutableStateFlow<BoardListResponse?>(null)
+    val boardList: StateFlow<BoardListResponse?> = _boardList
 
-    // 게시판 목록 아이템 상태를 관리하는 StateFlow
-    private val _pageable = MutableStateFlow(Pageable(0, 10, emptyList()))
-    val pageable: StateFlow<Pageable> = _pageable
+    private fun loadBoardList(pagingRequestDto: PagingRequestDto) {
+        viewModelScope.launch {
+            _uiState.value = BoardListUiState.Loading
 
-    fun handleIntent(intent: BoardListIntent) {
-        when (intent) {
-            is BoardListIntent.LoadBoardList -> loadBoardList(intent.pageable)
+            try {
+                val result = boardRepository.getBoard(pagingRequestDto)
+                val boardListResponse = result.data
+                val currentData = _boardList.value?.data ?: emptyList()
+                val newData = currentData + (boardListResponse?.data ?: emptyList())
+                val updatedBoardList = boardListResponse?.copy(data = newData)
+
+                _boardList.value = updatedBoardList
+                _uiState.value = BoardListUiState.Success(updatedBoardList)
+            } catch (e: Exception) {
+                _uiState.value = BoardListUiState.Error(e.message ?: "동행글 목록 로드 실패")
+            }
         }
     }
 
-    // 게시판 목록 로드 함수
-    private fun loadBoardList(pageable: Pageable) {
+    // 검색 메서드 추가
+    private fun searchBoardList(query: QueryRequestDto) {
         viewModelScope.launch {
-            _uiState.value = BoardListUiState.Loading // 로딩 상태로 UI 상태 변경
+            _uiState.value = BoardListUiState.Loading
 
-            val result = boardRepository.getBoard(pageable) // 데이터 요청
-            val boardListData = result.data
+            try {
+                val result = boardRepository.searchBoardList(query)
+                val searchBoardData = result.data
 
-            _uiState.value = if (boardListData != null) {
-                _boardList.value = boardListData // _boardList 갱신
-                BoardListUiState.Success(boardListData) // 성공 상태로 UI 상태 변경
-            } else {
-                BoardListUiState.Error(result.error?.message ?: "동행글 조회 실패") // 오류 상태로 UI 상태 변경
+                _uiState.value = BoardListUiState.SearchSuccess(searchBoardData)
+            } catch (e: Exception) {
+                _uiState.value = BoardListUiState.Error("동행글 검색 실패")
             }
+        }
+    }
+
+    fun handleIntent(intent: BoardListIntent) {
+        when (intent) {
+            is BoardListIntent.LoadBoardList -> loadBoardList(intent.pagingRequestDto)
+            is BoardListIntent.SearchBoardList -> searchBoardList(intent.query)
         }
     }
 }

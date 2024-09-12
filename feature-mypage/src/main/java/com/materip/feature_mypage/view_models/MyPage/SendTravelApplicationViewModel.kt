@@ -10,7 +10,6 @@ import androidx.paging.cachedIn
 import com.materip.core_common.ErrorState
 import com.materip.core_common.Result
 import com.materip.core_common.asResult
-import com.materip.core_model.accompany_board.BoardItem
 import com.materip.core_model.response.BoardItemWithRequestId
 import com.materip.core_repository.repository.accompany_repository.AccompanyRepository
 import com.materip.feature_mypage.pager.SendApplicationPagingSource

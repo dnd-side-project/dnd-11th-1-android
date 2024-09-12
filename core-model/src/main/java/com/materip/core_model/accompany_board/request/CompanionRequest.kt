@@ -2,6 +2,7 @@ package com.materip.core_model.accompany_board.request
 
 import kotlinx.serialization.Serializable
 
+// 동행 신청 /api/v1/accompany/boards/request
 @Serializable
 data class CompanionRequest(
     val boardId: Int, // 어떤 동행글인지

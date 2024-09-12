@@ -2,8 +2,6 @@ package com.materip.feature_mypage.pager
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.materip.core_model.accompany_board.BoardItem
-import com.materip.core_model.accompany_board.Pageable
 import com.materip.core_model.request.PagingRequestDto
 import com.materip.core_model.response.BoardItemWithRequestId
 import com.materip.core_repository.repository.accompany_repository.AccompanyRepository

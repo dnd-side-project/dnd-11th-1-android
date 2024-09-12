@@ -1,6 +1,6 @@
 package com.materip.core_model.request
 
-import com.materip.core_model.accompany_board.BoardItem
+import com.materip.core_model.accompany_board.all.BoardItem
 import com.materip.core_model.response.GetProfileDetailsResponseDto
 import kotlinx.serialization.Serializable
 

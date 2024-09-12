@@ -1,15 +1,15 @@
 package com.materip.core_network.service.home
 
+import com.materip.core_model.accompany_board.all.BoardListResponse
 import com.materip.core_model.accompany_board.create.BoardRequestDto
-import com.materip.core_model.accompany_board.BoardListResponse
 import com.materip.core_model.accompany_board.id.BoardIdDto
 import com.materip.core_model.accompany_board.id.GetBoardDetailDto
 import com.materip.core_model.accompany_board.profile.GetUserProfile
 import com.materip.core_model.accompany_board.request.CompanionRequest
-import com.materip.core_model.response.GetProfileDetailsResponseDto
+import com.materip.core_model.accompany_board.search.QueryRequestDto
+import com.materip.core_model.accompany_board.search.SearchListResponse
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.Body
-import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -42,4 +42,8 @@ interface BoardService {
     // 동행글 삭제
     @POST("/api/v1/accompany/boards/remove/{id}")
     suspend fun deleteBoard(@Path("id") id: Int): ApiResponse<Unit>
+
+    // 동행글 검색
+    @POST("/api/v1/accompany/boards/search")
+    suspend fun searchBoardList(@Body queryRequestDto: QueryRequestDto): ApiResponse<SearchListResponse>
 }
