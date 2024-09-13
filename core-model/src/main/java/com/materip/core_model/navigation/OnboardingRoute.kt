@@ -1,4 +1,4 @@
-package com.materip.feature_onboarding.navigation
+package com.materip.core_model.navigation
 
 enum class OnboardingRoute {
     InputUserInfoRoute,

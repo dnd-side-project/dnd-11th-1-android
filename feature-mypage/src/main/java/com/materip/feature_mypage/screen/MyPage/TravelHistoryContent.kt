@@ -41,6 +41,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.ItemSnapshotList
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.materip.core_common.toDisplayDateString
+import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.MatetripGrade
 import com.materip.core_designsystem.R
 import com.materip.core_designsystem.component.CircleImageView
@@ -52,15 +54,11 @@ import com.materip.core_designsystem.component.TravelPostItem
 import com.materip.core_designsystem.icon.Badges
 import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.theme.MateTripColors
-import com.materip.core_model.accompany_board.BoardItem
 import com.materip.core_model.response.AccompanyReceivedItem
 import com.materip.core_model.response.BoardItemWithRequestId
 import com.materip.core_model.response.BoardItemWithReviewId
 import com.materip.core_model.ui_model.GradeTag
-import com.materip.core_model.ui_model.TempHumanClass
-import com.materip.core_model.ui_model.TempTravelPost
 import com.materip.core_model.ui_model.TravelHistoryTag
-import com.materip.core_model.ui_model.TravelStyle
 import com.materip.feature_mypage.view_models.MyPage.ReceiveTravelApplicationUiState
 import com.materip.feature_mypage.view_models.MyPage.ReceiveTravelApplicationViewModel
 import com.materip.feature_mypage.view_models.MyPage.SendTravelApplicationUiState
@@ -185,12 +183,13 @@ private fun TravelRecordsContent(
         ){
             items(records){record ->
                 if (record != null){
+                    val isEnabled = record.reviewId == null
                     TravelPostItem(
-                        destination = record.region,
+                        destination = record.region.toDisplayString(),
                         period = record.getDuration(),
                         title = record.title,
-                        startDate = record.getStartDateText(),
-                        endDate = record.getEndDateText(),
+                        startDate = record.startDate.toDisplayDateString(),
+                        endDate = record.endDate.toDisplayDateString(),
                         postImage = record.imageUrls[0],
                         onClick = {/** 해당 글로 navigation  */}
                     )
@@ -200,12 +199,12 @@ private fun TravelRecordsContent(
                             .fillMaxWidth()
                             .height(38.dp),
                         shape = RoundedCornerShape(size = 8.dp),
-                        btnText = "동행 후기 작성",
-//                        isEnabled = record.isWritten, /** 작성했는지 안했는지에 대한 boolean값 */
+                        btnText = if(isEnabled) "동행 후기 작성" else "동행 후기 작성 완료",
+                        isEnabled = isEnabled,
                         fontSize = 14.sp,
-                        btnColor = MateTripColors.Blue_04, //isEnabled이 false 일 경우 MateTripColors.InactiveColor
+                        btnColor = if(isEnabled) MateTripColors.Blue_04 else MateTripColors.InactiveColor,
                         textColor = MateTripColors.Gray_08,
-                        trailingIcon = Icons.review_icon, //isEnabled가 false 일 경우 null
+                        trailingIcon = if(isEnabled) Icons.review_icon else null,
                         onClick = { navReviewWrite(record.boardId) }
                     )
                 }
@@ -257,11 +256,11 @@ private fun SendTravelApplicationContent(
             items(applications){application ->
                 if(application != null){
                     TravelPostItem(
-                        destination = application.getRegionText(),
+                        destination = application.region.toDisplayString(),
                         period = application.getDuration(),
                         title = application.title,
-                        startDate = application.getStartDateText(),
-                        endDate = application.getEndDateText(),
+                        startDate = application.startDate.toDisplayDateString(),
+                        endDate = application.endDate.toDisplayDateString(),
                         postImage = application.imageUrls[0],
                         /** 여기에는 application에서 받아온 board id 를 기반으로 navigation 해야 함 */
                         onClick = {/** 해당 글 navigation */}

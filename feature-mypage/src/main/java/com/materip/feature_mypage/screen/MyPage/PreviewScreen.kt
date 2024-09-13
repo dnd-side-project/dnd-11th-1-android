@@ -29,6 +29,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_common.ErrorState
+import com.materip.core_common.toDisplayAgeString
+import com.materip.core_common.toDisplayDateString
+import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.component.NormalTopBar
 import com.materip.core_designsystem.component.ProgressIndicatorPreview
 import com.materip.core_designsystem.component.ReviewDescItem
@@ -38,8 +41,9 @@ import com.materip.core_model.response.DefaultListResponseDto
 import com.materip.core_model.response.EvaluationItem
 import com.materip.core_model.response.GetReviewEvaluationsResponseDto
 import com.materip.core_model.response.ReviewItem
-import com.materip.core_model.ui_model.ReviewClass
-import com.materip.core_model.ui_model.ReviewDescClass
+import com.materip.core_model.ui_model.Gender
+import com.materip.core_model.ui_model.Region
+import com.materip.feature_mypage.view_models.MyPage.PreviewData
 import com.materip.feature_mypage.view_models.MyPage.PreviewUiState
 import com.materip.feature_mypage.view_models.MyPage.PreviewViewModel
 
@@ -86,10 +90,10 @@ fun PreviewScreen(
         }
         is PreviewUiState.Success -> {
             PreviewMainContent(
-                reviews = uiState.reviews.result,
-                reviewTotal = uiState.reviews.totalCount,
-                evaluations = uiState.evaluations.evaluationResponse,
-                evaluationTotal = uiState.evaluations.evaluationCount,
+                reviews = uiState.preview.reviews.responses,
+                reviewTotal = uiState.preview.reviews.totalCount,
+                evaluations = uiState.preview.evaluations.evaluationResponse,
+                evaluationTotal = uiState.preview.evaluations.evaluationCount,
                 navReviewEvaluation = navReviewEvaluation,
                 navReviewList = navReviewList,
                 navReviewDescription = navReviewDescription,
@@ -239,16 +243,16 @@ fun ReviewsContent(
         Spacer(Modifier.height(14.dp))
         reviews.forEach{ review ->
             ReviewDescItem(
-                destination = review.getRegionText(),
+                destination = review.region.toDisplayString(),
                 period = review.getDuration(),
-                startDate = review.getStartDateText(),
-                endDate = review.getEndDateText(),
+                startDate = review.startDate.toDisplayDateString(),
+                endDate = review.endDate.toDisplayDateString(),
                 profileUrl = review.profileImageUrl,
                 nickname = review.nickname,
-                age = "20대 중반", /** 받은 데이터로 변경 */
-                gender = "여성", /** 받은 데이터로 변경 */
+                age = review.age.toDisplayAgeString(),
+                gender = review.gender.toDisplayString(),
                 content = review.detailContent,
-                onClick = { navReviewDescription(0) /** 받은 데이터 id 값을 넣어줘야 함 */ }
+                onClick = { navReviewDescription(review.reviewId) }
             )
             if(reviews.indexOf(review) != reviews.lastIndex){
                 Spacer(Modifier.height(10.dp))
@@ -262,51 +266,62 @@ fun ReviewsContent(
 private fun PreviewUITest(){
     PreviewScreen(
         uiState = PreviewUiState.Success(
-            GetReviewEvaluationsResponseDto(
-                evaluationCount = 14,
-                evaluationResponse = listOf(
-                    EvaluationItem(
-                        type = "붙임성이 좋아요",
-                        count = 5
-                    ),
-                    EvaluationItem(
-                        type = "친절해요",
-                        count = 3
-                    ),
-                    EvaluationItem(
-                        type = "계획적이에요",
-                        count = 3
-                    )
-                )
-            ),
-            reviews = DefaultListResponseDto<ReviewItem>(
-                result = listOf(
-                    ReviewItem(
-                        startDate = "2024.07.20",
-                        endDate = "2024.07.22",
-                        nickname = "닉네임",
-                        region = "부산",
-                        detailContent = "같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰",
-                        profileImageUrl = ""
-                    ),
-                    ReviewItem(
-                        startDate = "2024.07.20",
-                        endDate = "2024.07.22",
-                        nickname = "닉네임",
-                        region = "부산",
-                        detailContent = "같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰",
-                        profileImageUrl = ""
-                    ),
-                    ReviewItem(
-                        startDate = "2024.07.20",
-                        endDate = "2024.07.22",
-                        nickname = "닉네임",
-                        region = "부산",
-                        detailContent = "같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰",
-                        profileImageUrl = ""
+            PreviewData(
+                evaluations = GetReviewEvaluationsResponseDto(
+                    evaluationCount = 14,
+                    evaluationResponse = listOf(
+                        EvaluationItem(
+                            type = "붙임성이 좋아요",
+                            count = 5
+                        ),
+                        EvaluationItem(
+                            type = "친절해요",
+                            count = 3
+                        ),
+                        EvaluationItem(
+                            type = "계획적이에요",
+                            count = 3
+                        )
                     )
                 ),
-                totalCount = 3
+                reviews = DefaultListResponseDto<ReviewItem>(
+                    responses = listOf(
+                        ReviewItem(
+                            startDate = "2024.07.20",
+                            endDate = "2024.07.22",
+                            nickname = "닉네임",
+                            region = Region.BUSAN,
+                            detailContent = "같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰",
+                            profileImageUrl = "",
+                            reviewId = 0,
+                            age = 2000,
+                            gender = Gender.MALE
+                        ),
+                        ReviewItem(
+                            startDate = "2024.07.20",
+                            endDate = "2024.07.22",
+                            nickname = "닉네임",
+                            region = Region.BUSAN,
+                            detailContent = "같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰",
+                            profileImageUrl = "",
+                            reviewId = 0,
+                            age = 2000,
+                            gender = Gender.MALE
+                        ),
+                        ReviewItem(
+                            startDate = "2024.07.20",
+                            endDate = "2024.07.22",
+                            nickname = "닉네임",
+                            region = Region.BUSAN,
+                            detailContent = "같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰",
+                            profileImageUrl = "",
+                            reviewId = 0,
+                            age = 2000,
+                            gender = Gender.MALE
+                        )
+                    ),
+                    totalCount = 3
+                )
             )
         ),
         errState = ErrorState.Loading,

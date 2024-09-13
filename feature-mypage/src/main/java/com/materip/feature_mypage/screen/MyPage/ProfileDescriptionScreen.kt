@@ -39,6 +39,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_common.ErrorState
+import com.materip.core_common.toDisplayAgeString
+import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.MatetripGrade
 import com.materip.core_designsystem.R
 import com.materip.core_designsystem.component.CircleImageView
@@ -80,8 +82,8 @@ fun ProfileDescriptionScreen(
             ProfileDescriptionContent(
                 profileImg = user.profileImageUrl,
                 nickname = user.nickname,
-                age = uiState.getAgeText(),
-                gender = user.gender,
+                age = user.birthYear.toDisplayAgeString(),
+                gender = user.gender.toDisplayString(),
                 introduction = user.description,
                 provider = user.provider,
                 travelStyles = user.travelStyles,

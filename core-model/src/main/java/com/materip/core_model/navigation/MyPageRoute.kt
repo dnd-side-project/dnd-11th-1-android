@@ -1,4 +1,4 @@
-package com.materip.feature_mypage.navigation
+package com.materip.core_model.navigation
 
 enum class MyPageRoute {
     MyPageGraph,

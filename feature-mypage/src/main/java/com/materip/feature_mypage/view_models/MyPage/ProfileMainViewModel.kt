@@ -6,7 +6,7 @@ import com.materip.core_common.ErrorState
 import com.materip.core_common.Result
 import com.materip.core_common.asResult
 import com.materip.core_model.response.GetProfileResponseDto
-import com.materip.core_repository.useCase.GetProfileUseCase
+import com.materip.core_repository.repository.profile_repository.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileMainViewModel @Inject constructor(
-    private val getProfileUseCase: GetProfileUseCase
+    private val profileRepository: ProfileRepository
 ): ViewModel() {
     private val invalidTokenError = MutableStateFlow<Boolean>(false)
     private val notFoundTokenError = MutableStateFlow<Boolean>(false)
@@ -37,7 +37,7 @@ class ProfileMainViewModel @Inject constructor(
     )
     val uiState: StateFlow<ProfileMainUiState> = errorState.map {
         if (it is ErrorState.AuthError && it.isInvalid()){throw Exception("")}
-        val result = getProfileUseCase()
+        val result = profileRepository.getProfile()
         if (result.error != null){
             when(result.error!!.status){
                 401 -> notFoundTokenError.update{true}
@@ -67,20 +67,6 @@ sealed interface ProfileMainUiState{
     ): ProfileMainUiState {
         fun getTags(): List<String>{
             return user.travelPreferences.plus(user.travelStyles).plus(user.foodPreferences)
-        }
-        fun getAge(): String{
-            return when(user.birthYear){
-                in 0..9 -> "${user.birthYear}세"
-                in 10..19 -> "10대"
-                in 20..29 -> "20대"
-                in 30..39 -> "30대"
-                in 40..49 -> "40대"
-                in 50..59 -> "50대"
-                in 60..69 -> "60대"
-                in 70..79 -> "70대"
-                in 80..89 -> "80대"
-                else -> "90대"
-            }
         }
     }
     data object Loading: ProfileMainUiState

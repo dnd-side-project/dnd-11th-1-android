@@ -26,10 +26,15 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_common.ErrorState
+import com.materip.core_common.toDisplayAgeString
+import com.materip.core_common.toDisplayDateString
+import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.component.NormalTopBar
 import com.materip.core_designsystem.component.ReviewDescItem
 import com.materip.core_model.response.DefaultListResponseDto
 import com.materip.core_model.response.ReviewItem
+import com.materip.core_model.ui_model.Gender
+import com.materip.core_model.ui_model.Region
 import com.materip.core_model.ui_model.ReviewDescClass
 import com.materip.feature_mypage.view_models.MyPage.ReviewListUiState
 import com.materip.feature_mypage.view_models.MyPage.ReviewListViewModel
@@ -71,7 +76,7 @@ fun ReviewListScreen(
         }
         is ReviewListUiState.Success -> {
             ReviewListMainContent(
-                reviews = uiState.reviews.result,
+                reviews = uiState.reviews.responses,
                 totalCount = uiState.reviews.totalCount,
                 navBack = navBack,
                 navReviewDescription = navReviewDescription
@@ -122,16 +127,16 @@ private fun ReviewListMainContent(
         ){
             items(reviews){review ->
                 ReviewDescItem(
-                    destination = review.getRegionText(),
+                    destination = review.region.toDisplayString(),
                     period = review.getDuration(),
-                    startDate = review.startDate,
-                    endDate = review.endDate,
+                    startDate = review.startDate.toDisplayDateString(),
+                    endDate = review.endDate.toDisplayDateString(),
                     profileUrl = review.profileImageUrl,
                     nickname = review.nickname,
-                    age = "review.age", /** 받아오는 데이터로 변경 */
-                    gender = "review.gender", /** 받아오는 데이터로 변경 */
+                    age = review.age.toDisplayAgeString(),
+                    gender = review.gender.toDisplayString(),
                     content = review.detailContent,
-                    onClick = { navReviewDescription(0) /** review id 또한 받아와서 0 대신 넣어야 함 */}
+                    onClick = { navReviewDescription(review.reviewId) }
                 )
             }
         }
@@ -145,31 +150,40 @@ fun ReviewListUITest(){
         uiState = ReviewListUiState.Success(
             reviews = DefaultListResponseDto(
                 totalCount = 3,
-                result = listOf(
+                responses = listOf(
                     ReviewItem(
                         startDate = "2024.07.20",
                         endDate = "2024.07.22",
                         nickname = "닉네임",
+                        region = Region.BUSAN,
+                        detailContent = "같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰",
                         profileImageUrl = "",
-                        region = "부산",
-                        detailContent = "같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰"
+                        reviewId = 0,
+                        age = 2000,
+                        gender = Gender.MALE
                     ),
                     ReviewItem(
                         startDate = "2024.07.20",
                         endDate = "2024.07.22",
                         nickname = "닉네임",
+                        region = Region.BUSAN,
+                        detailContent = "같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰",
                         profileImageUrl = "",
-                        region = "부산",
-                        detailContent = "같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰"
+                        reviewId = 0,
+                        age = 2000,
+                        gender = Gender.MALE
                     ),
                     ReviewItem(
                         startDate = "2024.07.20",
                         endDate = "2024.07.22",
                         nickname = "닉네임",
+                        region = Region.BUSAN,
+                        detailContent = "같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰",
                         profileImageUrl = "",
-                        region = "부산",
-                        detailContent = "같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰 같이 여행해서 좋았다는 리뷰"
-                    ),
+                        reviewId = 0,
+                        age = 2000,
+                        gender = Gender.MALE
+                    )
                 )
             )
         ),

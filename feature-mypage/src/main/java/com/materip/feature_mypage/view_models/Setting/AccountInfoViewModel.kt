@@ -7,7 +7,6 @@ import com.materip.core_common.Result
 import com.materip.core_common.asResult
 import com.materip.core_model.response.GetProfileResponseDto
 import com.materip.core_repository.repository.profile_repository.ProfileRepository
-import com.materip.core_repository.useCase.GetProfileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AccountInfoViewModel @Inject constructor(
-    private val getProfileUseCase: GetProfileUseCase
+    private val profileRepository: ProfileRepository
 ): ViewModel() {
 
     private val invalidTokenError = MutableStateFlow<Boolean>(false)
@@ -40,7 +39,7 @@ class AccountInfoViewModel @Inject constructor(
 
     val uiState: StateFlow<AccountInfoUiState> = errorState.map{
         if(it is ErrorState.AuthError && it.isInvalid()) throw Exception("Error")
-        val result = getProfileUseCase()
+        val result = profileRepository.getProfile()
         if (result.error != null){
             when(result.error!!.status){
                 401 -> invalidTokenError.update{true}

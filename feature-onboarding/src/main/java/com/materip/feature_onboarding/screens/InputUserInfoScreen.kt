@@ -29,6 +29,7 @@ import com.materip.core_designsystem.component.MateTripButton
 import com.materip.core_designsystem.component.OnboardingElevatedCard
 import com.materip.core_designsystem.component.ProgressIndicator
 import com.materip.core_designsystem.component.UnderlinedTextField
+import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_designsystem.theme.MateTripTypographySet
 import com.materip.core_designsystem.theme.OnboardingMessage
 import com.materip.core_model.ui_model.Gender
@@ -105,7 +106,7 @@ fun InputUserInfoScreen(
             fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.roboto_medium)),
             fontWeight = FontWeight(500),
             textColor = Color.Black,
-            underlineColor = Color(0xFF939094), /** gray_06 으로 치환 */
+            underlineColor = MateTripColors.Gray_06,
             inputType = InputKeyboardType.NUMBER
         )
         Spacer(Modifier.height(30.dp))

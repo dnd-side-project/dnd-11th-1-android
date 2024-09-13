@@ -13,6 +13,7 @@ import com.materip.feature_mypage.screen.Setting.GetAuthCodeRoute
 import com.materip.feature_mypage.screen.Setting.LogoutRoute
 import com.materip.feature_mypage.screen.Setting.SettingRoute
 import com.materip.feature_mypage.screen.Setting.SmsVerificationRoute
+import com.materip.core_model.navigation.SettingRoute
 
 fun NavController.navigateToSettingGraph() = navigate(SettingRoute.SettingGraph.name){
     launchSingleTop = true

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.materip.core_common.ErrorState
 import com.materip.core_common.Result
 import com.materip.core_common.asResult
+import com.materip.core_common.toDisplayString
 import com.materip.core_common.transformToFile
 import com.materip.core_model.request.UpdateMyImagesRequestDto
 import com.materip.core_model.request.UpdateProfileRequestDto
@@ -23,8 +24,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
 import javax.inject.Inject
 
 @HiltViewModel
@@ -69,7 +68,7 @@ class EditProfileViewModel @Inject constructor(
                     nickname = data.nickname,
                     description = data.description,
                     birthYear = data.birthYear,
-                    gender = data.gender,
+                    gender = data.gender.toDisplayString(),
                     travelStyles = data.travelStyles,
                     travelPreferences = data.travelPreferences,
                     foodPreferences = data.foodPreferences,
