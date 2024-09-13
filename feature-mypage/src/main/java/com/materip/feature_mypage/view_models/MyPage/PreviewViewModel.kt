@@ -76,9 +76,7 @@ class PreviewViewModel @Inject constructor(
         } else {
             var reviews = (reviewsResult as Result.Success).data
             if(reviews.totalCount > 3){
-                reviews = reviews.copy(
-                    result = reviews.result.subList(0,3)
-                )
+                reviews.responses = reviews.responses.subList(0,3)
             }
             PreviewUiState.Success(
                 evaluations = (reviewEvaluationResult as Result.Success).data!!,

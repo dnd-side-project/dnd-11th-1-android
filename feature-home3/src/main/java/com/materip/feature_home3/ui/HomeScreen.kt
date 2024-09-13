@@ -47,6 +47,7 @@ import com.materip.core_designsystem.theme.MateTripColors.Blue_02
 import com.materip.core_designsystem.theme.MateTripColors.Blue_04
 import com.materip.core_designsystem.theme.MateTripTypographySet
 import com.materip.core_model.accompany_board.all.BoardItem
+import com.materip.core_model.accompany_board.search.QueryRequestDto
 import com.materip.core_model.request.PagingRequestDto
 import com.materip.feature_home3.intent.BoardListIntent
 import com.materip.feature_home3.state.BoardListUiState
@@ -77,7 +78,7 @@ fun HomeScreen(
     val onSearch: (String) -> Unit = { searchQuery ->
         if (searchQuery.isNotEmpty()) {
             isSearching = true
-            viewModel.handleIntent(BoardListIntent.SearchBoardList(searchQuery))
+            viewModel.handleIntent(BoardListIntent.SearchBoardList(QueryRequestDto(searchQuery)))
         }
     }
 
