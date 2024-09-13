@@ -293,6 +293,7 @@ private fun SelectFoodPreferenceMainContent(
         }
         Spacer(Modifier.height(10.dp))
         MateTripButton(
+            modifier = Modifier.fillMaxWidth(),
             onClick = { onNextClick(foodStyles) },
             buttonText = "다음" ,
             enabled = isEnabled.value
