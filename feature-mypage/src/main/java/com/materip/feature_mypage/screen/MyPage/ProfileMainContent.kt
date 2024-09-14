@@ -100,9 +100,9 @@ fun ProfileMainTab(
         is ProfileMainUiState.Success -> {
             val user = uiState.user
             val grade = when(user.grade){
-                GradeTag.ROOKIE.name -> MatetripGrade.level_1
-                GradeTag.ELITE.name -> MatetripGrade.level_2
-                GradeTag.PASSIONATE.name -> MatetripGrade.level_3
+                GradeTag.ROOKIE -> MatetripGrade.level_1
+                GradeTag.ELITE -> MatetripGrade.level_2
+                GradeTag.PASSIONATE -> MatetripGrade.level_3
                 else -> MatetripGrade.level_4
             }
             ProfileMainContent(
