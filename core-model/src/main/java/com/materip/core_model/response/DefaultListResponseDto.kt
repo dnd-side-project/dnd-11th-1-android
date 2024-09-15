@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DefaultListResponseDto<T>(
-    val responses: List<T>,
+    var responses: List<T>,
     val totalCount: Int
 )

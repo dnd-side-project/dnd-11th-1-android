@@ -68,7 +68,11 @@ fun SetUpNavGraph(
         )
         selectFoodPreference(
             onBackClick = navController::navigateToBack,
-            navHome = { navController.navigate(Screen.Home.route) }
+            navHome = {
+                navController.navigate(Screen.Home.route){
+                    popUpTo(Screen.Home.route)
+                }
+            }
         )
 
         /** setting graph */

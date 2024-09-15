@@ -8,6 +8,7 @@ import java.time.temporal.ChronoUnit
 @Serializable
 data class GetReviewDescriptionResponseDto(
     val writerNickname: String,
+    val myNickname: String,
     val region: Region,
     val startDate: String,
     val endDate: String,

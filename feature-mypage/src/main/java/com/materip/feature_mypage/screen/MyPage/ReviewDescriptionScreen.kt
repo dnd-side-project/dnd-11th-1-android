@@ -95,7 +95,7 @@ fun ReviewDescriptionScreen(
                 startDate = data.startDate.toDisplayDateString(),
                 endDate = data.startDate.toDisplayDateString(),
                 images = data.reviewImageUrls,
-                mate = "메이트", /** 나의 닉네임 정보가 있어야 함 */
+                mate = data.myNickname,
                 reviewContent = data.detailContent,
                 tags = data.getTags(),
                 navBack = navBack
@@ -318,6 +318,7 @@ fun ReviewDescriptionUITest(){
         uiState = ReviewDescriptionUiState.Success(
             result = GetReviewDescriptionResponseDto(
                 writerNickname = "닉네임",
+                myNickname = "내 닉네임",
                 region = Region.BUSAN,
                 startDate = "2024.07.20",
                 endDate = "2024.07.22",
