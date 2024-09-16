@@ -2,10 +2,12 @@ package com.materip.feature_home3.ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import com.materip.core_designsystem.icon.Badges.fab_add_badge
 
 @Composable
@@ -17,7 +19,8 @@ fun FabButton(
         onClick = onPostClick,
         containerColor = Color.Transparent,
         contentColor = Color.Transparent,
-        modifier = modifier
+        modifier = modifier,
+        elevation = FloatingActionButtonDefaults.elevation(0.dp)
     ) {
         Image(
             painter = painterResource(id = fab_add_badge),
