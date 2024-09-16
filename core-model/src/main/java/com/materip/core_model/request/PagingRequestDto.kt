@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PagingRequestDto(
     val cursor: String?,
-    val size: Int = 10
+    val size: Int = 8
 )
