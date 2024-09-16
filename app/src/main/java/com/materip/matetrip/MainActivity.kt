@@ -12,7 +12,6 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -34,12 +33,12 @@ import com.materip.core_designsystem.component.MateTripTopAppBar
 import com.materip.core_model.navigation.LoginRoute
 import com.materip.core_model.navigation.MyPageRoute
 import com.materip.core_model.navigation.OnboardingRoute
-import com.materip.feature_home3.ui.FabButton
+import com.materip.core_model.navigation.SettingRoute
+import com.materip.feature_home3.intent.PostBoardIntent
+import com.materip.feature_home3.ui.component.FabButton
 import com.materip.feature_home3.viewModel.HomeViewModel
 import com.materip.feature_home3.viewModel.PostBoardViewModel
 import com.materip.feature_home3.viewModel.ProfileViewModel
-import com.materip.core_model.navigation.SettingRoute
-import com.materip.feature_home3.intent.PostBoardIntent
 import com.materip.feature_mypage.navigation.navigateToMyPageGraph
 import com.materip.feature_mypage.navigation.navigateToSettingGraph
 import com.materip.matetrip.navigation.Screen
