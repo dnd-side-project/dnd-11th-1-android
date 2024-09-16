@@ -97,18 +97,18 @@ class MainActivity : AppCompatActivity() {
                             )
                         }
                     },
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(it)
-                    ) {
-                        SetUpNavGraph(
-                            navController = navController,
-                            startDestination = startDestination
-                        )
+                    content = { paddingValues ->
+                        Box(
+                            modifier = Modifier
+                                .padding(paddingValues)
+                        ) {
+                            SetUpNavGraph(
+                                navController = navController,
+                                startDestination = startDestination
+                            )
+                        }
                     }
-                }
+                )
             }
         }
     }
