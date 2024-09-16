@@ -39,6 +39,7 @@ import com.materip.feature_home3.viewModel.HomeViewModel
 import com.materip.feature_home3.viewModel.PostBoardViewModel
 import com.materip.feature_home3.viewModel.ProfileViewModel
 import com.materip.core_model.navigation.SettingRoute
+import com.materip.feature_home3.intent.PostBoardIntent
 import com.materip.feature_mypage.navigation.navigateToMyPageGraph
 import com.materip.feature_mypage.navigation.navigateToSettingGraph
 import com.materip.matetrip.navigation.Screen
@@ -177,7 +178,10 @@ fun GetTopBar(
             BackButtonWithTitleTopAppBar(
                 screenTitle = "동행 모집하기",
                 onNavigateUp = { navController.navigateUp() },
-                onPostClick = { viewModel.createPost(viewModel.toBoardRequestDto()) }
+                onPostClick = {
+                    viewModel.handleIntent(PostBoardIntent.CreatePost(viewModel.toBoardRequestDto()))
+                    navController.navigate(Screen.Home.route)
+                }
             )
 
             LaunchedEffect(viewModel.createdBoardIds) {
