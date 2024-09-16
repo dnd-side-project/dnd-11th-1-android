@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -18,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
@@ -101,6 +103,7 @@ class MainActivity : AppCompatActivity() {
                         Box(
                             modifier = Modifier
                                 .padding(paddingValues)
+                                .background(Color.White)
                         ) {
                             SetUpNavGraph(
                                 navController = navController,
@@ -197,6 +200,13 @@ fun GetTopBar(
         Screen.Form.route -> {
             BackButtonTopAppBar(
                 screenTitle = "동행 신청서 작성",
+                onNavigateUp = navController::navigateToBack
+            )
+        }
+
+        Screen.Notification.route -> {
+            BackButtonTopAppBar(
+                screenTitle = "알림",
                 onNavigateUp = navController::navigateToBack
             )
         }
