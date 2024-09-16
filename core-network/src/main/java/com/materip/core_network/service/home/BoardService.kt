@@ -19,8 +19,8 @@ interface BoardService {
     // 동행글 목록 조회
     @GET("/api/v1/accompany/boards")
     suspend fun getBoard(
-        @Query("page") page: Int = 0,
-        @Query("size") size: Int = 1
+        @Query("cursor") cursor: String? = null,
+        @Query("size") size: Int = 8
     ): ApiResponse<BoardListResponse>
 
     // 동행글 생성
