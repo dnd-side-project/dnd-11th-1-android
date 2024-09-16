@@ -25,7 +25,7 @@ class NotificationViewModel @Inject constructor(
         }
     }
 
-    fun fetchNotifications() {
+    private fun fetchNotifications() {
         viewModelScope.launch {
             _uiState.value = NotificationUiState.Loading
             try {
