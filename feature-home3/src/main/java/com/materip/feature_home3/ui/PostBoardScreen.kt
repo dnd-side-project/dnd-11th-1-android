@@ -22,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -83,6 +84,7 @@ fun PostBoardScreen(
                     .fillMaxHeight()
                     .background(MaterialTheme.colorScheme.background)
                     .padding(start = 20.dp, end = 20.dp)
+                    .background(Color.White)
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(30.dp)
             ) {
@@ -199,6 +201,7 @@ fun PostBoardScreen(
                     .fillMaxHeight()
                     .background(MaterialTheme.colorScheme.background)
                     .padding(start = 20.dp, end = 20.dp)
+                    .background(Color.White)
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(30.dp)
             ) {
@@ -331,7 +334,7 @@ fun PostBoardScreenPreview() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(Color.White)
             .padding(start = 20.dp, end = 20.dp),
         verticalArrangement = Arrangement.spacedBy(30.dp)
     ) {
