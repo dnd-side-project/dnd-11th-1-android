@@ -69,7 +69,7 @@ fun HomeScreen(
     val listState = rememberLazyListState()
     var isLoading by remember { mutableStateOf(false) }
     var cursor: String? by remember { mutableStateOf(null) }
-    val size = 10
+    val size = 8
 
     var query by remember { mutableStateOf("") }
     var isSearching by remember { mutableStateOf(false) }
