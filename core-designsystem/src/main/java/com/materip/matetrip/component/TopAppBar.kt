@@ -65,7 +65,7 @@ fun MateTripTopAppBar(
                 painter = painterResource(id = splash_icon_02),
                 contentDescription = "Home Icon",
                 modifier = Modifier.size(122.dp, 36.dp),
-                tint = Color.Unspecified // 투명으로 설정하여 아이콘의 색상을 유지
+                tint = Color.Unspecified
             )
         },
         actions = {
@@ -137,7 +137,7 @@ fun BackButtonTopAppBar(
     screenTitle: String,
     onNavigateUp: () -> Unit
 ) {
-    TopAppBar(
+    CenterAlignedTopAppBar(
         title = {
             Text(
                 text = screenTitle,
