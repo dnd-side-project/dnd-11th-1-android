@@ -62,7 +62,7 @@ fun PostBoardScreen(
     var tagInput by remember { mutableStateOf("") }
     var tags by remember { mutableStateOf(listOf<String>()) }
     var selectedType by remember { mutableStateOf(listOf<Category>()) }
-    var selectedRegion by remember { mutableStateOf(Region.SEOUL) }
+    var selectedRegion by remember { mutableStateOf<Region?>(null) }
     var startDate by remember { mutableStateOf<LocalDate?>(null) }
     var endDate by remember { mutableStateOf<LocalDate?>(null) }
     var capacity by remember { mutableIntStateOf(2) }

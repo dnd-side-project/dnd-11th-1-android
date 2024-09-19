@@ -25,7 +25,7 @@ import com.materip.core_model.ui_model.Region
 @Composable
 fun RegionRadioButtonDialog(
     options: List<String>,
-    selectedOption: Region,
+    selectedOption: Region?,
     onOptionsSelected: (Region) -> Unit,
     onDismissRequest: () -> Unit
 ) {
