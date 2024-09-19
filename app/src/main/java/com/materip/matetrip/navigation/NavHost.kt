@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.materip.core_model.navigation.MyPageRoute
 import com.materip.feature_home3.ui.FormScreen
 import com.materip.feature_home3.ui.HomeScreen
 import com.materip.feature_home3.ui.NavigateToPostScreen
@@ -152,7 +153,13 @@ fun SetUpNavGraph(
             arguments = listOf(navArgument("boardId") { type = NavType.IntType })
         ) { backStackEntry ->
             val boardId = backStackEntry.arguments?.getInt("boardId") ?: 0
-            ProfileScreen(boardId = boardId)
+            ProfileScreen(
+                boardId = boardId,
+                navBack = navController::navigateToBack,
+                navReviewDescription = { reviewId ->
+                    navController.navigate("${MyPageRoute.ReviewDescriptionRoute.name}/${reviewId}")
+                }
+            )
         }
     }
 }
