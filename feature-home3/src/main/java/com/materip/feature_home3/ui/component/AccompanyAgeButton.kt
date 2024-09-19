@@ -16,7 +16,7 @@ import com.materip.core_model.ui_model.PreferredAge
 
 @Composable
 fun AccompanyAgeButton(
-    selectedAge: PreferredAge,
+    selectedAge: PreferredAge?,
     onAgeChange: (PreferredAge) -> Unit
 ) {
     Column(

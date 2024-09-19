@@ -57,8 +57,8 @@ fun PostBoardScreen(
 
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
-    var gender by remember { mutableStateOf(PreferredGender.ANY) }
-    var age by remember { mutableStateOf(PreferredAge.ANY) }
+    var gender by remember { mutableStateOf<PreferredGender?>(null) }
+    var age by remember { mutableStateOf<PreferredAge?>(null) }
     var tagInput by remember { mutableStateOf("") }
     var tags by remember { mutableStateOf(listOf<String>()) }
     var selectedType by remember { mutableStateOf(listOf<Category>()) }

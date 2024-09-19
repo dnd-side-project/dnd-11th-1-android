@@ -16,7 +16,7 @@ import com.materip.core_model.ui_model.PreferredGender
 
 @Composable
 fun AccompanyGenderButton(
-    selectedGender: PreferredGender,
+    selectedGender: PreferredGender?,
     onGenderChange: (PreferredGender) -> Unit
 ) {
     Column(
