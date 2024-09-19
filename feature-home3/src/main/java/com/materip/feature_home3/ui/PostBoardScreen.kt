@@ -82,7 +82,6 @@ fun PostBoardScreen(
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .background(MaterialTheme.colorScheme.background)
                     .padding(start = 20.dp, end = 20.dp)
                     .background(Color.White)
                     .verticalScroll(rememberScrollState()),
