@@ -81,7 +81,7 @@ fun PostBoardScreen(
         is PostBoardUiState.Initial -> {
             Column(
                 modifier = Modifier
-                    .fillMaxHeight()
+                    .fillMaxSize()
                     .padding(start = 20.dp, end = 20.dp)
                     .background(Color.White)
                     .verticalScroll(rememberScrollState()),
@@ -319,12 +319,12 @@ fun PostBoardScreen(
 fun PostBoardScreenPreview() {
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
-    var gender by remember { mutableStateOf(PreferredGender.ANY) }
-    var age by remember { mutableStateOf(PreferredAge.ANY) }
+    var gender by remember { mutableStateOf<PreferredGender?>(null) }
+    var age by remember { mutableStateOf<PreferredAge?>(null) }
     var tagInput by remember { mutableStateOf("") }
     var tags by remember { mutableStateOf(listOf<String>()) }
     var selectedType by remember { mutableStateOf(listOf<Category>()) }
-    var selectedRegion by remember { mutableStateOf(Region.SEOUL) }
+    var selectedRegion by remember { mutableStateOf<Region?>(null) }
     var startDate by remember { mutableStateOf<LocalDate?>(null) }
     var endDate by remember { mutableStateOf<LocalDate?>(null) }
     var capacity by remember { mutableIntStateOf(2) }
@@ -334,7 +334,8 @@ fun PostBoardScreenPreview() {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(start = 20.dp, end = 20.dp),
+            .padding(start = 20.dp, end = 20.dp)
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(30.dp)
     ) {
         // 카메라, 사진 가져오기 버튼
