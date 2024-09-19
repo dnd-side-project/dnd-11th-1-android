@@ -1,23 +1,12 @@
 package com.materip.feature_home3.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,32 +18,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberAsyncImagePainter
 import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.component.MateTripSearchBar
-import com.materip.core_designsystem.component.RegionTag
-import com.materip.core_designsystem.icon.Badges.fab_add_badge
-import com.materip.core_designsystem.icon.Logo
 import com.materip.core_designsystem.theme.MateTripColors.Blue_02
 import com.materip.core_designsystem.theme.MateTripColors.Blue_04
-import com.materip.core_designsystem.theme.MateTripTypographySet
-import com.materip.core_model.accompany_board.all.BoardItem
 import com.materip.core_model.accompany_board.search.QueryRequestDto
 import com.materip.core_model.request.PagingRequestDto
 import com.materip.feature_home3.intent.BoardListIntent
 import com.materip.feature_home3.state.BoardListUiState
+import com.materip.feature_home3.ui.component.CompanionLounge
+import com.materip.feature_home3.ui.component.HomeTitle
+import com.materip.feature_home3.ui.component.ShowAccompanyPost
 import com.materip.feature_home3.viewModel.BoardViewModel
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -69,7 +47,7 @@ fun HomeScreen(
     val listState = rememberLazyListState()
     var isLoading by remember { mutableStateOf(false) }
     var cursor: String? by remember { mutableStateOf(null) }
-    val size = 10
+    val size = 8
 
     var query by remember { mutableStateOf("") }
     var isSearching by remember { mutableStateOf(false) }
@@ -152,12 +130,7 @@ fun HomeScreen(
         // 동행글 목록
         Box(modifier = Modifier.weight(1f)) {
             when (uiState) {
-                is BoardListUiState.Loading -> {
-                    ShowAccompanyPost(
-                        boardItems = BoardListUiState.Loading.dummyData,
-                        onPostClick = onNavigateToPostDetail
-                    )
-                }
+                is BoardListUiState.Loading -> CircularProgressIndicator()
 
                 is BoardListUiState.Success -> {
                     ShowAccompanyPost(
@@ -167,193 +140,16 @@ fun HomeScreen(
                 }
 
                 is BoardListUiState.Error -> {
-                    ShowAccompanyPost(
-                        boardItems = BoardListUiState.Error("").dummyData,
-                        onPostClick = onNavigateToPostDetail
-                    )
+                    Text("오류: ${(uiState as BoardListUiState.Error).message}")
                 }
 
                 else -> {
                     ShowAccompanyPost(
-                        boardItems = (uiState as BoardListUiState.Initial).dummyData,
+                        boardItems = filteredBoardItems,
                         onPostClick = onNavigateToPostDetail
                     )
                 }
             }
         }
     }
-}
-
-
-@Composable
-fun HomeTitle() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 20.dp, end = 83.dp),
-        horizontalAlignment = Alignment.Start,
-    ) {
-        Text(
-            text = "동행의 즐거움,\n당신의 여행을 특별하게!",
-            style = MateTripTypographySet.displayLarge01,
-            modifier = Modifier.padding(bottom = 24.dp)
-        )
-    }
-}
-
-@Composable
-fun CompanionLounge(onRegionSelected: (String) -> Unit) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.Start,
-    ) {
-        Text(
-            text = "동행 라운지",
-            style = MateTripTypographySet.headline06,
-            modifier = Modifier.padding(start = 20.dp, end = 272.dp, bottom = 12.dp)
-        )
-        RegionTag(
-            onClick = onRegionSelected,
-            modifier = Modifier.fillMaxWidth()
-        )
-    }
-}
-
-@Composable
-fun PostItem(
-    boardItem: BoardItem,
-    onBoardItemClick: (Int) -> Unit
-) {
-    val firstImage: String = boardItem.imageUrls.firstOrNull() ?: Logo.app_icon_60.toString()
-    val duration = calculateDuration(boardItem.startDate, boardItem.endDate)
-
-    Row(
-        modifier = Modifier
-            .shadow(
-                elevation = 10.dp,
-                spotColor = Color(0x330E1537),
-                ambientColor = Color(0x330E1537)
-            )
-            .width(360.dp)
-            .height(148.dp)
-            .background(color = Color.White, shape = RoundedCornerShape(size = 12.dp))
-            .padding(18.dp)
-            .clickable { onBoardItemClick(boardItem.boardId) },
-        horizontalArrangement = Arrangement.spacedBy(50.dp, Alignment.Start),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        // 왼쪽 텍스트 부분
-        Column(
-            modifier = Modifier
-                .width(155.dp)
-                .height(111.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.Top),
-            horizontalAlignment = Alignment.Start,
-        ) {
-            // 태그 및 기간
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .width(108.dp)
-                    .height(26.dp),
-            ) {
-                Text(
-                    text = boardItem.region.toDisplayString(),
-                    color = Color.White,
-                    style = MateTripTypographySet.title05,
-                    modifier = Modifier
-                        .width(42.dp)
-                        .height(26.dp)
-                        .background(
-                            color = Color(0xFF3553F2),
-                            shape = RoundedCornerShape(size = 5.dp)
-                        )
-                        .padding(start = 10.dp, top = 4.dp, end = 10.dp, bottom = 5.dp)
-                )
-                Text(
-                    text = duration,
-                    style = MateTripTypographySet.title05,
-                    modifier = Modifier
-                        .width(66.dp)
-                        .height(26.dp)
-                        .background(
-                            color = Color(0xFFEFF1FF),
-                            shape = RoundedCornerShape(size = 5.dp)
-                        )
-                        .padding(start = 10.dp, top = 4.dp, end = 10.dp, bottom = 5.dp)
-                )
-            }
-            Text(
-                text = boardItem.title,
-                style = MateTripTypographySet.headline05,
-            )
-            Text(
-                text = "${boardItem.startDate} ~ ${boardItem.endDate}",
-                style = MateTripTypographySet.title04,
-                color = Color.Gray,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-            Text(
-                text = boardItem.nickname,
-                style = MateTripTypographySet.body06,
-            )
-        }
-
-        Image(
-            painter = rememberAsyncImagePainter(firstImage),
-            contentDescription = "image description",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(width = 110.dp, height = 112.dp)
-                .clip(RoundedCornerShape(10.dp))
-        )
-    }
-}
-
-
-@Composable
-fun ShowAccompanyPost(
-    boardItems: List<BoardItem>,
-    onPostClick: (Int) -> Unit
-) {
-    LazyColumn(
-        modifier = Modifier
-            .padding(start = 20.dp, end = 20.dp, bottom = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        items(boardItems) { boardItem ->
-            PostItem(
-                boardItem = boardItem,
-                onBoardItemClick = { boardId -> onPostClick(boardId) }
-            )
-        }
-    }
-}
-
-@Composable
-fun FabButton(
-    onPostClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    FloatingActionButton(
-        onClick = onPostClick,
-        containerColor = Color.Transparent,
-        contentColor = Color.Transparent,
-        modifier = modifier
-    ) {
-        Image(
-            painter = painterResource(id = fab_add_badge),
-            contentDescription = "동행 게시글 작성 버튼"
-        )
-    }
-}
-
-fun calculateDuration(startDate: String, endDate: String): String {
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    val start = LocalDate.parse(startDate, formatter)
-    val end = LocalDate.parse(endDate, formatter)
-    val days = ChronoUnit.DAYS.between(start, end).toInt() + 1
-    val nights = days - 1
-    return "${nights}박 ${days}일"
 }

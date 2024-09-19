@@ -177,7 +177,7 @@ class PostBoardViewModel @Inject constructor(
         _boardStatus.value = newBoardStatus
     }
 
-    fun createPost(boardRequestDto: BoardRequestDto) {
+    private fun createPost(boardRequestDto: BoardRequestDto) {
         viewModelScope.launch {
             _uiState.value = PostBoardUiState.Loading
 
@@ -186,7 +186,7 @@ class PostBoardViewModel @Inject constructor(
 
             _uiState.value = if (boardIdDto != null) {
                 _createdBoardIds.value += boardIdDto.boardId
-                PostBoardUiState.Success
+                PostBoardUiState.Success(boardIdDto)
             } else {
                 PostBoardUiState.Error(result.error?.message ?: "게시글 작성에 실패했습니다.")
             }

@@ -11,14 +11,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
@@ -34,11 +35,12 @@ import com.materip.core_designsystem.component.MateTripTopAppBar
 import com.materip.core_model.navigation.LoginRoute
 import com.materip.core_model.navigation.MyPageRoute
 import com.materip.core_model.navigation.OnboardingRoute
-import com.materip.feature_home3.ui.FabButton
+import com.materip.core_model.navigation.SettingRoute
+import com.materip.feature_home3.intent.PostBoardIntent
+import com.materip.feature_home3.ui.component.FabButton
 import com.materip.feature_home3.viewModel.HomeViewModel
 import com.materip.feature_home3.viewModel.PostBoardViewModel
 import com.materip.feature_home3.viewModel.ProfileViewModel
-import com.materip.core_model.navigation.SettingRoute
 import com.materip.feature_mypage.navigation.navigateToMyPageGraph
 import com.materip.feature_mypage.navigation.navigateToSettingGraph
 import com.materip.matetrip.navigation.Screen
@@ -83,7 +85,7 @@ class MainActivity : AppCompatActivity() {
                         if (currentRoute == Screen.Home.route) {
                             FabButton(
                                 onPostClick = { navController.navigate(Screen.Post.route) },
-                                modifier = Modifier.padding(end = 20.dp, bottom = 35.dp)
+                                modifier = Modifier.padding(end = 15.dp, bottom = 20.dp)
                             )
                         }
                     },
@@ -97,18 +99,19 @@ class MainActivity : AppCompatActivity() {
                             )
                         }
                     },
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(it)
-                    ) {
-                        SetUpNavGraph(
-                            navController = navController,
-                            startDestination = startDestination
-                        )
+                    content = { paddingValues ->
+                        Box(
+                            modifier = Modifier
+                                .padding(paddingValues)
+                                .background(Color.White)
+                        ) {
+                            SetUpNavGraph(
+                                navController = navController,
+                                startDestination = startDestination
+                            )
+                        }
                     }
-                }
+                )
             }
         }
     }
@@ -177,7 +180,10 @@ fun GetTopBar(
             BackButtonWithTitleTopAppBar(
                 screenTitle = "동행 모집하기",
                 onNavigateUp = { navController.navigateUp() },
-                onPostClick = { viewModel.createPost(viewModel.toBoardRequestDto()) }
+                onPostClick = {
+                    viewModel.handleIntent(PostBoardIntent.CreatePost(viewModel.toBoardRequestDto()))
+                    navController.navigate(Screen.Home.route)
+                }
             )
 
             LaunchedEffect(viewModel.createdBoardIds) {
@@ -194,6 +200,13 @@ fun GetTopBar(
         Screen.Form.route -> {
             BackButtonTopAppBar(
                 screenTitle = "동행 신청서 작성",
+                onNavigateUp = navController::navigateToBack
+            )
+        }
+
+        Screen.Notification.route -> {
+            BackButtonTopAppBar(
+                screenTitle = "알림",
                 onNavigateUp = navController::navigateToBack
             )
         }
