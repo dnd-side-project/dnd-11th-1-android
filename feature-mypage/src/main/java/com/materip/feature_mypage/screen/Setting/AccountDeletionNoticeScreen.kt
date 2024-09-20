@@ -1,5 +1,6 @@
 package com.materip.feature_mypage.screen.Setting
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,25 +10,38 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.materip.core_designsystem.component.MateTripButton
 import com.materip.core_designsystem.component.NormalTopBar
 import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_designsystem.theme.customFontFamily
+import com.materip.feature_mypage.view_models.Setting.DeleteAccountViewModel
 
 @Composable
-fun AccountDeletionNoticeRoute(){
-    AccountDeletionNoticeScreen()
+fun AccountDeletionNoticeRoute(
+    navDeleteAccount: () -> Unit,
+    navSetting: () -> Unit,
+){
+    AccountDeletionNoticeScreen(
+        navDeleteAccount = navDeleteAccount,
+        navSetting = navSetting
+    )
 }
 
 @Composable
-fun AccountDeletionNoticeScreen(){
+fun AccountDeletionNoticeScreen(
+    navDeleteAccount: () -> Unit,
+    navSetting: () -> Unit,
+){
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(color = Color.White)
             .padding(horizontal = 20.dp)
             .padding(bottom = 40.dp)
     ){
@@ -71,15 +85,19 @@ fun AccountDeletionNoticeScreen(){
         )
         Spacer(Modifier.weight(1f))
         MateTripButton(
-            modifier = Modifier.fillMaxWidth().height(54.dp),
-            onClick = { /** my page 화면으로 navigation */},
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(54.dp),
+            onClick = navSetting,
             enabled = true,
             buttonText = "돌아가기",
         )
         Spacer(Modifier.height(13.dp))
         MateTripButton(
-            modifier = Modifier.fillMaxWidth().height(54.dp),
-            onClick = { /** my page 화면으로 navigation */},
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(54.dp),
+            onClick = navDeleteAccount,
             enabled = true,
             buttonText = "탈퇴하기",
         )
@@ -89,5 +107,8 @@ fun AccountDeletionNoticeScreen(){
 @Composable
 @Preview
 private fun AccountDeletionNoticeUITest(){
-    AccountDeletionNoticeScreen()
+    AccountDeletionNoticeScreen(
+        navDeleteAccount = {},
+        navSetting = {}
+    )
 }

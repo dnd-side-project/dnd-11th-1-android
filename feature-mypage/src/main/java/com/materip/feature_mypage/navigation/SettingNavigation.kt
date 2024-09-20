@@ -79,7 +79,10 @@ fun NavGraphBuilder.settingGraph(
             )
         }
         composable(SettingRoute.AccountDeletionNoticeRoute.name){
-            AccountDeletionNoticeRoute()
+            AccountDeletionNoticeRoute(
+                navDeleteAccount = navDeleteAccount,
+                navSetting = navSetting
+            )
         }
         composable(SettingRoute.DeleteAccountDoneRoute.name){
             DeleteAccountDoneRoute(
