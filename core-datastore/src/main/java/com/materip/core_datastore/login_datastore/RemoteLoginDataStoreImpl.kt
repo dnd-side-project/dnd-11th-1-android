@@ -2,6 +2,7 @@ package com.materip.core_datastore.com.materip.core_datastore.login_datastore
 
 import com.materip.core_common.ResponseError
 import com.materip.core_common.ResultResponse
+import com.materip.core_model.request.DeleteAccountRequestDto
 import com.materip.core_model.request.LoginRequestDto
 import com.materip.core_model.response.LoginResponseDto
 import com.materip.core_network.service.login.LoginService
@@ -17,6 +18,16 @@ class RemoteLoginDataStoreImpl @Inject constructor(
     override suspend fun loginKakao(requestDto: LoginRequestDto): ResultResponse<LoginResponseDto> {
         val result = ResultResponse<LoginResponseDto>()
         loginService.loginKakao(requestDto).suspendOnError{
+            result.error = Json.decodeFromString<ResponseError>("${this.apiMessage}")
+        }.suspendOnSuccess{
+            result.data = this.data
+        }
+        return result
+    }
+
+    override suspend fun deleteAccount(requestDto: DeleteAccountRequestDto): ResultResponse<Any> {
+        val result = ResultResponse<Any>()
+        loginService.deleteAccount(requestDto).suspendOnError{
             result.error = Json.decodeFromString<ResponseError>("${this.apiMessage}")
         }.suspendOnSuccess{
             result.data = this.data
