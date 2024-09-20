@@ -25,7 +25,7 @@ class BoardDataStoreImpl @Inject constructor(
 ) : BoardDataStore {
     override suspend fun getBoard(boardRequest: PagingRequestDto): ResultResponse<BoardListResponse> {
         val result = ResultResponse<BoardListResponse>()
-        boardService.getBoard().suspendOnSuccess {
+        boardService.getBoard(boardRequest).suspendOnSuccess {
             result.data = this.data
         }.suspendOnError {
             result.error = Json.decodeFromString<ResponseError>("${this.apiMessage}")

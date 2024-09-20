@@ -3,6 +3,7 @@ package com.materip.core_repository.repository.login_repository
 import com.materip.core_common.ResultResponse
 import com.materip.core_datastore.com.materip.core_datastore.login_datastore.LocalLoginDataStore
 import com.materip.core_datastore.com.materip.core_datastore.login_datastore.RemoteLoginDataStore
+import com.materip.core_model.request.DeleteAccountRequestDto
 import com.materip.core_model.request.LoginRequestDto
 import com.materip.core_model.response.LoginResponseDto
 import kotlinx.coroutines.flow.Flow
@@ -50,5 +51,9 @@ class LoginRepositoryImpl @Inject constructor(
 
     override suspend fun loginKakao(requestDto: LoginRequestDto): ResultResponse<LoginResponseDto> {
         return remoteLoginDataStore.loginKakao(requestDto)
+    }
+
+    override suspend fun deleteAccount(requestDto: DeleteAccountRequestDto): ResultResponse<Any> {
+        return remoteLoginDataStore.deleteAccount(requestDto)
     }
 }

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,6 +38,9 @@ import com.materip.core_designsystem.component.ProgressIndicatorPreview
 import com.materip.core_designsystem.component.ReviewDescItem
 import com.materip.core_designsystem.component.ReviewItem
 import com.materip.core_designsystem.icon.Icons
+import com.materip.core_designsystem.theme.MateTripColors
+import com.materip.core_designsystem.theme.MateTripTypography
+import com.materip.core_designsystem.theme.customFontFamily
 import com.materip.core_model.response.DefaultListResponseDto
 import com.materip.core_model.response.EvaluationItem
 import com.materip.core_model.response.GetReviewEvaluationsResponseDto
@@ -138,6 +142,21 @@ private fun PreviewMainContent(
             navReviewList = navReviewList,
             navReviewDescription = navReviewDescription
         )
+        if (evaluations.isEmpty() && reviews.isEmpty()){
+            Column(
+                modifier = Modifier.fillMaxWidth().weight(1f),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ){
+                Text(
+                    text = "아직 받은 동행 평가와 후기가 없어요",
+                    fontSize = 16.sp,
+                    fontFamily = customFontFamily.notoSansKr,
+                    fontWeight = FontWeight(400),
+                    color = MateTripColors.Gray_04
+                )
+            }
+        }
     }
 }
 

@@ -8,6 +8,7 @@ import com.materip.core_model.accompany_board.profile.GetUserProfile
 import com.materip.core_model.accompany_board.request.CompanionRequest
 import com.materip.core_model.accompany_board.search.QueryRequestDto
 import com.materip.core_model.accompany_board.search.SearchListResponse
+import com.materip.core_model.request.PagingRequestDto
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -17,10 +18,9 @@ import retrofit2.http.Query
 
 interface BoardService {
     // 동행글 목록 조회
-    @GET("/api/v1/accompany/boards")
+    @POST("/api/v1/accompany/boards")
     suspend fun getBoard(
-        @Query("cursor") cursor: String? = null,
-        @Query("size") size: Int = 8
+        @Body requestDto: PagingRequestDto
     ): ApiResponse<BoardListResponse>
 
     // 동행글 생성

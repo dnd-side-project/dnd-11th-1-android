@@ -20,11 +20,11 @@ import com.materip.core_model.navigation.MyPageRoute
 
 fun NavController.navigateToMyPageGraph() = navigate(MyPageRoute.MyPageGraph.name){
     launchSingleTop = true
-    popUpTo(graph.id){inclusive = true}
+    popUpTo("home"){inclusive = false}
 }
 fun NavController.navigateToMyPage() = navigate(MyPageRoute.MyPageRoute.name){
     launchSingleTop = true
-    popUpTo(graph.id){inclusive = true}
+    popUpTo("home"){inclusive = false}
 }
 fun NavController.navigateToEditProfile() = navigate(MyPageRoute.EditProfileRoute.name)
 fun NavController.navigateToProfileDescription() = navigate(MyPageRoute.ProfileDescriptionRoute.name)

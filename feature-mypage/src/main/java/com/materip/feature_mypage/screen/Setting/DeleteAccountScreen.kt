@@ -37,23 +37,27 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.materip.core_designsystem.component.MateTripButton
 import com.materip.core_designsystem.component.NormalTopBar
 import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_designsystem.theme.customFontFamily
 import com.materip.feature_mypage.R
+import com.materip.feature_mypage.view_models.Setting.DeleteAccountViewModel
 
 @Composable
 fun DeleteAccountRoute(
     navHome: () -> Unit,
     navAccountDeletionNotice: ()-> Unit,
     navBack: () -> Unit,
+    viewModel: DeleteAccountViewModel = hiltViewModel()
 ){
     DeleteAccountScreen(
         navHome = navHome,
         navAccountDeletionNotice = navAccountDeletionNotice,
         navBack = navBack,
+        onDeleteAccountClick = {viewModel.deleteAccount(it)}
     )
 }
 
@@ -62,6 +66,7 @@ fun DeleteAccountScreen(
     navHome: () -> Unit,
     navAccountDeletionNotice: () -> Unit,
     navBack: () -> Unit,
+    onDeleteAccountClick: (String) -> Unit,
 ){
     var selectedOptionIdx by remember{mutableStateOf<Int?>(null)}
     var optionDetail by remember{mutableStateOf("")}
@@ -245,7 +250,9 @@ fun DeleteAccountScreen(
                 Spacer(Modifier.height(10.dp))
                 if(selectedOptionIdx == 5){
                     OutlinedTextField(
-                        modifier = Modifier.fillMaxWidth().weight(1f),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
                         value = optionDetail,
                         onValueChange = {if(optionDetail.length <= 112){optionDetail = it}},
                         colors = OutlinedTextFieldDefaults.colors(
@@ -274,7 +281,8 @@ fun DeleteAccountScreen(
                 }
                 Spacer(Modifier.height(48.dp))
                 MateTripButton(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .height(54.dp),
                     onClick = navHome,
                     enabled = true,
@@ -282,9 +290,20 @@ fun DeleteAccountScreen(
                 )
                 Spacer(Modifier.height(13.dp))
                 MateTripButton(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .height(54.dp),
-                    onClick = navAccountDeletionNotice,
+                    onClick = { 
+                        val reason = when(selectedOptionIdx){
+                            1 -> "원하는 메이트가 없어요"
+                            2 -> "비매너 메이트를 만났어요"
+                            3 -> "원하는 기능이 없거나 이용이 불편해요"
+                            4 -> "앱을 잘 사용하지 않아요"
+                            else -> "기타"
+                        }
+                        onDeleteAccountClick(reason)
+                        navAccountDeletionNotice()
+                    },
                     enabled = isGoneEnabled.value,
                     buttonText = "떠날래요"
                 )
@@ -299,6 +318,7 @@ private fun DeleteAccountUITest(){
     DeleteAccountScreen(
         navHome = {},
         navAccountDeletionNotice = {},
-        navBack = {}
+        navBack = {},
+        onDeleteAccountClick = {}
     )
 }

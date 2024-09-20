@@ -17,11 +17,11 @@ import com.materip.core_model.navigation.SettingRoute
 
 fun NavController.navigateToSettingGraph() = navigate(SettingRoute.SettingGraph.name){
     launchSingleTop = true
-    popUpTo(graph.id){inclusive = true}
+    popUpTo("home"){inclusive = false}
 }
 fun NavController.navigateToSetting() = navigate(SettingRoute.SettingRoute.name){
     launchSingleTop = true
-    popUpTo(graph.id){inclusive = true}
+    popUpTo("home"){inclusive = false}
 }
 fun NavController.navigateToAccountInfo() = navigate(SettingRoute.AccountInfoRoute.name)
 fun NavController.navigateToAlarmSetting() = navigate(SettingRoute.AlarmSettingRoute.name)
@@ -79,7 +79,10 @@ fun NavGraphBuilder.settingGraph(
             )
         }
         composable(SettingRoute.AccountDeletionNoticeRoute.name){
-            AccountDeletionNoticeRoute()
+            AccountDeletionNoticeRoute(
+                navDeleteAccount = navDeleteAccount,
+                navSetting = navSetting
+            )
         }
         composable(SettingRoute.DeleteAccountDoneRoute.name){
             DeleteAccountDoneRoute(
