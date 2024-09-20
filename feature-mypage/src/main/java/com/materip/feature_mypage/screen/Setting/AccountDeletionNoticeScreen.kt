@@ -15,21 +15,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.materip.core_designsystem.component.MateTripButton
 import com.materip.core_designsystem.component.NormalTopBar
 import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_designsystem.theme.customFontFamily
-import com.materip.feature_mypage.view_models.Setting.DeleteAccountViewModel
 
 @Composable
 fun AccountDeletionNoticeRoute(
     navDeleteAccount: () -> Unit,
     navSetting: () -> Unit,
+    navBack: () -> Unit,
 ){
     AccountDeletionNoticeScreen(
         navDeleteAccount = navDeleteAccount,
-        navSetting = navSetting
+        navSetting = navSetting,
+        navBack = navBack
     )
 }
 
@@ -37,6 +37,7 @@ fun AccountDeletionNoticeRoute(
 fun AccountDeletionNoticeScreen(
     navDeleteAccount: () -> Unit,
     navSetting: () -> Unit,
+    navBack: () -> Unit
 ){
     Column(
         modifier = Modifier
@@ -47,7 +48,7 @@ fun AccountDeletionNoticeScreen(
     ){
         NormalTopBar(
             title = "탈퇴하기",
-            onBackClick = { /** 뒤로가기 navigation */ },
+            onBackClick = navBack,
             onClick = {},
             titleFontWeight = FontWeight(700)
         )
@@ -109,6 +110,7 @@ fun AccountDeletionNoticeScreen(
 private fun AccountDeletionNoticeUITest(){
     AccountDeletionNoticeScreen(
         navDeleteAccount = {},
-        navSetting = {}
+        navSetting = {},
+        navBack = {}
     )
 }
