@@ -21,7 +21,6 @@ import com.materip.core_designsystem.theme.MateTripColors.Blue_02
 import com.materip.core_designsystem.theme.MateTripColors.Gray_03
 import com.materip.core_designsystem.theme.MateTripColors.Primary
 
-// TODO: 복수선택 로직 함수로 만들어서 적용하기
 @Composable
 fun CustomRadioButtonDialog(
     options: List<String>,

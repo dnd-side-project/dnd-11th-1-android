@@ -6,20 +6,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.materip.feature_home3.state.ProfileUiState
 import com.materip.feature_home3.ui.component.TabRowComponent
 import com.materip.feature_home3.ui.profile_content.ProfileContent
 import com.materip.feature_home3.ui.profile_content.QnaContent
-import com.materip.feature_home3.ui.profile_content.ReviewContent
-//import com.materip.feature_home3.ui.profile_content.ReviewContent
 import com.materip.feature_home3.viewModel.ProfileViewModel
 
 
 @Composable
 fun ProfileScreen(
     boardId: Int,
+    navBack: () -> Unit,
+    navReviewDescription: (Int) -> Unit,
     viewModel: ProfileViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -27,7 +26,7 @@ fun ProfileScreen(
     val tabs = listOf("프로필", "동행후기", "백문백답")
     val contentScreens = listOf<@Composable () -> Unit>(
         { ProfileContent() },
-        { ReviewContent() },
+        { ReviewScreen(navBack = navBack, navReviewDescription = navReviewDescription) },
         { QnaContent() }
     )
 
@@ -55,21 +54,4 @@ fun ProfileScreen(
             // Handle initial state if needed
         }
     }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun ProfileScreenPreview() {
-    val tabs = listOf("프로필", "동행후기", "백문백답")
-    val contentScreens = listOf<@Composable () -> Unit>(
-        { ProfileContent() },
-        { ReviewContent() },
-        { QnaContent() }
-    )
-
-    TabRowComponent(
-        tabs = tabs,
-        contentScreens = contentScreens
-    )
 }

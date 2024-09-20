@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -126,12 +128,13 @@ fun DeleteButton(
 fun ToggleButton(
     buttonText: String,
     isSelected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Button(
         onClick = onClick,
         shape = RoundedCornerShape(7.dp),
-        modifier = Modifier.size(width = 180.dp, height = 40.dp),
+        modifier = modifier.height(40.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = if (isSelected) Primary else InactiveColor,
             contentColor = if (isSelected) Color.White else Gray_10
@@ -204,7 +207,7 @@ fun CustomButton(
     btnColor: Color,
     onClick: () -> Unit,
     isEnabled: Boolean = true,
-){
+) {
     Button(
         modifier = modifier,
         colors = ButtonDefaults.buttonColors(
@@ -217,8 +220,8 @@ fun CustomButton(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
-        ){
-            if(trailingIcon != null){
+        ) {
+            if (trailingIcon != null) {
                 Image(
                     modifier = Modifier.size(18.dp),
                     painter = painterResource(trailingIcon),
@@ -242,14 +245,14 @@ fun OnAndOffButton(
     modifier: Modifier,
     isClicked: Boolean,
     onClick: () -> Unit,
-){
+) {
     IconButton(
         modifier = modifier,
         onClick = onClick
     ) {
         Image(
             modifier = Modifier.fillMaxSize(),
-            painter = painterResource(if(isClicked) Icons.active_toggle else Icons.inactive_toggle),
+            painter = painterResource(if (isClicked) Icons.active_toggle else Icons.inactive_toggle),
             contentDescription = "Toggle"
         )
     }
@@ -302,5 +305,16 @@ fun MateTripButtonPreview() {
             buttonText = "동행 후기 작성"
         )
         Spacer(modifier = Modifier.size(16.dp))
+        ToggleButton(
+            buttonText = "동일 성별",
+            isSelected = true,
+            onClick = {}
+        )
+        Spacer(modifier = Modifier.size(16.dp))
+        ToggleButton(
+            buttonText = "상관없음",
+            isSelected = false,
+            onClick = {}
+        )
     }
 }

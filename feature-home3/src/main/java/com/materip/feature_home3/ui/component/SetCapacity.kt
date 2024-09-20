@@ -57,11 +57,12 @@ fun SetCapacity(
                 onClick = {
                     if (capacity > 2) onCapacityChange(capacity - 1)
                 },
+                enabled = capacity > 2,
                 modifier = Modifier
                     .width(24.dp)
                     .height(24.dp)
                     .background(
-                        color = Color(0xFFD9D9D9),
+                        color = if (capacity <= 2) Color(0xFFD9D9D9) else Color.Black,
                         shape = RoundedCornerShape(size = 12.dp)
                     )
                     .padding(3.dp)
@@ -76,11 +77,12 @@ fun SetCapacity(
                 onClick = {
                     if (capacity < 6) onCapacityChange(capacity + 1)
                 },
+                enabled = capacity < 6,
                 modifier = Modifier
                     .width(24.dp)
                     .height(24.dp)
                     .background(
-                        color = Color.Black,
+                        color = if (capacity >= 6) Color(0xFFD9D9D9) else Color.Black,
                         shape = RoundedCornerShape(size = 12.dp)
                     )
                     .padding(3.dp)

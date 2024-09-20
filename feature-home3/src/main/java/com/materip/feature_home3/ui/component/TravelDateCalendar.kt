@@ -1,5 +1,6 @@
 package com.materip.feature_home3.ui.component
 
+import android.widget.Toast
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,6 +18,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.outlined.Refresh
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -32,6 +36,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -71,12 +76,28 @@ fun TravelDateCalendar(
         verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top),
         horizontalAlignment = Alignment.Start,
     ) {
-        Text(
-            text = "여행 일정",
-            color = Gray_11,
-            modifier = Modifier.size(320.dp, 20.dp),
-            style = MateTripTypographySet.title04
-        )
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = "여행 일정",
+                color = Gray_11,
+                modifier = Modifier.size(320.dp, 20.dp),
+                style = MateTripTypographySet.title04
+            )
+            IconButton(
+                onClick = {
+                    startDate = null
+                    endDate = null
+                    onDateRangeSelected(startDate, endDate)
+                },
+                modifier = Modifier.size(21.dp)
+            ) {
+                Icon(Icons.Outlined.Refresh, contentDescription = "Reset date")
+            }
+        }
         Box(
             modifier = Modifier
                 .size(370.dp, 338.dp)
@@ -103,7 +124,14 @@ fun TravelDateCalendar(
                                     startDate = date
                                     endDate = null
                                 }
+
                                 date > startDate -> endDate = date
+
+                                endDate != null && date < startDate -> {
+                                    endDate = startDate
+                                    startDate = date
+                                }
+
                                 else -> {
                                     endDate = startDate
                                     startDate = date
@@ -133,7 +161,12 @@ fun CalendarHeader(
             Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = "Previous month")
         }
         Text(
-            text = "${currentMonth.month.getDisplayName(TextStyle.FULL, Locale.getDefault())} ${currentMonth.year}",
+            text = "${
+                currentMonth.month.getDisplayName(
+                    TextStyle.FULL,
+                    Locale.getDefault()
+                )
+            } ${currentMonth.year}",
             style = MaterialTheme.typography.titleMedium
         )
         IconButton(onClick = onNextClick) {
@@ -204,11 +237,13 @@ fun CalendarDays(
                                 topLeft = Offset(size.width / 2, 0f),
                                 size = Size(size.width / 2, size.height)
                             )
+
                             isRangeEnd -> drawRect(
                                 color = MateTripColors.Blue_02,
                                 topLeft = Offset(0f, 0f),
                                 size = Size(size.width / 2, size.height)
                             )
+
                             isInMiddleRange -> drawRect(
                                 color = MateTripColors.Blue_02,
                                 topLeft = Offset(0f, 0f),
