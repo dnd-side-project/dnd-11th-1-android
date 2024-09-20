@@ -11,6 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -18,7 +20,6 @@ import androidx.compose.ui.unit.sp
 import com.materip.core_designsystem.component.MateTripButton
 import com.materip.core_designsystem.component.NormalTopBar
 import com.materip.core_designsystem.theme.MateTripColors
-import com.materip.core_designsystem.theme.customFontFamily
 
 @Composable
 fun AccountDeletionNoticeRoute(
@@ -56,7 +57,7 @@ fun AccountDeletionNoticeScreen(
         Text(
             text = "탈퇴하기 전에 꼭 확인하세요!",
             fontSize = 18.sp,
-            fontFamily = customFontFamily.notoSansKr,
+            fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
             fontWeight = FontWeight(700),
             color = MateTripColors.Gray_11
         )
@@ -64,7 +65,7 @@ fun AccountDeletionNoticeScreen(
         Text(
             text = " · 탈퇴한 휴대폰 번호로는 일주일 간 재인증이 불가능합니다.",
             fontSize = 14.sp,
-            fontFamily = customFontFamily.notoSansKr,
+            fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
             fontWeight = FontWeight(400),
             color = MateTripColors.Gray_07
         )
@@ -72,7 +73,7 @@ fun AccountDeletionNoticeScreen(
         Text(
             text = " · 개인정보, 서비스 이용 기록 등은 복원이 불가능하며, 일정 기간 후 영구 삭제됩니다.",
             fontSize = 14.sp,
-            fontFamily = customFontFamily.notoSansKr,
+            fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
             fontWeight = FontWeight(400),
             color = MateTripColors.Gray_07
         )
@@ -80,7 +81,7 @@ fun AccountDeletionNoticeScreen(
         Text(
             text = " · 달성한 레벨, 동행 기록 등이 영구 소멸됩니다.",
             fontSize = 14.sp,
-            fontFamily = customFontFamily.notoSansKr,
+            fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
             fontWeight = FontWeight(400),
             color = MateTripColors.Gray_07
         )
