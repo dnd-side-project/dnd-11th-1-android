@@ -58,7 +58,7 @@ fun AccompanyTagInput(
                 value = tagInput,
                 onValueChange = onTagInputChange,
                 modifier = Modifier
-                    .width(330.dp)
+                    .weight(1f)
                     .height(20.dp),
                 textStyle = MateTripTypographySet.body04,
                 decorationBox = { innerTextField ->

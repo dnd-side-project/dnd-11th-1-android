@@ -24,25 +24,26 @@ import com.materip.core_designsystem.icon.Icons.fold_icon
 import com.materip.core_designsystem.theme.MateTripColors.Gray_06
 import com.materip.core_designsystem.theme.MateTripColors.Gray_11
 import com.materip.core_designsystem.theme.MateTripTypographySet
+import com.materip.core_model.ui_model.Category
 import com.materip.core_model.ui_model.Region
 
 @Composable
 fun AccompanyRegionButton(
-    selectedRegion: Region,
+    selectedRegion: Region?,
     onRegionSelected: (Region) -> Unit
 ) {
     var showDialog by remember { mutableStateOf(false) }
     val regionDisplayMap = mapOf(
-        Region.SEOUL to "서울",
-        Region.GYEONGGI_INCHEON to "경기·인천",
-        Region.CHUNGCHEONG_DAEJON_SEJONG to "충청·대전·세종",
-        Region.GANGWON to "강원",
-        Region.JEOLLA_GWANGJU to "전라·광주",
-        Region.GYEONGSANG_DAEGU_ULSAN to "경상·대구",
-        Region.BUSAN to "부산",
-        Region.JEJU to "제주"
+        "서울" to Region.SEOUL,
+        "경기·인천" to Region.GYEONGGI_INCHEON,
+        "충청·대전·세종" to Region.CHUNGCHEONG_DAEJON_SEJONG,
+        "강원" to Region.GANGWON,
+        "전라·광주" to Region.JEOLLA_GWANGJU,
+        "경상·대구" to Region.GYEONGSANG_DAEGU_ULSAN,
+        "부산" to Region.BUSAN,
+        "제주" to Region.JEJU,
     )
-    val options = listOf("서울", "경기·인천", "충청·대전·세종", "강원", "전라·광주", "경상·대구", "부산", "제주")
+    val displayRegionMap = regionDisplayMap.entries.associate { (k, v) -> v to k }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top),
@@ -59,7 +60,7 @@ fun AccompanyRegionButton(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             BasicTextField(
-                value = regionDisplayMap[selectedRegion] ?: "",
+                value = selectedRegion?.let { displayRegionMap[it] } ?: "",
                 onValueChange = {},
                 readOnly = true,
                 modifier = Modifier
@@ -70,7 +71,7 @@ fun AccompanyRegionButton(
                     Box(
                         contentAlignment = Alignment.CenterStart
                     ) {
-                        if (selectedRegion.name.isEmpty()) {
+                        if (selectedRegion == null) {
                             Text(
                                 text = "여행 지역을 선택해주세요.",
                                 style = MateTripTypographySet.body04,
@@ -93,7 +94,7 @@ fun AccompanyRegionButton(
     }
     if (showDialog) {
         RegionRadioButtonDialog(
-            options = regionDisplayMap.values.toList(),
+            options = displayRegionMap.values.toList(),
             selectedOption = selectedRegion,
             onOptionsSelected = {
                 onRegionSelected(it)

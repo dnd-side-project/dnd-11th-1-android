@@ -50,6 +50,7 @@ dependencies {
     implementation(project(":core-repository"))
     implementation(project(":core-designsystem"))
     implementation(project(":core-common"))
+    implementation(project(":feature-mypage"))
 
     //coroutine
     implementation(libs.coroutine)

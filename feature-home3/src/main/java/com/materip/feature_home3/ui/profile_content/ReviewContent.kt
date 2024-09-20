@@ -1,55 +1,102 @@
 package com.materip.feature_home3.ui.profile_content
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.materip.core_common.toDisplayAgeString
+import com.materip.core_common.toDisplayDateString
+import com.materip.core_common.toDisplayString
+import com.materip.core_designsystem.component.NormalTopBar
+import com.materip.core_designsystem.component.ReviewDescItem
 import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.theme.MateTripColors.Gray_04
 import com.materip.core_designsystem.theme.MateTripTypographySet
+import com.materip.core_model.response.ReviewItem
 
-//import com.materip.feature_home3.viewModel.ReviewViewModel
 
 @Composable
 fun ReviewContent(
-//    viewModel: ReviewViewModel = hiltViewModel()
+    reviews: List<ReviewItem>,
+    totalCount: Int,
+    navBack: () -> Unit,
+    navReviewDescription: (Int) -> Unit
 ) {
-    ReviewContentInitial()
-//    val uiState by viewModel.uiState.collectAsState()
-
-//    when (uiState) {
-//        is ReviewUiState.Loading -> {
-//            CircularProgressIndicator()
-//        }
-//
-//        is ReviewUiState.Success -> {
-//            // 동행 후기 api 완료되면 그때 다른 UI로 변경
-//            ReviewContentInitial()
-//        }
-//
-//        is ReviewUiState.Error -> {
-//            Text("오류: ${(uiState as ReviewUiState.Error).message}")
-//        }
-//
-//        ReviewUiState.Initial -> {
-//            ReviewContentInitial()
-//        }
-//    }
+    val totalCountText = buildAnnotatedString {
+        withStyle(style = SpanStyle(fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)))) {
+            append("총 ")
+        }
+        withStyle(style = SpanStyle(fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.roboto_medium)))) {
+            append("${totalCount}")
+        }
+        withStyle(style = SpanStyle(fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)))) {
+            append("개")
+        }
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.White)
+            .padding(horizontal = 20.dp),
+    ) {
+        NormalTopBar(
+            title = "받은 동행 후기",
+            titleFontWeight = FontWeight(700),
+            onBackClick = navBack,
+            onClick = {/* 미사용 */ }
+        )
+        Spacer(Modifier.height(10.dp))
+        Text(
+            text = totalCountText,
+            fontSize = 16.sp,
+            fontWeight = FontWeight(700),
+        )
+        Spacer(Modifier.height(14.dp))
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            items(reviews) { review ->
+                ReviewDescItem(
+                    destination = review.region.toDisplayString(),
+                    period = review.getDuration(),
+                    startDate = review.startDate.toDisplayDateString(),
+                    endDate = review.endDate.toDisplayDateString(),
+                    profileUrl = review.profileImageUrl,
+                    nickname = review.nickname,
+                    age = review.age.toDisplayAgeString(),
+                    gender = review.gender.toDisplayString(),
+                    content = review.detailContent,
+                    onClick = { navReviewDescription(review.reviewId) }
+                )
+            }
+        }
+    }
 }
 
 
-// ReviewContent의 상태가 Initial일 때의 UI (후기가 없을 때와 동일)
 @Composable
 fun ReviewContentInitial() {
     Column(

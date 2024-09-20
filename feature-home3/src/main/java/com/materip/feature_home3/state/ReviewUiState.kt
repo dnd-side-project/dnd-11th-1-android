@@ -1,10 +1,13 @@
 package com.materip.feature_home3.state
 
+import com.materip.core_model.response.DefaultListResponseDto
+import com.materip.core_model.response.ReviewItem
 
-// TODO: 동행후기 ReviewUiState
 sealed class ReviewUiState {
     data object Initial : ReviewUiState()
     data object Loading : ReviewUiState()
-    data object Success : ReviewUiState()
+    data class Success(
+        val reviews: DefaultListResponseDto<ReviewItem>
+    ) : ReviewUiState()
     data class Error(val message: String) : ReviewUiState()
 }
