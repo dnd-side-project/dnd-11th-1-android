@@ -17,6 +17,8 @@ import com.materip.feature_mypage.screen.MyPage.ReviewListRoute
 import com.materip.feature_mypage.screen.MyPage.SendApplicationRoute
 import com.materip.feature_mypage.screen.MyPage.WriteReviewRoute
 import com.materip.core_model.navigation.MyPageRoute
+import com.materip.feature_mypage.screen.MyPage.ReceivedApplicationRoute
+import com.materip.feature_mypage.screen.MyPage.ReceivedApplicationScreen
 
 fun NavController.navigateToMyPageGraph() = navigate(MyPageRoute.MyPageGraph.name){
     launchSingleTop = true
@@ -35,6 +37,7 @@ fun NavController.navigateToReviewList() = navigate(MyPageRoute.ReviewListRoute.
 fun NavController.navigateToReviewDescription(reviewId: Int) = navigate("${MyPageRoute.ReviewDescriptionRoute.name}/${reviewId}")
 fun NavController.navigateToSendApplication(applicationId: Int) = navigate("${MyPageRoute.SendApplicationRoute.name}/${applicationId}")
 fun NavController.navigateToWriteReview(boardId: Int) = navigate("${MyPageRoute.WriteReviewRoute.name}/${boardId}")
+fun NavController.navigateToReceivedApplication(applicationId: Int) = navigate("${MyPageRoute.ReceivedApplicationRoute.name}/${applicationId}")
 
 fun NavGraphBuilder.myPageGraph(
     navBack: () -> Unit,
@@ -47,7 +50,7 @@ fun NavGraphBuilder.myPageGraph(
     navReviewDescription: (Int) -> Unit,
     navReviewList: () -> Unit,
     navReviewWrite: (Int) -> Unit,
-    navReceivedApplication: (Int) -> Unit,
+    navReceivedApplication: (Int) -> Unit
 ){
     navigation(
         startDestination = MyPageRoute.MyPageRoute.name,
@@ -108,8 +111,7 @@ fun NavGraphBuilder.myPageGraph(
             val id = it.arguments?.getInt("applicationId")
             SendApplicationRoute(
                 id = id,
-                navBack = navBack,
-                navPostDescription = {/** 게시글 상세로 navigation */}
+                navBack = navBack
             )
         }
         composable(
@@ -119,6 +121,17 @@ fun NavGraphBuilder.myPageGraph(
             val id = it.arguments?.getInt("boardId")
             WriteReviewRoute(
                 id = id,
+                navBack = navBack
+            )
+        }
+        composable(
+            route = "${MyPageRoute.ReceivedApplicationRoute.name}/{applicationId}",
+            arguments = listOf(navArgument("applicationId"){type = NavType.IntType})
+        ){
+            val id = it.arguments?.getInt("applicationId")
+            ReceivedApplicationRoute(
+                id = id,
+                navProfileDetail = navProfileDescription,
                 navBack = navBack
             )
         }

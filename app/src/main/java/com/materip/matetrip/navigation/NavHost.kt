@@ -27,6 +27,7 @@ import com.materip.feature_mypage.navigation.navigateToLogout
 import com.materip.feature_mypage.navigation.navigateToPreview
 import com.materip.feature_mypage.navigation.navigateToProfileDescription
 import com.materip.feature_mypage.navigation.navigateToQuiz100
+import com.materip.feature_mypage.navigation.navigateToReceivedApplication
 import com.materip.feature_mypage.navigation.navigateToReviewDescription
 import com.materip.feature_mypage.navigation.navigateToReviewEvaluation
 import com.materip.feature_mypage.navigation.navigateToReviewList
@@ -103,7 +104,7 @@ fun SetUpNavGraph(
             navReviewList = navController::navigateToReviewList,
             navReviewDescription = navController::navigateToReviewDescription,
             navReviewWrite = navController::navigateToWriteReview,
-            navReceivedApplication = {/** 받은 신청서 화면으로 이동 */}
+            navReceivedApplication = navController::navigateToReceivedApplication
         )
 
         // 홈
