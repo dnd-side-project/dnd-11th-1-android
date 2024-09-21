@@ -3,7 +3,6 @@ package com.materip.feature_mypage.screen.MyPage
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,27 +10,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -44,17 +36,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_common.ErrorState
 import com.materip.core_common.toDisplayString
-import com.materip.core_designsystem.component.CircleImageView
 import com.materip.core_designsystem.component.ConfirmationDialog
 import com.materip.core_designsystem.component.CustomButton
-import com.materip.core_designsystem.component.NormalTag
 import com.materip.core_designsystem.component.NormalTopBar
-import com.materip.core_designsystem.component.ProgressIndicatorPreview
 import com.materip.core_designsystem.component.TravelPostItem
-import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_model.request.AccompanyApplicationResponseDto
-import com.materip.core_model.ui_model.SendApplicationClass
 import com.materip.feature_mypage.view_models.MyPage.SendApplicationDescUiState
 import com.materip.feature_mypage.view_models.MyPage.SendApplicationDescViewModel
 import com.materip.matetrip.toast.ErrorView
@@ -63,7 +50,6 @@ import com.materip.matetrip.toast.ErrorView
 fun SendApplicationRoute(
     id: Int?,
     navBack: () -> Unit,
-    navPostDescription: () -> Unit,
     viewModel: SendApplicationDescViewModel = hiltViewModel()
 ){
     viewModel.setId(id)
@@ -74,7 +60,6 @@ fun SendApplicationRoute(
         uiState = uiState.value,
         errState = errState.value,
         onClickCancel = { viewModel.cancelApplication() },
-        navPostDescription = navPostDescription,
         navBack = navBack
     )
 }
@@ -84,7 +69,6 @@ fun SendApplicationScreen(
     uiState: SendApplicationDescUiState,
     errState: ErrorState,
     onClickCancel: () -> Unit,
-    navPostDescription: () -> Unit,
     navBack: () -> Unit,
 ){
     when(uiState){
@@ -101,7 +85,7 @@ fun SendApplicationScreen(
             SendApplicationContent(
                 data = uiState.data,
                 onClickCancel = onClickCancel,
-                navBack = navBack
+                navBack = navBack,
             )
         }
     }
@@ -111,7 +95,7 @@ fun SendApplicationScreen(
 private fun SendApplicationContent(
     data: AccompanyApplicationResponseDto,
     onClickCancel: () -> Unit,
-    navBack: () -> Unit
+    navBack: () -> Unit,
 ){
     val scrollState = rememberScrollState()
     val userInfo = data.profileInfo
@@ -249,103 +233,12 @@ private fun SendApplicationContent(
 }
 
 @Composable
-private fun ProfileView(
-    nickname: String,
-    age: String,
-    gender: String,
-    imageUrl: String,
-    tags: List<String>,
-    navProfileDescription: () -> Unit
-){
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .border(
-                width = 1.dp,
-                color = MateTripColors.Blue_03,
-                shape = RoundedCornerShape(size = 10.dp)
-            )
-            .padding(12.dp)
-    ){
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ){
-            CircleImageView(
-                size = 42.dp,
-                imageUrl = imageUrl
-            )
-            Spacer(Modifier.width(10.dp))
-            Column{
-                Text(
-                    text = nickname,
-                    fontSize = 14.sp,
-                    fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
-                    fontWeight = FontWeight(500),
-                    color = MateTripColors.Gray_11
-                )
-                Text(
-                    text = "${age} · ${gender}",
-                    fontSize = 12.sp,
-                    fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
-                    fontWeight = FontWeight(400),
-                    color = MateTripColors.Gray_06
-                )
-            }
-            Spacer(Modifier.weight(1f))
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Text(
-                    text = "프로필 보기",
-                    fontSize = 12.sp,
-                    fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
-                    fontWeight = FontWeight(400),
-                    color = MateTripColors.Gray_11
-                )
-                Spacer(Modifier.width(4.dp))
-                IconButton(
-                    modifier = Modifier.size(12.dp),
-                    onClick = navProfileDescription
-                ) {
-                    Icon(
-                        modifier = Modifier.fillMaxSize(),
-                        painter = painterResource(Icons.navigate_next_icon),
-                        contentDescription = "Navigation Btn"
-                    )
-                }
-            }
-        }
-        Spacer(Modifier.height(14.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(7.dp)
-        ){
-            tags.forEach{tag ->
-                NormalTag(
-                    modifier = Modifier,
-                    tagName = tag,
-                    shape = RoundedCornerShape(size = 5.dp),
-                    textStyle = TextStyle(
-                        fontSize = 12.sp,
-                        fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
-                        fontWeight = FontWeight(500),
-                    ),
-                    color = MateTripColors.Gray_02
-                )
-            }
-        }
-    }
-}
-
-@Composable
 @Preview
 private fun SendApplicationUITest(){
     SendApplicationScreen(
         uiState = SendApplicationDescUiState.Loading,
         errState = ErrorState.Loading,
         onClickCancel = {},
-        navPostDescription = {},
         navBack = {}
     )
 }
