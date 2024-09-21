@@ -26,7 +26,7 @@ import com.materip.core_designsystem.R
 
 @Composable
 fun LogoutRoute(
-    navLogin: () -> Unit /** 나중에 splash 화면으로 이동 */
+    navLogin: () -> Unit
 ){
     LogoutScreen(navLogin = navLogin)
 }

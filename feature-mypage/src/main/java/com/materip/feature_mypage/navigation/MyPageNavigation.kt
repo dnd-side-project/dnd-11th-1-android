@@ -61,7 +61,8 @@ fun NavGraphBuilder.myPageGraph(
                 navPreview = navPreview,
                 navSendApplication = navSendApplication,
                 navReviewWrite = navReviewWrite,
-                navReceivedApplication = navReceivedApplication
+                navReceivedApplication = navReceivedApplication,
+                navBack = navBack
             )
         }
         composable(route = MyPageRoute.EditProfileRoute.name){

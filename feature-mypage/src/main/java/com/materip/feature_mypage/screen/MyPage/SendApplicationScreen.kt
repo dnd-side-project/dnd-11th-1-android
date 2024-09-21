@@ -57,6 +57,7 @@ import com.materip.core_model.request.AccompanyApplicationResponseDto
 import com.materip.core_model.ui_model.SendApplicationClass
 import com.materip.feature_mypage.view_models.MyPage.SendApplicationDescUiState
 import com.materip.feature_mypage.view_models.MyPage.SendApplicationDescViewModel
+import com.materip.matetrip.toast.ErrorView
 
 @Composable
 fun SendApplicationRoute(
@@ -91,10 +92,9 @@ fun SendApplicationScreen(
             CircularProgressIndicator()
         }
         SendApplicationDescUiState.Error -> {
-            Text(
-                text = "Error",
-                fontSize = 100.sp,
-                color = Color.Red
+            ErrorView(
+                errState = errState,
+                navBack = navBack
             )
         }
         is SendApplicationDescUiState.Success -> {

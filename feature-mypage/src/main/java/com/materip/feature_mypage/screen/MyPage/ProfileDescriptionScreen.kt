@@ -52,6 +52,7 @@ import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.feature_mypage.view_models.MyPage.ProfileDescriptionUiState
 import com.materip.feature_mypage.view_models.MyPage.ProfileDescriptionViewModel
+import com.materip.matetrip.toast.ErrorView
 
 @Composable
 fun ProfileDescriptionRoute(
@@ -95,10 +96,9 @@ fun ProfileDescriptionScreen(
             )
         }
         ProfileDescriptionUiState.Error -> {
-            Text(
-                text = "ERROR",
-                fontSize = 100.sp,
-                color = Color.Red
+            ErrorView(
+                errState = errState,
+                navBack = navBack
             )
         }
     }
