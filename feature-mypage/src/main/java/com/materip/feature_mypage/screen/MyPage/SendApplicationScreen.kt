@@ -50,6 +50,7 @@ import com.materip.matetrip.toast.ErrorView
 fun SendApplicationRoute(
     id: Int?,
     navBack: () -> Unit,
+    navPostBoard: (Int) -> Unit,
     viewModel: SendApplicationDescViewModel = hiltViewModel()
 ){
     viewModel.setId(id)
@@ -60,7 +61,8 @@ fun SendApplicationRoute(
         uiState = uiState.value,
         errState = errState.value,
         onClickCancel = { viewModel.cancelApplication() },
-        navBack = navBack
+        navBack = navBack,
+        navPostBoard = navPostBoard
     )
 }
 
@@ -70,6 +72,7 @@ fun SendApplicationScreen(
     errState: ErrorState,
     onClickCancel: () -> Unit,
     navBack: () -> Unit,
+    navPostBoard: (Int) -> Unit
 ){
     when(uiState){
         SendApplicationDescUiState.Loading -> {
@@ -86,6 +89,7 @@ fun SendApplicationScreen(
                 data = uiState.data,
                 onClickCancel = onClickCancel,
                 navBack = navBack,
+                navPostBoard = navPostBoard
             )
         }
     }
@@ -96,9 +100,9 @@ private fun SendApplicationContent(
     data: AccompanyApplicationResponseDto,
     onClickCancel: () -> Unit,
     navBack: () -> Unit,
+    navPostBoard: (Int) -> Unit
 ){
     val scrollState = rememberScrollState()
-    val userInfo = data.profileInfo
     val boardInfo = data.boardThumbnail
     val requestInfo = data.requestInfo
     val alterText = buildAnnotatedString {
@@ -154,7 +158,7 @@ private fun SendApplicationContent(
                 startDate = boardInfo.startDate,
                 endDate = boardInfo.endDate,
                 postImage = boardInfo.imageUrls[0],
-                onClick = {/* 미사용 */}
+                onClick = {navPostBoard(boardInfo.boardId)}
             )
             Spacer(Modifier.height(30.dp))
             HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = MateTripColors.Gray_03)
@@ -239,6 +243,7 @@ private fun SendApplicationUITest(){
         uiState = SendApplicationDescUiState.Loading,
         errState = ErrorState.Loading,
         onClickCancel = {},
-        navBack = {}
+        navBack = {},
+        navPostBoard = {}
     )
 }

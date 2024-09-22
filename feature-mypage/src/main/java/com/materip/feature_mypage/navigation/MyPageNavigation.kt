@@ -45,12 +45,13 @@ fun NavGraphBuilder.myPageGraph(
     navProfileDescription: () -> Unit,
     navQuiz100: () -> Unit,
     navPreview: () -> Unit,
-    navSendApplication: (Int) -> Unit,
+    navSendApplication: (applicationId: Int) -> Unit,
     navReviewEvaluation: () -> Unit,
-    navReviewDescription: (Int) -> Unit,
+    navReviewDescription: (reviewId: Int) -> Unit,
     navReviewList: () -> Unit,
-    navReviewWrite: (Int) -> Unit,
-    navReceivedApplication: (Int) -> Unit
+    navReviewWrite: (boardId: Int) -> Unit,
+    navReceivedApplication: (applicationId: Int) -> Unit,
+    navPostBoard: (boardId: Int) -> Unit
 ){
     navigation(
         startDestination = MyPageRoute.MyPageRoute.name,
@@ -111,7 +112,8 @@ fun NavGraphBuilder.myPageGraph(
             val id = it.arguments?.getInt("applicationId")
             SendApplicationRoute(
                 id = id,
-                navBack = navBack
+                navBack = navBack,
+                navPostBoard = navPostBoard
             )
         }
         composable(

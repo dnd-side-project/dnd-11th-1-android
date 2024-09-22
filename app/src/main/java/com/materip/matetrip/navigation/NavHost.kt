@@ -104,7 +104,8 @@ fun SetUpNavGraph(
             navReviewList = navController::navigateToReviewList,
             navReviewDescription = navController::navigateToReviewDescription,
             navReviewWrite = navController::navigateToWriteReview,
-            navReceivedApplication = navController::navigateToReceivedApplication
+            navReceivedApplication = navController::navigateToReceivedApplication,
+            navPostBoard = { navController.navigate("${Screen.NavigateToPost.route}/${it}") }
         )
 
         // 홈
