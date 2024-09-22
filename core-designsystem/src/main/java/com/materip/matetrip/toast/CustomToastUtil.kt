@@ -30,7 +30,7 @@ import com.materip.core_designsystem.theme.MateTripColors
 object CustomToastUtil {
 
     @Composable
-    fun SetView(
+    fun SetErrorView(
         message: String,
         resourceIcon: Int = Badges.warning_badge
     ){
@@ -38,6 +38,38 @@ object CustomToastUtil {
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
                 .background(color = MateTripColors.Red_01, shape = RoundedCornerShape(10.dp))
+                .padding(12.dp)
+        ){
+            Column(
+                modifier = Modifier.width(24.dp),
+                verticalArrangement = Arrangement.Top
+            ){
+                Image(
+                    modifier = Modifier.size(24.dp),
+                    painter = painterResource(resourceIcon),
+                    contentDescription = "Warning Notification Icon"
+                )
+            }
+            Spacer(Modifier.width(16.dp))
+            Text(
+                text = message,
+                fontSize = 14.sp,
+                fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                fontWeight = FontWeight(400),
+                color = Color.White
+            )
+        }
+    }
+
+    @Composable
+    fun SetCommonToastView(
+        message: String,
+        resourceIcon: Int = Badges.information_badge
+    ){
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+                .background(color = Color.Black, shape = RoundedCornerShape(10.dp))
                 .padding(12.dp)
         ){
             Column(

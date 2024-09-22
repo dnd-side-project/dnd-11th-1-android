@@ -13,7 +13,7 @@ import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 
 class CustomToast(context: Context): Toast(context) {
     @Composable
-    fun MakeText(
+    fun MakeErrorText(
         message: String,
         icon: Int,
         duration: Int = LENGTH_SHORT
@@ -22,7 +22,32 @@ class CustomToast(context: Context): Toast(context) {
         val views = ComposeView(context)
 
         views.setContent{
-            CustomToastUtil.SetView(
+            CustomToastUtil.SetErrorView(
+                message = message,
+                resourceIcon = icon
+            )
+        }
+
+        views.setViewTreeLifecycleOwner(LocalLifecycleOwner.current)
+
+        views.setViewTreeSavedStateRegistryOwner(LocalSavedStateRegistryOwner.current)
+
+        this.duration = duration
+        this.view = views
+        this.show()
+    }
+
+    @Composable
+    fun MakeCommonToastView(
+        message: String,
+        icon: Int,
+        duration: Int = LENGTH_SHORT
+    ){
+        val context = LocalContext.current
+        val views = ComposeView(context)
+
+        views.setContent{
+            CustomToastUtil.SetCommonToastView(
                 message = message,
                 resourceIcon = icon
             )
