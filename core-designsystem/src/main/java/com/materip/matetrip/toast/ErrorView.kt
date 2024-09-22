@@ -27,7 +27,7 @@ fun ErrorView(
     }
 
     val customToast = CustomToast(LocalContext.current)
-    customToast.MakeText(message = message, icon = Badges.warning_badge)
+    customToast.MakeErrorText(message = message, icon = Badges.warning_badge)
 
     LaunchedEffect(Unit){
         delay(2_000)
