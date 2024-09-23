@@ -1,5 +1,6 @@
 package com.materip.feature_home3.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.materip.core_model.accompany_board.all.BoardListResponse
@@ -32,9 +33,16 @@ class BoardViewModel @Inject constructor(
             try {
                 val result = boardRepository.getBoard(pagingRequestDto)
                 val boardListResponse = result.data
+                Log.d("BoardViewModel", "API response: $boardListResponse")
+
                 val currentData = _boardList.value?.data ?: emptyList()
                 val newData = currentData + (boardListResponse?.data ?: emptyList())
-                val updatedBoardList = boardListResponse?.copy(data = newData)
+
+                val updatedBoardList = boardListResponse?.copy(
+                    data = newData,
+                    cursor = boardListResponse.cursor ?: _boardList.value?.cursor,
+                    hasNext = boardListResponse.hasNext
+                )
 
                 _boardList.value = updatedBoardList
                 _uiState.value = BoardListUiState.Success(updatedBoardList)
@@ -62,8 +70,18 @@ class BoardViewModel @Inject constructor(
 
     fun handleIntent(intent: BoardListIntent) {
         when (intent) {
-            is BoardListIntent.LoadBoardList -> loadBoardList(intent.pagingRequestDto)
-            is BoardListIntent.SearchBoardList -> searchBoardList(intent.query)
+            is BoardListIntent.LoadBoardList -> {
+                Log.d(
+                    "BoardViewModel",
+                    "Loading board list with cursor: ${intent.pagingRequestDto.cursor}")
+                loadBoardList(intent.pagingRequestDto)
+            }
+            is BoardListIntent.SearchBoardList -> {
+                Log.d("BoardViewModel",
+                    "Searching board list with query: ${intent.query}")
+
+                searchBoardList(intent.query)
+            }
         }
     }
 }
