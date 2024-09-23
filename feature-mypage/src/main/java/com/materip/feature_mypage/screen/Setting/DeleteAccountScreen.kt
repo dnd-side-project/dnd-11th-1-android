@@ -42,7 +42,6 @@ import com.materip.core_designsystem.component.MateTripButton
 import com.materip.core_designsystem.component.NormalTopBar
 import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.theme.MateTripColors
-import com.materip.core_designsystem.theme.customFontFamily
 import com.materip.feature_mypage.R
 import com.materip.feature_mypage.view_models.Setting.DeleteAccountViewModel
 
@@ -107,7 +106,7 @@ fun DeleteAccountScreen(
                 Text(
                     text = "메이트님과 동행할 수 없다니\n너무 아쉬워요...",
                     fontSize = 18.sp,
-                    fontFamily = customFontFamily.notoSansKr,
+                    fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                     fontWeight = FontWeight(700),
                     color = MateTripColors.Gray_11
                 )
@@ -115,7 +114,7 @@ fun DeleteAccountScreen(
                 Text(
                     text = "탈퇴하시려는 이유를 알려주세요.",
                     fontSize = 14.sp,
-                    fontFamily = customFontFamily.notoSansKr,
+                    fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                     fontWeight = FontWeight(400),
                     color = MateTripColors.Gray_07
                 )
@@ -138,7 +137,7 @@ fun DeleteAccountScreen(
                         text = "원하는 메이트가 없어요",
                         style = TextStyle(
                             fontSize = 14.sp,
-                            fontFamily = customFontFamily.notoSansKr,
+                            fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                             fontWeight = FontWeight(500),
                             color = MateTripColors.Gray_10,
                             textAlign = TextAlign.Justify,
@@ -163,7 +162,7 @@ fun DeleteAccountScreen(
                         text = "비매너 메이트를 만났어요",
                         style = TextStyle(
                             fontSize = 14.sp,
-                            fontFamily = customFontFamily.notoSansKr,
+                            fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                             fontWeight = FontWeight(500),
                             color = MateTripColors.Gray_10,
                             textAlign = TextAlign.Justify,
@@ -188,7 +187,7 @@ fun DeleteAccountScreen(
                         text = "원하는 기능이 없거나 이용이 불편해요",
                         style = TextStyle(
                             fontSize = 14.sp,
-                            fontFamily = customFontFamily.notoSansKr,
+                            fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                             fontWeight = FontWeight(500),
                             color = MateTripColors.Gray_10,
                             textAlign = TextAlign.Justify,
@@ -213,7 +212,7 @@ fun DeleteAccountScreen(
                         text = "앱을 잘 사용하지 않아요",
                         style = TextStyle(
                             fontSize = 14.sp,
-                            fontFamily = customFontFamily.notoSansKr,
+                            fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                             fontWeight = FontWeight(500),
                             color = MateTripColors.Gray_10,
                             textAlign = TextAlign.Justify,
@@ -239,7 +238,7 @@ fun DeleteAccountScreen(
                         text = "기타",
                         style = TextStyle(
                             fontSize = 14.sp,
-                            fontFamily = customFontFamily.notoSansKr,
+                            fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                             fontWeight = FontWeight(500),
                             color = MateTripColors.Gray_10,
                             textAlign = TextAlign.Justify,
@@ -261,7 +260,7 @@ fun DeleteAccountScreen(
                         ),
                         textStyle = TextStyle(
                             fontSize = 14.sp,
-                            fontFamily = customFontFamily.notoSansKr,
+                            fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                             fontWeight = FontWeight(400),
                             color = MateTripColors.Gray_05
                         ),
@@ -269,7 +268,7 @@ fun DeleteAccountScreen(
                             Text(
                                 text = "내용을 입력해주세요. (110자)",
                                 fontSize = 14.sp,
-                                fontFamily = customFontFamily.notoSansKr,
+                                fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                                 fontWeight = FontWeight(400),
                                 color = MateTripColors.Gray_05
                             )

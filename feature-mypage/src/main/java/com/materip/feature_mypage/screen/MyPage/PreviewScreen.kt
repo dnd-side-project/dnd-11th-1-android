@@ -49,6 +49,7 @@ import com.materip.core_model.ui_model.Gender
 import com.materip.core_model.ui_model.Region
 import com.materip.feature_mypage.view_models.MyPage.PreviewUiState
 import com.materip.feature_mypage.view_models.MyPage.PreviewViewModel
+import com.materip.matetrip.toast.ErrorView
 
 @Composable
 fun PreviewRoute(
@@ -85,10 +86,9 @@ fun PreviewScreen(
             CircularProgressIndicator()
         }
         PreviewUiState.Error -> {
-            Text(
-                text = "Error",
-                fontSize = 100.sp,
-                color = Color.Red
+            ErrorView(
+                errState = errState,
+                navBack = navBack
             )
         }
         is PreviewUiState.Success -> {

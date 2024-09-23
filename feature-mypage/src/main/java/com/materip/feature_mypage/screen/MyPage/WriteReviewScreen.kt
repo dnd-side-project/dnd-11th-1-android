@@ -71,6 +71,7 @@ import com.materip.core_model.ui_model.SatisfactionLevel
 import com.materip.core_model.ui_model.TravelPreferenceForReview
 import com.materip.core_model.ui_model.TravelStyleForReview
 import com.materip.feature_mypage.view_models.MyPage.WriteReviewViewModel
+import com.materip.matetrip.toast.ErrorView
 import kotlinx.coroutines.launch
 
 @Composable
@@ -116,10 +117,9 @@ fun WriteReviewScreen(
     navBack: () -> Unit,
 ){
     if(errState is ErrorState.AuthError && errState.isInvalid()){
-        Text(
-            text = "Error",
-            fontSize = 100.sp,
-            color = Color.Red
+        ErrorView(
+            errState = errState,
+            navBack = navBack
         )
     } else {
         val scrollState = rememberScrollState()

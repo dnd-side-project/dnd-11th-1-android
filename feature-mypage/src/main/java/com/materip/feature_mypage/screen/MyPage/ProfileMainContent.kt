@@ -63,6 +63,7 @@ import com.materip.core_model.ui_model.Grade
 import com.materip.core_model.ui_model.GradeTag
 import com.materip.feature_mypage.view_models.MyPage.ProfileMainUiState
 import com.materip.feature_mypage.view_models.MyPage.ProfileMainViewModel
+import com.materip.matetrip.toast.ErrorView
 
 @Composable
 fun ProfileMainContentRoute(
@@ -70,6 +71,7 @@ fun ProfileMainContentRoute(
     navProfileDescription: () -> Unit,
     navQuiz100: () -> Unit,
     navPreview: () -> Unit,
+    navBack: () -> Unit,
     viewModel: ProfileMainViewModel = hiltViewModel()
 ){
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
@@ -80,7 +82,8 @@ fun ProfileMainContentRoute(
         navEditProfile = navEditProfile,
         navProfileDescription = navProfileDescription,
         navQuiz100 = navQuiz100,
-        navPreview = navPreview
+        navPreview = navPreview,
+        navBack = navBack
     )
 }
 
@@ -92,6 +95,7 @@ fun ProfileMainTab(
     navProfileDescription: () -> Unit,
     navQuiz100: () -> Unit,
     navPreview: () -> Unit,
+    navBack: () -> Unit
 ){
     when(uiState){
         ProfileMainUiState.Loading -> {
@@ -120,11 +124,9 @@ fun ProfileMainTab(
             )
         }
         ProfileMainUiState.Error -> {
-            Log.d("TAG TEST", "err state : ${errState}")
-            Text(
-                text = "Error",
-                fontSize = 100.sp,
-                color = Color.Red
+            ErrorView(
+                errState = errState,
+                navBack = navBack
             )
         }
     }

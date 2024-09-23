@@ -40,7 +40,8 @@ fun MyPageRoute(
     navPreview: () -> Unit,
     navSendApplication: (Int) -> Unit,
     navReviewWrite: (Int) -> Unit,
-    navReceivedApplication: (Int) -> Unit
+    navReceivedApplication: (Int) -> Unit,
+    navBack: () -> Unit
 ){
     MyPageScreen(
         navEditProfile = navEditProfile,
@@ -49,7 +50,8 @@ fun MyPageRoute(
         navPreview = navPreview,
         navSendApplication = navSendApplication,
         navReviewWrite = navReviewWrite,
-        navReceivedApplication = navReceivedApplication
+        navReceivedApplication = navReceivedApplication,
+        navBack = navBack
     )
 }
 
@@ -61,7 +63,8 @@ fun MyPageScreen(
     navPreview: () -> Unit,
     navSendApplication: (Int) -> Unit,
     navReviewWrite: (Int) -> Unit,
-    navReceivedApplication: (Int) -> Unit
+    navReceivedApplication: (Int) -> Unit,
+    navBack: () -> Unit
 ){
     var selectedTab by remember{mutableStateOf(MyPageTab.Profile)}
     Column(
@@ -85,7 +88,8 @@ fun MyPageScreen(
             navPreview = navPreview,
             navSendApplication = navSendApplication,
             navReviewWrite = navReviewWrite,
-            navReceivedApplication = navReceivedApplication
+            navReceivedApplication = navReceivedApplication,
+            navBack = navBack
         )
     }
 }
@@ -180,7 +184,8 @@ fun CustomPagerContent(
     navPreview: () -> Unit,
     navSendApplication: (Int) -> Unit,
     navReviewWrite: (Int) -> Unit,
-    navReceivedApplication: (Int) -> Unit
+    navReceivedApplication: (Int) -> Unit,
+    navBack: () -> Unit
 ){
     Column(
         modifier = Modifier
@@ -193,13 +198,17 @@ fun CustomPagerContent(
                     navProfileDescription = navProfileDescription,
                     navQuiz100 = navQuiz100,
                     navPreview = navPreview,
+                    navBack = navBack
                 )
             }
-            MyPageTab.TravelPost -> TravelPostContent()
+            MyPageTab.TravelPost -> TravelPostContent(
+                navBack = navBack
+            )
             MyPageTab.TravelHistory -> TravelHistoryContent(
                 navSendApplication = navSendApplication,
                 navReviewWrite = navReviewWrite,
                 navReceivedApplication = navReceivedApplication,
+                navBack = navBack
             )
         }
     }
@@ -214,6 +223,7 @@ private fun MyPageUITest(){
         navEditProfile = {},
         navSendApplication = {},
         navReviewWrite = {},
-        navReceivedApplication = {}
+        navReceivedApplication = {},
+        navBack = {}
     )
 }

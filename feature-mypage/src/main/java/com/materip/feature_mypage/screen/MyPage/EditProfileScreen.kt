@@ -76,6 +76,7 @@ import com.materip.core_model.ui_model.TravelInterest
 import com.materip.core_model.ui_model.TravelStyle
 import com.materip.feature_mypage.view_models.MyPage.EditProfileUiState
 import com.materip.feature_mypage.view_models.MyPage.EditProfileViewModel
+import com.materip.matetrip.toast.ErrorView
 import kotlinx.coroutines.launch
 
 @Composable
@@ -150,12 +151,9 @@ fun EditProfileScreen(
             )
         }
         EditProfileUiState.Error -> {
-            /** Error view로 변환해야 함 */
-            Log.d("TAG TEST", "edit profile screen : ${errState}")
-            Text(
-                text = "Error",
-                fontSize = 100.sp,
-                color = Color.Red
+            ErrorView(
+                errState = errState,
+                navBack = navBack
             )
         }
     }
@@ -1286,19 +1284,24 @@ private fun MyImages(
 private fun EditProfileUITest(){
     EditProfileScreen(
         navBack = {  },
-        uiState = EditProfileUiState.Success(
-            "",
-            "찬란한바닷가",
-            "",
-            2024,
-            "FEMALE",
-            listOf("PLANNED", "DUTCH_PAY", "LOOKING_FOR", "QUICKLY"),
-            listOf(TravelStyle.RESTAURANT_TOUR.name, TravelStyle.ACTIVITY.name, TravelStyle.DRIVE.name, TravelStyle.CAFE_TOUR.name, TravelStyle.HEALING.name),
-            listOf(FoodPreference.MEAT.name, FoodPreference.RICE.name, FoodPreference.COFFEE.name),
-            snsLink = null,
-            images = listOf("")
+//        uiState = EditProfileUiState.Success(
+//            "",
+//            "찬란한바닷가",
+//            "",
+//            2024,
+//            "FEMALE",
+//            listOf("PLANNED", "DUTCH_PAY", "LOOKING_FOR", "QUICKLY"),
+//            listOf(TravelStyle.RESTAURANT_TOUR.name, TravelStyle.ACTIVITY.name, TravelStyle.DRIVE.name, TravelStyle.CAFE_TOUR.name, TravelStyle.HEALING.name),
+//            listOf(FoodPreference.MEAT.name, FoodPreference.RICE.name, FoodPreference.COFFEE.name),
+//            snsLink = null,
+//            images = listOf("")
+//        ),
+        uiState = EditProfileUiState.Error,
+        errState = ErrorState.AuthError(
+            invalidTokenError = true,
+            notFoundTokenError = false,
+            generalError = Pair(false, "")
         ),
-        errState = ErrorState.Loading,
         images = remember{ mutableStateListOf("") },
         onEditClick = {a,b,c,d,e,f,g,h,i,j ->
 

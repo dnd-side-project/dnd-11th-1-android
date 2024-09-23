@@ -21,9 +21,11 @@ import com.materip.core_designsystem.component.TravelPostItem
 import com.materip.core_model.accompany_board.all.BoardItem
 import com.materip.feature_mypage.view_models.MyPage.TravelPostUiState
 import com.materip.feature_mypage.view_models.MyPage.TravelPostViewModel
+import com.materip.matetrip.toast.ErrorView
 
 @Composable
 fun TravelPostContent(
+    navBack: () -> Unit,
     viewModel: TravelPostViewModel = hiltViewModel()
 ){
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
@@ -34,10 +36,9 @@ fun TravelPostContent(
             CircularProgressIndicator()
         }
         TravelPostUiState.Error -> {
-            Text(
-                text = "Error",
-                fontSize = 100.sp,
-                color = Color.Red
+            ErrorView(
+                errState = errState.value,
+                navBack = navBack
             )
         }
         TravelPostUiState.Success -> {

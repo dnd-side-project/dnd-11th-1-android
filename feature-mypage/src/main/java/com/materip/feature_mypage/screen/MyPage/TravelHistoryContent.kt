@@ -65,12 +65,14 @@ import com.materip.feature_mypage.view_models.MyPage.SendTravelApplicationUiStat
 import com.materip.feature_mypage.view_models.MyPage.SendTravelApplicationViewModel
 import com.materip.feature_mypage.view_models.MyPage.TravelRecordViewModel
 import com.materip.feature_mypage.view_models.MyPage.TravelRecordsUiState
+import com.materip.matetrip.toast.ErrorView
 
 @Composable
 fun TravelHistoryContent(
     navReviewWrite: (Int) -> Unit,
     navSendApplication: (Int) -> Unit,
-    navReceivedApplication: (Int) -> Unit
+    navReceivedApplication: (Int) -> Unit,
+    navBack: () -> Unit
 ){
     var selectedTag by remember{mutableStateOf(TravelHistoryTag.RECORD)}
 
@@ -81,16 +83,19 @@ fun TravelHistoryContent(
     Spacer(Modifier.height(20.dp))
     when(selectedTag){
         TravelHistoryTag.RECORD -> TravelRecords(
-            navReviewWrite = navReviewWrite
+            navReviewWrite = navReviewWrite,
+            navBack = navBack
         )
         TravelHistoryTag.SEND_APPLICATION -> {
             SendTravelApplication(
-                navSendApplication = navSendApplication
+                navSendApplication = navSendApplication,
+                navBack = navBack
             )
         }
         TravelHistoryTag.RECEIVE_APPLICATION -> {
             ReceiveTravelApplication(
-                navReceivedApplication = navReceivedApplication
+                navReceivedApplication = navReceivedApplication,
+                navBack = navBack
             )
         }
     }
@@ -146,18 +151,19 @@ private fun TagList(
 @Composable
 private fun TravelRecords(
     navReviewWrite: (Int) -> Unit,
+    navBack: () -> Unit,
     viewModel: TravelRecordViewModel = hiltViewModel()
 ){
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val errState = viewModel.errorState.collectAsStateWithLifecycle()
     when(uiState.value){
         TravelRecordsUiState.Loading -> {
             CircularProgressIndicator()
         }
         TravelRecordsUiState.Error -> {
-            Text(
-                text = "Error",
-                fontSize = 100.sp,
-                color = Color.Red
+            ErrorView(
+                errState = errState.value,
+                navBack = navBack
             )
         }
         TravelRecordsUiState.Success -> {
@@ -216,6 +222,7 @@ private fun TravelRecordsContent(
 @Composable
 private fun SendTravelApplication(
     navSendApplication: (Int) -> Unit,
+    navBack: () -> Unit,
     viewModel: SendTravelApplicationViewModel = hiltViewModel()
 ){
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
@@ -225,10 +232,9 @@ private fun SendTravelApplication(
             CircularProgressIndicator()
         }
         SendTravelApplicationUiState.Error -> {
-            Text(
-                text = "Error",
-                fontSize = 100.sp,
-                color = Color.Red
+            ErrorView(
+                errState = errState,
+                navBack = navBack
             )
         }
         is SendTravelApplicationUiState.Success -> {
@@ -285,19 +291,20 @@ private fun SendTravelApplicationContent(
 
 @Composable
 private fun ReceiveTravelApplication(
-    viewModel: ReceiveTravelApplicationViewModel = hiltViewModel(),
-    navReceivedApplication: (Int) -> Unit
+    navBack: () -> Unit,
+    navReceivedApplication: (Int) -> Unit,
+    viewModel: ReceiveTravelApplicationViewModel = hiltViewModel()
 ){
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val errState = viewModel.errorState.collectAsStateWithLifecycle()
     when(uiState.value){
         ReceiveTravelApplicationUiState.Loading -> {
             CircularProgressIndicator()
         }
         ReceiveTravelApplicationUiState.Error -> {
-            Text(
-                text = "Error",
-                fontSize = 100.sp,
-                color = Color.Red
+            ErrorView(
+                errState = errState.value,
+                navBack = navBack
             )
         }
         ReceiveTravelApplicationUiState.Success -> {

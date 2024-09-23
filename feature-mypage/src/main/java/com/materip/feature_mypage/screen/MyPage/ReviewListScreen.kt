@@ -38,6 +38,7 @@ import com.materip.core_model.ui_model.Region
 import com.materip.core_model.ui_model.ReviewDescClass
 import com.materip.feature_mypage.view_models.MyPage.ReviewListUiState
 import com.materip.feature_mypage.view_models.MyPage.ReviewListViewModel
+import com.materip.matetrip.toast.ErrorView
 
 @Composable
 fun ReviewListRoute(
@@ -68,10 +69,9 @@ fun ReviewListScreen(
             CircularProgressIndicator()
         }
         ReviewListUiState.Error -> {
-            Text(
-                text = "Error",
-                fontSize = 100.sp,
-                color = Color.Red
+            ErrorView(
+                errState = errState,
+                navBack = navBack
             )
         }
         is ReviewListUiState.Success -> {

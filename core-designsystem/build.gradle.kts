@@ -49,6 +49,7 @@ android {
 
 dependencies {
     implementation(project(":core-model"))
+    implementation(project(":core-common"))
 
     implementation(libs.bundles.coil) // coil
     implementation(libs.bundles.ui) // ui
