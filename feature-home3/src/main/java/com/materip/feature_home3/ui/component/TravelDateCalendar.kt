@@ -1,6 +1,5 @@
 package com.materip.feature_home3.ui.component
 
-import android.widget.Toast
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,8 +18,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.Refresh
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -36,9 +33,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_designsystem.theme.MateTripColors.Blue_04
@@ -54,23 +49,16 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 @Composable
-fun TravelDateScreen() {
-    var startDate by remember { mutableStateOf<LocalDate?>(null) }
-    var endDate by remember { mutableStateOf<LocalDate?>(null) }
-
-    TravelDateCalendar { start, end ->
-        startDate = start
-        endDate = end
-    }
-}
-
-@Composable
 fun TravelDateCalendar(
-    onDateRangeSelected: (LocalDate?, LocalDate?) -> Unit
+    startDateString: String?,
+    endDateString: String?,
+    onDateRangeSelected: (String, String) -> Unit
 ) {
+    val startDate = startDateString.takeIf { it.isNullOrEmpty().not() }?.let { LocalDate.parse(it) }
+    val endDate = endDateString.takeIf { it.isNullOrEmpty().not() }?.let { LocalDate.parse(it) }
     var currentMonth by remember { mutableStateOf(YearMonth.now()) }
-    var startDate by remember { mutableStateOf<LocalDate?>(null) }
-    var endDate by remember { mutableStateOf<LocalDate?>(null) }
+    var selectedStartDate by remember { mutableStateOf(startDate) }
+    var selectedEndDate by remember { mutableStateOf(endDate) }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top),
@@ -89,9 +77,9 @@ fun TravelDateCalendar(
             )
             IconButton(
                 onClick = {
-                    startDate = null
-                    endDate = null
-                    onDateRangeSelected(startDate, endDate)
+                    selectedStartDate = null
+                    selectedEndDate = null
+                    onDateRangeSelected("", "")
                 },
                 modifier = Modifier.size(21.dp)
             ) {
@@ -115,29 +103,29 @@ fun TravelDateCalendar(
 
                 CalendarDays(
                     currentMonth = currentMonth,
-                    startDate = startDate,
-                    endDate = endDate,
+                    startDate = selectedStartDate,
+                    endDate = selectedEndDate,
                     onDateSelected = { date ->
                         if (date >= LocalDate.now()) {
                             when {
-                                startDate == null || (endDate != null && date < startDate) -> {
-                                    startDate = date
-                                    endDate = null
+                                selectedStartDate == null || (selectedEndDate != null && date < selectedStartDate) -> {
+                                    selectedStartDate = date
+                                    selectedEndDate = null
                                 }
 
-                                date > startDate -> endDate = date
+                                date > selectedStartDate -> selectedEndDate = date
 
-                                endDate != null && date < startDate -> {
-                                    endDate = startDate
-                                    startDate = date
+                                selectedEndDate != null && date < selectedStartDate -> {
+                                    selectedEndDate = selectedStartDate
+                                    selectedStartDate = date
                                 }
 
                                 else -> {
-                                    endDate = startDate
-                                    startDate = date
+                                    selectedEndDate = selectedStartDate
+                                    selectedStartDate = date
                                 }
                             }
-                            onDateRangeSelected(startDate, endDate)
+                            onDateRangeSelected(selectedStartDate.toString(), selectedEndDate?.toString() ?: "")
                         }
                     }
                 )
@@ -276,10 +264,4 @@ fun CalendarDays(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun TravelDateCalendarPreview() {
-    TravelDateScreen()
 }
