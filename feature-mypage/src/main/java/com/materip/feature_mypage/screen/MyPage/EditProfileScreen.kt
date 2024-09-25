@@ -200,15 +200,21 @@ private fun EditProfileMainContent(
     val coroutine = rememberCoroutineScope()
     val context = LocalContext.current
     var selected by remember{mutableStateOf("")}
-    var profileImg by remember{mutableStateOf(initProfileImg)}
-    var nickname by remember{mutableStateOf(initNickname)}
-    var introduction by remember{mutableStateOf(initDescription ?: "")}
+    var profileImg by remember{mutableStateOf("")}
+    var nickname by remember{mutableStateOf("")}
+    var introduction by remember{mutableStateOf("")}
     var birthYear by remember{mutableStateOf(initBirthYear)}
     var gender by remember{mutableStateOf(if(initGender == "MALE") Gender.MALE else Gender.FEMALE)}
     val travelPreferences = remember{ mutableStateListOf(*initTravelPreferences.toTypedArray())}
     val travelStyles = remember{ mutableStateListOf(*initTravelStyles.toTypedArray()) }
     val foodPreferences = remember{ mutableStateListOf(*initFoodPreferences.toTypedArray()) }
-    var snsLink by remember{mutableStateOf(initSnsLink ?: "")}
+    var snsLink by remember{mutableStateOf("")}
+    LaunchedEffect(Unit){
+        nickname = initNickname
+        profileImg = initProfileImg
+        introduction = initDescription ?: ""
+        snsLink = initSnsLink ?: ""
+    }
     val myImageLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
         onResult = {
@@ -309,7 +315,7 @@ private fun EditProfileMainContent(
             NicknameEdit(
                 nickname = nickname,
                 onNicknameUpdate = {
-                    if(nickname.length <= 6){nickname = it}
+                    if(it.length <= 6){nickname = it}
                 }
             )
             Spacer(Modifier.height(40.dp))
