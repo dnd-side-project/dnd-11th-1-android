@@ -2,7 +2,10 @@
 
 package com.materip.core_designsystem.component
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -33,45 +36,53 @@ fun MateTripSearchBar(
 ) {
     val active = remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier.padding(bottom = 30.dp)
+    Box(
+        modifier = Modifier
+            .clickable(enabled = active.value) { active.value = false } // 검색바 외부 클릭 시 비활성화
+
     ) {
-        DockedSearchBar(
-            query = query,
-            onQueryChange = onQueryChange,
-            onSearch = { onSearch(query) },
-            active = active.value,
-            onActiveChange = { active.value = it },
-            placeholder = { Text(
-                text = "어디로 여행을 떠나시나요?",
-                style = MateTripTypographySet.body04
-            ) },
-            leadingIcon = {
-                IconButton(onClick = { onSearch(query) }) {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = "Search Icon",
-                        tint = if(active.value) Primary else Gray_06
-                    )
-                }
-            },
-            trailingIcon = {
-                if (query.isNotEmpty()) {
-                    IconButton(onClick = onClear) {
+        Column(
+            modifier = Modifier
+                .padding(bottom = 30.dp)
+                .clickable { active.value = true }
+        ) {
+            DockedSearchBar(
+                query = query,
+                onQueryChange = onQueryChange,
+                onSearch = { onSearch(query) },
+                active = active.value,
+                onActiveChange = { active.value = it },
+                placeholder = { Text(
+                    text = "어디로 여행을 떠나시나요?",
+                    style = MateTripTypographySet.body04
+                ) },
+                leadingIcon = {
+                    IconButton(onClick = { onSearch(query) }) {
                         Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = "Clear Search",
-                            tint = if (active.value) Primary else Gray_06
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "Search Icon",
+                            tint = if(active.value) Primary else Gray_06
                         )
                     }
-                }
-            },
-            colors = SearchBarDefaults.colors(
-                containerColor = Color.White,
-                dividerColor = Gray_06,
-            ),
-            shadowElevation = 6.dp,
-            content = {}
-        )
+                },
+                trailingIcon = {
+                    if (query.isNotEmpty()) {
+                        IconButton(onClick = onClear) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Clear Search",
+                                tint = if (active.value) Primary else Gray_06
+                            )
+                        }
+                    }
+                },
+                colors = SearchBarDefaults.colors(
+                    containerColor = Color.White,
+                    dividerColor = Gray_06,
+                ),
+                shadowElevation = 6.dp,
+                content = {}
+            )
+        }
     }
 }
