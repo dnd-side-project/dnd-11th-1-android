@@ -37,6 +37,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -76,8 +77,11 @@ import com.materip.core_model.ui_model.TravelInterest
 import com.materip.core_model.ui_model.TravelStyle
 import com.materip.feature_mypage.view_models.MyPage.EditProfileUiState
 import com.materip.feature_mypage.view_models.MyPage.EditProfileViewModel
+import com.materip.matetrip.toast.CommonToastView
 import com.materip.matetrip.toast.ErrorView
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun EditProfileRoute(
@@ -88,6 +92,8 @@ fun EditProfileRoute(
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     val errState = viewModel.errorState.collectAsStateWithLifecycle()
     val images = viewModel.images
+    val isDone = viewModel.isDone.collectAsStateWithLifecycle()
+    var showToast by remember{mutableStateOf(false)}
     EditProfileScreen(
         uiState = uiState.value,
         errState = errState.value,
@@ -112,6 +118,17 @@ fun EditProfileRoute(
         onDeleteImage = {viewModel.deleteImage(it)},
         onUpdateProfileImg = { viewModel.updateProfileImg(context, it) }
     )
+
+    if(showToast){
+        CommonToastView(message = "프로필 수정 완료")
+        showToast = false
+    }
+    LaunchedEffect(isDone.value){
+        if(isDone.value){
+            showToast = true
+            navBack()
+        }
+    }
 }
 
 @Composable
@@ -237,7 +254,6 @@ private fun EditProfileMainContent(
             onBackClick = navBack,
             onClick = {
                 onEditClick(profileImg,nickname,introduction,birthYear,gender.name,travelPreferences,travelStyles,foodPreferences,snsLink,images)
-                navBack()
             },
             menuText = "확인"
         )
@@ -258,11 +274,15 @@ private fun EditProfileMainContent(
                         .background(color = MateTripColors.Blue_04, shape = CircleShape)
                         .clickable {
                             selected = "profile"
-                            if(checkPermission(context, "camera")){
-                                profileLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                            if (checkPermission(context, "camera")) {
+                                profileLauncher.launch(
+                                    PickVisualMediaRequest(
+                                        ActivityResultContracts.PickVisualMedia.ImageOnly
+                                    )
+                                )
                             } else {
                                 requestPermissionLauncher.launch(
-                                    if (Build.VERSION.SDK_INT >= 33){
+                                    if (Build.VERSION.SDK_INT >= 33) {
                                         Manifest.permission.READ_MEDIA_IMAGES
                                     } else {
                                         Manifest.permission.READ_EXTERNAL_STORAGE

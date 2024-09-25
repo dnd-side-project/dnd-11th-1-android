@@ -31,6 +31,7 @@ class EditProfileViewModel @Inject constructor(
     private val profileRepository: ProfileRepository,
     private val imageRepository: ImageRepository
 ): ViewModel() {
+    val isDone = MutableStateFlow<Boolean>(false)
     val images = mutableStateListOf<String>()
     private val invalidTokenError = MutableStateFlow<Boolean>(false)
     private val notFoundTokenError = MutableStateFlow<Boolean>(false)
@@ -116,7 +117,9 @@ class EditProfileViewModel @Inject constructor(
                     404 -> invalidTokenError.update { true }
                     else -> generalError.update { Pair(true, result.error!!.message) }
                 }
+                return@launch
             }
+            isDone.update{true}
         }
     }
     suspend fun updateProfileImg(context: Context, uri: Uri): String {

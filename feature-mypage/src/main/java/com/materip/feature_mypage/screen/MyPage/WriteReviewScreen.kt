@@ -71,6 +71,7 @@ import com.materip.core_model.ui_model.SatisfactionLevel
 import com.materip.core_model.ui_model.TravelPreferenceForReview
 import com.materip.core_model.ui_model.TravelStyleForReview
 import com.materip.feature_mypage.view_models.MyPage.WriteReviewViewModel
+import com.materip.matetrip.toast.CommonToastView
 import com.materip.matetrip.toast.ErrorView
 import kotlinx.coroutines.launch
 
@@ -85,6 +86,7 @@ fun WriteReviewRoute(
     val context = LocalContext.current
     val errState = viewModel.errorState.collectAsStateWithLifecycle()
     val isDone by viewModel.isDone.collectAsStateWithLifecycle()
+    var showToast by remember{mutableStateOf(false)}
 
     WriteReviewScreen(
         errState = errState.value,
@@ -104,7 +106,14 @@ fun WriteReviewRoute(
         navBack = navBack
     )
     LaunchedEffect(isDone){
-        if (isDone) {navBack()}
+        if (isDone) {
+            showToast = true
+            navBack()
+        }
+    }
+    if (showToast){
+        CommonToastView(message = "작성 완료")
+        showToast = false
     }
 }
 
@@ -1019,7 +1028,7 @@ private fun SharePictures(
                             color = MateTripColors.Blue_04,
                             shape = RoundedCornerShape(size = 10.dp)
                         )
-                        .clickable {onCameraClick()},
+                        .clickable { onCameraClick() },
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ){
