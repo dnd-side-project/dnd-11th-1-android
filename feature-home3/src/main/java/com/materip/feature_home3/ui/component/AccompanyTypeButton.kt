@@ -42,53 +42,57 @@ fun AccompanyTypeButton(
     )
     val displayCategoryMap = categoryDisplayMap.entries.associate { (k, v) -> v to k }
 
-    Column(
-        modifier = Modifier.clickable { showDialog = true },
-        verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top),
-        horizontalAlignment = Alignment.Start,
+    Box(
+        modifier = Modifier.clickable { showDialog = true }
     ) {
-        Text(
-            text = "동행 유형",
-            color = Gray_11,
-            modifier = Modifier.size(320.dp, 20.dp),
-            style = MateTripTypographySet.title04
-        )
-        Row(
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically,
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top),
+            horizontalAlignment = Alignment.Start,
         ) {
-            BasicTextField(
-                value = selectedCategories.joinToString(", ") { displayCategoryMap[it] ?: "" },
-                onValueChange = {},
-                readOnly = true,
-                modifier = Modifier
-                    .weight(1f)
-                    .height(20.dp),
-                textStyle = MateTripTypographySet.body04,
-                decorationBox = { innerTextField ->
-                    Box(
-                        contentAlignment = Alignment.CenterStart
-                    ) {
-                        if (selectedCategories.isEmpty()) {
-                            Text(
-                                text = "동행 유형을 선택해주세요.",
-                                style = MateTripTypographySet.body04,
-                                color = Gray_06
-                            )
+            Text(
+                text = "동행 유형",
+                color = Gray_11,
+                modifier = Modifier.size(320.dp, 20.dp),
+                style = MateTripTypographySet.title04
+            )
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                BasicTextField(
+                    value = selectedCategories.joinToString(", ") { displayCategoryMap[it] ?: "" },
+                    onValueChange = {},
+                    readOnly = true,
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(20.dp),
+                    textStyle = MateTripTypographySet.body04,
+                    decorationBox = { innerTextField ->
+                        Box(
+                            modifier = Modifier.clickable { showDialog = true },
+                            contentAlignment = Alignment.CenterStart
+                        ) {
+                            if (selectedCategories.isEmpty()) {
+                                Text(
+                                    text = "동행 유형을 선택해주세요.",
+                                    style = MateTripTypographySet.body04,
+                                    color = Gray_06
+                                )
+                            }
+                            innerTextField()
                         }
-                        innerTextField()
                     }
-                }
-            )
-            Icon(
-                painter = painterResource(fold_icon),
-                contentDescription = "Open dialog",
-                modifier = Modifier
-                    .size(36.dp)
-                    .clickable { showDialog = true }
-            )
+                )
+                Icon(
+                    painter = painterResource(fold_icon),
+                    contentDescription = "Open dialog",
+                    modifier = Modifier
+                        .size(36.dp)
+                        .clickable { showDialog = true }
+                )
+            }
+            SimpleDivider()
         }
-        SimpleDivider()
     }
     if (showDialog) {
         CustomRadioButtonDialog(
