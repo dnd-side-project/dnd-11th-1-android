@@ -16,4 +16,6 @@ interface AccompanyRepository {
     suspend fun getAccompanyReceived(requestDto: PagingRequestDto): ResultResponse<DefaultGetAccompanyResponseDto<AccompanyReceivedItem>>
     suspend fun getAccompanyRecords(requestDto: PagingRequestDto): ResultResponse<DefaultGetAccompanyResponseDto<BoardItemWithReviewId>>
     suspend fun getAccompanyMyPost(requestDto: PagingRequestDto): ResultResponse<DefaultGetAccompanyResponseDto<BoardItem>>
+    suspend fun postReject(id: Int): ResultResponse<Any>
+    suspend fun postAccept(id: Int): ResultResponse<Any>
 }

@@ -42,4 +42,15 @@ interface AccompanyService {
     suspend fun getAccompanyMyPost(
         @Body requestDto: PagingRequestDto
     ): ApiResponse<DefaultGetAccompanyResponseDto<BoardItem>>
+
+    @POST("/api/v1/accompany/requests/decline/{id}")
+    suspend fun postReject(
+        @Path("id") id: Int
+    ): ApiResponse<Any>
+
+    @POST("/api/v1/accompany/requests/approve/{id}")
+    suspend fun postAccept(
+        @Path("id") id: Int
+    ): ApiResponse<Any>
+
 }
