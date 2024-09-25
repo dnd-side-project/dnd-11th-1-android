@@ -51,10 +51,10 @@ class PostBoardViewModel @Inject constructor(
     private val _tagNames = MutableStateFlow<List<String>>(emptyList())
     val tagNames: StateFlow<List<String>> = _tagNames
 
-    private val _preferredGender = MutableStateFlow<PreferredGender?>(null)
+    private val _preferredGender = MutableStateFlow(PreferredGender.ANY)
     val preferredGender: StateFlow<PreferredGender?> = _preferredGender
 
-    private val _preferredAge = MutableStateFlow<PreferredAge?>(null)
+    private val _preferredAge = MutableStateFlow(PreferredAge.ANY)
     val preferredAge: StateFlow<PreferredAge?> = _preferredAge
 
     private val _category = MutableStateFlow<List<Category>>(emptyList())
@@ -76,6 +76,9 @@ class PostBoardViewModel @Inject constructor(
     val imageUris: StateFlow<List<String>> = _imageUris
 
     private val _boardStatus = MutableStateFlow(BoardStatus.RECRUITING)
+    val boardStatus: StateFlow<BoardStatus> = _boardStatus
+
+    private lateinit var boardRequestDto: BoardRequestDto
 
     fun handleIntent(intent: PostBoardIntent) {
         when (intent) {
@@ -167,75 +170,91 @@ class PostBoardViewModel @Inject constructor(
 
     private fun updateTitle(newTitle: String) {
         _title.value = newTitle
-        Log.d("PostBoardViewModel", "Title updated: ${_title.value}")
+        Log.d("PostBoardViewModel", "Title updated: ${title.value}")
     }
 
     private fun updateContent(newContent: String) {
         _content.value = newContent
-        Log.d("PostBoardViewModel", "Content updated: ${_content.value}")
+        Log.d("PostBoardViewModel", "Content updated: ${content.value}")
     }
 
     private fun updateTags(newTags: List<String>) {
         _tagNames.value = newTags
-        Log.d("PostBoardViewModel", "Tags updated: ${_tagNames.value}")
+        Log.d("PostBoardViewModel", "Tags updated: ${tagNames.value}")
     }
 
     private fun updateGender(newGender: PreferredGender) {
         _preferredGender.value = newGender
-        Log.d("PostBoardViewModel", "Gender updated: ${_preferredGender.value}")
+        Log.d("PostBoardViewModel", "Gender updated: ${preferredGender.value}")
     }
 
     private fun updateAge(newAge: PreferredAge) {
         _preferredAge.value = newAge
-        Log.d("PostBoardViewModel", "Age updated: ${_preferredAge.value}")
+        Log.d("PostBoardViewModel", "Age updated: ${preferredAge.value}")
     }
 
     private fun updateCategory(newCategory: List<Category>) {
         _category.value = newCategory
-        Log.d("PostBoardViewModel", "Category updated: ${_category.value}")
+        Log.d("PostBoardViewModel", "Category updated: ${category.value}")
     }
 
     private fun updateRegion(newRegion: Region) {
         _region.value = newRegion
-        Log.d("PostBoardViewModel", "Region updated: ${_region.value}")
+        Log.d("PostBoardViewModel", "Region updated: ${region.value}")
     }
 
     private fun updateStartDate(newStartDate: String) {
         _startDate.value = newStartDate
-        Log.d("PostBoardViewModel", "Start date updated: ${_startDate.value}")
+        Log.d("PostBoardViewModel", "Start date updated: ${startDate.value}")
     }
 
     private fun updateEndDate(newEndDate: String) {
         _endDate.value = newEndDate
-        Log.d("PostBoardViewModel", "End date updated: ${_endDate.value}")
+        Log.d("PostBoardViewModel", "End date updated: ${endDate.value}")
     }
 
     private fun updateCapacity(newCapacity: Int) {
         _capacity.value = newCapacity
-        Log.d("PostBoardViewModel", "Capacity updated: ${_capacity.value}")
+        Log.d("PostBoardViewModel", "Capacity updated: ${capacity.value}")
     }
 
     private fun updateImageUris(newImageUris: List<String>) {
         _imageUris.value = newImageUris
-        Log.d("PostBoardViewModel", "Image URIs updated: ${_imageUris.value}")
+        Log.d("PostBoardViewModel", "Image URIs updated: ${imageUris.value}")
     }
 
     private fun updateBoardStatus(newBoardStatus: BoardStatus) {
         _boardStatus.value = newBoardStatus
-        Log.d("PostBoardViewModel", "Board status updated: ${_boardStatus.value}")
+        Log.d("PostBoardViewModel", "Board status updated: ${boardStatus.value}")
     }
 
     private fun createPost() {
+        if (!validateFields()) {
+            _uiState.value = PostBoardUiState.Error("모든 필드를 올바르게 입력해주세요.")
+            return
+        }
+
         viewModelScope.launch {
             _uiState.value = PostBoardUiState.Loading
-
-            Log.d("PostBoardViewModel", "Creating post...")
-
-            val boardRequestDto = toBoardRequestDto()
+            boardRequestDto = BoardRequestDto(
+                title = title.value,
+                content = content.value,
+                region = region.value ?: Region.SEOUL,
+                startDate = startDate.value,
+                endDate = endDate.value,
+                capacity = capacity.value,
+                boardStatus = boardStatus.value,
+                categories = category.value,
+                preferredAge = preferredAge.value ?: PreferredAge.ANY,
+                preferredGender = preferredGender.value ?: PreferredGender.ANY,
+                imageUrls = imageUris.value,
+                tagNames = tagNames.value
+            )
 
             Log.d("PostBoardViewModel", "BoardRequestDto created: $boardRequestDto")
 
             try {
+                Log.d("PostBoardViewModel", "Attempting to post board")
                 val result = boardRepository.postBoard(boardRequestDto)
                 Log.d("PostBoardViewModel", "API response: $result")
 
@@ -265,26 +284,6 @@ class PostBoardViewModel @Inject constructor(
                 _uiState.value = PostBoardUiState.Error("네트워크 오류: ${e.message}")
                 Log.e("PostBoardViewModel", "Exception while creating post", e)
             }
-        }
-    }
-
-
-    private fun toBoardRequestDto(): BoardRequestDto {
-        return BoardRequestDto(
-            title = _title.value,
-            content = _content.value,
-            region = _region.value ?: Region.SEOUL,
-            startDate = _startDate.value,
-            endDate = _endDate.value,
-            capacity = _capacity.value,
-            boardStatus = _boardStatus.value,
-            categories = _category.value,
-            preferredAge = _preferredAge.value ?: PreferredAge.ANY,
-            preferredGender = _preferredGender.value ?: PreferredGender.ANY,
-            imageUrls = _imageUris.value,
-            tagNames = _tagNames.value
-        ).also {
-            Log.d("PostBoardViewModel", "BoardRequestDto created: $it")
         }
     }
 }
