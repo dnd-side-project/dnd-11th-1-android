@@ -76,7 +76,7 @@ fun Quiz100Screen(navBack: () -> Unit){
         NormalTopBar(
             title = "백문백답 챌린지",
             menuText = if(isEditable) "삭제" else "편집",
-            menuTextColor = MateTripColors.Gray_06,
+            menuTextColor = if(isEditable && removeQuiz.isNotEmpty()) Color.Black else MateTripColors.Gray_06,
             titleFontWeight = FontWeight(700),
             onBackClick = navBack,
             onClick = {
