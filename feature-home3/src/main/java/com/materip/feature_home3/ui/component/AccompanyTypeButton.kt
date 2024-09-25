@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -42,6 +43,7 @@ fun AccompanyTypeButton(
     val displayCategoryMap = categoryDisplayMap.entries.associate { (k, v) -> v to k }
 
     Column(
+        modifier = Modifier.clickable { showDialog = true },
         verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top),
         horizontalAlignment = Alignment.Start,
     ) {
@@ -60,7 +62,7 @@ fun AccompanyTypeButton(
                 onValueChange = {},
                 readOnly = true,
                 modifier = Modifier
-                    .width(330.dp)
+                    .weight(1f)
                     .height(20.dp),
                 textStyle = MateTripTypographySet.body04,
                 decorationBox = { innerTextField ->
@@ -82,7 +84,7 @@ fun AccompanyTypeButton(
                 painter = painterResource(fold_icon),
                 contentDescription = "Open dialog",
                 modifier = Modifier
-                    .size(24.dp)
+                    .size(36.dp)
                     .clickable { showDialog = true }
             )
         }
