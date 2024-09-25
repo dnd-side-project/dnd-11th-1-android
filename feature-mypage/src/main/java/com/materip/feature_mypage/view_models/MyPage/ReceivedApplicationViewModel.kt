@@ -19,12 +19,14 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ReceivedApplicationViewModel @Inject constructor(
     private val accompanyRepository: AccompanyRepository
 ): ViewModel() {
+    val isDone = MutableStateFlow<Boolean>(false)
     private val id = MutableStateFlow<Int?>(null)
     private val invalidTokenError = MutableStateFlow<Boolean>(false)
     private val notFoundTokenError = MutableStateFlow<Boolean>(false)
@@ -70,6 +72,22 @@ class ReceivedApplicationViewModel @Inject constructor(
             return
         }
         id.update{newId}
+    }
+
+    fun handleApplication(type: String){
+        viewModelScope.launch{
+            val result = if (type == "reject") accompanyRepository.postReject(id.value!!)
+                else accompanyRepository.postAccept(id.value!!)
+            if (result.error != null){
+                when(result.error!!.status){
+                    401 -> invalidTokenError.update{true}
+                    404 -> notFoundTokenError.update{true}
+                    else -> generalError.update{Pair(true, result.error!!.message)}
+                }
+                return@launch
+            }
+            isDone.update{true}
+        }
     }
 }
 
