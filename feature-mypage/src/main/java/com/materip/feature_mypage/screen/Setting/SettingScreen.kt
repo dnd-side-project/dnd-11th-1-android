@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.theme.MateTripColors
+import com.materip.feature_mypage.R
 
 @Composable
 fun SettingRoute(
@@ -117,6 +119,48 @@ fun SettingScreen(
                 modifier = Modifier.size(18.dp),
                 painter = painterResource(Icons.navigate_next_icon),
                 contentDescription = "Next Navigation"
+            )
+        }
+        Spacer(Modifier.height(20.dp))
+        HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = MateTripColors.Gray_03)
+        Spacer(Modifier.height(10.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth()
+                .height(50.dp)
+                .clickable{},
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(
+                modifier = Modifier.weight(1f),
+                text = "개인정보처리방침",
+                fontSize = 16.sp,
+                fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
+                color = MateTripColors.Gray_11
+            )
+            Icon(
+                modifier = Modifier.size(18.dp),
+                painter = painterResource(com.materip.core_designsystem.R.drawable.navigate_next_24px),
+                contentDescription = "Navigation Button"
+            )
+        }
+        Spacer(Modifier.height(10.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth()
+                .height(50.dp)
+                .clickable{},
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(
+                modifier = Modifier.weight(1f),
+                text = "오픈라이센스",
+                fontSize = 16.sp,
+                fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
+                color = MateTripColors.Gray_11
+            )
+            Icon(
+                modifier = Modifier.size(18.dp),
+                painter = painterResource(com.materip.core_designsystem.R.drawable.navigate_next_24px),
+                contentDescription = "Navigation Button"
             )
         }
     }
