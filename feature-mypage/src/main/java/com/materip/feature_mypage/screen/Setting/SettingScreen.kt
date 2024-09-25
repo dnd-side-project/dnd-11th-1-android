@@ -1,6 +1,7 @@
 package com.materip.feature_mypage.screen.Setting
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -66,7 +67,8 @@ fun SettingScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp),
+                .height(50.dp)
+                .clickable{navAccountInfo()},
             verticalAlignment = Alignment.CenterVertically
         ){
             Icon(
@@ -83,22 +85,18 @@ fun SettingScreen(
                 fontWeight = FontWeight(500)
             )
             Spacer(Modifier.weight(1f))
-            IconButton(
-                modifier= Modifier.size(18.dp),
-                onClick = navAccountInfo
-            ) {
-                Icon(
-                    modifier = Modifier.fillMaxSize(),
-                    painter = painterResource(Icons.navigate_next_icon),
-                    contentDescription = "Next Navigation"
-                )
-            }
+            Icon(
+                modifier = Modifier.size(18.dp),
+                painter = painterResource(Icons.navigate_next_icon),
+                contentDescription = "Next Navigation"
+            )
         }
         Spacer(Modifier.height(20.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp),
+                .height(50.dp)
+                .clickable{navAlarmSetting()},
             verticalAlignment = Alignment.CenterVertically
         ){
             Icon(
@@ -115,16 +113,11 @@ fun SettingScreen(
                 fontWeight = FontWeight(500)
             )
             Spacer(Modifier.weight(1f))
-            IconButton(
-                modifier= Modifier.size(18.dp),
-                onClick = navAlarmSetting
-            ) {
-                Icon(
-                    modifier = Modifier.fillMaxSize(),
-                    painter = painterResource(Icons.navigate_next_icon),
-                    contentDescription = "Next Navigation"
-                )
-            }
+            Icon(
+                modifier = Modifier.size(18.dp),
+                painter = painterResource(Icons.navigate_next_icon),
+                contentDescription = "Next Navigation"
+            )
         }
     }
 }
