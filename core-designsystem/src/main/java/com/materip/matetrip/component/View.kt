@@ -276,7 +276,7 @@ fun QuizItem(
                 },
                 singleLine = true,
                 textStyle = TextStyle(
-                    color = MateTripColors.Gray_07,
+                    color = if(readOnly) Color.Black else MateTripColors.Gray_07,
                     fontSize = 16.sp,
                     fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
                     fontWeight = FontWeight(500)
