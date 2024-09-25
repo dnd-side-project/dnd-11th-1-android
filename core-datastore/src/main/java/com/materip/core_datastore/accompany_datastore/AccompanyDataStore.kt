@@ -11,6 +11,7 @@ import com.materip.core_model.response.DefaultGetAccompanyResponseDto
 
 interface AccompanyDataStore {
     suspend fun getAccompanyApplication(id: Int): ResultResponse<AccompanyApplicationResponseDto>
+    suspend fun postCancel(id: Int): ResultResponse<Any>
     suspend fun getAccompanySend(requestDto: PagingRequestDto): ResultResponse<DefaultGetAccompanyResponseDto<BoardItemWithRequestId>>
     suspend fun getAccompanyReceived(requestDto: PagingRequestDto): ResultResponse<DefaultGetAccompanyResponseDto<AccompanyReceivedItem>>
     suspend fun getAccompanyRecords(requestDto: PagingRequestDto): ResultResponse<DefaultGetAccompanyResponseDto<BoardItemWithReviewId>>

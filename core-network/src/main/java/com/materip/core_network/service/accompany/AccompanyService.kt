@@ -19,6 +19,10 @@ interface AccompanyService {
         @Path("id") id: Int
     ): ApiResponse<AccompanyApplicationResponseDto>
 
+    @POST("/api/v1/accompany/requests/{id}")
+    suspend fun postCancel(
+        @Path("id") id: Int
+    ): ApiResponse<Any>
     @GET("/api/v1/accompany/requests/sended")
     suspend fun getAccompanySend(
         @Body requestDto: PagingRequestDto

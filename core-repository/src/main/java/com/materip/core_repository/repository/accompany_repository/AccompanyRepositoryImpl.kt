@@ -20,6 +20,10 @@ class AccompanyRepositoryImpl @Inject constructor(
         return accompanyDataStore.getAccompanyApplication(id)
     }
 
+    override suspend fun postCancel(id: Int): ResultResponse<Any> {
+        return accompanyDataStore.postCancel(id)
+    }
+
     override suspend fun getAccompanySend(requestDto: PagingRequestDto): ResultResponse<DefaultGetAccompanyResponseDto<BoardItemWithRequestId>> {
         return accompanyDataStore.getAccompanySend(requestDto)
     }
