@@ -406,7 +406,8 @@ private fun ReceivedApplicationUITest(){
                     boardId = 0,
                     userId = 0,
                     introduce = "안녕하세요! 저는 *** 이에요 저는 ~~~하는 사람이고 이런 여행 스타일을 가지고 있어요.\n\n음식취향은 해산물을 좋아해서 같이 여행 가게 된다면 해산물 먹으러 가고 싶어요!",
-                    chatLink = "http://www.kakaotalkhttp://www.kakao"
+                    chatLink = "http://www.kakaotalkhttp://www.kakao",
+                    received = false
                 )
             )
         ),
