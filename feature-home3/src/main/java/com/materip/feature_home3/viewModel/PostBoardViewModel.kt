@@ -229,11 +229,6 @@ class PostBoardViewModel @Inject constructor(
     }
 
     private fun createPost() {
-        if (!validateFields()) {
-            _uiState.value = PostBoardUiState.Error("모든 필드를 올바르게 입력해주세요.")
-            return
-        }
-
         viewModelScope.launch {
             _uiState.value = PostBoardUiState.Loading
             boardRequestDto = BoardRequestDto(
@@ -255,6 +250,7 @@ class PostBoardViewModel @Inject constructor(
 
             try {
                 Log.d("PostBoardViewModel", "Attempting to post board")
+
                 val result = boardRepository.postBoard(boardRequestDto)
                 Log.d("PostBoardViewModel", "API response: $result")
 
@@ -277,7 +273,10 @@ class PostBoardViewModel @Inject constructor(
 
                     else -> {
                         _uiState.value = PostBoardUiState.Error("알 수 없는 오류가 발생했습니다.")
-                        Log.e("PostBoardViewModel", "Unknown error occurred while creating post")
+                        Log.e(
+                            "PostBoardViewModel",
+                            "Unknown error occurred while creating post"
+                        )
                     }
                 }
             } catch (e: Exception) {

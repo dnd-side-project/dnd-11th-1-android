@@ -1,6 +1,5 @@
 package com.materip.feature_home3.ui
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.feature_home3.intent.PostBoardIntent
 import com.materip.feature_home3.state.ImageUploadState
 import com.materip.feature_home3.state.PostBoardUiState
@@ -38,26 +38,25 @@ import com.materip.feature_home3.ui.component.TravelDateCalendar
 import com.materip.feature_home3.viewModel.PostBoardViewModel
 
 // 동행글 작성 화면
-@SuppressLint("UnrememberedMutableState")
 @Composable
 fun PostBoardScreen(
     viewModel: PostBoardViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val imageUploadState by viewModel.imageUploadState.collectAsState()
     var tagInput by remember { mutableStateOf("") }
 
-    val title by viewModel.title.collectAsState()
-    val content by viewModel.content.collectAsState()
-    val gender by viewModel.preferredGender.collectAsState()
-    val age by viewModel.preferredAge.collectAsState()
-    val tags by viewModel.tagNames.collectAsState()
-    val selectedType by viewModel.category.collectAsState()
-    val selectedRegion by viewModel.region.collectAsState()
-    val startDate by viewModel.startDate.collectAsState()
-    val endDate by viewModel.endDate.collectAsState()
-    val capacity by viewModel.capacity.collectAsState()
-    val imageUris by viewModel.imageUris.collectAsState()
+    val title by viewModel.title.collectAsStateWithLifecycle()
+    val content by viewModel.content.collectAsStateWithLifecycle()
+    val gender by viewModel.preferredGender.collectAsStateWithLifecycle()
+    val age by viewModel.preferredAge.collectAsStateWithLifecycle()
+    val tags by viewModel.tagNames.collectAsStateWithLifecycle()
+    val selectedType by viewModel.category.collectAsStateWithLifecycle()
+    val selectedRegion by viewModel.region.collectAsStateWithLifecycle()
+    val startDate by viewModel.startDate.collectAsStateWithLifecycle()
+    val endDate by viewModel.endDate.collectAsStateWithLifecycle()
+    val capacity by viewModel.capacity.collectAsStateWithLifecycle()
+    val imageUris by viewModel.imageUris.collectAsStateWithLifecycle()
 
     when (imageUploadState) {
         is ImageUploadState.Loading -> CircularProgressIndicator()
@@ -65,7 +64,6 @@ fun PostBoardScreen(
         is ImageUploadState.Success -> {
             // Handle success state if needed
         }
-
         else -> {}
     }
 
