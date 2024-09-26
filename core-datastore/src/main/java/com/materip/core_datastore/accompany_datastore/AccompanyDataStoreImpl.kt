@@ -30,6 +30,16 @@ class AccompanyDataStoreImpl @Inject constructor(
         return result
     }
 
+    override suspend fun postCancel(id: Int): ResultResponse<Any> {
+        val result = ResultResponse<Any>()
+        accompanyService.postCancel(id).suspendOnError{
+            result.error = Json.decodeFromString("${this.apiMessage}")
+        }.suspendOnSuccess {
+            result.data = this.data
+        }
+        return result
+    }
+
     override suspend fun getAccompanySend(requestDto: PagingRequestDto): ResultResponse<DefaultGetAccompanyResponseDto<BoardItemWithRequestId>> {
         val result = ResultResponse<DefaultGetAccompanyResponseDto<BoardItemWithRequestId>>()
         accompanyService.getAccompanySend(requestDto).suspendOnError{
@@ -64,6 +74,26 @@ class AccompanyDataStoreImpl @Inject constructor(
         accompanyService.getAccompanyMyPost(requestDto).suspendOnError{
             result.error = Json.decodeFromString("${this.apiMessage}")
         }.suspendOnSuccess{
+            result.data = this.data
+        }
+        return result
+    }
+
+    override suspend fun postReject(id: Int): ResultResponse<Any> {
+        val result = ResultResponse<Any>()
+        accompanyService.postReject(id).suspendOnError{
+            result.error = Json.decodeFromString("${this.apiMessage}")
+        }.suspendOnSuccess {
+            result.data = this.data
+        }
+        return result
+    }
+
+    override suspend fun postAccept(id: Int): ResultResponse<Any> {
+        val result = ResultResponse<Any>()
+        accompanyService.postAccept(id).suspendOnError{
+            result.error = Json.decodeFromString("${this.apiMessage}")
+        }.suspendOnSuccess {
             result.data = this.data
         }
         return result

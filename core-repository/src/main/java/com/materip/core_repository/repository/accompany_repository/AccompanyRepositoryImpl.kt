@@ -20,6 +20,10 @@ class AccompanyRepositoryImpl @Inject constructor(
         return accompanyDataStore.getAccompanyApplication(id)
     }
 
+    override suspend fun postCancel(id: Int): ResultResponse<Any> {
+        return accompanyDataStore.postCancel(id)
+    }
+
     override suspend fun getAccompanySend(requestDto: PagingRequestDto): ResultResponse<DefaultGetAccompanyResponseDto<BoardItemWithRequestId>> {
         return accompanyDataStore.getAccompanySend(requestDto)
     }
@@ -34,5 +38,13 @@ class AccompanyRepositoryImpl @Inject constructor(
 
     override suspend fun getAccompanyMyPost(requestDto: PagingRequestDto): ResultResponse<DefaultGetAccompanyResponseDto<BoardItem>> {
         return accompanyDataStore.getAccompanyMyPost(requestDto)
+    }
+
+    override suspend fun postReject(id: Int): ResultResponse<Any> {
+        return accompanyDataStore.postReject(id)
+    }
+
+    override suspend fun postAccept(id: Int): ResultResponse<Any> {
+        return accompanyDataStore.postAccept(id)
     }
 }

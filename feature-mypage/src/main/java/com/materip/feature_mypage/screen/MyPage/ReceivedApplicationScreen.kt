@@ -23,6 +23,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -63,7 +64,10 @@ import com.materip.core_model.ui_model.Region
 import com.materip.core_model.ui_model.TravelStyle
 import com.materip.feature_mypage.view_models.MyPage.ReceivedApplicationUiState
 import com.materip.feature_mypage.view_models.MyPage.ReceivedApplicationViewModel
+import com.materip.matetrip.toast.CommonToastView
 import com.materip.matetrip.toast.ErrorView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Composable
 fun ReceivedApplicationRoute(
@@ -75,19 +79,33 @@ fun ReceivedApplicationRoute(
     viewModel.setId(id)
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     val errState = viewModel.errorState.collectAsStateWithLifecycle()
+    val isDone = viewModel.isDone.collectAsStateWithLifecycle()
+    var showToast by remember{mutableStateOf(false)}
 
     ReceivedApplicationScreen(
+        isDone = isDone.value,
         uiState = uiState.value,
         errState = errState.value,
+        onAcceptClick = { viewModel.handleApplication("accept") },
+        onRejectClick = { viewModel.handleApplication("reject") },
         navBack = navBack,
         navProfileDetail = navProfileDetail
     )
+    LaunchedEffect(isDone.value) {
+        if(isDone.value) showToast = true
+    }
+    if(showToast){
+        CommonToastView(message = "완료됐습니다.")
+    }
 }
 
 @Composable
 fun ReceivedApplicationScreen(
+    isDone: Boolean,
     uiState: ReceivedApplicationUiState,
     errState: ErrorState,
+    onAcceptClick: () -> Unit,
+    onRejectClick: () -> Unit,
     navBack: () -> Unit,
     navProfileDetail: () -> Unit
 ){
@@ -103,7 +121,10 @@ fun ReceivedApplicationScreen(
         }
         is ReceivedApplicationUiState.Success -> {
             SendApplicationContent(
+                isDone = isDone,
                 data = uiState.data,
+                onAcceptClick = onAcceptClick,
+                onRejectClick = onRejectClick,
                 navProfileDetail = navProfileDetail,
                 navBack = navBack,
             )
@@ -113,7 +134,10 @@ fun ReceivedApplicationScreen(
 
 @Composable
 private fun SendApplicationContent(
+    isDone: Boolean,
     data: AccompanyApplicationResponseDto,
+    onAcceptClick: () -> Unit,
+    onRejectClick: () -> Unit,
     navProfileDetail: () -> Unit,
     navBack: () -> Unit
 ){
@@ -135,23 +159,7 @@ private fun SendApplicationContent(
             append("가 됩니다.")
         }
     }
-    var isSelected by remember{mutableStateOf("거절")}
-    var dialogMessage = remember{derivedStateOf{
-        if(isSelected == "거절") "정말 거절하시겠습니까?" else "정말 수락하시겠습니까?"
-    }}
-    var isOpen by remember{mutableStateOf(false)}
-    if(isOpen){
-        ConfirmationDialog(
-            dialogMsg = dialogMessage.value,
-            onOkClick = {
-                /** is selected == "수락" 
-                 * 수락 api >> navigation 뒤로 */
-                /** is selected == "거절"
-                 * 거절 api >> navigation 뒤로 */
-            },
-            onDismissRequest = {isOpen = false}
-        )
-    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -266,11 +274,8 @@ private fun SendApplicationContent(
                     textColor = MateTripColors.Gray_06,
                     fontSize = 14.sp,
                     btnColor = MateTripColors.InactiveColor,
-                    isEnabled = true,
-                    onClick = {
-                        isSelected = "거절"
-                        isOpen = true
-                    }
+                    isEnabled = !isDone,
+                    onClick = onRejectClick
                 )
                 Spacer(Modifier.width(10.dp))
                 CustomButton(
@@ -282,11 +287,8 @@ private fun SendApplicationContent(
                     textColor = Color.White,
                     fontSize = 14.sp,
                     btnColor = Color.Black,
-                    isEnabled = true,
-                    onClick = {
-                        isSelected = "수락"
-                        isOpen = true
-                    }
+                    isEnabled = !isDone,
+                    onClick = onAcceptClick
                 )
             }
         }
@@ -404,12 +406,16 @@ private fun ReceivedApplicationUITest(){
                     boardId = 0,
                     userId = 0,
                     introduce = "안녕하세요! 저는 *** 이에요 저는 ~~~하는 사람이고 이런 여행 스타일을 가지고 있어요.\n\n음식취향은 해산물을 좋아해서 같이 여행 가게 된다면 해산물 먹으러 가고 싶어요!",
-                    chatLink = "http://www.kakaotalkhttp://www.kakao"
+                    chatLink = "http://www.kakaotalkhttp://www.kakao",
+                    received = false
                 )
             )
         ),
         errState = ErrorState.Loading,
         navBack = {},
-        navProfileDetail = {}
+        navProfileDetail = {},
+        onAcceptClick = {},
+        onRejectClick = {},
+        isDone = false
     )
 }

@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.kapt)
+    id("com.google.android.gms.oss-licenses-plugin")
 }
 
 val localProperties = Properties().apply {
@@ -87,6 +88,7 @@ dependencies {
     kapt(libs.bundles.hilt.kapt)
     kapt(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
+    implementation(libs.open.licenses) //open licence
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

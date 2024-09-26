@@ -263,47 +263,64 @@ fun QuizItem(
                 )
             }
             Spacer(Modifier.width(8.dp))
-            BasicTextField(
-                modifier = Modifier
-                    .weight(1f)
-                    .height(60.dp)
-                    .background(color = Color.White, shape = RoundedCornerShape(10.dp)),
-                readOnly = readOnly,
-                value = titleText,
-                onValueChange = {
-                    titleText = it
-                    onUpdateTitle(it)
-                },
-                singleLine = true,
-                textStyle = TextStyle(
-                    color = MateTripColors.Gray_07,
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
-                    fontWeight = FontWeight(500)
-                ),
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Done
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        keyboardController?.hide()
-                        readOnly = true
-                    }
-                )
-            ){
+            if (readOnly){
                 Row(
+                    modifier = Modifier.weight(1f).height(60.dp)
+                        .background(color = Color.White, shape = RoundedCornerShape(10.dp)),
                     verticalAlignment = Alignment.CenterVertically
                 ){
-                    if(titleText.isNotEmpty()){
-                        it()
-                    } else {
-                        Text(
-                            text = "제목을 작성해 주세요.",
-                            fontSize = 16.sp,
-                            fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
-                            fontWeight = FontWeight(400),
-                            color = MateTripColors.Gray_07
-                        )
+                    Text(
+                        modifier = Modifier.weight(1f),
+                        text = titleText,
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                        fontWeight = FontWeight(500),
+                        color = Color.Black
+                    )
+                }
+            } else {
+                BasicTextField(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(60.dp)
+                        .background(color = Color.White, shape = RoundedCornerShape(10.dp)),
+                    readOnly = readOnly,
+                    value = titleText,
+                    onValueChange = {
+                        titleText = it
+                        onUpdateTitle(it)
+                    },
+                    singleLine = true,
+                    textStyle = TextStyle(
+                        color = MateTripColors.Gray_07,
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                        fontWeight = FontWeight(500)
+                    ),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            keyboardController?.hide()
+                            readOnly = true
+                        }
+                    )
+                ){
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        if(titleText.isNotEmpty()){
+                            it()
+                        } else {
+                            Text(
+                                text = "제목을 작성해 주세요.",
+                                fontSize = 16.sp,
+                                fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+                                fontWeight = FontWeight(400),
+                                color = MateTripColors.Gray_07
+                            )
+                        }
                     }
                 }
             }

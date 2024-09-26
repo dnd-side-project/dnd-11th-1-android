@@ -44,6 +44,7 @@ import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_model.request.AccompanyApplicationResponseDto
 import com.materip.feature_mypage.view_models.MyPage.SendApplicationDescUiState
 import com.materip.feature_mypage.view_models.MyPage.SendApplicationDescViewModel
+import com.materip.matetrip.toast.CommonToastView
 import com.materip.matetrip.toast.ErrorView
 
 @Composable
@@ -56,18 +57,24 @@ fun SendApplicationRoute(
     viewModel.setId(id)
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     val errState = viewModel.errorState.collectAsStateWithLifecycle()
+    val isDone = viewModel.isDone.collectAsStateWithLifecycle()
 
     SendApplicationScreen(
+        isDone = isDone.value,
         uiState = uiState.value,
         errState = errState.value,
         onClickCancel = { viewModel.cancelApplication() },
         navBack = navBack,
         navPostBoard = navPostBoard
     )
+    if(isDone.value){
+        CommonToastView(message = "취소가 완료되었습니다.")
+    }
 }
 
 @Composable
 fun SendApplicationScreen(
+    isDone: Boolean,
     uiState: SendApplicationDescUiState,
     errState: ErrorState,
     onClickCancel: () -> Unit,
@@ -86,6 +93,7 @@ fun SendApplicationScreen(
         }
         is SendApplicationDescUiState.Success -> {
             SendApplicationContent(
+                isDone = isDone,
                 data = uiState.data,
                 onClickCancel = onClickCancel,
                 navBack = navBack,
@@ -97,6 +105,7 @@ fun SendApplicationScreen(
 
 @Composable
 private fun SendApplicationContent(
+    isDone: Boolean,
     data: AccompanyApplicationResponseDto,
     onClickCancel: () -> Unit,
     navBack: () -> Unit,
@@ -119,15 +128,13 @@ private fun SendApplicationContent(
             append("가 됩니다.")
         }
     }
-    var isCancellable by remember{mutableStateOf(true)}
     var isOpen by remember{mutableStateOf(false)}
     if(isOpen){
         ConfirmationDialog(
             dialogMsg = "취소된 동행 신청은 복구가 불가능해요.\n동행 신청을 취소하시나요?",
             onOkClick = {
-                isOpen = false
-                isCancellable = false
                 onClickCancel()
+                isOpen = false
             },
             onDismissRequest = {isOpen = false}
         )
@@ -225,11 +232,11 @@ private fun SendApplicationContent(
                     .fillMaxWidth()
                     .height(54.dp),
                 shape = RoundedCornerShape(size = 10.dp),
-                btnText = if(isCancellable) "동행 신청 취소" else "취소 완료",
-                textColor = if(isCancellable) Color.White else MateTripColors.Gray_06,
+                btnText = if(!isDone) "동행 신청 취소" else "취소 완료",
+                textColor = if(!isDone) Color.White else MateTripColors.Gray_06,
                 fontSize = 14.sp,
-                btnColor = if(isCancellable) Color.Black else MateTripColors.Blue_03,
-                isEnabled = isCancellable,
+                btnColor = if(!isDone) Color.Black else MateTripColors.Blue_03,
+                isEnabled = !isDone,
                 onClick = {isOpen = true}
             )
         }
@@ -240,6 +247,7 @@ private fun SendApplicationContent(
 @Preview
 private fun SendApplicationUITest(){
     SendApplicationScreen(
+        isDone = false,
         uiState = SendApplicationDescUiState.Loading,
         errState = ErrorState.Loading,
         onClickCancel = {},

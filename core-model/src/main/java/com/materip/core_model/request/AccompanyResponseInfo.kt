@@ -7,5 +7,6 @@ data class AccompanyResponseInfo(
     val boardId: Int,
     val userId: Int,
     val introduce: String,
-    val chatLink: String
+    val chatLink: String,
+    val received: Boolean,
 )

@@ -61,6 +61,7 @@ dependencies {
     //hilt
     implementation(libs.bundles.hilt.impl)
     kapt(libs.bundles.hilt.kapt)
+    implementation(libs.open.licenses) //open licence
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

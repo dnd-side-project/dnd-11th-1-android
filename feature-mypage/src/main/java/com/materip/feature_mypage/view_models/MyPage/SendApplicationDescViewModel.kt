@@ -22,6 +22,7 @@ import javax.inject.Inject
 class SendApplicationDescViewModel @Inject constructor(
     private val accompanyRepository: AccompanyRepository
 ): ViewModel() {
+    val isDone = MutableStateFlow<Boolean>(false)
     private val applicationId = MutableStateFlow<Int?>(null)
     private val invalidTokenError = MutableStateFlow<Boolean>(false)
     private val notFoundTokenError = MutableStateFlow<Boolean>(false)
@@ -68,6 +69,18 @@ class SendApplicationDescViewModel @Inject constructor(
     }
 
     fun cancelApplication(){
+        viewModelScope.launch{
+            val result = accompanyRepository.postCancel(applicationId.value!!)
+            if (result.error != null){
+                when(result.error!!.status){
+                    401 -> invalidTokenError.update{true}
+                    404 -> notFoundTokenError.update{true}
+                    else -> generalError.update{Pair(true, result.error!!.message)}
+                }
+                return@launch
+            }
+            isDone.update{true}
+        }
     }
 }
 

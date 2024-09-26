@@ -37,6 +37,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -76,8 +77,11 @@ import com.materip.core_model.ui_model.TravelInterest
 import com.materip.core_model.ui_model.TravelStyle
 import com.materip.feature_mypage.view_models.MyPage.EditProfileUiState
 import com.materip.feature_mypage.view_models.MyPage.EditProfileViewModel
+import com.materip.matetrip.toast.CommonToastView
 import com.materip.matetrip.toast.ErrorView
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun EditProfileRoute(
@@ -88,6 +92,8 @@ fun EditProfileRoute(
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     val errState = viewModel.errorState.collectAsStateWithLifecycle()
     val images = viewModel.images
+    val isDone = viewModel.isDone.collectAsStateWithLifecycle()
+    var showToast by remember{mutableStateOf(false)}
     EditProfileScreen(
         uiState = uiState.value,
         errState = errState.value,
@@ -112,6 +118,17 @@ fun EditProfileRoute(
         onDeleteImage = {viewModel.deleteImage(it)},
         onUpdateProfileImg = { viewModel.updateProfileImg(context, it) }
     )
+
+    if(showToast){
+        CommonToastView(message = "프로필 수정 완료")
+        showToast = false
+    }
+    LaunchedEffect(isDone.value){
+        if(isDone.value){
+            showToast = true
+            navBack()
+        }
+    }
 }
 
 @Composable
@@ -183,15 +200,21 @@ private fun EditProfileMainContent(
     val coroutine = rememberCoroutineScope()
     val context = LocalContext.current
     var selected by remember{mutableStateOf("")}
-    var profileImg by remember{mutableStateOf(initProfileImg)}
-    var nickname by remember{mutableStateOf(initNickname)}
-    var introduction by remember{mutableStateOf(initDescription ?: "")}
+    var profileImg by remember{mutableStateOf("")}
+    var nickname by remember{mutableStateOf("")}
+    var introduction by remember{mutableStateOf("")}
     var birthYear by remember{mutableStateOf(initBirthYear)}
     var gender by remember{mutableStateOf(if(initGender == "MALE") Gender.MALE else Gender.FEMALE)}
     val travelPreferences = remember{ mutableStateListOf(*initTravelPreferences.toTypedArray())}
     val travelStyles = remember{ mutableStateListOf(*initTravelStyles.toTypedArray()) }
     val foodPreferences = remember{ mutableStateListOf(*initFoodPreferences.toTypedArray()) }
-    var snsLink by remember{mutableStateOf(initSnsLink ?: "")}
+    var snsLink by remember{mutableStateOf("")}
+    LaunchedEffect(Unit){
+        nickname = initNickname
+        profileImg = initProfileImg
+        introduction = initDescription ?: ""
+        snsLink = initSnsLink ?: ""
+    }
     val myImageLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
         onResult = {
@@ -237,7 +260,6 @@ private fun EditProfileMainContent(
             onBackClick = navBack,
             onClick = {
                 onEditClick(profileImg,nickname,introduction,birthYear,gender.name,travelPreferences,travelStyles,foodPreferences,snsLink,images)
-                navBack()
             },
             menuText = "확인"
         )
@@ -258,11 +280,15 @@ private fun EditProfileMainContent(
                         .background(color = MateTripColors.Blue_04, shape = CircleShape)
                         .clickable {
                             selected = "profile"
-                            if(checkPermission(context, "camera")){
-                                profileLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                            if (checkPermission(context, "camera")) {
+                                profileLauncher.launch(
+                                    PickVisualMediaRequest(
+                                        ActivityResultContracts.PickVisualMedia.ImageOnly
+                                    )
+                                )
                             } else {
                                 requestPermissionLauncher.launch(
-                                    if (Build.VERSION.SDK_INT >= 33){
+                                    if (Build.VERSION.SDK_INT >= 33) {
                                         Manifest.permission.READ_MEDIA_IMAGES
                                     } else {
                                         Manifest.permission.READ_EXTERNAL_STORAGE
@@ -289,7 +315,7 @@ private fun EditProfileMainContent(
             NicknameEdit(
                 nickname = nickname,
                 onNicknameUpdate = {
-                    if(nickname.length <= 6){nickname = it}
+                    if(it.length <= 6){nickname = it}
                 }
             )
             Spacer(Modifier.height(40.dp))

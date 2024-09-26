@@ -228,7 +228,7 @@ private fun ReviewDescriptionMainContent(
                     Spacer(Modifier.height(20.dp))
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = reviewContent,
+                        text = if(reviewContent.isNullOrEmpty()) "작성한 동행 후기가 없어요." else reviewContent,
                         fontSize = 14.sp,
                         fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.noto_sans_kr)),
                         fontWeight = FontWeight(400),
