@@ -1,5 +1,6 @@
 package com.materip.feature_home3.ui
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -46,7 +47,7 @@ fun HomeScreen(
 
     val listState = rememberLazyListState()
     var isLoading by remember { mutableStateOf(false) }
-    var cursor: String? by remember { mutableStateOf(null) }
+    var cursor by remember { mutableStateOf<String?>(null) }
     val size = 8
 
     var query by remember { mutableStateOf("") }
@@ -63,6 +64,7 @@ fun HomeScreen(
     val onClearSearch = {
         query = ""
         isSearching = false
+        cursor = null
         val initialRequest = PagingRequestDto(cursor = null, size = size)
         viewModel.handleIntent(BoardListIntent.LoadBoardList(initialRequest))
     }
@@ -96,6 +98,7 @@ fun HomeScreen(
                 ) {
                     isLoading = true
                     cursor = boardListResponse.cursor
+                    Log.d("HomeScreen", "Updated cursor: $cursor")
                     val pagingRequestDto = PagingRequestDto(cursor = cursor, size = size)
                     viewModel.handleIntent(BoardListIntent.LoadBoardList(pagingRequestDto))
                     isLoading = false
@@ -140,7 +143,8 @@ fun HomeScreen(
                 }
 
                 is BoardListUiState.Error -> {
-                    Text("오류: ${(uiState as BoardListUiState.Error).message}")
+                    val errorMessage = (uiState as? BoardListUiState.Error)?.message ?: "알 수 없는 오류"
+                    Text("오류: $errorMessage")
                 }
 
                 else -> {

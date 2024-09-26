@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 data class BoardListResponse(
     val hasNext: Boolean,
     val data: List<BoardItem>,
-    val cursor: String
+    val cursor: String?
 )

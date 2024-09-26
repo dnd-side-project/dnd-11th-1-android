@@ -2,6 +2,7 @@ package com.materip.feature_home3.viewModel
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.materip.core_model.accompany_board.create.BoardRequestDto
@@ -38,42 +39,79 @@ class PostBoardViewModel @Inject constructor(
     private val _imageUploadState = MutableStateFlow<ImageUploadState>(ImageUploadState.Idle)
     val imageUploadState: StateFlow<ImageUploadState> = _imageUploadState
 
-    private val _generalError = MutableStateFlow<Pair<Boolean, String>>(Pair(false, ""))
+    private val _generalError = MutableStateFlow(Pair(false, ""))
     val generalError: StateFlow<Pair<Boolean, String>> = _generalError
 
     private val _title = MutableStateFlow("")
+    val title: StateFlow<String> = _title
+
     private val _content = MutableStateFlow("")
-    private val _tagNames = MutableStateFlow(listOf<String>())
+    val content: StateFlow<String> = _content
+
+    private val _tagNames = MutableStateFlow<List<String>>(emptyList())
+    val tagNames: StateFlow<List<String>> = _tagNames
+
     private val _preferredGender = MutableStateFlow(PreferredGender.ANY)
+    val preferredGender: StateFlow<PreferredGender?> = _preferredGender
+
     private val _preferredAge = MutableStateFlow(PreferredAge.ANY)
+    val preferredAge: StateFlow<PreferredAge?> = _preferredAge
+
     private val _category = MutableStateFlow<List<Category>>(emptyList())
-    private val _region = MutableStateFlow(Region.SEOUL)
+    val category: StateFlow<List<Category>> = _category
+
+    private val _region = MutableStateFlow<Region?>(null)
+    val region: StateFlow<Region?> = _region
+
     private val _startDate = MutableStateFlow("")
+    val startDate: StateFlow<String> = _startDate
+
     private val _endDate = MutableStateFlow("")
+    val endDate: StateFlow<String> = _endDate
+
     private val _capacity = MutableStateFlow(2)
-    private val _imageUris = MutableStateFlow(listOf<String>())
+    val capacity: StateFlow<Int> = _capacity
+
+    private val _imageUris = MutableStateFlow<List<String>>(emptyList())
+    val imageUris: StateFlow<List<String>> = _imageUris
+
     private val _boardStatus = MutableStateFlow(BoardStatus.RECRUITING)
+    val boardStatus: StateFlow<BoardStatus> = _boardStatus
+
+    private lateinit var boardRequestDto: BoardRequestDto
 
     fun handleIntent(intent: PostBoardIntent) {
-    when (intent) {
-        is PostBoardIntent.UpdateTitle -> updateTitle(intent.title)
-        is PostBoardIntent.UpdateContent -> updateContent(intent.content)
-        is PostBoardIntent.UpdateTagNames -> updateTags(intent.tagNames)
-        is PostBoardIntent.UpdateRegion -> updateRegion(intent.region)
-        is PostBoardIntent.UpdateStartDate -> updateStartDate(intent.startDate)
-        is PostBoardIntent.UpdateEndDate -> updateEndDate(intent.endDate)
-        is PostBoardIntent.UpdateCategory -> updateCategory(intent.category)
-        is PostBoardIntent.UpdateAge -> updateAge(intent.preferredAge)
-        is PostBoardIntent.UpdateGender -> updateGender(intent.preferredGender)
-        is PostBoardIntent.UpdateCapacity -> updateCapacity(intent.capacity)
-        is PostBoardIntent.UpdateImageUris -> updateImageUris(intent.imageUris)
-        is PostBoardIntent.UpdateBoardStatus -> updateBoardStatus(intent.boardStatus)
-        is PostBoardIntent.CreatePost -> createPost(toBoardRequestDto())
-        is PostBoardIntent.UploadImage -> uploadImage(intent.context, intent.uri)
-        is PostBoardIntent.DeleteImage -> deleteImage(intent.imagePath)
-        is PostBoardIntent.TransformToFile -> transformToFile(intent.context, intent.uri)
+        when (intent) {
+            is PostBoardIntent.UpdateTitle -> updateTitle(intent.title)
+            is PostBoardIntent.UpdateContent -> updateContent(intent.content)
+            is PostBoardIntent.UpdateTagNames -> updateTags(intent.tagNames)
+            is PostBoardIntent.UpdateRegion -> updateRegion(intent.region)
+            is PostBoardIntent.UpdateStartDate -> updateStartDate(intent.startDate)
+            is PostBoardIntent.UpdateEndDate -> updateEndDate(intent.endDate)
+            is PostBoardIntent.UpdateCategory -> updateCategory(intent.category)
+            is PostBoardIntent.UpdateAge -> updateAge(intent.preferredAge)
+            is PostBoardIntent.UpdateGender -> updateGender(intent.preferredGender)
+            is PostBoardIntent.UpdateCapacity -> updateCapacity(intent.capacity)
+            is PostBoardIntent.UpdateImageUris -> updateImageUris(intent.imageUris)
+            is PostBoardIntent.UpdateBoardStatus -> updateBoardStatus(intent.boardStatus)
+            is PostBoardIntent.CreatePost -> createPost()
+            is PostBoardIntent.UploadImage -> uploadImage(intent.context, intent.uri)
+            is PostBoardIntent.DeleteImage -> deleteImage(intent.imagePath)
+            is PostBoardIntent.TransformToFile -> transformToFile(intent.context, intent.uri)
+        }
     }
-}
+
+    private fun validateFields(): Boolean {
+        return title.value.isNotEmpty() &&
+                content.value.isNotEmpty() &&
+                tagNames.value.isNotEmpty() &&
+                region.value != null &&
+                startDate.value.isNotEmpty() &&
+                endDate.value.isNotEmpty() &&
+                preferredAge.value != null &&
+                preferredGender.value != null &&
+                category.value.isNotEmpty()
+    }
 
     private fun uploadImage(context: Context, uri: Uri?) {
         viewModelScope.launch {
@@ -108,7 +146,8 @@ class PostBoardViewModel @Inject constructor(
 
     private fun transformToFile(context: Context, uri: Uri): File? {
         val contentResolver = context.contentResolver
-        val filePath = (context.applicationInfo.dataDir + File.separator + System.currentTimeMillis())
+        val filePath =
+            (context.applicationInfo.dataDir + File.separator + System.currentTimeMillis())
         val file = File(filePath)
 
         try {
@@ -131,82 +170,119 @@ class PostBoardViewModel @Inject constructor(
 
     private fun updateTitle(newTitle: String) {
         _title.value = newTitle
+        Log.d("PostBoardViewModel", "Title updated: ${title.value}")
     }
 
     private fun updateContent(newContent: String) {
         _content.value = newContent
+        Log.d("PostBoardViewModel", "Content updated: ${content.value}")
     }
 
     private fun updateTags(newTags: List<String>) {
         _tagNames.value = newTags
+        Log.d("PostBoardViewModel", "Tags updated: ${tagNames.value}")
     }
 
     private fun updateGender(newGender: PreferredGender) {
         _preferredGender.value = newGender
+        Log.d("PostBoardViewModel", "Gender updated: ${preferredGender.value}")
     }
 
     private fun updateAge(newAge: PreferredAge) {
         _preferredAge.value = newAge
+        Log.d("PostBoardViewModel", "Age updated: ${preferredAge.value}")
     }
 
     private fun updateCategory(newCategory: List<Category>) {
         _category.value = newCategory
+        Log.d("PostBoardViewModel", "Category updated: ${category.value}")
     }
 
     private fun updateRegion(newRegion: Region) {
         _region.value = newRegion
+        Log.d("PostBoardViewModel", "Region updated: ${region.value}")
     }
 
     private fun updateStartDate(newStartDate: String) {
         _startDate.value = newStartDate
+        Log.d("PostBoardViewModel", "Start date updated: ${startDate.value}")
     }
 
     private fun updateEndDate(newEndDate: String) {
         _endDate.value = newEndDate
+        Log.d("PostBoardViewModel", "End date updated: ${endDate.value}")
     }
 
     private fun updateCapacity(newCapacity: Int) {
         _capacity.value = newCapacity
+        Log.d("PostBoardViewModel", "Capacity updated: ${capacity.value}")
     }
 
     private fun updateImageUris(newImageUris: List<String>) {
         _imageUris.value = newImageUris
+        Log.d("PostBoardViewModel", "Image URIs updated: ${imageUris.value}")
     }
 
     private fun updateBoardStatus(newBoardStatus: BoardStatus) {
         _boardStatus.value = newBoardStatus
+        Log.d("PostBoardViewModel", "Board status updated: ${boardStatus.value}")
     }
 
-    private fun createPost(boardRequestDto: BoardRequestDto) {
+    private fun createPost() {
         viewModelScope.launch {
             _uiState.value = PostBoardUiState.Loading
+            boardRequestDto = BoardRequestDto(
+                title = title.value,
+                content = content.value,
+                region = region.value ?: Region.SEOUL,
+                startDate = startDate.value,
+                endDate = endDate.value,
+                capacity = capacity.value,
+                boardStatus = boardStatus.value,
+                categories = category.value,
+                preferredAge = preferredAge.value ?: PreferredAge.ANY,
+                preferredGender = preferredGender.value ?: PreferredGender.ANY,
+                imageUrls = imageUris.value,
+                tagNames = tagNames.value
+            )
 
-            val result = boardRepository.postBoard(boardRequestDto)
-            val boardIdDto = result.data
+            Log.d("PostBoardViewModel", "BoardRequestDto created: $boardRequestDto")
 
-            _uiState.value = if (boardIdDto != null) {
-                _createdBoardIds.value += boardIdDto.boardId
-                PostBoardUiState.Success(boardIdDto)
-            } else {
-                PostBoardUiState.Error(result.error?.message ?: "게시글 작성에 실패했습니다.")
+            try {
+                Log.d("PostBoardViewModel", "Attempting to post board")
+
+                val result = boardRepository.postBoard(boardRequestDto)
+                Log.d("PostBoardViewModel", "API response: $result")
+
+                when {
+                    result.data != null -> {
+                        val boardIdDto = result.data
+                        _createdBoardIds.value += boardIdDto!!.boardId
+                        _uiState.value = PostBoardUiState.Success(boardIdDto)
+                        Log.d(
+                            "PostBoardViewModel",
+                            "Post created successfully with ID: ${boardIdDto.boardId}"
+                        )
+                    }
+
+                    result.error != null -> {
+                        val errorMessage = result.error!!.message
+                        _uiState.value = PostBoardUiState.Error(errorMessage)
+                        Log.e("PostBoardViewModel", "Error creating post: $errorMessage")
+                    }
+
+                    else -> {
+                        _uiState.value = PostBoardUiState.Error("알 수 없는 오류가 발생했습니다.")
+                        Log.e(
+                            "PostBoardViewModel",
+                            "Unknown error occurred while creating post"
+                        )
+                    }
+                }
+            } catch (e: Exception) {
+                _uiState.value = PostBoardUiState.Error("네트워크 오류: ${e.message}")
+                Log.e("PostBoardViewModel", "Exception while creating post", e)
             }
         }
-    }
-
-    fun toBoardRequestDto(): BoardRequestDto {
-        return BoardRequestDto(
-            title = _title.value,
-            content = _content.value,
-            region = _region.value,
-            startDate = _startDate.value,
-            endDate = _endDate.value,
-            capacity = _capacity.value,
-            boardStatus = _boardStatus.value,
-            categories = _category.value,
-            preferredAge = _preferredAge.value,
-            preferredGender = _preferredGender.value,
-            imageUrls = _imageUris.value,
-            tagNames = _tagNames.value
-        )
     }
 }

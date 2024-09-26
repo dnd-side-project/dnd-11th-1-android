@@ -181,7 +181,7 @@ fun GetTopBar(
                 screenTitle = "동행 모집하기",
                 onNavigateUp = { navController.navigateUp() },
                 onPostClick = {
-                    viewModel.handleIntent(PostBoardIntent.CreatePost(viewModel.toBoardRequestDto()))
+                    viewModel.handleIntent(PostBoardIntent.CreatePost)
                     navController.navigate(Screen.Home.route)
                 }
             )
