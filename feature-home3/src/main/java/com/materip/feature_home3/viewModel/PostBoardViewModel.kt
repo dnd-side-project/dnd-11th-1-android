@@ -76,9 +76,7 @@ class PostBoardViewModel @Inject constructor(
     val imageUris: StateFlow<List<String>> = _imageUris
 
     private val _boardStatus = MutableStateFlow(BoardStatus.RECRUITING)
-    val boardStatus: StateFlow<BoardStatus> = _boardStatus
-
-    private lateinit var boardRequestDto: BoardRequestDto
+    private val boardStatus: StateFlow<BoardStatus> = _boardStatus
 
     fun handleIntent(intent: PostBoardIntent) {
         when (intent) {
@@ -98,19 +96,8 @@ class PostBoardViewModel @Inject constructor(
             is PostBoardIntent.UploadImage -> uploadImage(intent.context, intent.uri)
             is PostBoardIntent.DeleteImage -> deleteImage(intent.imagePath)
             is PostBoardIntent.TransformToFile -> transformToFile(intent.context, intent.uri)
+            else -> {}
         }
-    }
-
-    private fun validateFields(): Boolean {
-        return title.value.isNotEmpty() &&
-                content.value.isNotEmpty() &&
-                tagNames.value.isNotEmpty() &&
-                region.value != null &&
-                startDate.value.isNotEmpty() &&
-                endDate.value.isNotEmpty() &&
-                preferredAge.value != null &&
-                preferredGender.value != null &&
-                category.value.isNotEmpty()
     }
 
     private fun uploadImage(context: Context, uri: Uri?) {
@@ -231,21 +218,21 @@ class PostBoardViewModel @Inject constructor(
     private fun createPost() {
         viewModelScope.launch {
             _uiState.value = PostBoardUiState.Loading
-            boardRequestDto = BoardRequestDto(
-                title = title.value,
-                content = content.value,
-                region = region.value ?: Region.SEOUL,
-                startDate = startDate.value,
-                endDate = endDate.value,
-                capacity = capacity.value,
-                boardStatus = boardStatus.value,
-                categories = category.value,
-                preferredAge = preferredAge.value ?: PreferredAge.ANY,
-                preferredGender = preferredGender.value ?: PreferredGender.ANY,
-                imageUrls = imageUris.value,
-                tagNames = tagNames.value
-            )
 
+            val boardRequestDto = BoardRequestDto(
+                title = _title.value,
+                content = _content.value,
+                region = _region.value ?: Region.SEOUL,
+                startDate = _startDate.value,
+                endDate = _endDate.value,
+                capacity = _capacity.value,
+                boardStatus = _boardStatus.value,
+                categories = _category.value,
+                preferredAge = _preferredAge.value,
+                preferredGender = _preferredGender.value,
+                imageUrls = _imageUris.value.map { it },
+                tagNames = _tagNames.value
+            )
             Log.d("PostBoardViewModel", "BoardRequestDto created: $boardRequestDto")
 
             try {
