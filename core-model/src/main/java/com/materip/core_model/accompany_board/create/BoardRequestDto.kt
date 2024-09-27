@@ -12,14 +12,14 @@ import kotlinx.serialization.Serializable
 data class BoardRequestDto(
     val title: String,
     val content: String,
-    val region: Region,
+    val region: String,
     val startDate: String,
     val endDate: String,
     val capacity: Int,
-    val boardStatus: BoardStatus,
-    val categories: List<Category>,
-    val preferredAge: PreferredAge,
-    val preferredGender: PreferredGender,
+    val boardStatus: String,
+    val categories: List<String>,
+    val preferredAge: String,
+    val preferredGender: String,
     val imageUrls: List<String>,
     val tagNames: List<String>
 )
