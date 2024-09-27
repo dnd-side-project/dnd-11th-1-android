@@ -14,6 +14,7 @@ import com.materip.feature_home3.ui.NavigateToPostScreen
 import com.materip.feature_home3.ui.NotificationScreen
 import com.materip.feature_home3.ui.PostBoardScreen
 import com.materip.feature_home3.ui.ProfileScreen
+import com.materip.feature_home3.viewModel.PostBoardViewModel
 import com.materip.feature_login.navigation.login
 import com.materip.feature_login.navigation.navigateToLogin
 import com.materip.feature_mypage.navigation.myPageGraph
@@ -48,7 +49,8 @@ import com.materip.feature_onboarding.navigation.selectTripStyle
 @Composable
 fun SetUpNavGraph(
     navController: NavHostController,
-    startDestination: String
+    startDestination: String,
+    postBoardViewModel: PostBoardViewModel
 ) {
     NavHost(
         navController = navController,
@@ -124,7 +126,9 @@ fun SetUpNavGraph(
 
         // 홈_게시글 작성_디폴트
         composable(Screen.Post.route) {
-            PostBoardScreen()
+            PostBoardScreen(
+                viewModel = postBoardViewModel
+            )
         }
 
         // 홈_게시글 진입
