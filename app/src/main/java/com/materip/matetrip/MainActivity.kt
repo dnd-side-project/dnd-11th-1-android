@@ -51,6 +51,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    private val postBoardViewModel: PostBoardViewModel by viewModels()
     private val viewModel: AppViewModel by viewModels()
     private val useBottomNavScreen = listOf(Screen.Home.route, MyPageRoute.MyPageRoute.name, SettingRoute.SettingRoute.name)
     private val requestMultiplePermissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){permission ->
@@ -78,7 +79,8 @@ class MainActivity : AppCompatActivity() {
                     topBar = {
                         GetTopBar(
                             currentRoute = currentRoute,
-                            navController = navController
+                            navController = navController,
+                            postBoardViewModel = postBoardViewModel
                         )
                     },
                     floatingActionButton = {
@@ -107,7 +109,8 @@ class MainActivity : AppCompatActivity() {
                         ) {
                             SetUpNavGraph(
                                 navController = navController,
-                                startDestination = startDestination
+                                startDestination = startDestination,
+                                postBoardViewModel = postBoardViewModel
                             )
                         }
                     }
@@ -139,9 +142,9 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun GetTopBar(
     currentRoute: String?,
-    navController: NavHostController
+    navController: NavHostController,
+    postBoardViewModel: PostBoardViewModel
 ) {
-    val viewModel: PostBoardViewModel = hiltViewModel()
     val profileViewModel: ProfileViewModel = hiltViewModel()
     val homeViewModel: HomeViewModel = hiltViewModel()
 
@@ -181,13 +184,13 @@ fun GetTopBar(
                 screenTitle = "동행 모집하기",
                 onNavigateUp = { navController.navigateUp() },
                 onPostClick = {
-                    viewModel.handleIntent(PostBoardIntent.CreatePost)
+                    postBoardViewModel.handleIntent(PostBoardIntent.CreatePost)
                     navController.navigate(Screen.Home.route)
                 }
             )
 
-            LaunchedEffect(viewModel.createdBoardIds) {
-                viewModel.createdBoardIds.collect { boardIds ->
+            LaunchedEffect(postBoardViewModel.createdBoardIds) {
+                postBoardViewModel.createdBoardIds.collect { boardIds ->
                     val newBoardId = boardIds.lastOrNull()
                     newBoardId?.let {
                         navController.navigate(Screen.NavigateToPost.route + "/${it}")
