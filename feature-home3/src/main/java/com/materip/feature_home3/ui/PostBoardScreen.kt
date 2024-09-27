@@ -36,6 +36,7 @@ import com.materip.feature_home3.ui.component.ImagePicker
 import com.materip.feature_home3.ui.component.SetCapacity
 import com.materip.feature_home3.ui.component.TravelDateCalendar
 import com.materip.feature_home3.viewModel.PostBoardViewModel
+import java.time.format.DateTimeFormatter
 
 // 동행글 작성 화면
 @Composable
@@ -43,20 +44,9 @@ fun PostBoardScreen(
     viewModel: PostBoardViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val formState by viewModel.formState.collectAsStateWithLifecycle()
     val imageUploadState by viewModel.imageUploadState.collectAsState()
     var tagInput by remember { mutableStateOf("") }
-
-    val title by viewModel.title.collectAsStateWithLifecycle()
-    val content by viewModel.content.collectAsStateWithLifecycle()
-    val gender by viewModel.preferredGender.collectAsStateWithLifecycle()
-    val age by viewModel.preferredAge.collectAsStateWithLifecycle()
-    val tags by viewModel.tagNames.collectAsStateWithLifecycle()
-    val selectedType by viewModel.category.collectAsStateWithLifecycle()
-    val selectedRegion by viewModel.region.collectAsStateWithLifecycle()
-    val startDate by viewModel.startDate.collectAsStateWithLifecycle()
-    val endDate by viewModel.endDate.collectAsStateWithLifecycle()
-    val capacity by viewModel.capacity.collectAsStateWithLifecycle()
-    val imageUris by viewModel.imageUris.collectAsStateWithLifecycle()
 
     when (imageUploadState) {
         is ImageUploadState.Loading -> CircularProgressIndicator()
@@ -68,7 +58,7 @@ fun PostBoardScreen(
     }
 
     when (uiState) {
-        is PostBoardUiState.Initial -> {
+        is PostBoardUiState.Initial, is PostBoardUiState.Success -> {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -79,7 +69,7 @@ fun PostBoardScreen(
             ) {
                 // 카메라, 사진 가져오기 버튼
                 ImagePicker(
-                    imageUris = imageUris,
+                    imageUris = formState.imageUris,
                     onImageUrisChange = {
                         viewModel.handleIntent(PostBoardIntent.UpdateImageUris(it))
                     },
@@ -93,13 +83,13 @@ fun PostBoardScreen(
 
                 // 제목 입력
                 AccompanyTitleInput(
-                    title = title,
+                    title = formState.title,
                     onTitleChange = { viewModel.handleIntent(PostBoardIntent.UpdateTitle(it)) }
                 )
 
                 // 내용 입력
                 AccompanyContentInput(
-                    content = content,
+                    content = formState.content,
                     onContentChange = { viewModel.handleIntent(PostBoardIntent.UpdateContent(it)) }
                 )
 
@@ -107,28 +97,29 @@ fun PostBoardScreen(
                 AccompanyTagInput(
                     tagInput = tagInput,
                     onTagInputChange = { tagInput = it },
-                    tags = tags,
+                    tags = formState.tagNames,
                     onTagAdd = { newTag ->
-                        if (newTag.isNotEmpty() && tags.size < 5 && !tags.contains(newTag)) {
-                            viewModel.handleIntent(PostBoardIntent.UpdateTagNames(tags + newTag))
+                        if (newTag.isNotEmpty() && formState.tagNames.size < 5 && !formState.tagNames.contains(newTag)) {
+                            viewModel.handleIntent(PostBoardIntent.UpdateTagNames(formState.tagNames + newTag))
                             tagInput = ""
                         }
                     },
                     onTagRemove = { tagToRemove ->
-                        viewModel.handleIntent(PostBoardIntent.UpdateTagNames(tags.filter { it != tagToRemove }))
+                        viewModel.handleIntent(PostBoardIntent.UpdateTagNames(formState.tagNames.filter { it != tagToRemove }))
                     }
                 )
 
                 // 여행 지역
                 AccompanyRegionButton(
-                    selectedRegion = selectedRegion,
+                    selectedRegion = formState.region,
                     onRegionSelected = { viewModel.handleIntent(PostBoardIntent.UpdateRegion(it)) }
                 )
 
                 // 여행 일정
+                val formatter = DateTimeFormatter.ISO_DATE_TIME
                 TravelDateCalendar(
-                    startDateString = startDate,
-                    endDateString = endDate
+                    startDateString = formState.startDate.format(formatter),
+                    endDateString = formState.endDate.format(formatter)
                 ) { start, end ->
                     viewModel.handleIntent(PostBoardIntent.UpdateStartDate(start))
                     viewModel.handleIntent(PostBoardIntent.UpdateEndDate(end))
@@ -136,7 +127,7 @@ fun PostBoardScreen(
 
                 // 동행 유형
                 AccompanyTypeButton(
-                    selectedCategories = selectedType,
+                    selectedCategories = formState.category,
                     onCategorySelected = {
                         viewModel.handleIntent(PostBoardIntent.UpdateCategory(it))
                     }
@@ -144,7 +135,7 @@ fun PostBoardScreen(
 
                 // 모집 인원
                 SetCapacity(
-                    capacity = capacity,
+                    capacity = formState.capacity,
                     onCapacityChange = {
                         viewModel.handleIntent(PostBoardIntent.UpdateCapacity(it))
                     }
@@ -152,7 +143,7 @@ fun PostBoardScreen(
 
                 // 모집 연령
                 AccompanyAgeButton(
-                    selectedAge = age,
+                    selectedAge = formState.preferredAge,
                     onAgeChange = {
                         viewModel.handleIntent(PostBoardIntent.UpdateAge(it))
                     }
@@ -160,7 +151,7 @@ fun PostBoardScreen(
 
                 // 모집 성별
                 AccompanyGenderButton(
-                    selectedGender = gender,
+                    selectedGender = formState.preferredGender,
                     onGenderChange = {
                         viewModel.handleIntent(PostBoardIntent.UpdateGender(it))
                     }
@@ -168,108 +159,7 @@ fun PostBoardScreen(
                 Spacer(modifier = Modifier.height(50.dp))
             }
         }
-
         is PostBoardUiState.Loading -> CircularProgressIndicator()
-        is PostBoardUiState.Success -> {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(start = 20.dp, end = 20.dp)
-                    .background(Color.White)
-                    .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(30.dp)
-            ) {
-                // 카메라, 사진 가져오기 버튼
-                ImagePicker(
-                    imageUris = imageUris,
-                    onImageUrisChange = {
-                        viewModel.handleIntent(PostBoardIntent.UpdateImageUris(it))
-                    },
-                    onUploadImage = { context, uri ->
-                        viewModel.handleIntent(PostBoardIntent.UploadImage(context, uri))
-                    },
-                    onDeleteImage = { imagePath ->
-                        viewModel.handleIntent(PostBoardIntent.DeleteImage(imagePath))
-                    }
-                )
-
-                // 제목 입력
-                AccompanyTitleInput(
-                    title = title,
-                    onTitleChange = { viewModel.handleIntent(PostBoardIntent.UpdateTitle(it)) }
-                )
-
-                // 내용 입력
-                AccompanyContentInput(
-                    content = content,
-                    onContentChange = { viewModel.handleIntent(PostBoardIntent.UpdateContent(it)) }
-                )
-
-                // 태그 등록
-                AccompanyTagInput(
-                    tagInput = tagInput,
-                    onTagInputChange = { tagInput = it },
-                    tags = tags,
-                    onTagAdd = { newTag ->
-                        if (newTag.isNotEmpty() && tags.size < 5 && !tags.contains(newTag)) {
-                            viewModel.handleIntent(PostBoardIntent.UpdateTagNames(tags + newTag))
-                            tagInput = ""
-                        }
-                    },
-                    onTagRemove = { tagToRemove ->
-                        viewModel.handleIntent(PostBoardIntent.UpdateTagNames(tags.filter { it != tagToRemove }))
-                    }
-                )
-
-                // 여행 지역
-                AccompanyRegionButton(
-                    selectedRegion = selectedRegion,
-                    onRegionSelected = { viewModel.handleIntent(PostBoardIntent.UpdateRegion(it)) }
-                )
-
-                // 여행 일정
-                TravelDateCalendar(
-                    startDateString = startDate,
-                    endDateString = endDate
-                ) { start, end ->
-                    viewModel.handleIntent(PostBoardIntent.UpdateStartDate(start))
-                    viewModel.handleIntent(PostBoardIntent.UpdateEndDate(end))
-                }
-
-                // 동행 유형
-                AccompanyTypeButton(
-                    selectedCategories = selectedType,
-                    onCategorySelected = {
-                        viewModel.handleIntent(PostBoardIntent.UpdateCategory(it))
-                    }
-                )
-
-                // 모집 인원
-                SetCapacity(
-                    capacity = capacity,
-                    onCapacityChange = {
-                        viewModel.handleIntent(PostBoardIntent.UpdateCapacity(it))
-                    }
-                )
-
-                // 모집 연령
-                AccompanyAgeButton(
-                    selectedAge = age,
-                    onAgeChange = {
-                        viewModel.handleIntent(PostBoardIntent.UpdateAge(it))
-                    }
-                )
-
-                // 모집 성별
-                AccompanyGenderButton(
-                    selectedGender = gender,
-                    onGenderChange = {
-                        viewModel.handleIntent(PostBoardIntent.UpdateGender(it))
-                    }
-                )
-                Spacer(modifier = Modifier.height(50.dp))
-            }
-        }
         is PostBoardUiState.Error -> Text("오류: ${(uiState as PostBoardUiState.Error).message}")
     }
 }
