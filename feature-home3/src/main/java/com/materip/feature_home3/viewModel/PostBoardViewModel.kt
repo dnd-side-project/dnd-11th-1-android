@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.materip.core_model.accompany_board.create.BoardFormState
 import com.materip.core_model.accompany_board.create.BoardRequestDto
+import com.materip.core_model.ui_model.Region
 import com.materip.core_repository.repository.home_repository.BoardRepository
 import com.materip.core_repository.repository.image_repository.ImageRepository
 import com.materip.feature_home3.intent.PostBoardIntent
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -75,16 +77,16 @@ class PostBoardViewModel @Inject constructor(
         boardRequest = BoardRequestDto(
             title = currentFormState.title,
             content = currentFormState.content,
-            preferredGender = currentFormState.preferredGender.toString(),
-            preferredAge = currentFormState.preferredAge.toString(),
-            tagNames = currentFormState.tagNames,
-            categories = currentFormState.category.map { it.toString() },
-            region = currentFormState.region.toString(),
-            startDate = currentFormState.startDate,
-            endDate = currentFormState.endDate,
+            region = currentFormState.region ?: Region.SEOUL,
+            startDate = currentFormState.startDate ?: LocalDateTime.now(),
+            endDate = currentFormState.endDate ?: LocalDateTime.now(),
             capacity = currentFormState.capacity,
+            boardStatus = currentFormState.boardStatus,
+            categories = currentFormState.category.map { it },
+            preferredAge = currentFormState.preferredAge,
+            preferredGender = currentFormState.preferredGender,
             imageUrls = currentFormState.imageUris,
-            boardStatus = currentFormState.boardStatus.toString()
+            tagNames = currentFormState.tagNames
         )
         Log.d("PostBoardViewModel", "updateField DTO created: $boardRequest")
     }

@@ -44,18 +44,17 @@ import com.materip.core_designsystem.theme.MateTripColors.Red_01
 import com.materip.core_designsystem.theme.MateTripTypographySet
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
 
 @Composable
 fun TravelDateCalendar(
-    startDateString: String?,
-    endDateString: String?,
-    onDateRangeSelected: (String, String) -> Unit
+    startDate: LocalDateTime?,
+    endDate: LocalDateTime?,
+    onDateRangeSelected: (LocalDateTime, LocalDateTime) -> Unit
 ) {
-    val startDate = startDateString.takeIf { it.isNullOrEmpty().not() }?.let { LocalDate.parse(it) }
-    val endDate = endDateString.takeIf { it.isNullOrEmpty().not() }?.let { LocalDate.parse(it) }
     var currentMonth by remember { mutableStateOf(YearMonth.now()) }
     var selectedStartDate by remember { mutableStateOf(startDate) }
     var selectedEndDate by remember { mutableStateOf(endDate) }
@@ -79,7 +78,7 @@ fun TravelDateCalendar(
                 onClick = {
                     selectedStartDate = null
                     selectedEndDate = null
-                    onDateRangeSelected("", "")
+                    onDateRangeSelected(LocalDateTime.now(), LocalDateTime.now())
                 },
                 modifier = Modifier.size(21.dp)
             ) {
@@ -105,27 +104,30 @@ fun TravelDateCalendar(
                     currentMonth = currentMonth,
                     startDate = selectedStartDate,
                     endDate = selectedEndDate,
-                    onDateSelected = { date ->
-                        if (date >= LocalDate.now()) {
+                    onDateSelected = { dateTime ->
+                        if (dateTime.toLocalDate() >= LocalDate.now()) {
                             when {
-                                selectedStartDate == null || (selectedEndDate != null && date < selectedStartDate) -> {
-                                    selectedStartDate = date
+                                selectedStartDate == null || (selectedEndDate != null && dateTime < selectedStartDate) -> {
+                                    selectedStartDate = dateTime
                                     selectedEndDate = null
                                 }
 
-                                date > selectedStartDate -> selectedEndDate = date
+                                dateTime > selectedStartDate -> selectedEndDate = dateTime
 
-                                selectedEndDate != null && date < selectedStartDate -> {
+                                selectedEndDate != null && dateTime < selectedStartDate -> {
                                     selectedEndDate = selectedStartDate
-                                    selectedStartDate = date
+                                    selectedStartDate = dateTime
                                 }
 
                                 else -> {
                                     selectedEndDate = selectedStartDate
-                                    selectedStartDate = date
+                                    selectedStartDate = dateTime
                                 }
                             }
-                            onDateRangeSelected(selectedStartDate.toString(), selectedEndDate?.toString() ?: "")
+                            onDateRangeSelected(
+                                selectedStartDate ?: LocalDateTime.now(),
+                                selectedEndDate ?: selectedStartDate ?: LocalDateTime.now()
+                            )
                         }
                     }
                 )
@@ -181,9 +183,9 @@ fun DaysOfWeekHeader() {
 @Composable
 fun CalendarDays(
     currentMonth: YearMonth,
-    startDate: LocalDate?,
-    endDate: LocalDate?,
-    onDateSelected: (LocalDate) -> Unit
+    startDate: LocalDateTime?,
+    endDate: LocalDateTime?,
+    onDateSelected: (LocalDateTime) -> Unit
 ) {
     val firstDayOfMonth = currentMonth.atDay(1)
     val lastDayOfMonth = currentMonth.atEndOfMonth()
@@ -201,13 +203,13 @@ fun CalendarDays(
 
         items(daysInMonth.size) { index ->
             val day = index + 1
-            val date = currentMonth.atDay(day)
-            val isPastDate = date < today
+            val date = currentMonth.atDay(day).atStartOfDay()
+            val isPastDate = date.toLocalDate().isBefore(today)
             val isSunday = date.dayOfWeek == DayOfWeek.SUNDAY
 
             val isInRange = startDate != null && endDate != null && date in startDate..endDate
-            val isRangeStart = date == startDate
-            val isRangeEnd = date == endDate
+            val isRangeStart = startDate != null && date == startDate
+            val isRangeEnd = startDate != null && date == startDate
             val isInMiddleRange = isInRange && !isRangeStart && !isRangeEnd
 
             Box(

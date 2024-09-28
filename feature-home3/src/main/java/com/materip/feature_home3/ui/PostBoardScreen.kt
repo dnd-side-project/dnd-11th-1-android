@@ -116,10 +116,9 @@ fun PostBoardScreen(
                 )
 
                 // 여행 일정
-                val formatter = DateTimeFormatter.ISO_DATE_TIME
                 TravelDateCalendar(
-                    startDateString = formState.startDate.format(formatter),
-                    endDateString = formState.endDate.format(formatter)
+                    startDate = formState.startDate,
+                    endDate = formState.endDate
                 ) { start, end ->
                     viewModel.handleIntent(PostBoardIntent.UpdateStartDate(start))
                     viewModel.handleIntent(PostBoardIntent.UpdateEndDate(end))
