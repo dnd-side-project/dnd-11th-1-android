@@ -209,7 +209,7 @@ fun CalendarDays(
 
             val isInRange = startDate != null && endDate != null && date in startDate..endDate
             val isRangeStart = startDate != null && date == startDate
-            val isRangeEnd = startDate != null && date == startDate
+            val isRangeEnd = endDate != null && date == endDate
             val isInMiddleRange = isInRange && !isRangeStart && !isRangeEnd
 
             Box(
