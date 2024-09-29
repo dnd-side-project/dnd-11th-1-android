@@ -61,9 +61,7 @@ fun PostItem(
             Row(
                 horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .width(108.dp)
-                    .height(26.dp),
+                modifier = Modifier.height(26.dp),
             ) {
                 Text(
                     text = boardItem.region.toDisplayString(),
@@ -82,7 +80,6 @@ fun PostItem(
                     text = duration,
                     style = MateTripTypographySet.title05,
                     modifier = Modifier
-                        .width(66.dp)
                         .height(26.dp)
                         .background(
                             color = Color(0xFFEFF1FF),
@@ -96,7 +93,7 @@ fun PostItem(
                 style = MateTripTypographySet.headline05,
             )
             Text(
-                text = "${boardItem.startDate} ~ ${boardItem.endDate}",
+                text = "${boardItem.getStartDateText()} ~ ${boardItem.getEndDateText()}",
                 style = MateTripTypographySet.title04,
                 color = Color.Gray,
                 modifier = Modifier.padding(bottom = 8.dp)
