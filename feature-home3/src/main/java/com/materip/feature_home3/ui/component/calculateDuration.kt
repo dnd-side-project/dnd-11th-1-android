@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
 fun calculateDuration(startDate: String, endDate: String): String {
+    val startDate = startDate.substring(0, 10)
+    val endDate = endDate.substring(0, 10)
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     val start = LocalDate.parse(startDate, formatter)
     val end = LocalDate.parse(endDate, formatter)
