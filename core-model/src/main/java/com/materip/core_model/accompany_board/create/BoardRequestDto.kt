@@ -21,10 +21,8 @@ data class BoardRequestDto(
     val title: String,
     val content: String,
     val region: Region,
-    @Serializable(with = LocalDateTimeSerializer::class)
-    val startDate: LocalDateTime,
-    @Serializable(with = LocalDateTimeSerializer::class)
-    val endDate: LocalDateTime,
+    val startDate: String,
+    val endDate: String,
     val capacity: Int,
     val boardStatus: BoardStatus,
     val categories: List<Category>,
@@ -33,17 +31,3 @@ data class BoardRequestDto(
     val imageUrls: List<String>,
     val tagNames: List<String>
 )
-
-@OptIn(ExperimentalSerializationApi::class)
-@Serializer(forClass = LocalDateTime::class)
-object LocalDateTimeSerializer : KSerializer<LocalDateTime> {
-    private val formatter = DateTimeFormatter.ISO_DATE_TIME
-
-    override fun serialize(encoder: Encoder, value: LocalDateTime) {
-        encoder.encodeString(value.format(formatter))
-    }
-
-    override fun deserialize(decoder: Decoder): LocalDateTime {
-        return LocalDateTime.parse(decoder.decodeString(), formatter)
-    }
-}
