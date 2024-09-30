@@ -16,7 +16,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
+import com.materip.core_designsystem.icon.Logo.default_image
 import com.materip.core_designsystem.theme.MateTripColors.Blue_04
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -78,9 +78,12 @@ fun ShowImageList(imageUris: List<String>) {
                         }
 
                         is AsyncImagePainter.State.Error -> {
-                            Text(
-                                text = "Error loading image",
-                                modifier = Modifier.align(Alignment.Center)
+                            // 에러 시 기본 이미지 표시
+                            Image(
+                                painter = painterResource(id = default_image),
+                                contentDescription = "기본 이미지",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.fillMaxSize()
                             )
                         }
 
@@ -89,8 +92,7 @@ fun ShowImageList(imageUris: List<String>) {
                 }
             } else {
                 // 로컬 리소스 이미지 처리
-                val resourceId = imageUri.toIntOrNull()
-                    ?: com.materip.core_designsystem.R.drawable.profile_default
+                val resourceId = imageUri.toIntOrNull() ?: default_image
                 Image(
                     painter = painterResource(id = resourceId),
                     contentDescription = "Local Image $page",

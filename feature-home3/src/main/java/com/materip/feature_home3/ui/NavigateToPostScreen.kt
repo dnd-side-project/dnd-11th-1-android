@@ -52,9 +52,6 @@ import com.materip.feature_home3.viewModel.HomeViewModel
  * param: onNavigateToForm 동행신청
  * param: onNavigateToUserProfile 유저프로필상세보기
  * */
-// TODO: 3. 프로필 이미지 원형으로 보이게 하기
-// TODO: 4. 이미지의 영역을 상단바까지 늘리기, 아니면 상단바의 배경을 이미지로 보이게 하기 -> 이거 하고 있었음
-// TODO: 5. 기본값 이미지 제대로 보이게 하기
 @Composable
 fun NavigateToPostScreen(
     boardId: Int,
