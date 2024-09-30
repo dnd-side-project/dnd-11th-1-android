@@ -21,10 +21,8 @@ data class BoardRequestDto(
     val title: String,
     val content: String,
     val region: Region,
-    @Serializable(with = LocalDateTimeSerializer::class)
-    val startDate: LocalDateTime,
-    @Serializable(with = LocalDateTimeSerializer::class)
-    val endDate: LocalDateTime,
+    val startDate: String,
+    val endDate: String,
     val capacity: Int,
     val boardStatus: BoardStatus,
     val categories: List<Category>,
