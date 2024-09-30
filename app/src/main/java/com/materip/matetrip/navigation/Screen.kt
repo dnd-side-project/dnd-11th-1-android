@@ -9,7 +9,6 @@ import com.materip.core_model.navigation.OnboardingRoute
 import com.materip.core_model.navigation.SettingRoute
 
 sealed class Screen(val route: String, @StringRes val resourceId: Int, val icon: Int? = null) {
-    data object SignIn : Screen("sign_in", R.string.sign_in)
     data object OnBoarding : Screen(OnboardingRoute.InputUserInfoRoute.name, R.string.onboarding, Icons.arrow_back_icon)
     data object Home : Screen("home", R.string.home, Logo.splash_icon_02)
     data object NavigateToPost : Screen("navigateToPost", R.string.navigate_to_post, Icons.arrow_back_icon)
@@ -23,7 +22,6 @@ sealed class Screen(val route: String, @StringRes val resourceId: Int, val icon:
     companion object {
         fun fromRoute(route: String?): Screen {
             return when (route) {
-                SignIn.route -> SignIn
                 OnBoarding.route -> OnBoarding
                 Home.route -> Home
                 NavigateToPost.route -> NavigateToPost
