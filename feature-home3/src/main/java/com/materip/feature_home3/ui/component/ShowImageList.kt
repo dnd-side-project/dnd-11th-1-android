@@ -57,11 +57,14 @@ fun ShowImageList(imageUris: List<String>) {
             modifier = Modifier.fillMaxSize()
         ) { page ->
             val imageUri = imageUris[page]
-            if (imageUri.startsWith("http://") || imageUri.startsWith("https://")) {
-                // 네트워크 이미지 처리
+            if (imageUri.startsWith("http://") ||
+                imageUri.startsWith("https://") ||
+                imageUri.startsWith("content://")
+            ) {
+                // 네트워크 이미지 및 content URI 처리
                 SubcomposeAsyncImage(
                     model = imageUri,
-                    contentDescription = "Network Image $page",
+                    contentDescription = "Image $page",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxSize()
