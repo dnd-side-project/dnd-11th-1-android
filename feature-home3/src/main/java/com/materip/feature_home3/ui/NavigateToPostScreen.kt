@@ -2,6 +2,7 @@ package com.materip.feature_home3.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -36,6 +37,7 @@ import com.materip.core_designsystem.theme.MateTripColors.NoTextColor
 import com.materip.core_designsystem.theme.MateTripTypographySet
 import com.materip.feature_home3.intent.HomeIntent
 import com.materip.feature_home3.state.HomeUiState
+import com.materip.feature_home3.ui.component.BoardDetailTopAppBar
 import com.materip.feature_home3.ui.component.ShowCategory
 import com.materip.feature_home3.ui.component.ShowImageList
 import com.materip.feature_home3.ui.component.ShowPreferredPerson
@@ -51,9 +53,8 @@ import com.materip.feature_home3.viewModel.HomeViewModel
  * param: onNavigateToUserProfile 유저프로필상세보기
  * */
 // TODO: 3. 프로필 이미지 원형으로 보이게 하기
-// TODO: 4. 이미지의 영역을 상단바까지 늘리기, 아니면 상단바의 배경을 이미지로 보이게 하기
+// TODO: 4. 이미지의 영역을 상단바까지 늘리기, 아니면 상단바의 배경을 이미지로 보이게 하기 -> 이거 하고 있었음
 // TODO: 5. 기본값 이미지 제대로 보이게 하기
-// TODO: 6. 동행신청 시 상단바에 화면 제목 보이지 않음
 @Composable
 fun NavigateToPostScreen(
     boardId: Int,
@@ -126,7 +127,18 @@ fun NavigateToPostScreen(
                 val boardInfo = (uiState as HomeUiState.SuccessLoad).boardDetail.boardInfo
                 val profileInfo = (uiState as HomeUiState.SuccessLoad).boardDetail.profileThumbnail
 
-                ShowImageList(imageUris = boardInfo.imageUrls)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(280.dp)
+                ) {
+                    ShowImageList(imageUris = boardInfo.imageUrls)
+
+                    BoardDetailTopAppBar(
+                        onNavigateUp = onNavigateUp,
+                        showDialogState = viewModel.showDialogState,
+                    )
+                }
 
                 ShowUserProfile(
                     nickname = profileInfo.nickname,
