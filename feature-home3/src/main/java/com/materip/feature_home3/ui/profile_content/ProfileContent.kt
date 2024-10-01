@@ -47,6 +47,7 @@ import com.materip.feature_home3.ui.component.FoodPreferenceInfo
 import com.materip.feature_home3.ui.component.MyImageInfo
 import com.materip.feature_home3.ui.component.TravelInterestInfo
 import com.materip.feature_home3.ui.component.TravelStyleInfo
+import com.materip.feature_home3.ui.component.calculateAgeCategory
 import com.materip.feature_home3.viewModel.ProfileViewModel
 
 @Composable
@@ -63,11 +64,12 @@ fun ProfileContent(
             3.toString() -> MatetripGrade.level_3
             else -> MatetripGrade.level_4
         }
+        val ageCategory = calculateAgeCategory(userInfo.birthYear)
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = Color.White)
-                .padding(horizontal = 20.dp)
+                .padding(horizontal = 20.dp, vertical = 20.dp),
         ) {
             Column(
                 modifier = Modifier
@@ -117,7 +119,7 @@ fun ProfileContent(
                             )
                         }
                         Text(
-                            text = "${userInfo.birthYear.toDisplayAgeString()} · ${userInfo.gender}",
+                            text = "$ageCategory · ${userInfo.gender.toDisplayString()}",
                             fontSize = 12.sp,
                             color = MateTripColors.Gray_06,
                             fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
@@ -206,7 +208,7 @@ fun ProfileContent(
                 BasicInfo(
                     nickname = userInfo.nickname,
                     gender = userInfo.gender.toDisplayString(),
-                    age = userInfo.birthYear.toDisplayAgeString(),
+                    age = ageCategory,
                     authenticatorType = userInfo.provider
                 )
                 Spacer(Modifier.height(40.dp))
