@@ -42,11 +42,11 @@ import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.MatetripGrade
 import com.materip.core_designsystem.R
 import com.materip.core_designsystem.component.CircleImageView
-import com.materip.core_designsystem.component.ImageLoadView
 import com.materip.core_designsystem.component.ProfileTag
 import com.materip.core_designsystem.icon.Badges
 import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.feature_home3.ui.component.BasicInfo
+import com.materip.feature_home3.ui.component.MyImageInfo
 import com.materip.feature_home3.viewModel.ProfileViewModel
 
 @Composable
@@ -289,36 +289,6 @@ private fun FoodPreferenceInfo(foodPreferences: List<String>) {
         ) {
             foodPreferences.forEach {
                 ProfileTag(tagName = it)
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun MyImageInfo(images: List<String>) {
-    Column(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text(
-            text = "이미지 (${images.size})",
-            fontSize = 16.sp,
-            fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
-            fontWeight = FontWeight(700)
-        )
-        Spacer(Modifier.height(12.dp))
-        FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalArrangement = Arrangement.spacedBy(9.dp)
-        ) {
-            images.forEach {
-                ImageLoadView(
-                    backgroundColor = MateTripColors.Blue_04,
-                    shape = RoundedCornerShape(size = 10.dp),
-                    size = 100.dp,
-                    imageUrl = it,
-                    onCloseClick = {/*미사용*/ }
-                )
             }
         }
     }
