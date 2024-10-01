@@ -22,7 +22,6 @@ import com.materip.core_designsystem.theme.MateTripTypographySet
 import com.materip.core_designsystem.theme.gradeStyle
 import com.materip.core_model.response.GetProfileDetailsResponseDto
 import com.materip.core_model.ui_model.Grade
-import com.materip.feature_home3.ui.profile_content.UserProviderInfo
 
 @Composable
 fun OverviewInfo(
