@@ -1,10 +1,12 @@
 package com.materip.core_designsystem.theme
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.materip.core_designsystem.R
 import com.materip.core_designsystem.theme.MateTripColors.Gray_05
@@ -277,3 +279,45 @@ val MateTripTypographySet = MateTripTypography(
         lineHeight = 14.sp,
     )
 )
+
+val titleTextStyle = TextStyle(
+    fontSize = 16.sp,
+    fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+    fontWeight = FontWeight.Bold,
+    color = Gray_11
+)
+
+val subtitleTextStyle = TextStyle(
+    fontSize = 12.sp,
+    fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+    fontWeight = FontWeight.Medium,
+    color = MateTripColors.Gray_06
+)
+
+val userCommentStyle = TextStyle(
+    fontSize = 12.sp,
+    fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+    fontWeight = FontWeight(500),
+    color = MateTripColors.Gray_06,
+    textAlign = TextAlign.Center
+)
+
+val userCommentBoldStyle = TextStyle(
+    fontSize = 14.sp,
+    fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+    fontWeight = FontWeight(500),
+    color = MateTripColors.Gray_06,
+    textAlign = TextAlign.Center
+)
+
+val gradeStyle = TextStyle(
+    fontSize = 12.sp,
+    fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
+    fontWeight = FontWeight(500),
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false
+    )
+)
+
+
