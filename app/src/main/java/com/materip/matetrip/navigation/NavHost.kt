@@ -75,7 +75,7 @@ fun SetUpNavGraph(
         selectFoodPreference(
             onBackClick = navController::navigateToBack,
             navHome = {
-                navController.navigate(Screen.Home.route){
+                navController.navigate(Screen.Home.route) {
                     popUpTo(Screen.Home.route)
                 }
             }
@@ -163,6 +163,7 @@ fun SetUpNavGraph(
             val profileViewModel: ProfileViewModel = hiltViewModel(backStackEntry)
             ProfileScreen(
                 navBack = navController::navigateToBack,
+                navEvaluation = { navController.navigate(MyPageRoute.ReviewEvaluationRoute.name) },
                 navReviewDescription = { reviewId ->
                     navController.navigate("${MyPageRoute.ReviewDescriptionRoute.name}/${reviewId}")
                 },
