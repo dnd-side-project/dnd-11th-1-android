@@ -37,7 +37,6 @@ import com.materip.core_model.navigation.SettingRoute
 import com.materip.feature_home3.intent.PostBoardIntent
 import com.materip.feature_home3.ui.component.FabButton
 import com.materip.feature_home3.viewModel.PostBoardViewModel
-import com.materip.feature_home3.viewModel.ProfileViewModel
 import com.materip.feature_mypage.navigation.navigateToMyPageGraph
 import com.materip.feature_mypage.navigation.navigateToSettingGraph
 import com.materip.matetrip.navigation.Screen
@@ -49,7 +48,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val postBoardViewModel: PostBoardViewModel by viewModels()
-    private val profileViewModel: ProfileViewModel by viewModels()
     private val viewModel: AppViewModel by viewModels()
     private val useBottomNavScreen = listOf(Screen.Home.route, MyPageRoute.MyPageRoute.name, SettingRoute.SettingRoute.name)
     private val requestMultiplePermissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){permission ->
@@ -78,8 +76,7 @@ class MainActivity : AppCompatActivity() {
                         GetTopBar(
                             currentRoute = currentRoute,
                             navController = navController,
-                            postBoardViewModel = postBoardViewModel,
-                            profileViewModel = profileViewModel
+                            postBoardViewModel = postBoardViewModel
                         )
                     },
                     floatingActionButton = {
@@ -142,8 +139,7 @@ class MainActivity : AppCompatActivity() {
 fun GetTopBar(
     currentRoute: String?,
     navController: NavHostController,
-    postBoardViewModel: PostBoardViewModel,
-    profileViewModel: ProfileViewModel
+    postBoardViewModel: PostBoardViewModel
 ) {
     val notHaveTopBar = listOf(
         LoginRoute.LoginRoute.name,
@@ -218,13 +214,7 @@ fun GetTopBar(
 
         // 타이틀 제목이 동행글을 올린 유저의 닉네임인 뒤로가기 상단바
         currentRoute?.startsWith(Screen.Profile.route) == true -> {
-            val boardId = currentRoute.substringAfterLast("/").toIntOrNull() ?: 0
-            val userId = profileViewModel.getUserId(boardId)
-            val userNickname = profileViewModel.getNickname(userId)
-            BackButtonTopAppBar(
-                screenTitle = userNickname,
-                onNavigateUp = navController::navigateToBack
-            )
+            // 상단바를 렌더링하지 않음, 화면에서 상단바 처리
         }
 
         currentRoute?.startsWith(Screen.NavigateToPost.route) == true -> {
