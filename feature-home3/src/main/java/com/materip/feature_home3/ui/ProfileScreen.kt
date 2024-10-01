@@ -32,7 +32,7 @@ fun ProfileScreen(
     val contentScreens = listOf<@Composable () -> Unit>(
         { ProfileContent(viewModel = profileViewModel) },
         {
-            ReviewScreen(
+            ReviewContent(
                 navBack = navBack,
                 navReviewDescription = navReviewDescription,
                 viewModel = reviewViewModel

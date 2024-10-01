@@ -11,7 +11,7 @@ import com.materip.feature_mypage.view_models.MyPage.ReviewListUiState
 import com.materip.feature_mypage.view_models.MyPage.ReviewListViewModel
 
 @Composable
-fun ReviewScreen(
+fun ReviewContent(
     navBack: () -> Unit,
     navReviewDescription: (Int) -> Unit,
     viewModel: ReviewListViewModel = hiltViewModel()
