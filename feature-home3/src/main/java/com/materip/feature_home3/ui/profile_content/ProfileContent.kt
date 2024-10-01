@@ -21,7 +21,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -47,7 +46,7 @@ import com.materip.core_designsystem.component.ImageLoadView
 import com.materip.core_designsystem.component.ProfileTag
 import com.materip.core_designsystem.icon.Badges
 import com.materip.core_designsystem.theme.MateTripColors
-import com.materip.feature_home3.intent.ProfileIntent
+import com.materip.feature_home3.ui.component.BasicInfo
 import com.materip.feature_home3.viewModel.ProfileViewModel
 
 @Composable
@@ -219,101 +218,6 @@ fun ProfileContent(
                 Spacer(Modifier.height(40.dp))
                 MyImageInfo(images = userInfo.userImageUrls)
             }
-        }
-    }
-}
-
-@Composable
-private fun BasicInfo(
-    nickname: String,
-    gender: String,
-    age: String,
-    authenticatorType: String,
-) {
-    val titleStyle = TextStyle(
-        fontSize = 14.sp,
-        fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
-        fontWeight = FontWeight(500),
-        color = MateTripColors.Gray_06
-    )
-    val contentStyle = TextStyle(
-        fontSize = 14.sp,
-        fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
-        fontWeight = FontWeight(500),
-        color = MateTripColors.Gray_10
-    )
-    Column(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text(
-            text = "기본정보",
-            fontSize = 16.sp,
-            fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
-            fontWeight = FontWeight(700),
-        )
-        Spacer(Modifier.height(12.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                modifier = Modifier.width(70.dp),
-                text = "닉네임",
-                style = titleStyle
-            )
-            Spacer(Modifier.width(20.dp))
-            Text(
-                text = nickname,
-                style = contentStyle
-            )
-        }
-        Spacer(Modifier.height(10.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                modifier = Modifier.width(70.dp),
-                text = "성별",
-                style = titleStyle
-            )
-            Spacer(Modifier.width(20.dp))
-            Text(
-                text = gender,
-                style = contentStyle
-            )
-        }
-        Spacer(Modifier.height(10.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                modifier = Modifier.width(70.dp),
-                text = "나이",
-                style = titleStyle
-            )
-            Spacer(Modifier.width(20.dp))
-            Text(
-                text = age,
-                style = contentStyle
-            )
-        }
-        Spacer(Modifier.height(10.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                modifier = Modifier.width(70.dp),
-                text = "인증방식",
-                style = titleStyle
-            )
-            Spacer(Modifier.width(20.dp))
-            Text(
-                text = authenticatorType,
-                style = contentStyle
-            )
         }
     }
 }
