@@ -56,10 +56,6 @@ fun ProfileContent(
 ) {
     val profileDetails by viewModel.profileDetails.collectAsState()
 
-    LaunchedEffect(Unit) {
-        viewModel.handleIntent(ProfileIntent.GetProfileDetails)
-    }
-
     profileDetails?.let { userInfo ->
         val scrollState = rememberScrollState()
         val levelInfo = when (userInfo.grade) {
