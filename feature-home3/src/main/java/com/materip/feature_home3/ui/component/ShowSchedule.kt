@@ -5,9 +5,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -28,6 +29,9 @@ fun ShowSchedule(
     startDate: String,
     endDate: String
 ) {
+    val formatStartDate = formatDateStringToDisplay(startDate)
+    val formatEndDate = formatDateStringToDisplay(endDate)
+
     Column(
         modifier = Modifier.padding(start = 20.dp, end = 20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -37,8 +41,8 @@ fun ShowSchedule(
             modifier = Modifier
                 .border(width = 1.dp, color = Blue_03, shape = RoundedCornerShape(size = 10.dp))
                 .height(86.dp)
-                .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 16.dp)
-                .width(320.dp)
+                .fillMaxWidth()
+                .padding(16.dp)
         ) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top),
@@ -51,9 +55,10 @@ fun ShowSchedule(
                     Icon(
                         painter = painterResource(id = place_icon),
                         contentDescription = "동행 장소",
-                        tint = Primary
+                        tint = Primary,
+                        modifier = Modifier.size(24.dp)
                     )
-                    Text(text = region, style = MateTripTypographySet.title03)
+                    Text(text = region, style = MateTripTypographySet.numberMedium2)
                 }
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
@@ -62,10 +67,11 @@ fun ShowSchedule(
                     Icon(
                         painter = painterResource(id = date_icon),
                         contentDescription = "동행 날짜",
-                        tint = Primary
+                        tint = Primary,
+                        modifier = Modifier.size(24.dp)
                     )
                     Text(
-                        text = "$startDate - $endDate",
+                        text = "$formatStartDate - $formatEndDate",
                         style = MateTripTypographySet.numberMedium2
                     )
                 }
