@@ -4,8 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -42,13 +40,13 @@ import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.MatetripGrade
 import com.materip.core_designsystem.R
 import com.materip.core_designsystem.component.CircleImageView
-import com.materip.core_designsystem.component.ProfileTag
 import com.materip.core_designsystem.icon.Badges
 import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.feature_home3.ui.component.BasicInfo
 import com.materip.feature_home3.ui.component.FoodPreferenceInfo
 import com.materip.feature_home3.ui.component.MyImageInfo
 import com.materip.feature_home3.ui.component.TravelInterestInfo
+import com.materip.feature_home3.ui.component.TravelStyleInfo
 import com.materip.feature_home3.viewModel.ProfileViewModel
 
 @Composable
@@ -219,30 +217,6 @@ fun ProfileContent(
                 FoodPreferenceInfo(foodPreferences = userInfo.foodPreferences)
                 Spacer(Modifier.height(40.dp))
                 MyImageInfo(images = userInfo.userImageUrls)
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun TravelStyleInfo(styles: List<String>) {
-    Column(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text(
-            text = "여행스타일",
-            fontSize = 16.sp,
-            fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
-            fontWeight = FontWeight(700)
-        )
-        Spacer(Modifier.height(12.dp))
-        FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalArrangement = Arrangement.spacedBy(9.dp)
-        ) {
-            styles.forEach {
-                ProfileTag(tagName = it)
             }
         }
     }
