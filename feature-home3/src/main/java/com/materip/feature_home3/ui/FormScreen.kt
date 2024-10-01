@@ -128,6 +128,7 @@ fun FormScreen(
                         .fillMaxSize()
                         .padding(paddingValues)
                         .verticalScroll(rememberScrollState())
+                        .background(Color.White)
                 ) {
                     // 동행신청에 대한 안내 문구
                     FormOverview()
@@ -165,6 +166,7 @@ fun FormScreen(
                         .fillMaxSize()
                         .padding(paddingValues)
                         .verticalScroll(rememberScrollState())
+                        .background(Color.White)
                 ) {
                     // 동행신청에 대한 안내 문구
                     FormOverview()
