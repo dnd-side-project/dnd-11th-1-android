@@ -48,6 +48,7 @@ import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.feature_home3.ui.component.BasicInfo
 import com.materip.feature_home3.ui.component.FoodPreferenceInfo
 import com.materip.feature_home3.ui.component.MyImageInfo
+import com.materip.feature_home3.ui.component.TravelInterestInfo
 import com.materip.feature_home3.viewModel.ProfileViewModel
 
 @Composable
@@ -218,30 +219,6 @@ fun ProfileContent(
                 FoodPreferenceInfo(foodPreferences = userInfo.foodPreferences)
                 Spacer(Modifier.height(40.dp))
                 MyImageInfo(images = userInfo.userImageUrls)
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun TravelInterestInfo(interests: List<String>) {
-    Column(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text(
-            text = "여행성향",
-            fontSize = 16.sp,
-            fontFamily = FontFamily(Font(R.font.noto_sans_kr)),
-            fontWeight = FontWeight(700)
-        )
-        Spacer(Modifier.height(12.dp))
-        FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalArrangement = Arrangement.spacedBy(9.dp)
-        ) {
-            interests.forEach {
-                ProfileTag(tagName = it)
             }
         }
     }
