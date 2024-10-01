@@ -44,6 +44,7 @@ class ProfileViewModel @Inject constructor(
         try {
             val profileDetailsResult = profileRepository.getProfileDetails()
             if (profileDetailsResult.data != null) {
+                _profileDetails.value = profileDetailsResult.data
                 _uiState.value = ProfileUiState.Success(profileDetailsResult.data!!)
             } else {
                 _uiState.value = ProfileUiState.Error("프로필 로드 실패")
