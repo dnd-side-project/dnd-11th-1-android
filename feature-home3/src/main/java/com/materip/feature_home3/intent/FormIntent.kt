@@ -6,4 +6,5 @@ sealed class FormIntent {
     data class SubmitCompanionRequest(val boardId: Int) : FormIntent()
     data object ShowDialog : FormIntent()
     data object DismissDialog : FormIntent()
+    data class CheckIfUserIsAuthor(val boardId: Int) : FormIntent()
 }
