@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.component.DeleteButton
@@ -63,47 +65,55 @@ fun NavigateToPostScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     if (viewModel.showDialogState.value) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceAround,
-            modifier = Modifier
-                .width(320.dp)
-                .height(172.dp)
-                .background(Color.White, shape = RoundedCornerShape(size = 10.dp)),
-        ) {
-            Text(
-                text = "정말 게시글을 삭제하시나요?",
-                style = MateTripTypographySet.title03,
-                color = Color.Black,
+        Dialog(onDismissRequest = { viewModel.showDialogState.value = false }) {
+            Box(
                 modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(top = 41.dp, bottom = 41.dp)
-            )
-            Row(
-                modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    .size(width = 320.dp, height = 172.dp)
+                    .background(Color.White, shape = RoundedCornerShape(size = 10.dp))
             ) {
-                DeleteButton(
-                    buttonText = "아니요",
-                    enabled = true,
-                    onClick = { viewModel.showDialogState.value = false },
-                    containerColor = NoColor,
-                    contentColor = NoTextColor
-                )
-                DeleteButton(
-                    buttonText = "예",
-                    enabled = true,
-                    onClick = {
-                        viewModel.onHomeIntent(HomeIntent.DeleteBoard(boardId))
-                        viewModel.showDialogState.value = false
-                        onNavigateUp()
-                    },
-                    containerColor = Color.Black,
-                    contentColor = Color.White
-                )
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Text(
+                        text = "정말 게시글을 삭제하시나요?",
+                        style = MateTripTypographySet.title03,
+                        color = Color.Black
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        DeleteButton(
+                            buttonText = "아니요",
+                            enabled = true,
+                            onClick = { viewModel.showDialogState.value = false },
+                            containerColor = NoColor,
+                            contentColor = NoTextColor
+                        )
+                        DeleteButton(
+                            buttonText = "예",
+                            enabled = true,
+                            onClick = {
+                                viewModel.onHomeIntent(HomeIntent.DeleteBoard(boardId))
+                                viewModel.showDialogState.value = false
+                                onNavigateUp()
+                            },
+                            containerColor = Color.Black,
+                            contentColor = Color.White
+                        )
+                    }
+                }
             }
         }
+
     }
+
 
     LaunchedEffect(boardId) {
         viewModel.onHomeIntent(HomeIntent.LoadBoardDetail(boardId))
