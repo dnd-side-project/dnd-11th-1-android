@@ -49,7 +49,7 @@ class PostBoardViewModel @Inject constructor(
 
     fun handleIntent(intent: PostBoardIntent) {
         when (intent) {
-            is PostBoardIntent.UpdateTitle -> { updateField { it.copy(title = intent.title) } }
+            is PostBoardIntent.UpdateTitle ->  updateField { it.copy(title = intent.title) }
             is PostBoardIntent.UpdateContent -> updateField { it.copy(content = intent.content) }
             is PostBoardIntent.UpdateGender -> updateField { it.copy(preferredGender = intent.preferredGender) }
             is PostBoardIntent.UpdateAge -> updateField { it.copy(preferredAge = intent.preferredAge) }
@@ -70,8 +70,6 @@ class PostBoardViewModel @Inject constructor(
 
     private fun updateField(update: (BoardFormState) -> BoardFormState) {
         _formState.update(update)
-        Log.d("PostBoardViewModel", "_formState.value: ${_formState.value}")
-        Log.d("PostBoardViewModel", "formState.value: ${formState.value}")
 
         val currentFormState = formState.value
         boardRequest = BoardRequestDto(
