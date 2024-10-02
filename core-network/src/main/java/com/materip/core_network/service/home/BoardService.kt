@@ -4,6 +4,8 @@ import com.materip.core_model.accompany_board.all.BoardListResponse
 import com.materip.core_model.accompany_board.create.BoardRequestDto
 import com.materip.core_model.accompany_board.id.BoardIdDto
 import com.materip.core_model.accompany_board.id.GetBoardDetailDto
+import com.materip.core_model.accompany_board.mine.AccompanyBoardList
+import com.materip.core_model.accompany_board.mine.GetAccompanyBoard
 import com.materip.core_model.accompany_board.profile.GetUserProfile
 import com.materip.core_model.accompany_board.request.CompanionRequest
 import com.materip.core_model.accompany_board.search.QueryRequestDto
@@ -45,4 +47,8 @@ interface BoardService {
     // 동행글 검색
     @POST("/api/v1/accompany/boards/search")
     suspend fun searchBoardList(@Body queryRequestDto: QueryRequestDto): ApiResponse<SearchListResponse>
+
+    // 내가 쓴 동행글 목록 조회
+    @POST("/api/v1/accompany/boards/mine")
+    suspend fun getMyBoardList(@Body requestDto: GetAccompanyBoard): ApiResponse<AccompanyBoardList>
 }
