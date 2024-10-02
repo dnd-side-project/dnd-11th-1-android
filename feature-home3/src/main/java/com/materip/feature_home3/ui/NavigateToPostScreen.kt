@@ -64,64 +64,18 @@ fun NavigateToPostScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    if (viewModel.showDialogState.value) {
-        Dialog(onDismissRequest = { viewModel.showDialogState.value = false }) {
-            Box(
-                modifier = Modifier
-                    .size(width = 320.dp, height = 172.dp)
-                    .background(Color.White, shape = RoundedCornerShape(size = 10.dp))
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Text(
-                        text = "정말 게시글을 삭제하시나요?",
-                        style = MateTripTypographySet.title03,
-                        color = Color.Black
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        DeleteButton(
-                            buttonText = "아니요",
-                            enabled = true,
-                            onClick = { viewModel.showDialogState.value = false },
-                            containerColor = NoColor,
-                            contentColor = NoTextColor
-                        )
-                        DeleteButton(
-                            buttonText = "예",
-                            enabled = true,
-                            onClick = {
-                                viewModel.onHomeIntent(HomeIntent.DeleteBoard(boardId))
-                                viewModel.showDialogState.value = false
-                                onNavigateUp()
-                            },
-                            containerColor = Color.Black,
-                            contentColor = Color.White
-                        )
-                    }
-                }
-            }
-        }
-
-    }
-
-
     LaunchedEffect(boardId) {
         viewModel.onHomeIntent(HomeIntent.LoadBoardDetail(boardId))
     }
 
     when (uiState) {
         is HomeUiState.Loading -> {
-            CircularProgressIndicator()
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
         }
 
         is HomeUiState.SuccessLoad -> {
@@ -196,12 +150,68 @@ fun NavigateToPostScreen(
                 }
             }
         }
-
-        is HomeUiState.Error -> {
-            Text("오류: \\${(uiState as HomeUiState.Error).message}")
+        is HomeUiState.SuccessDelete -> {
+            LaunchedEffect(Unit) {
+                onNavigateUp()
+            }
         }
-
+        is HomeUiState.Error -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("오류: ${(uiState as HomeUiState.Error).message}")
+            }
+        }
         else -> {}
+    }
+
+    if (viewModel.showDialogState.value) {
+        Dialog(onDismissRequest = { viewModel.showDialogState.value = false }) {
+            Box(
+                modifier = Modifier
+                    .size(width = 320.dp, height = 172.dp)
+                    .background(Color.White, shape = RoundedCornerShape(size = 10.dp))
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Text(
+                        text = "정말 게시글을 삭제하시나요?",
+                        style = MateTripTypographySet.title03,
+                        color = Color.Black
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        DeleteButton(
+                            buttonText = "아니요",
+                            enabled = true,
+                            onClick = { viewModel.showDialogState.value = false },
+                            containerColor = NoColor,
+                            contentColor = NoTextColor
+                        )
+                        DeleteButton(
+                            buttonText = "예",
+                            enabled = true,
+                            onClick = {
+                                viewModel.onHomeIntent(HomeIntent.DeleteBoard(boardId))
+                                viewModel.showDialogState.value = false
+                            },
+                            containerColor = Color.Black,
+                            contentColor = Color.White
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 
