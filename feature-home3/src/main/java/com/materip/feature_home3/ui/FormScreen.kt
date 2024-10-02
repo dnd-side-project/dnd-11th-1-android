@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,6 +21,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,6 +55,11 @@ fun FormScreen(
     val introduce by viewModel.introduce.collectAsStateWithLifecycle()
     val chatLink by viewModel.chatLink.collectAsStateWithLifecycle()
     val showDialogState by viewModel.showDialogState.collectAsStateWithLifecycle()
+    val isButtonEnabled by viewModel.isButtonEnabled.collectAsStateWithLifecycle()
+
+    LaunchedEffect(boardId) {
+        viewModel.checkIfUserIsAuthor(boardId)
+    }
 
     if (showDialogState) {
         AlertDialog(
@@ -103,7 +108,7 @@ fun FormScreen(
             ) {
                 MateTripHomeButton(
                     buttonText = "보내기",
-                    enabled = uiState != FormUiState.Success,
+                    enabled = isButtonEnabled && uiState != FormUiState.Success,
                     onClick = {
                         viewModel.onFormIntent(FormIntent.SubmitCompanionRequest(boardId))
                         viewModel.onFormIntent(FormIntent.ShowDialog)
@@ -149,26 +154,6 @@ fun FormScreen(
                             viewModel.onFormIntent(FormIntent.UpdateChatLink(it))
                         }
                     )
-
-                    // 보내기 버튼
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 20.dp, end = 20.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        MateTripHomeButton(
-                            buttonText = "보내기",
-                            enabled = uiState != FormUiState.Success,
-                            onClick = {
-                                viewModel.onFormIntent(FormIntent.SubmitCompanionRequest(boardId))
-                            },
-                            modifier = Modifier
-                                .width(370.dp)
-                                .height(54.dp)
-                        )
-                        Spacer(modifier = Modifier.height(30.dp))
-                    }
                 }
             }
 
