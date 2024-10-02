@@ -51,21 +51,13 @@ fun BoardDetailTopAppBar(
             Row(
                 modifier = Modifier.padding(end = 10.dp),
             ) {
-                IconButton(onClick = { showDialogState.value = !showDialogState.value }) {
+                IconButton(
+                    onClick = { showDialogState.value = !showDialogState.value }
+                ) {
                     Icon(
                         imageVector = androidx.compose.material.icons.Icons.Default.MoreVert,
                         contentDescription = "삭제하기"
                     )
-                }
-                if (showDialogState.value) {
-                    Popup(
-                        alignment = Alignment.BottomEnd,
-                        offset = IntOffset(-20, 120)
-                    ) {
-                        DeleteBox(
-                            onDeleteConfirm = { showDialogState.value = true }
-                        )
-                    }
                 }
             }
         },
