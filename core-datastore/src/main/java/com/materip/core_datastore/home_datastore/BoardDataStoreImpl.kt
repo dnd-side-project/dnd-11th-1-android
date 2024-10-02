@@ -6,6 +6,8 @@ import com.materip.core_model.accompany_board.all.BoardListResponse
 import com.materip.core_model.accompany_board.create.BoardRequestDto
 import com.materip.core_model.accompany_board.id.BoardIdDto
 import com.materip.core_model.accompany_board.id.GetBoardDetailDto
+import com.materip.core_model.accompany_board.mine.AccompanyBoardList
+import com.materip.core_model.accompany_board.mine.GetAccompanyBoard
 import com.materip.core_model.accompany_board.profile.GetUserProfile
 import com.materip.core_model.accompany_board.request.CompanionRequest
 import com.materip.core_model.accompany_board.search.QueryRequestDto
@@ -89,6 +91,16 @@ class BoardDataStoreImpl @Inject constructor(
             result.data = this.data
         }.suspendOnError {
             result.error = Json.decodeFromString<ResponseError>(this.message())
+        }
+        return result
+    }
+
+    override suspend fun getMyBoardList(boardRequest: GetAccompanyBoard): ResultResponse<AccompanyBoardList> {
+        val result = ResultResponse<AccompanyBoardList>()
+        boardService.getMyBoardList(boardRequest).suspendOnSuccess {
+            result.data = this.data
+        }.suspendOnError {
+            result.error = Json.decodeFromString<ResponseError>("${this.apiMessage}")
         }
         return result
     }
