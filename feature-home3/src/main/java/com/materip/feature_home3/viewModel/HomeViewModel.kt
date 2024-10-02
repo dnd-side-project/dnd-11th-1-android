@@ -50,12 +50,10 @@ class HomeViewModel @Inject constructor(
             _uiState.value = HomeUiState.Loading
 
             val result = boardRepository.deleteBoard(boardId)
-            val deleteBoardResult = result.data
-
-            _uiState.value = if (deleteBoardResult != null) {
-                HomeUiState.SuccessDelete(deleteBoardResult)
+            if (result.data != null) {
+                _uiState.value = HomeUiState.SuccessDelete
             } else {
-                HomeUiState.Error(result.error?.message ?: "동행글 삭제에 실패했습니다.")
+                _uiState.value = HomeUiState.Error(result.error?.message ?: "동행글 삭제에 실패했습니다.")
             }
         }
     }
