@@ -21,13 +21,23 @@ class FormViewModel @Inject constructor(
     val uiState: StateFlow<FormUiState> = _uiState
 
     private val _introduce = MutableStateFlow("")
+    val introduce: StateFlow<String> = _introduce
+
     private val _chatLink = MutableStateFlow("")
+    val chatLink: StateFlow<String> = _chatLink
+
+    private var companionRequest: CompanionRequest? = null
+
+    private val _showDialogState = MutableStateFlow(false)
+    val showDialogState: StateFlow<Boolean> = _showDialogState
 
     fun onFormIntent(intent: FormIntent) {
         when (intent) {
             is FormIntent.UpdateIntroduce -> onIntroduceChange(intent.introduce)
             is FormIntent.UpdateChatLink -> onChatLinkChange(intent.chatLink)
             is FormIntent.SubmitCompanionRequest -> submitCompanionRequest(intent.boardId)
+            is FormIntent.ShowDialog -> showDialog()
+            is FormIntent.DismissDialog -> dismissDialog()
         }
     }
 
@@ -42,17 +52,28 @@ class FormViewModel @Inject constructor(
     private fun submitCompanionRequest(boardId: Int) {
         viewModelScope.launch {
             _uiState.value = FormUiState.Loading
-            val request = CompanionRequest(
+
+            companionRequest = CompanionRequest(
                 boardId = boardId,
                 introduce = _introduce.value,
                 chatLink = _chatLink.value
             )
-            val result = boardRepository.postCompanionRequest(request)
+
+            val result = boardRepository.postCompanionRequest(companionRequest!!)
+
             _uiState.value = if (result.data != null) {
                 FormUiState.Success
             } else {
                 FormUiState.Error(result.error?.message ?: "동행 신청에 실패했습니다.")
             }
         }
+    }
+
+    private fun showDialog() {
+        _showDialogState.value = true
+    }
+
+    private fun dismissDialog() {
+        _showDialogState.value = false
     }
 }
