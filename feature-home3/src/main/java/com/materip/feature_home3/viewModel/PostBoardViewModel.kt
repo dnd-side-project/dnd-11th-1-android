@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,9 +42,10 @@ class PostBoardViewModel @Inject constructor(
 
     private val _generalError = MutableStateFlow(Pair(false, ""))
 
-    private val _imageUris = MutableStateFlow<List<String>>(emptyList())
-
     private var boardRequest: BoardRequestDto? = null
+
+    private val _serverImageUrls = MutableStateFlow<List<String>>(emptyList())
+    val serverImageUrls: StateFlow<List<String>> = _serverImageUrls
 
     fun handleIntent(intent: PostBoardIntent) {
         when (intent) {
@@ -83,7 +83,7 @@ class PostBoardViewModel @Inject constructor(
             categories = currentFormState.category.map { it },
             preferredAge = currentFormState.preferredAge,
             preferredGender = currentFormState.preferredGender,
-            imageUrls = currentFormState.imageUris,
+            imageUrls = _serverImageUrls.value,
             tagNames = currentFormState.tagNames
         )
         Log.d("PostBoardViewModel", "updateField DTO created: $boardRequest")
@@ -113,9 +113,10 @@ class PostBoardViewModel @Inject constructor(
                 }
                 _generalError.value = Pair(true, error.message)
             } else {
-                val imagePath = result.data?.path ?: ""
-                _imageUris.value += imagePath
+                val imagePath = result.data!!.path
+                _serverImageUrls.value += imagePath
                 _imageUploadState.value = ImageUploadState.Success(imagePath)
+                Log.d("PostBoardViewModel", "Image uploaded successfully: $imagePath")
             }
         }
     }
@@ -141,7 +142,9 @@ class PostBoardViewModel @Inject constructor(
     }
 
     private fun deleteImage(path: String) {
-        updateField { it.copy(imageUris = it.imageUris.filter { uri -> uri != path }) }
+        _serverImageUrls.value = _serverImageUrls.value.filter { it != path }
+        updateField { it.copy(imageUris = _serverImageUrls.value) }
+        Log.d("PostBoardViewModel", "Image deleted: $path")
     }
 
     private fun createPost() {
