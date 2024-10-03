@@ -1,6 +1,5 @@
 package com.materip.feature_home3.ui.component
 
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.materip.core_common.toDisplayString
@@ -35,14 +35,7 @@ fun PostItem(
     val duration = calculateDuration(boardItem.startDate, boardItem.endDate)
 
     val firstImage: Any = if (boardItem.imageUrls.isNotEmpty()) {
-        val imageUrl = boardItem.imageUrls.first()
-        if (imageUrl.startsWith("http")) {
-            imageUrl
-        } else if (imageUrl.startsWith("content://") || imageUrl.startsWith("file://")) {
-            Uri.parse(imageUrl)
-        } else {
-            Logo.default_image.toString()
-        }
+        boardItem.imageUrls.first()
     } else {
         Logo.default_image
     }
@@ -65,7 +58,7 @@ fun PostItem(
         // 왼쪽 텍스트 부분
         Column(
             modifier = Modifier
-                .width(155.dp)
+                .width(170.dp)
                 .height(111.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.Top),
             horizontalAlignment = Alignment.Start,
@@ -97,25 +90,25 @@ fun PostItem(
                             color = Color(0xFFEFF1FF),
                             shape = RoundedCornerShape(size = 5.dp)
                         )
-                        .padding(start = 10.dp, top = 4.dp, end = 10.dp, bottom = 5.dp)
+                        .padding(start = 10.dp, top = 4.dp, end = 10.dp)
                 )
             }
             Text(
                 text = boardItem.title,
-                style = MateTripTypographySet.headline05,
+                style = MateTripTypographySet.headline06,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
             Text(
                 text = "${boardItem.getStartDateText()} ~ ${boardItem.getEndDateText()}",
-                style = MateTripTypographySet.title04,
-                color = Color.Gray,
-                modifier = Modifier.padding(bottom = 8.dp)
+                style = MateTripTypographySet.title05,
+                color = Color.Gray
             )
             Text(
                 text = boardItem.nickname,
                 style = MateTripTypographySet.body06,
             )
         }
-
         Image(
             painter = rememberAsyncImagePainter(firstImage),
             contentDescription = "image description",
