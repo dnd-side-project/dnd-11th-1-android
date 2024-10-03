@@ -1,5 +1,6 @@
 package com.materip.feature_home3.ui.component
 
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.materip.core_designsystem.icon.Badges.profile_default_badge
 import com.materip.core_designsystem.icon.Icons.enter_24_icon
+import com.materip.core_designsystem.icon.Logo
 import com.materip.core_designsystem.theme.MateTripColors.Blue_04
 import com.materip.core_designsystem.theme.MateTripColors.Gray_12
 import com.materip.core_designsystem.theme.MateTripTypographySet
@@ -40,6 +42,18 @@ fun ShowUserProfile(
     onNavigateToProfile: () -> Unit
 ) {
     val ageCategory = calculateAgeCategory(birthYear)
+
+    val imageList: Any = if (profileImageUrl.isNotEmpty()) {
+        if (profileImageUrl.startsWith("http")) {
+            profileImageUrl
+        } else if (profileImageUrl.startsWith("content://") || profileImageUrl.startsWith("file://")) {
+            Uri.parse(profileImageUrl)
+        } else {
+            Logo.default_image.toString()
+        }
+    } else {
+        Logo.default_image.toString()
+    }
 
     Row(
         modifier = Modifier
@@ -65,7 +79,7 @@ fun ShowUserProfile(
                 )
             } else {
                 SubcomposeAsyncImage(
-                    model = profileImageUrl,
+                    model = imageList,
                     contentDescription = "Network Image",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
