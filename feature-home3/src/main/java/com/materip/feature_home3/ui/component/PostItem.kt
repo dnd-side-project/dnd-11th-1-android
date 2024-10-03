@@ -1,5 +1,6 @@
 package com.materip.feature_home3.ui.component
 
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -31,8 +32,20 @@ fun PostItem(
     boardItem: BoardItem,
     onBoardItemClick: (Int) -> Unit
 ) {
-    val firstImage: String = boardItem.imageUrls.firstOrNull() ?: Logo.app_icon_60.toString()
     val duration = calculateDuration(boardItem.startDate, boardItem.endDate)
+
+    val firstImage: Any = if (boardItem.imageUrls.isNotEmpty()) {
+        val imageUrl = boardItem.imageUrls.first()
+        if (imageUrl.startsWith("http")) {
+            imageUrl
+        } else if (imageUrl.startsWith("content://") || imageUrl.startsWith("file://")) {
+            Uri.parse(imageUrl)
+        } else {
+            Logo.default_image.toString()
+        }
+    } else {
+        Logo.default_image
+    }
 
     Row(
         modifier = Modifier
@@ -68,7 +81,6 @@ fun PostItem(
                     color = Color.White,
                     style = MateTripTypographySet.title05,
                     modifier = Modifier
-                        .width(42.dp)
                         .height(26.dp)
                         .background(
                             color = Color(0xFF3553F2),
