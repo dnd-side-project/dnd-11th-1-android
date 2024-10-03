@@ -26,6 +26,8 @@ class BoardViewModel @Inject constructor(
     private val _boardList = MutableStateFlow<BoardListResponse?>(null)
     val boardList: StateFlow<BoardListResponse?> = _boardList
 
+    private val serverBaseUrl = BuildConfig.SERVER_BASE_URL
+
     private fun loadBoardList(pagingRequestDto: PagingRequestDto) {
         viewModelScope.launch {
             _uiState.value = BoardListUiState.Loading
@@ -35,16 +37,29 @@ class BoardViewModel @Inject constructor(
                 val boardListResponse = result.data
                 Log.d("BoardViewModel", "API response: $boardListResponse")
 
+                val updatedBoardList = boardListResponse?.copy(
+                    data = boardListResponse.data.map { boardItem ->
+                        boardItem.copy(
+                            imageUrls = boardItem.imageUrls.map { path ->
+                                if (path.startsWith("http")) {
+                                    path
+                                } else {
+                                    "$serverBaseUrl$path"
+                                }
+                            }
+                        )
+                    }
+                )
+
                 val currentData = _boardList.value?.data ?: emptyList()
                 val newData = currentData + (boardListResponse?.data ?: emptyList())
 
-                val updatedBoardList = boardListResponse?.copy(
+                _boardList.value = updatedBoardList?.copy(
                     data = newData,
-                    cursor = boardListResponse.cursor ?: _boardList.value?.cursor,
-                    hasNext = boardListResponse.hasNext
+                    cursor = updatedBoardList.cursor ?: _boardList.value?.cursor,
+                    hasNext = updatedBoardList.hasNext
                 )
 
-                _boardList.value = updatedBoardList
                 _uiState.value = BoardListUiState.Success(updatedBoardList)
             } catch (e: Exception) {
                 _uiState.value = BoardListUiState.Error(e.message ?: "동행글 목록 로드 실패")
