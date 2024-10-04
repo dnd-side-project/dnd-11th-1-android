@@ -51,6 +51,7 @@ import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_designsystem.theme.MateTripColors.Gray_11
 import com.materip.core_designsystem.theme.MateTripColors.Primary
 import com.materip.core_designsystem.theme.MateTripTypographySet
+import com.materip.core_model.ui_model.Region
 
 @Composable
 fun RegionTag(
@@ -58,7 +59,7 @@ fun RegionTag(
     modifier: Modifier = Modifier
 ) {
     var selectedRegion by remember { mutableStateOf("전체") }
-    val regions = listOf("전체", "수도권", "경기도", "충청도", "강원도", "경상도", "전라도", "제주도", "해외")
+    val regions = listOf("전체", "서울", "수도권", "충청도", "강원도", "전라도", "경상도", "부산", "제주도")
 
     LazyRow(
         modifier = modifier
@@ -73,7 +74,7 @@ fun RegionTag(
             Button(
                 onClick = {
                     selectedRegion = region
-                    onClick(mapRegionToEnum(region))
+                    onClick(region)
                 },
                 elevation = ButtonDefaults.buttonElevation(
                     defaultElevation = 4.dp,
@@ -101,17 +102,19 @@ fun RegionTag(
     }
 }
 
-fun mapRegionToEnum(region: String): String {
-    return when (region) {
-        "서울" -> "SEOUL"
-        "경기" -> "GYEONGGI_INCHEON"
-        "충청" -> "CHUNGCHEONG_DAEJEON_SEJONG"
-        "강원" -> "GANGWON"
-        "전라" -> "JEOLLA_GWANGJU"
-        "경상" -> "GYEONGSANG_DAEGU_ULSAN"
-        "부산" -> "BUSAN"
-        "제주" -> "JEJU"
-        else -> "UNKNOWN"
+fun mapRegionNameToEnum(regionName: String): List<Region>? {
+    return when (regionName) {
+        "서울" -> listOf(Region.SEOUL)
+        "수도권" -> listOf(Region.SEOUL, Region.GYEONGGI_INCHEON)
+        "경기도" -> listOf(Region.GYEONGGI_INCHEON)
+        "충청도" -> listOf(Region.CHUNGCHEONG_DAEJON_SEJONG)
+        "강원도" -> listOf(Region.GANGWON)
+        "전라도" -> listOf(Region.JEOLLA_GWANGJU)
+        "경상도" -> listOf(Region.GYEONGSANG_DAEGU_ULSAN, Region.BUSAN)
+        "부산" -> listOf(Region.BUSAN)
+        "제주도" -> listOf(Region.JEJU)
+        "전체" -> null
+        else -> null
     }
 }
 

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,11 +21,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,9 +30,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_designsystem.component.MateTripHomeButton
 import com.materip.core_designsystem.icon.Badges
 import com.materip.core_designsystem.theme.MateTripColors.Blue_03
@@ -48,8 +44,6 @@ import com.materip.core_designsystem.theme.MateTripTypographySet
 import com.materip.feature_home3.intent.FormIntent
 import com.materip.feature_home3.state.FormUiState
 import com.materip.feature_home3.viewModel.FormViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun FormScreen(
@@ -57,20 +51,25 @@ fun FormScreen(
     onNavigateUp: () -> Unit,
     viewModel: FormViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-    var showDialogState by remember { mutableStateOf(false) }
-    var introduce by remember { mutableStateOf("") }
-    var chatLink by remember { mutableStateOf("") }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val introduce by viewModel.introduce.collectAsStateWithLifecycle()
+    val chatLink by viewModel.chatLink.collectAsStateWithLifecycle()
+    val showDialogState by viewModel.showDialogState.collectAsStateWithLifecycle()
+    val isButtonEnabled by viewModel.isButtonEnabled.collectAsStateWithLifecycle()
+
+    LaunchedEffect(boardId) {
+        viewModel.checkIfUserIsAuthor(boardId)
+    }
 
     if (showDialogState) {
         AlertDialog(
-            onDismissRequest = { showDialogState = false },
+            onDismissRequest = { viewModel.onFormIntent(FormIntent.DismissDialog) },
             confirmButton = {
                 MateTripHomeButton(
                     buttonText = "확인",
                     enabled = true,
                     onClick = {
-                        showDialogState = false
+                        viewModel.onFormIntent(FormIntent.DismissDialog)
                         onNavigateUp()
                     },
                     modifier = Modifier
@@ -109,10 +108,10 @@ fun FormScreen(
             ) {
                 MateTripHomeButton(
                     buttonText = "보내기",
-                    enabled = uiState != FormUiState.Success,
+                    enabled = isButtonEnabled && uiState != FormUiState.Success,
                     onClick = {
                         viewModel.onFormIntent(FormIntent.SubmitCompanionRequest(boardId))
-                        showDialogState = true
+                        viewModel.onFormIntent(FormIntent.ShowDialog)
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -122,49 +121,17 @@ fun FormScreen(
         }
     ) { paddingValues ->
         when (uiState) {
-            is FormUiState.Initial -> {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)
-                        .verticalScroll(rememberScrollState())
-                ) {
-                    // 동행신청에 대한 안내 문구
-                    FormOverview()
-
-                    // 소개를 받는 텍스트 필드
-                    FormContentInput(
-                        introduce = introduce,
-                        onIntroduceChange = {
-                            introduce = it
-                            viewModel.onFormIntent(FormIntent.UpdateIntroduce(it))
-                        }
-                    )
-
-                    // 경고 문구
-                    FormContentWarning()
-
-                    // 채팅 링크를 받는 텍스트 필드
-                    FormOpenChatLink(
-                        chatLink = chatLink,
-                        onChatLinkChange = {
-                            chatLink = it
-                            viewModel.onFormIntent(FormIntent.UpdateChatLink(it))
-                        }
-                    )
-                }
-            }
-
             FormUiState.Loading -> {
                 CircularProgressIndicator()
             }
 
-            is FormUiState.Success -> {
+            is FormUiState.Initial, FormUiState.Success -> {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues)
                         .verticalScroll(rememberScrollState())
+                        .background(Color.White)
                 ) {
                     // 동행신청에 대한 안내 문구
                     FormOverview()
@@ -173,7 +140,6 @@ fun FormScreen(
                     FormContentInput(
                         introduce = introduce,
                         onIntroduceChange = {
-                            introduce = it
                             viewModel.onFormIntent(FormIntent.UpdateIntroduce(it))
                         }
                     )
@@ -185,28 +151,9 @@ fun FormScreen(
                     FormOpenChatLink(
                         chatLink = chatLink,
                         onChatLinkChange = {
-                            chatLink = it
                             viewModel.onFormIntent(FormIntent.UpdateChatLink(it))
                         }
                     )
-
-                    // 보내기 버튼
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 20.dp, end = 20.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        MateTripHomeButton(
-                            buttonText = "보내기",
-                            enabled = false,
-                            onClick = { /* 버튼 비활성화로 클릭 불가 */ },
-                            modifier = Modifier
-                                .width(370.dp)
-                                .height(54.dp)
-                        )
-                        Spacer(modifier = Modifier.height(30.dp))
-                    }
                 }
             }
 
@@ -349,125 +296,5 @@ private fun FormOpenChatLink(
                 }
             }
         )
-    }
-}
-
-
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewFormScreenInitial() {
-    PreviewFormScreenWithState(FormUiState.Initial)
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewFormScreenLoading() {
-    PreviewFormScreenWithState(FormUiState.Loading)
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewFormScreenSuccess() {
-    PreviewFormScreenWithState(FormUiState.Success)
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewFormScreenError() {
-    PreviewFormScreenWithState(FormUiState.Error("Error message"))
-}
-
-@Composable
-fun PreviewFormScreenWithState(uiState: FormUiState) {
-    var showDialogState by remember { mutableStateOf(false) }
-    var introduce by remember { mutableStateOf("") }
-    var chatLink by remember { mutableStateOf("") }
-
-    if (showDialogState) {
-        AlertDialog(
-            onDismissRequest = { showDialogState = false },
-            confirmButton = {
-                MateTripHomeButton(
-                    buttonText = "확인",
-                    enabled = true,
-                    onClick = {
-                        showDialogState = false
-                    },
-                    modifier = Modifier
-                        .width(296.dp)
-                        .height(54.dp)
-                )
-            },
-            text = {
-                Box(
-                    modifier = Modifier
-                        .height(80.dp)
-                        .width(320.dp)
-                        .background(Color.White),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "동행 신청을 보냈어요 :)",
-                        style = MateTripTypographySet.title03,
-                        color = Color.Black,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
-            },
-            containerColor = Color.White,
-            shape = RoundedCornerShape(size = 10.dp)
-        )
-    }
-
-    Scaffold(
-        bottomBar = {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White)
-                    .padding(16.dp)
-            ) {
-                MateTripHomeButton(
-                    buttonText = "보내기",
-                    enabled = uiState != FormUiState.Success,
-                    onClick = {
-                        showDialogState = true
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(54.dp)
-                )
-            }
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
-        ) {
-            // 동행신청에 대한 안내 문구
-            FormOverview()
-
-            // 소개를 받는 텍스트 필드
-            FormContentInput(
-                introduce = introduce,
-                onIntroduceChange = {
-                    introduce = it
-                }
-            )
-
-            // 경고 문구
-            FormContentWarning()
-
-            // 채팅 링크를 받는 텍스트 필드
-            FormOpenChatLink(
-                chatLink = chatLink,
-                onChatLinkChange = {
-                    chatLink = it
-                }
-            )
-        }
     }
 }

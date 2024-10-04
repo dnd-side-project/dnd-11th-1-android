@@ -1,6 +1,7 @@
 package com.materip.matetrip.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -15,6 +16,7 @@ import com.materip.feature_home3.ui.NotificationScreen
 import com.materip.feature_home3.ui.PostBoardScreen
 import com.materip.feature_home3.ui.ProfileScreen
 import com.materip.feature_home3.viewModel.PostBoardViewModel
+import com.materip.feature_home3.viewModel.ProfileViewModel
 import com.materip.feature_login.navigation.login
 import com.materip.feature_login.navigation.navigateToLogin
 import com.materip.feature_mypage.navigation.myPageGraph
@@ -73,7 +75,7 @@ fun SetUpNavGraph(
         selectFoodPreference(
             onBackClick = navController::navigateToBack,
             navHome = {
-                navController.navigate(Screen.Home.route){
+                navController.navigate(Screen.Home.route) {
                     popUpTo(Screen.Home.route)
                 }
             }
@@ -158,13 +160,14 @@ fun SetUpNavGraph(
             route = Screen.Profile.route + "/{boardId}",
             arguments = listOf(navArgument("boardId") { type = NavType.IntType })
         ) { backStackEntry ->
-            val boardId = backStackEntry.arguments?.getInt("boardId") ?: 0
+            val profileViewModel: ProfileViewModel = hiltViewModel(backStackEntry)
             ProfileScreen(
-                boardId = boardId,
                 navBack = navController::navigateToBack,
+                navEvaluation = { navController.navigate(MyPageRoute.ReviewEvaluationRoute.name) },
                 navReviewDescription = { reviewId ->
                     navController.navigate("${MyPageRoute.ReviewDescriptionRoute.name}/${reviewId}")
-                }
+                },
+                profileViewModel = profileViewModel
             )
         }
     }

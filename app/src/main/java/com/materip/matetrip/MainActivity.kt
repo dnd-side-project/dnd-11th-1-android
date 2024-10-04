@@ -23,13 +23,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.materip.core_designsystem.component.BackButtonTopAppBar
 import com.materip.core_designsystem.component.BackButtonWithTitleTopAppBar
-import com.materip.core_designsystem.component.BoardDetailTopAppBar
 import com.materip.core_designsystem.component.MateTripBottomBar
 import com.materip.core_designsystem.component.MateTripTopAppBar
 import com.materip.core_model.navigation.LoginRoute
@@ -38,9 +36,7 @@ import com.materip.core_model.navigation.OnboardingRoute
 import com.materip.core_model.navigation.SettingRoute
 import com.materip.feature_home3.intent.PostBoardIntent
 import com.materip.feature_home3.ui.component.FabButton
-import com.materip.feature_home3.viewModel.HomeViewModel
 import com.materip.feature_home3.viewModel.PostBoardViewModel
-import com.materip.feature_home3.viewModel.ProfileViewModel
 import com.materip.feature_mypage.navigation.navigateToMyPageGraph
 import com.materip.feature_mypage.navigation.navigateToSettingGraph
 import com.materip.matetrip.navigation.Screen
@@ -59,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             val permissionName = entry.key
             val isGranted = entry.value
             if(!isGranted){
-                Toast.makeText(this, "${permissionName} 권한이 거절되었습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "$permissionName 권한이 거절되었습니다.", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -145,9 +141,6 @@ fun GetTopBar(
     navController: NavHostController,
     postBoardViewModel: PostBoardViewModel
 ) {
-    val profileViewModel: ProfileViewModel = hiltViewModel()
-    val homeViewModel: HomeViewModel = hiltViewModel()
-
     val notHaveTopBar = listOf(
         LoginRoute.LoginRoute.name,
         OnboardingRoute.InputUserInfoRoute.name,
@@ -168,18 +161,23 @@ fun GetTopBar(
         SettingRoute.AlarmSettingRoute.name,
         SettingRoute.AccountInfoRoute.name,
         SettingRoute.SMSVerificationRoute.name,
-        SettingRoute.GetAuthCodeRoute.name
+        SettingRoute.GetAuthCodeRoute.name,
     )
 
-    when (currentRoute) {
-        Screen.Home.route -> {
+    when {
+        // currentRoute가 null이 아니고, notHaveTopBar에 포함된 경로로 시작하는 경우
+        currentRoute != null && notHaveTopBar.any { currentRoute.startsWith(it) } -> {
+            // 상단바를 렌더링하지 않음
+        }
+
+        currentRoute == Screen.Home.route -> {
             MateTripTopAppBar(
                 onNotificationClick = { navController.navigate(Screen.Notification.route) }
             )
         }
 
         // 타이틀, action이 필요한 상단바
-        Screen.Post.route -> {
+        currentRoute == Screen.Post.route -> {
             BackButtonWithTitleTopAppBar(
                 screenTitle = "동행 모집하기",
                 onNavigateUp = { navController.navigateUp() },
@@ -200,14 +198,14 @@ fun GetTopBar(
         }
 
         // 타이틀 제목이 필요한 뒤로가기 상단바
-        Screen.Form.route -> {
+        currentRoute?.startsWith(Screen.Form.route) == true -> {
             BackButtonTopAppBar(
                 screenTitle = "동행 신청서 작성",
                 onNavigateUp = navController::navigateToBack
             )
         }
 
-        Screen.Notification.route -> {
+        currentRoute == Screen.Notification.route -> {
             BackButtonTopAppBar(
                 screenTitle = "알림",
                 onNavigateUp = navController::navigateToBack
@@ -215,27 +213,12 @@ fun GetTopBar(
         }
 
         // 타이틀 제목이 동행글을 올린 유저의 닉네임인 뒤로가기 상단바
-        Screen.Profile.route -> {
-            val boardId = currentRoute.substringAfterLast("/").toIntOrNull() ?: 0
-            val userId = profileViewModel.getUserId(boardId)
-            val userNickname = profileViewModel.getNickname(userId)
-            BackButtonTopAppBar(
-                screenTitle = userNickname,
-                onNavigateUp = navController::navigateToBack
-            )
+        currentRoute?.startsWith(Screen.Profile.route) == true -> {
+            // 상단바를 렌더링하지 않음, 화면에서 상단바 처리
         }
 
-        //별개 top bar 보유
-        in notHaveTopBar -> {
-
-        }
-
-        // 뒤로가기, 액션이 필요한 상단바
-        Screen.NavigateToPost.route -> {
-            BoardDetailTopAppBar(
-                onNavigateUp = navController::navigateToBack,
-                showDialogState = homeViewModel.showDialogState,
-            )
+        currentRoute?.startsWith(Screen.NavigateToPost.route) == true -> {
+            // 상단바를 렌더링하지 않음, 화면에서 상단바 처리
         }
 
         // 뒤로가기만 있는 상단바

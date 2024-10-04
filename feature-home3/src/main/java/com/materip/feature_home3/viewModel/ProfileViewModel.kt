@@ -1,5 +1,6 @@
 package com.materip.feature_home3.viewModel
 
+import androidx.lifecycle.SavedStateHandle
 import com.materip.core_repository.repository.profile_repository.ProfileRepository
 import com.materip.feature_home3.state.ProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,7 +10,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.ViewModel
 import com.materip.core_model.response.GetProfileDetailsResponseDto
 import com.materip.core_repository.repository.home_repository.BoardRepository
-import com.materip.feature_home3.intent.ProfileIntent
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,57 +17,45 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val profileRepository: ProfileRepository,
-    private val boardRepository: BoardRepository
+    private val boardRepository: BoardRepository,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+    private val boardId: Int = savedStateHandle["boardId"] ?: 0
 
-    private val _uiState = MutableStateFlow<ProfileUiState>(ProfileUiState.Initial)
-    val uiState: StateFlow<ProfileUiState> = _uiState
+    private val _uiState = MutableStateFlow<ProfileUiState>(ProfileUiState.Loading)
+    val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
 
     private val _profileDetails = MutableStateFlow<GetProfileDetailsResponseDto?>(null)
     val profileDetails: StateFlow<GetProfileDetailsResponseDto?> = _profileDetails.asStateFlow()
 
-    fun handleIntent(intent: ProfileIntent) {
-        when (intent) {
-            is ProfileIntent.GetProfileDetails -> getProfileDetails()
-            is ProfileIntent.GetUserId -> getUserId(intent.boardId)
-            is ProfileIntent.GetNickname -> getNickname(intent.userId)
+    private val _userNickname = MutableStateFlow<String>("")
+    val userNickname: StateFlow<String> = _userNickname.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            getProfileDetails()
+            val nickname = getNicknameFromBoard(boardId)
+            _userNickname.value = nickname
         }
     }
 
-    fun getProfileDetails() {
-        viewModelScope.launch {
-            _uiState.value = ProfileUiState.Loading
-            try {
-                val profileDetailsResult = profileRepository.getProfileDetails()
-                if (profileDetailsResult.data != null) {
-                    _uiState.value = ProfileUiState.Success(profileDetailsResult.data!!)
-                } else {
-                    _uiState.value = ProfileUiState.Error("프로필 로드 실패")
-                }
-            } catch (e: Exception) {
-                _uiState.value =
-                    ProfileUiState.Error(e.message ?: "프로필 로드 실패")
+    private suspend fun getProfileDetails() {
+        _uiState.value = ProfileUiState.Loading
+        try {
+            val profileDetailsResult = profileRepository.getProfileDetails()
+            if (profileDetailsResult.data != null) {
+                _profileDetails.value = profileDetailsResult.data
+                _uiState.value = ProfileUiState.Success(profileDetailsResult.data!!)
+            } else {
+                _uiState.value = ProfileUiState.Error("프로필 로드 실패")
             }
+        } catch (e: Exception) {
+            _uiState.value = ProfileUiState.Error(e.message ?: "프로필 로드 실패")
         }
     }
 
-    fun getUserId(boardId: Int): Int {
-        var userId: Int? = null
-        viewModelScope.launch {
-            val result = boardRepository.getBoardDetail(boardId)
-            userId = result.data?.profileThumbnail?.userId
-        }
-        return userId ?: 0
-    }
-
-    fun getNickname(userId: Int): String {
-        var nickname: String? = null
-        viewModelScope.launch {
-            val result = boardRepository.getUserProfile()
-            if (result.data?.userId == userId) {
-                nickname = result.data!!.nickname
-            }
-        }
-        return nickname ?: ""
+    private suspend fun getNicknameFromBoard(boardId: Int): String {
+        val result = boardRepository.getBoardDetail(boardId)
+        return result.data?.profileThumbnail?.nickname ?: ""
     }
 }
