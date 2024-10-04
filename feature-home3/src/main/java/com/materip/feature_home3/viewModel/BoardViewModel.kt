@@ -7,6 +7,7 @@ import com.materip.core_model.accompany_board.all.BoardListResponse
 import com.materip.core_model.accompany_board.search.QueryRequestDto
 import com.materip.core_model.request.PagingRequestDto
 import com.materip.core_repository.repository.home_repository.BoardRepository
+import com.materip.feature_home3.BuildConfig
 import com.materip.feature_home3.intent.BoardListIntent
 import com.materip.feature_home3.state.BoardListUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
