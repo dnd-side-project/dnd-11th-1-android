@@ -2,6 +2,7 @@ package com.materip.core_designsystem.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,7 +21,7 @@ fun NoDataContent(
     message: String
 ){
     Box(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxSize()
             .background(color = Color.White),
         contentAlignment = Alignment.Center
     ){
