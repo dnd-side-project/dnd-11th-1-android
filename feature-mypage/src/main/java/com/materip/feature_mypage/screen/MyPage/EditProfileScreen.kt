@@ -33,6 +33,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -468,7 +469,6 @@ private fun BirthAndGenderEdit(
     val birthRange = (1950..2024).toMutableList().map{it.toString()}.toMutableList().apply{
         this.add(0, "출생연도 선택")
     }
-    Log.d("TAG TEST", "gender : ${gender}")
     val genderRange = listOf("성별", "남성", "여성")
     var isBirthDialogOpen by remember{mutableStateOf(false)}
     var isGenderDialogOpen by remember{mutableStateOf(false)}
@@ -507,6 +507,7 @@ private fun BirthAndGenderEdit(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(32.dp)
                     .clickable { isBirthDialogOpen = true },
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -523,6 +524,7 @@ private fun BirthAndGenderEdit(
                     contentDescription = "Fold Icon"
                 )
             }
+            HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = MateTripColors.Gray_11)
         }
         Spacer(Modifier.width(40.dp))
         Column(
@@ -539,6 +541,7 @@ private fun BirthAndGenderEdit(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(32.dp)
                     .clickable { isGenderDialogOpen = true },
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -555,6 +558,7 @@ private fun BirthAndGenderEdit(
                     contentDescription = "Fold Icon"
                 )
             }
+            HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = MateTripColors.Gray_11)
         }
     }
 }
@@ -828,7 +832,7 @@ private fun TravelStyleEdit(
         ){
             CustomClickableTag(
                 tagName = "맛집탐방",
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
@@ -848,7 +852,7 @@ private fun TravelStyleEdit(
             )
             CustomClickableTag(
                 tagName = "인생샷",
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
@@ -869,7 +873,7 @@ private fun TravelStyleEdit(
             CustomClickableTag(
                 tagName = "액티비티",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = TravelStyle.ACTIVITY.name in travelStyles,
@@ -889,7 +893,7 @@ private fun TravelStyleEdit(
             CustomClickableTag(
                 tagName = "드라이브",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = TravelStyle.DRIVE.name in travelStyles,
@@ -909,7 +913,7 @@ private fun TravelStyleEdit(
             CustomClickableTag(
                 tagName = "카페투어",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = TravelStyle.CAFE_TOUR.name in travelStyles,
@@ -929,7 +933,7 @@ private fun TravelStyleEdit(
             CustomClickableTag(
                 tagName = "힐링",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = TravelStyle.HEALING.name in travelStyles,
@@ -949,7 +953,7 @@ private fun TravelStyleEdit(
             CustomClickableTag(
                 tagName = "문화예술",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = TravelStyle.CULTURE_AND_ARTS.name in travelStyles,
@@ -969,7 +973,7 @@ private fun TravelStyleEdit(
             CustomClickableTag(
                 tagName = "패키지 여행",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = TravelStyle.PACKAGE_TOUR.name in travelStyles,
@@ -1013,7 +1017,7 @@ private fun FoodPreferenceEdit(
             CustomClickableTag(
                 tagName = "육류",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.MEAT.name in foodPreferences,
@@ -1033,7 +1037,7 @@ private fun FoodPreferenceEdit(
             CustomClickableTag(
                 tagName = "밥류",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.RICE.name in foodPreferences,
@@ -1053,7 +1057,7 @@ private fun FoodPreferenceEdit(
             CustomClickableTag(
                 tagName = "커피",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.COFFEE.name in foodPreferences,
@@ -1073,7 +1077,7 @@ private fun FoodPreferenceEdit(
             CustomClickableTag(
                 tagName = "패스트 푸드",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.FAST_FOOD.name in foodPreferences,
@@ -1093,7 +1097,7 @@ private fun FoodPreferenceEdit(
             CustomClickableTag(
                 tagName = "해산물",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.SEAFOOD.name in foodPreferences,
@@ -1113,7 +1117,7 @@ private fun FoodPreferenceEdit(
             CustomClickableTag(
                 tagName = "채소",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.VEGETABLES.name in foodPreferences,
@@ -1133,7 +1137,7 @@ private fun FoodPreferenceEdit(
             CustomClickableTag(
                 tagName = "디저트",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.DESSERT.name in foodPreferences,
@@ -1153,7 +1157,7 @@ private fun FoodPreferenceEdit(
             CustomClickableTag(
                 tagName = "스트릿 푸드",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.STREET_FOOD.name in foodPreferences,
