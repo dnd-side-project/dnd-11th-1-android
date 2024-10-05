@@ -12,6 +12,7 @@ import com.materip.core_common.toDisplayString
 import com.materip.core_common.transformToFile
 import com.materip.core_model.request.UpdateMyImagesRequestDto
 import com.materip.core_model.request.UpdateProfileRequestDto
+import com.materip.core_model.ui_model.Gender
 import com.materip.core_repository.repository.image_repository.ImageRepository
 import com.materip.core_repository.repository.profile_repository.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -69,7 +70,7 @@ class EditProfileViewModel @Inject constructor(
                     nickname = data.nickname,
                     description = data.description,
                     birthYear = data.birthYear,
-                    gender = data.gender.toDisplayString(),
+                    gender = data.gender,
                     travelStyles = data.travelStyles,
                     travelPreferences = data.travelPreferences,
                     foodPreferences = data.foodPreferences,
@@ -172,7 +173,7 @@ sealed interface EditProfileUiState{
         val nickname: String,
         val description: String?,
         val birthYear: Int,
-        val gender: String,
+        val gender: Gender,
         val travelStyles: List<String>,
         val travelPreferences: List<String>,
         val foodPreferences: List<String>,

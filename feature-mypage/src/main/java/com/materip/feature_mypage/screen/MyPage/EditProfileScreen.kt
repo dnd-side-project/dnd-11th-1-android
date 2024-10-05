@@ -63,6 +63,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_common.ErrorState
 import com.materip.core_common.checkPermission
+import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.component.CustomClickableTag
 import com.materip.core_designsystem.component.ImageLoadView
 import com.materip.core_designsystem.component.NormalTopBar
@@ -182,7 +183,7 @@ private fun EditProfileMainContent(
     initNickname: String,
     initDescription: String?,
     initBirthYear: Int,
-    initGender: String,
+    initGender: Gender,
     initTravelPreferences: List<String>,
     initTravelStyles: List<String>,
     initFoodPreferences: List<String>,
@@ -203,8 +204,8 @@ private fun EditProfileMainContent(
     var profileImg by remember{mutableStateOf("")}
     var nickname by remember{mutableStateOf("")}
     var introduction by remember{mutableStateOf("")}
-    var birthYear by remember{mutableStateOf(initBirthYear)}
-    var gender by remember{mutableStateOf(if(initGender == "MALE") Gender.MALE else Gender.FEMALE)}
+    var birthYear by remember{mutableStateOf(0)}
+    var gender by remember{mutableStateOf(Gender.FEMALE)}
     val travelPreferences = remember{ mutableStateListOf(*initTravelPreferences.toTypedArray())}
     val travelStyles = remember{ mutableStateListOf(*initTravelStyles.toTypedArray()) }
     val foodPreferences = remember{ mutableStateListOf(*initFoodPreferences.toTypedArray()) }
@@ -214,6 +215,8 @@ private fun EditProfileMainContent(
         profileImg = initProfileImg
         introduction = initDescription ?: ""
         snsLink = initSnsLink ?: ""
+        birthYear = initBirthYear
+        gender = initGender
     }
     val myImageLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
@@ -327,10 +330,8 @@ private fun EditProfileMainContent(
             BirthAndGenderEdit(
                 birth = birthYear.toString(),
                 onBirthUpdate = {birthYear = it.toInt()},
-                gender = if(gender == Gender.FEMALE) "여성" else "남성",
-                onGenderUpdate = {
-                    gender = if(it == "여성") Gender.FEMALE else Gender.MALE
-                }
+                gender = gender,
+                onGenderUpdate = {gender = it}
             )
             Spacer(Modifier.height(40.dp))
             TravelPreferencesEdit(
@@ -461,12 +462,13 @@ private fun MyIntroductionEdit(
 private fun BirthAndGenderEdit(
     birth: String,
     onBirthUpdate: (String) -> Unit,
-    gender: String,
-    onGenderUpdate: (String) -> Unit,
+    gender: Gender,
+    onGenderUpdate: (Gender) -> Unit,
 ){
     val birthRange = (1950..2024).toMutableList().map{it.toString()}.toMutableList().apply{
         this.add(0, "출생연도 선택")
     }
+    Log.d("TAG TEST", "gender : ${gender}")
     val genderRange = listOf("성별", "남성", "여성")
     var isBirthDialogOpen by remember{mutableStateOf(false)}
     var isGenderDialogOpen by remember{mutableStateOf(false)}
@@ -479,8 +481,11 @@ private fun BirthAndGenderEdit(
         )
     } else if (isGenderDialogOpen){
         SelectableDialog(
-            value = gender,
-            onValueChange = onGenderUpdate,
+            value = gender.toDisplayString(),
+            onValueChange = {
+                val newGender = if(it == "남성") Gender.MALE else Gender.FEMALE
+                onGenderUpdate(newGender)
+            },
             options = genderRange,
             onDismissRequest = {isGenderDialogOpen = false}
         )
@@ -507,7 +512,7 @@ private fun BirthAndGenderEdit(
                 horizontalArrangement = Arrangement.SpaceBetween
             ){
                 Text(
-                    text = birth.toString(),
+                    text = birth,
                     fontSize = 16.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.roboto_medium)),
                     fontWeight = FontWeight(500),
@@ -539,7 +544,7 @@ private fun BirthAndGenderEdit(
                 horizontalArrangement = Arrangement.SpaceBetween
             ){
                 Text(
-                    text = gender,
+                    text = gender.toDisplayString(),
                     fontSize = 16.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.roboto_medium)),
                     fontWeight = FontWeight(500),
