@@ -83,6 +83,7 @@ fun ImageLoadView(
         modifier = Modifier
             .size(size)
             .background(color = backgroundColor, shape = shape)
+            .border(width = 0.1.dp, color = MateTripColors.Gray_08, shape = shape)
     ){
         AsyncImage(
             modifier = Modifier
@@ -106,8 +107,8 @@ fun ImageLoadView(
                     onClick = onCloseClick
                 ){
                     Icon(
-                        modifier = Modifier.fillMaxSize(),
-                        painter = painterResource(Icons.close_icon),
+                        modifier = Modifier.fillMaxSize().background(color = Color.White),
+                        painter = painterResource(Icons.dismiss_icon),
                         contentDescription = "Close Button"
                     )
                 }
