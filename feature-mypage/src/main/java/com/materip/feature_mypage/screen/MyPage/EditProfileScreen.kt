@@ -33,6 +33,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -63,6 +64,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_common.ErrorState
 import com.materip.core_common.checkPermission
+import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.component.CustomClickableTag
 import com.materip.core_designsystem.component.ImageLoadView
 import com.materip.core_designsystem.component.NormalTopBar
@@ -108,6 +110,7 @@ fun EditProfileRoute(
                 travelStyles, foodPreferences, snsLink, images)
         },
         onUploadImage = {
+            Log.d("TAG TEST", "on upload image : ${it}")
             it.map{
                 viewModel.saveImageToS3(
                     context = context,
@@ -182,7 +185,7 @@ private fun EditProfileMainContent(
     initNickname: String,
     initDescription: String?,
     initBirthYear: Int,
-    initGender: String,
+    initGender: Gender,
     initTravelPreferences: List<String>,
     initTravelStyles: List<String>,
     initFoodPreferences: List<String>,
@@ -203,8 +206,8 @@ private fun EditProfileMainContent(
     var profileImg by remember{mutableStateOf("")}
     var nickname by remember{mutableStateOf("")}
     var introduction by remember{mutableStateOf("")}
-    var birthYear by remember{mutableStateOf(initBirthYear)}
-    var gender by remember{mutableStateOf(if(initGender == "MALE") Gender.MALE else Gender.FEMALE)}
+    var birthYear by remember{mutableStateOf(0)}
+    var gender by remember{mutableStateOf(Gender.FEMALE)}
     val travelPreferences = remember{ mutableStateListOf(*initTravelPreferences.toTypedArray())}
     val travelStyles = remember{ mutableStateListOf(*initTravelStyles.toTypedArray()) }
     val foodPreferences = remember{ mutableStateListOf(*initFoodPreferences.toTypedArray()) }
@@ -214,13 +217,14 @@ private fun EditProfileMainContent(
         profileImg = initProfileImg
         introduction = initDescription ?: ""
         snsLink = initSnsLink ?: ""
+        birthYear = initBirthYear
+        gender = initGender
     }
     val myImageLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
         onResult = {
             if(images.size + it.size <= 4){
                 onUploadImage(it)
-                images.addAll(it.map{it.toString()})
             } else {
                 Toast.makeText(context, "사진은 4장까지 가능합니다.", Toast.LENGTH_SHORT).show()
             }
@@ -314,9 +318,7 @@ private fun EditProfileMainContent(
             Spacer(Modifier.height(30.dp))
             NicknameEdit(
                 nickname = nickname,
-                onNicknameUpdate = {
-                    if(it.length <= 6){nickname = it}
-                }
+                onNicknameUpdate = {if(it.length <= 6){nickname = it}}
             )
             Spacer(Modifier.height(40.dp))
             MyIntroductionEdit(
@@ -327,15 +329,11 @@ private fun EditProfileMainContent(
             BirthAndGenderEdit(
                 birth = birthYear.toString(),
                 onBirthUpdate = {birthYear = it.toInt()},
-                gender = if(gender == Gender.FEMALE) "여성" else "남성",
-                onGenderUpdate = {
-                    gender = if(it == "여성") Gender.FEMALE else Gender.MALE
-                }
+                gender = gender,
+                onGenderUpdate = {gender = it}
             )
             Spacer(Modifier.height(40.dp))
-            TravelPreferencesEdit(
-                travelPreferences = travelPreferences,
-            )
+            TravelPreferencesEdit(travelPreferences = travelPreferences)
             Spacer(Modifier.height(40.dp))
             TravelStyleEdit(travelStyles = travelStyles)
             Spacer(Modifier.height(40.dp))
@@ -461,8 +459,8 @@ private fun MyIntroductionEdit(
 private fun BirthAndGenderEdit(
     birth: String,
     onBirthUpdate: (String) -> Unit,
-    gender: String,
-    onGenderUpdate: (String) -> Unit,
+    gender: Gender,
+    onGenderUpdate: (Gender) -> Unit,
 ){
     val birthRange = (1950..2024).toMutableList().map{it.toString()}.toMutableList().apply{
         this.add(0, "출생연도 선택")
@@ -472,6 +470,7 @@ private fun BirthAndGenderEdit(
     var isGenderDialogOpen by remember{mutableStateOf(false)}
     if(isBirthDialogOpen){
         SelectableDialog(
+            isUsedScroll = true,
             value = birth,
             onValueChange = onBirthUpdate,
             options = birthRange,
@@ -479,8 +478,11 @@ private fun BirthAndGenderEdit(
         )
     } else if (isGenderDialogOpen){
         SelectableDialog(
-            value = gender,
-            onValueChange = onGenderUpdate,
+            value = gender.toDisplayString(),
+            onValueChange = {
+                val newGender = if(it == "남성") Gender.MALE else Gender.FEMALE
+                onGenderUpdate(newGender)
+            },
             options = genderRange,
             onDismissRequest = {isGenderDialogOpen = false}
         )
@@ -502,12 +504,13 @@ private fun BirthAndGenderEdit(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(32.dp)
                     .clickable { isBirthDialogOpen = true },
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ){
                 Text(
-                    text = birth.toString(),
+                    text = birth,
                     fontSize = 16.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.roboto_medium)),
                     fontWeight = FontWeight(500),
@@ -518,6 +521,7 @@ private fun BirthAndGenderEdit(
                     contentDescription = "Fold Icon"
                 )
             }
+            HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = MateTripColors.Gray_11)
         }
         Spacer(Modifier.width(40.dp))
         Column(
@@ -534,12 +538,13 @@ private fun BirthAndGenderEdit(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(32.dp)
                     .clickable { isGenderDialogOpen = true },
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ){
                 Text(
-                    text = gender,
+                    text = gender.toDisplayString(),
                     fontSize = 16.sp,
                     fontFamily = FontFamily(Font(com.materip.core_designsystem.R.font.roboto_medium)),
                     fontWeight = FontWeight(500),
@@ -550,14 +555,13 @@ private fun BirthAndGenderEdit(
                     contentDescription = "Fold Icon"
                 )
             }
+            HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = MateTripColors.Gray_11)
         }
     }
 }
 
 @Composable
-private fun TravelPreferencesEdit(
-    travelPreferences: SnapshotStateList<String>,
-){
+private fun TravelPreferencesEdit(travelPreferences: SnapshotStateList<String>){
     var isOpen by remember{mutableStateOf(false)}
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -565,7 +569,8 @@ private fun TravelPreferencesEdit(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(40.dp),
+                .height(40.dp)
+                .clickable{isOpen = !isOpen},
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ){
@@ -576,16 +581,11 @@ private fun TravelPreferencesEdit(
                 fontWeight = FontWeight(700),
                 color = MateTripColors.Gray_11
             )
-            IconButton(
+            Icon(
                 modifier = Modifier.size(16.dp),
-                onClick = {isOpen = !isOpen}
-            ){
-                Icon(
-                    modifier = Modifier.fillMaxSize(),
-                    painter = painterResource(if(isOpen) Icons.fold_icon else Icons.enter_16_icon),
-                    contentDescription = "Navigation Icon"
-                )
-            }
+                painter = painterResource(if(isOpen) Icons.fold_icon else Icons.enter_16_icon),
+                contentDescription = "Navigation Icon"
+            )
         }
         if (isOpen){
             Spacer(Modifier.height(12.dp))
@@ -802,9 +802,7 @@ private fun TravelPreferencesEdit(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun TravelStyleEdit(
-    travelStyles: SnapshotStateList<String>,
-){
+private fun TravelStyleEdit(travelStyles: SnapshotStateList<String>){
     Column(
         modifier = Modifier.fillMaxWidth()
     ){
@@ -823,7 +821,7 @@ private fun TravelStyleEdit(
         ){
             CustomClickableTag(
                 tagName = "맛집탐방",
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
@@ -843,7 +841,7 @@ private fun TravelStyleEdit(
             )
             CustomClickableTag(
                 tagName = "인생샷",
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 fontSize = 14.sp,
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
@@ -864,7 +862,7 @@ private fun TravelStyleEdit(
             CustomClickableTag(
                 tagName = "액티비티",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = TravelStyle.ACTIVITY.name in travelStyles,
@@ -884,7 +882,7 @@ private fun TravelStyleEdit(
             CustomClickableTag(
                 tagName = "드라이브",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = TravelStyle.DRIVE.name in travelStyles,
@@ -904,7 +902,7 @@ private fun TravelStyleEdit(
             CustomClickableTag(
                 tagName = "카페투어",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = TravelStyle.CAFE_TOUR.name in travelStyles,
@@ -924,7 +922,7 @@ private fun TravelStyleEdit(
             CustomClickableTag(
                 tagName = "힐링",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = TravelStyle.HEALING.name in travelStyles,
@@ -944,7 +942,7 @@ private fun TravelStyleEdit(
             CustomClickableTag(
                 tagName = "문화예술",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = TravelStyle.CULTURE_AND_ARTS.name in travelStyles,
@@ -964,7 +962,7 @@ private fun TravelStyleEdit(
             CustomClickableTag(
                 tagName = "패키지 여행",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = TravelStyle.PACKAGE_TOUR.name in travelStyles,
@@ -987,9 +985,7 @@ private fun TravelStyleEdit(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun FoodPreferenceEdit(
-    foodPreferences: SnapshotStateList<String>
-){
+private fun FoodPreferenceEdit(foodPreferences: SnapshotStateList<String>){
     Column(
         modifier = Modifier.fillMaxWidth()
     ){
@@ -1008,7 +1004,7 @@ private fun FoodPreferenceEdit(
             CustomClickableTag(
                 tagName = "육류",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.MEAT.name in foodPreferences,
@@ -1028,7 +1024,7 @@ private fun FoodPreferenceEdit(
             CustomClickableTag(
                 tagName = "밥류",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.RICE.name in foodPreferences,
@@ -1048,7 +1044,7 @@ private fun FoodPreferenceEdit(
             CustomClickableTag(
                 tagName = "커피",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.COFFEE.name in foodPreferences,
@@ -1068,7 +1064,7 @@ private fun FoodPreferenceEdit(
             CustomClickableTag(
                 tagName = "패스트 푸드",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.FAST_FOOD.name in foodPreferences,
@@ -1088,7 +1084,7 @@ private fun FoodPreferenceEdit(
             CustomClickableTag(
                 tagName = "해산물",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.SEAFOOD.name in foodPreferences,
@@ -1108,7 +1104,7 @@ private fun FoodPreferenceEdit(
             CustomClickableTag(
                 tagName = "채소",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.VEGETABLES.name in foodPreferences,
@@ -1128,7 +1124,7 @@ private fun FoodPreferenceEdit(
             CustomClickableTag(
                 tagName = "디저트",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.DESSERT.name in foodPreferences,
@@ -1148,7 +1144,7 @@ private fun FoodPreferenceEdit(
             CustomClickableTag(
                 tagName = "스트릿 푸드",
                 fontSize = 14.sp,
-                shape = RoundedCornerShape(size = 60.dp),
+                shape = RoundedCornerShape(size = 7.dp),
                 selectedTextColor = Color.White,
                 notSelectedTextColor = MateTripColors.Blue_01,
                 isSelected = FoodPreference.STREET_FOOD.name in foodPreferences,
@@ -1249,6 +1245,7 @@ private fun MyImages(
     onCameraClick :() -> Unit,
     onDeleteImage: (String) -> Unit,
 ){
+    Log.d("TAG TEST", "My Images Component : ${pictures.toList()}")
     Column(
         modifier = Modifier.fillMaxWidth()
     ){

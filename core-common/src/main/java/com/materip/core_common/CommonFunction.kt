@@ -66,7 +66,7 @@ fun Int.toDisplayAgeString(): String{
         in 5..6 -> "중반"
         else -> "후반"
     }
-    val ageText = "${age/10}대 ${temp}"
+    val ageText = "${age/10}0대 ${temp}"
     return ageText
 }
 

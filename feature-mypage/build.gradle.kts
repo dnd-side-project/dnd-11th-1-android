@@ -1,10 +1,14 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.kapt)
 }
-
+val localProperties = Properties().apply{
+    load(project.rootProject.file("./feature-mypage/local.properties").inputStream())
+}
 android {
     namespace = "com.materip.feature_mypage"
     compileSdk = 34
@@ -14,6 +18,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+        buildConfigField("String", "PRIVACY_URL", localProperties.getProperty("PRIVACY_URL"))
     }
 
     buildTypes {
@@ -42,6 +47,7 @@ android {
     }
     buildFeatures{
         compose = true
+        buildConfig = true
     }
 }
 
