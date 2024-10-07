@@ -2,6 +2,7 @@ package com.materip.feature_mypage.view_models.MyPage
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -64,7 +65,9 @@ class EditProfileViewModel @Inject constructor(
             Result.Loading -> EditProfileUiState.Loading
             is Result.Success -> {
                 val data = result.data
+                images.clear()
                 images.addAll(data.userImageUrls)
+                Log.d("TAG TEST", "view model ui state : ${images.toList()}")
                 EditProfileUiState.Success(
                     profileImg = data.profileImageUrl ?: "",
                     nickname = data.nickname,

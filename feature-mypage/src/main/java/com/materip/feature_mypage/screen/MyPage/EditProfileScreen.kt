@@ -110,6 +110,7 @@ fun EditProfileRoute(
                 travelStyles, foodPreferences, snsLink, images)
         },
         onUploadImage = {
+            Log.d("TAG TEST", "on upload image : ${it}")
             it.map{
                 viewModel.saveImageToS3(
                     context = context,
@@ -224,7 +225,6 @@ private fun EditProfileMainContent(
         onResult = {
             if(images.size + it.size <= 4){
                 onUploadImage(it)
-                images.addAll(it.map{it.toString()})
             } else {
                 Toast.makeText(context, "사진은 4장까지 가능합니다.", Toast.LENGTH_SHORT).show()
             }
@@ -318,9 +318,7 @@ private fun EditProfileMainContent(
             Spacer(Modifier.height(30.dp))
             NicknameEdit(
                 nickname = nickname,
-                onNicknameUpdate = {
-                    if(it.length <= 6){nickname = it}
-                }
+                onNicknameUpdate = {if(it.length <= 6){nickname = it}}
             )
             Spacer(Modifier.height(40.dp))
             MyIntroductionEdit(
@@ -335,9 +333,7 @@ private fun EditProfileMainContent(
                 onGenderUpdate = {gender = it}
             )
             Spacer(Modifier.height(40.dp))
-            TravelPreferencesEdit(
-                travelPreferences = travelPreferences,
-            )
+            TravelPreferencesEdit(travelPreferences = travelPreferences)
             Spacer(Modifier.height(40.dp))
             TravelStyleEdit(travelStyles = travelStyles)
             Spacer(Modifier.height(40.dp))
@@ -564,9 +560,7 @@ private fun BirthAndGenderEdit(
 }
 
 @Composable
-private fun TravelPreferencesEdit(
-    travelPreferences: SnapshotStateList<String>,
-){
+private fun TravelPreferencesEdit(travelPreferences: SnapshotStateList<String>){
     var isOpen by remember{mutableStateOf(false)}
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -574,7 +568,8 @@ private fun TravelPreferencesEdit(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(40.dp),
+                .height(40.dp)
+                .clickable{isOpen = !isOpen},
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ){
@@ -585,16 +580,11 @@ private fun TravelPreferencesEdit(
                 fontWeight = FontWeight(700),
                 color = MateTripColors.Gray_11
             )
-            IconButton(
+            Icon(
                 modifier = Modifier.size(16.dp),
-                onClick = {isOpen = !isOpen}
-            ){
-                Icon(
-                    modifier = Modifier.fillMaxSize(),
-                    painter = painterResource(if(isOpen) Icons.fold_icon else Icons.enter_16_icon),
-                    contentDescription = "Navigation Icon"
-                )
-            }
+                painter = painterResource(if(isOpen) Icons.fold_icon else Icons.enter_16_icon),
+                contentDescription = "Navigation Icon"
+            )
         }
         if (isOpen){
             Spacer(Modifier.height(12.dp))
@@ -811,9 +801,7 @@ private fun TravelPreferencesEdit(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun TravelStyleEdit(
-    travelStyles: SnapshotStateList<String>,
-){
+private fun TravelStyleEdit(travelStyles: SnapshotStateList<String>){
     Column(
         modifier = Modifier.fillMaxWidth()
     ){
@@ -996,9 +984,7 @@ private fun TravelStyleEdit(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun FoodPreferenceEdit(
-    foodPreferences: SnapshotStateList<String>
-){
+private fun FoodPreferenceEdit(foodPreferences: SnapshotStateList<String>){
     Column(
         modifier = Modifier.fillMaxWidth()
     ){
@@ -1258,6 +1244,7 @@ private fun MyImages(
     onCameraClick :() -> Unit,
     onDeleteImage: (String) -> Unit,
 ){
+    Log.d("TAG TEST", "My Images Component : ${pictures.toList()}")
     Column(
         modifier = Modifier.fillMaxWidth()
     ){
