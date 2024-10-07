@@ -4,8 +4,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,12 +24,14 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.icon.Logo
 import com.materip.core_designsystem.theme.MateTripTypographySet
 import com.materip.core_model.accompany_board.all.BoardItem
+import com.materip.core_model.ui_model.Region
 
 @Composable
 fun PostItem(
@@ -52,58 +58,64 @@ fun PostItem(
             .background(color = Color.White, shape = RoundedCornerShape(size = 12.dp))
             .padding(18.dp)
             .clickable { onBoardItemClick(boardItem.boardId) },
-        horizontalArrangement = Arrangement.spacedBy(50.dp, Alignment.Start),
+        horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         // 왼쪽 텍스트 부분
         Column(
             modifier = Modifier
-                .width(170.dp)
-                .height(111.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.Top),
+                .weight(1f)
+                .height(112.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.Start,
         ) {
-            // 태그 및 기간
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.height(26.dp),
+            Column(
+                verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
+                // 태그 및 기간
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = boardItem.region.toDisplayString(),
+                        color = Color.White,
+                        style = MateTripTypographySet.title05,
+                        modifier = Modifier
+                            .height(26.dp)
+                            .background(
+                                color = Color(0xFF3553F2),
+                                shape = RoundedCornerShape(size = 5.dp)
+                            )
+                            .padding(start = 10.dp, top = 4.dp, end = 10.dp, bottom = 4.dp)
+                    )
+                    Text(
+                        text = duration,
+                        style = MateTripTypographySet.title05,
+                        modifier = Modifier
+                            .height(26.dp)
+                            .background(
+                                color = Color(0xFFEFF1FF),
+                                shape = RoundedCornerShape(size = 5.dp)
+                            )
+                            .padding(start = 10.dp, top = 4.dp, end = 10.dp, bottom = 4.dp)
+                    )
+                }
                 Text(
-                    text = boardItem.region.toDisplayString(),
-                    color = Color.White,
-                    style = MateTripTypographySet.title05,
+                    text = boardItem.title,
+                    style = MateTripTypographySet.headline05,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
-                        .height(26.dp)
-                        .background(
-                            color = Color(0xFF3553F2),
-                            shape = RoundedCornerShape(size = 5.dp)
-                        )
-                        .padding(start = 10.dp, top = 4.dp, end = 10.dp, bottom = 5.dp)
+                        .height(40.dp)
+                        .padding(top = 5.dp)
                 )
                 Text(
-                    text = duration,
-                    style = MateTripTypographySet.title05,
-                    modifier = Modifier
-                        .height(26.dp)
-                        .background(
-                            color = Color(0xFFEFF1FF),
-                            shape = RoundedCornerShape(size = 5.dp)
-                        )
-                        .padding(start = 10.dp, top = 4.dp, end = 10.dp)
+                    text = "${boardItem.getStartDateText()} ~ ${boardItem.getEndDateText()}",
+                    style = MateTripTypographySet.title04,
+                    color = Color.Gray,
                 )
             }
-            Text(
-                text = boardItem.title,
-                style = MateTripTypographySet.headline06,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            )
-            Text(
-                text = "${boardItem.getStartDateText()} ~ ${boardItem.getEndDateText()}",
-                style = MateTripTypographySet.title05,
-                color = Color.Gray
-            )
             Text(
                 text = boardItem.nickname,
                 style = MateTripTypographySet.body06,
@@ -114,8 +126,8 @@ fun PostItem(
             contentDescription = "image description",
             contentScale = ContentScale.Crop,
             modifier = Modifier
+                .clip(shape = RoundedCornerShape(size = 12.dp))
                 .size(width = 110.dp, height = 112.dp)
-                .clip(RoundedCornerShape(10.dp))
         )
     }
 }
