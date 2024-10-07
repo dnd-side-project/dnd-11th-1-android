@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -62,17 +63,20 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SelectableDialog(
+    isUsedScroll: Boolean = false,
     value: String?,
     onValueChange: (String) -> Unit,
     options: List<String>,
     onDismissRequest: () -> Unit,
 ){
+    val lazyListState = rememberLazyListState()
     val configuration = LocalConfiguration.current
     val dialogWidth = configuration.screenWidthDp.dp - 40.dp
     Dialog(
         onDismissRequest = onDismissRequest
     ) {
         LazyColumn(
+            state = lazyListState,
             modifier = Modifier
                 .width(dialogWidth)
                 .heightIn(max = 405.dp)
@@ -111,6 +115,11 @@ fun SelectableDialog(
                 }
                 if(options.indexOf(option) != options.lastIndex){HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = MateTripColors.divider_color)}
             }
+        }
+    }
+    if (isUsedScroll){
+        LaunchedEffect(value){
+            lazyListState.animateScrollToItem(options.indexOf(value))
         }
     }
 }

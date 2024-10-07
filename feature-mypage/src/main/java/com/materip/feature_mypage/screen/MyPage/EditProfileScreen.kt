@@ -470,6 +470,7 @@ private fun BirthAndGenderEdit(
     var isGenderDialogOpen by remember{mutableStateOf(false)}
     if(isBirthDialogOpen){
         SelectableDialog(
+            isUsedScroll = true,
             value = birth,
             onValueChange = onBirthUpdate,
             options = birthRange,
