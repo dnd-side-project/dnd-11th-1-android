@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,9 +34,11 @@ fun ShowCategory(category: List<String>) {
             category.forEach { category ->
                 Box(
                     modifier = Modifier
+                        .wrapContentWidth()
                         .height(28.dp)
                         .background(color = Gray_02, shape = RoundedCornerShape(size = 6.dp))
-                        .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp)
+                        .padding(horizontal = 12.dp, vertical = 5.dp),
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = category,
