@@ -5,7 +5,6 @@ package com.materip.core_designsystem.component
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -53,7 +52,7 @@ fun MateTripSearchBar(
                 onQueryChange = onQueryChange,
                 onSearch = { onSearch(query) },
                 active = active.value,
-                onActiveChange = { active.value = it },
+                onActiveChange = { active.value = false },
                 placeholder = { Text(
                     text = "어디로 여행을 떠나시나요?",
                     style = MateTripTypographySet.body04
