@@ -48,6 +48,7 @@ import com.materip.feature_home3.ui.component.ShowSchedule
 import com.materip.feature_home3.ui.component.ShowUserBoardInfo
 import com.materip.feature_home3.ui.component.ShowUserProfile
 import com.materip.feature_home3.viewModel.HomeViewModel
+import com.materip.feature_home3.viewModel.ProfileViewModel
 
 /**
  * 동행글 상세 화면
@@ -58,8 +59,9 @@ import com.materip.feature_home3.viewModel.HomeViewModel
 fun NavigateToPostScreen(
     boardId: Int,
     viewModel: HomeViewModel = hiltViewModel(),
+    profileViewModel: ProfileViewModel = hiltViewModel(),
     onNavigateToForm: () -> Unit,
-    onNavigateToUserProfile: () -> Unit,
+    onNavigateToUserProfile: (Int) -> Unit,
     onNavigateUp: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -87,6 +89,7 @@ fun NavigateToPostScreen(
             ) {
                 val boardInfo = (uiState as HomeUiState.SuccessLoad).boardDetail.boardInfo
                 val profileInfo = (uiState as HomeUiState.SuccessLoad).boardDetail.profileThumbnail
+                val loggedInUserId = profileViewModel.loggedInUserId.collectAsState().value
 
                 Box(
                     modifier = Modifier
@@ -98,15 +101,17 @@ fun NavigateToPostScreen(
                     BoardDetailTopAppBar(
                         onNavigateUp = onNavigateUp,
                         showDialogState = viewModel.showDialogState,
+                        onDeleteActionEnabled = loggedInUserId != null && loggedInUserId == profileInfo.userId
                     )
                 }
 
                 ShowUserProfile(
+                    userId = profileInfo.userId,
                     nickname = profileInfo.nickname,
                     birthYear = profileInfo.birthYear,
                     gender = profileInfo.gender.toDisplayString(),
                     profileImageUrl = profileInfo.profileImageUrl,
-                    onNavigateToProfile = onNavigateToUserProfile
+                    onNavigateToProfile = { onNavigateToUserProfile(profileInfo.userId) }
                 )
 
                 ShowUserBoardInfo(
