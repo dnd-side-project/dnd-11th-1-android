@@ -229,7 +229,7 @@ private fun FormContentWarning() {
     Row(
         modifier = Modifier
             .padding(start = 20.dp, end = 20.dp, bottom = 40.dp)
-            .width(370.dp)
+            .fillMaxWidth()
             .height(60.dp)
             .background(color = Blue_04, shape = RoundedCornerShape(size = 10.dp))
             .padding(12.dp),
