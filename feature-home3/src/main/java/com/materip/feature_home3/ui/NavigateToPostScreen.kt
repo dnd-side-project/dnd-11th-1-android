@@ -145,7 +145,7 @@ fun NavigateToPostScreen(
                 ) {
                     MateTripHomeButton(
                         buttonText = "동행 신청",
-                        enabled = true,
+                        enabled = loggedInUserId != null && loggedInUserId != profileInfo.userId,
                         onClick = { onNavigateToForm() },
                         modifier = Modifier
                             .width(370.dp)
