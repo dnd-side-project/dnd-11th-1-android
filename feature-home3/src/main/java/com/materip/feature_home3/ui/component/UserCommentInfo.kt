@@ -2,7 +2,6 @@ package com.materip.feature_home3.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_designsystem.theme.MateTripTypographySet
 import com.materip.core_designsystem.theme.userCommentBoldStyle
-import com.materip.core_designsystem.theme.userCommentStyle
 import com.materip.core_model.response.GetProfileDetailsResponseDto
 
 @Composable
@@ -32,18 +30,11 @@ fun UserCommentInfo(userInfo: GetProfileDetailsResponseDto) {
         horizontalArrangement = Arrangement.Center
     ) {
         if (userInfo.description.isNullOrEmpty()) {
-            Column {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = "프로필을 수정해서 나를 표현해 보세요",
-                    style = userCommentBoldStyle
-                )
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = "(상세하게 표현할수록 신뢰도가 쌓여요)",
-                    style = userCommentStyle
-                )
-            }
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "아직 작성한 자기소개가 없어요.",
+                style = userCommentBoldStyle
+            )
         } else {
             Text(
                 text = "${userInfo.description}",
