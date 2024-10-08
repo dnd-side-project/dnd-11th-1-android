@@ -9,13 +9,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.materip.core_common.toDisplayString
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_designsystem.MatetripGrade
 import com.materip.feature_home3.ui.component.BasicInfo
 import com.materip.feature_home3.ui.component.FoodPreferenceInfo
@@ -31,7 +30,7 @@ import com.materip.feature_home3.viewModel.ProfileViewModel
 fun ProfileContent(
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
-    val profileDetails by viewModel.profileDetails.collectAsState()
+    val profileDetails by viewModel.profileDetails.collectAsStateWithLifecycle()
 
     profileDetails?.let { userInfo ->
         val scrollState = rememberScrollState()
@@ -59,7 +58,7 @@ fun ProfileContent(
                 Spacer(Modifier.height(30.dp))
                 BasicInfo(
                     nickname = userInfo.nickname,
-                    gender = userInfo.gender.toDisplayString(),
+                    gender = userInfo.gender,
                     age = ageCategory,
                     authenticatorType = userInfo.provider
                 )
