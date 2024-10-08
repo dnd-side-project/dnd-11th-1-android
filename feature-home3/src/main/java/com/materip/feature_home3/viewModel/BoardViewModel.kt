@@ -71,13 +71,22 @@ class BoardViewModel @Inject constructor(
     // 검색 메서드 추가
     private fun searchBoardList(query: QueryRequestDto) {
         viewModelScope.launch {
+            Log.d("BoardViewModel", "QueryRequestDto: $query")
             _uiState.value = BoardListUiState.Loading
 
             try {
                 val result = boardRepository.searchBoardList(query)
-                val searchBoardData = result.data
+                Log.d("BoardViewModel", "Search API result: $result")
 
-                _uiState.value = BoardListUiState.SearchSuccess(searchBoardData)
+                val searchBoardData = result.data
+                Log.d("BoardViewModel", "Parsed search data: $searchBoardData")
+
+                if (searchBoardData != null) {
+                    _boardList.value = searchBoardData
+                    _uiState.value = BoardListUiState.Success(searchBoardData)
+                } else {
+                    _uiState.value = BoardListUiState.Error("검색 결과가 없습니다.")
+                }
             } catch (e: Exception) {
                 _uiState.value = BoardListUiState.Error("동행글 검색 실패")
             }

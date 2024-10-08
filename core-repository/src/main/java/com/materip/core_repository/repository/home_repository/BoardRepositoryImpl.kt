@@ -42,7 +42,7 @@ class BoardRepositoryImpl @Inject constructor(
         return boardDataStore.getUserProfile()
     }
 
-    override suspend fun searchBoardList(query: QueryRequestDto): ResultResponse<SearchListResponse> {
+    override suspend fun searchBoardList(query: QueryRequestDto): ResultResponse<BoardListResponse> {
         return boardDataStore.searchBoardList(query)
     }
 

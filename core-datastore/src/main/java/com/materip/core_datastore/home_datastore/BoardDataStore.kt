@@ -20,6 +20,6 @@ interface BoardDataStore {
     suspend fun postCompanionRequest(companionRequest: CompanionRequest): ResultResponse<Unit>
     suspend fun deleteBoard(id: Int): ResultResponse<Unit>
     suspend fun getUserProfile(): ResultResponse<GetUserProfile>
-    suspend fun searchBoardList(query: QueryRequestDto): ResultResponse<SearchListResponse>
+    suspend fun searchBoardList(query: QueryRequestDto): ResultResponse<BoardListResponse>
     suspend fun getMyBoardList(boardRequest: GetAccompanyBoard): ResultResponse<AccompanyBoardList>
 }
