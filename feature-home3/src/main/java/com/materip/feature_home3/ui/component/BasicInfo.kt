@@ -16,13 +16,15 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.R
 import com.materip.core_designsystem.theme.MateTripColors
+import com.materip.core_model.ui_model.Gender
 
 @Composable
 fun BasicInfo(
     nickname: String,
-    gender: String,
+    gender: Gender,
     age: String,
     authenticatorType: String,
 ) {
@@ -75,7 +77,7 @@ fun BasicInfo(
             )
             Spacer(Modifier.width(20.dp))
             Text(
-                text = gender,
+                text = gender.toDisplayString(),
                 style = contentStyle
             )
         }
@@ -107,7 +109,7 @@ fun BasicInfo(
             )
             Spacer(Modifier.width(20.dp))
             Text(
-                text = authenticatorType,
+                text = if (authenticatorType == "KAKAO") "카카오" else "카카오",
                 style = contentStyle
             )
         }
