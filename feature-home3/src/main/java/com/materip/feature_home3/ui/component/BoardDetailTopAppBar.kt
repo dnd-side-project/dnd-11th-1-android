@@ -28,7 +28,8 @@ import com.materip.matetrip.component.DeleteBox
 @Composable
 fun BoardDetailTopAppBar(
     onNavigateUp: () -> Unit,
-    showDialogState: MutableState<Boolean>
+    showDialogState: MutableState<Boolean>,
+    onDeleteActionEnabled: Boolean
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -48,16 +49,18 @@ fun BoardDetailTopAppBar(
             }
         },
         actions = {
-            Row(
-                modifier = Modifier.padding(end = 10.dp),
-            ) {
-                IconButton(
-                    onClick = { showDialogState.value = !showDialogState.value }
+            if (onDeleteActionEnabled) {
+                Row(
+                    modifier = Modifier.padding(end = 10.dp),
                 ) {
-                    Icon(
-                        imageVector = androidx.compose.material.icons.Icons.Default.MoreVert,
-                        contentDescription = "삭제하기"
-                    )
+                    IconButton(
+                        onClick = { showDialogState.value = true }
+                    ) {
+                        Icon(
+                            imageVector = androidx.compose.material.icons.Icons.Default.MoreVert,
+                            contentDescription = "삭제하기"
+                        )
+                    }
                 }
             }
         },

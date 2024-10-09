@@ -35,11 +35,12 @@ import com.materip.core_designsystem.theme.MateTripTypographySet
 
 @Composable
 fun ShowUserProfile(
+    userId: Int,
     profileImageUrl: String,
     nickname: String,
     birthYear: Int,
     gender: String,
-    onNavigateToProfile: () -> Unit
+    onNavigateToProfile: (Int) -> Unit
 ) {
     val ageCategory = calculateAgeCategory(birthYear)
 
@@ -58,7 +59,7 @@ fun ShowUserProfile(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(78.dp)
+            .height(70.dp)
             .padding(start = 20.dp, end = 20.dp, top = 15.dp, bottom = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
     ) {
@@ -105,7 +106,7 @@ fun ShowUserProfile(
             contentAlignment = Alignment.CenterEnd
         ) {
             IconButton(
-                onClick = onNavigateToProfile,
+                onClick = { onNavigateToProfile(userId) },
                 modifier = Modifier
                     .padding(top = 7.dp)
                     .size(24.dp)

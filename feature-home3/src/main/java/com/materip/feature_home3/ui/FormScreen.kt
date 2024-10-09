@@ -55,7 +55,6 @@ fun FormScreen(
     val introduce by viewModel.introduce.collectAsStateWithLifecycle()
     val chatLink by viewModel.chatLink.collectAsStateWithLifecycle()
     val showDialogState by viewModel.showDialogState.collectAsStateWithLifecycle()
-    val isButtonEnabled by viewModel.isButtonEnabled.collectAsStateWithLifecycle()
 
     LaunchedEffect(boardId) {
         viewModel.checkIfUserIsAuthor(boardId)
@@ -108,7 +107,7 @@ fun FormScreen(
             ) {
                 MateTripHomeButton(
                     buttonText = "보내기",
-                    enabled = isButtonEnabled && uiState != FormUiState.Success,
+                    enabled = true,
                     onClick = {
                         viewModel.onFormIntent(FormIntent.SubmitCompanionRequest(boardId))
                         viewModel.onFormIntent(FormIntent.ShowDialog)
@@ -229,7 +228,7 @@ private fun FormContentWarning() {
     Row(
         modifier = Modifier
             .padding(start = 20.dp, end = 20.dp, bottom = 40.dp)
-            .width(370.dp)
+            .fillMaxWidth()
             .height(60.dp)
             .background(color = Blue_04, shape = RoundedCornerShape(size = 10.dp))
             .padding(12.dp),

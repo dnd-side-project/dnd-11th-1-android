@@ -5,7 +5,7 @@ package com.materip.core_designsystem.component
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -38,8 +38,9 @@ fun MateTripSearchBar(
 
     Box(
         modifier = Modifier
-            .clickable(enabled = active.value) { active.value = false } // 검색바 외부 클릭 시 비활성화
-
+            .fillMaxWidth()
+            .padding(start = 20.dp, end = 20.dp)
+            .clickable(enabled = active.value) { active.value = false }
     ) {
         Column(
             modifier = Modifier
@@ -51,7 +52,7 @@ fun MateTripSearchBar(
                 onQueryChange = onQueryChange,
                 onSearch = { onSearch(query) },
                 active = active.value,
-                onActiveChange = { active.value = it },
+                onActiveChange = { active.value = false },
                 placeholder = { Text(
                     text = "어디로 여행을 떠나시나요?",
                     style = MateTripTypographySet.body04

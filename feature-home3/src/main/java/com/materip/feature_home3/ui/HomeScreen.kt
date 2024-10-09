@@ -23,6 +23,7 @@ import com.materip.core_designsystem.component.MateTripSearchBar
 import com.materip.core_designsystem.component.mapRegionNameToEnum
 import com.materip.core_designsystem.theme.MateTripColors.Blue_02
 import com.materip.core_designsystem.theme.MateTripColors.Blue_04
+import com.materip.core_designsystem.theme.MateTripTypographySet
 import com.materip.core_model.accompany_board.search.QueryRequestDto
 import com.materip.core_model.request.PagingRequestDto
 import com.materip.core_model.ui_model.Region
@@ -53,7 +54,8 @@ fun HomeScreen(
     val onSearch: (String) -> Unit = { searchQuery ->
         if (searchQuery.isNotEmpty()) {
             isSearching = true
-            viewModel.handleIntent(BoardListIntent.SearchBoardList(QueryRequestDto(searchQuery)))
+            val queryRequest = QueryRequestDto(keyword = searchQuery, cursor, size)
+            viewModel.handleIntent(BoardListIntent.SearchBoardList(queryRequest))
         }
     }
 
@@ -129,7 +131,7 @@ fun HomeScreen(
 
                 is BoardListUiState.Error -> {
                     val errorMessage = (uiState as? BoardListUiState.Error)?.message ?: "알 수 없는 오류"
-                    Text("오류: $errorMessage")
+                    Text("오류: $errorMessage", style = MateTripTypographySet.body04)
                 }
 
                 else -> {

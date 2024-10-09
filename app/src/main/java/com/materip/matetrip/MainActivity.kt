@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
                         if (currentRoute == Screen.Home.route) {
                             FabButton(
                                 onPostClick = { navController.navigate(Screen.Post.route) },
-                                modifier = Modifier.padding(end = 15.dp, bottom = 20.dp)
+                                modifier = Modifier.padding(end = 10.dp, bottom = 15.dp)
                             )
                         }
                     },

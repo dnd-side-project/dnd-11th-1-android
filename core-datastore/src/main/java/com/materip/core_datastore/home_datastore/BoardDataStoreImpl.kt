@@ -85,8 +85,8 @@ class BoardDataStoreImpl @Inject constructor(
         return result
     }
 
-    override suspend fun searchBoardList(query: QueryRequestDto): ResultResponse<SearchListResponse> {
-        val result = ResultResponse<SearchListResponse>()
+    override suspend fun searchBoardList(query: QueryRequestDto): ResultResponse<BoardListResponse> {
+        val result = ResultResponse<BoardListResponse>()
         boardService.searchBoardList(query).suspendOnSuccess {
             result.data = this.data
         }.suspendOnError {

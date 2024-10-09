@@ -148,7 +148,7 @@ val MateTripTypographySet = MateTripTypography(
         fontFamily = customFontFamily.notoSansKr,
         fontWeight = FontWeight.W700,
         fontSize = 16.sp,
-        lineHeight = 24.sp,
+        lineHeight = 20.sp,
     ),
     headline06 = TextStyle(
         fontFamily = customFontFamily.notoSansKr,

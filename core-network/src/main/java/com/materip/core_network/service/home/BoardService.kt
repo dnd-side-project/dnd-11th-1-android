@@ -46,7 +46,7 @@ interface BoardService {
 
     // 동행글 검색
     @POST("/api/v1/accompany/boards/search")
-    suspend fun searchBoardList(@Body queryRequestDto: QueryRequestDto): ApiResponse<SearchListResponse>
+    suspend fun searchBoardList(@Body queryRequestDto: QueryRequestDto): ApiResponse<BoardListResponse>
 
     // 내가 쓴 동행글 목록 조회
     @POST("/api/v1/accompany/boards/mine")

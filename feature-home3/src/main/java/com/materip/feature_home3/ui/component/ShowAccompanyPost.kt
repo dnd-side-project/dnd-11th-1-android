@@ -16,7 +16,7 @@ fun ShowAccompanyPost(
 ) {
     LazyColumn(
         modifier = Modifier
-            .padding(start = 20.dp, end = 20.dp, bottom = 12.dp),
+            .padding(start = 20.dp, end = 20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(boardItems) { boardItem ->

@@ -75,7 +75,12 @@ fun ProfileScreen(
         }
 
         is ProfileUiState.Error -> {
-            Text("오류: ${(uiState as ProfileUiState.Error).message}")
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text("오류: ${(uiState as ProfileUiState.Error).message}")
+            }
         }
     }
 }
