@@ -51,6 +51,7 @@ import com.materip.core_model.response.GetProfileResponseDto
 import com.materip.core_model.ui_model.AccountInfoClass
 import com.materip.feature_mypage.view_models.Setting.AccountInfoUiState
 import com.materip.feature_mypage.view_models.Setting.AccountInfoViewModel
+import com.materip.matetrip.component.DefaultLoadingComponent
 
 @Composable
 fun AccountInfoRoute(
@@ -84,7 +85,7 @@ fun AccountInfoScreen(
 ){
     when(uiState){
         AccountInfoUiState.Loading -> {
-            CircularProgressIndicator()
+            DefaultLoadingComponent()
         }
         AccountInfoUiState.Error -> {
             Text(

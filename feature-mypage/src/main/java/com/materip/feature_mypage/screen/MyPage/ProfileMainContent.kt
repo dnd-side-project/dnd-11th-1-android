@@ -63,6 +63,7 @@ import com.materip.core_model.ui_model.Grade
 import com.materip.core_model.ui_model.GradeTag
 import com.materip.feature_mypage.view_models.MyPage.ProfileMainUiState
 import com.materip.feature_mypage.view_models.MyPage.ProfileMainViewModel
+import com.materip.matetrip.component.DefaultLoadingComponent
 import com.materip.matetrip.toast.ErrorView
 
 @Composable
@@ -99,7 +100,7 @@ fun ProfileMainTab(
 ){
     when(uiState){
         ProfileMainUiState.Loading -> {
-            CircularProgressIndicator()
+            DefaultLoadingComponent()
         }
         is ProfileMainUiState.Success -> {
             val user = uiState.user

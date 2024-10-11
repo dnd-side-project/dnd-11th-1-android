@@ -36,6 +36,7 @@ import com.materip.core_model.ui_model.TravelPreferenceForReview
 import com.materip.core_model.ui_model.TravelStyleForReview
 import com.materip.feature_mypage.view_models.MyPage.ReviewEvaluationUiState
 import com.materip.feature_mypage.view_models.MyPage.ReviewEvaluationViewModel
+import com.materip.matetrip.component.DefaultLoadingComponent
 import com.materip.matetrip.toast.ErrorView
 
 @Composable
@@ -60,7 +61,7 @@ fun ReviewEvaluationScreen(
 ){
     when(uiState){
         ReviewEvaluationUiState.Loading -> {
-            CircularProgressIndicator()
+            DefaultLoadingComponent()
         }
         ReviewEvaluationUiState.Error -> {
             ErrorView(

@@ -79,6 +79,7 @@ import com.materip.core_model.ui_model.TravelInterest
 import com.materip.core_model.ui_model.TravelStyle
 import com.materip.feature_mypage.view_models.MyPage.EditProfileUiState
 import com.materip.feature_mypage.view_models.MyPage.EditProfileViewModel
+import com.materip.matetrip.component.DefaultLoadingComponent
 import com.materip.matetrip.toast.CommonToastView
 import com.materip.matetrip.toast.ErrorView
 import kotlinx.coroutines.Dispatchers
@@ -149,7 +150,7 @@ fun EditProfileScreen(
 ){
     when(uiState){
         EditProfileUiState.Loading -> {
-            CircularProgressIndicator()
+            DefaultLoadingComponent()
         }
         is EditProfileUiState.Success -> {
             EditProfileMainContent(

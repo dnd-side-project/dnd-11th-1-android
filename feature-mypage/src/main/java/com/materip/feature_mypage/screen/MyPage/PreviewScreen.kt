@@ -49,6 +49,7 @@ import com.materip.core_model.ui_model.Gender
 import com.materip.core_model.ui_model.Region
 import com.materip.feature_mypage.view_models.MyPage.PreviewUiState
 import com.materip.feature_mypage.view_models.MyPage.PreviewViewModel
+import com.materip.matetrip.component.DefaultLoadingComponent
 import com.materip.matetrip.toast.ErrorView
 
 @Composable
@@ -83,7 +84,7 @@ fun PreviewScreen(
 ){
     when(uiState){
         PreviewUiState.Loading -> {
-            CircularProgressIndicator()
+            DefaultLoadingComponent()
         }
         PreviewUiState.Error -> {
             ErrorView(

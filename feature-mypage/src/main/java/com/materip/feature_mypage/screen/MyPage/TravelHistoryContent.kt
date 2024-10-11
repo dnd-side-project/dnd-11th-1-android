@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,7 +25,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -65,6 +63,7 @@ import com.materip.feature_mypage.view_models.MyPage.SendTravelApplicationUiStat
 import com.materip.feature_mypage.view_models.MyPage.SendTravelApplicationViewModel
 import com.materip.feature_mypage.view_models.MyPage.TravelRecordViewModel
 import com.materip.feature_mypage.view_models.MyPage.TravelRecordsUiState
+import com.materip.matetrip.component.DefaultLoadingComponent
 import com.materip.matetrip.toast.ErrorView
 
 @Composable
@@ -158,7 +157,7 @@ private fun TravelRecords(
     val errState = viewModel.errorState.collectAsStateWithLifecycle()
     when(uiState.value){
         TravelRecordsUiState.Loading -> {
-            CircularProgressIndicator()
+            DefaultLoadingComponent()
         }
         TravelRecordsUiState.Error -> {
             ErrorView(
@@ -229,7 +228,7 @@ private fun SendTravelApplication(
     val errState = viewModel.errorState.collectAsStateWithLifecycle().value
     when(uiState){
         SendTravelApplicationUiState.Loading -> {
-            CircularProgressIndicator()
+            DefaultLoadingComponent()
         }
         SendTravelApplicationUiState.Error -> {
             ErrorView(
@@ -299,7 +298,7 @@ private fun ReceiveTravelApplication(
     val errState = viewModel.errorState.collectAsStateWithLifecycle()
     when(uiState.value){
         ReceiveTravelApplicationUiState.Loading -> {
-            CircularProgressIndicator()
+            DefaultLoadingComponent()
         }
         ReceiveTravelApplicationUiState.Error -> {
             ErrorView(

@@ -44,6 +44,7 @@ import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_model.request.AccompanyApplicationResponseDto
 import com.materip.feature_mypage.view_models.MyPage.SendApplicationDescUiState
 import com.materip.feature_mypage.view_models.MyPage.SendApplicationDescViewModel
+import com.materip.matetrip.component.DefaultLoadingComponent
 import com.materip.matetrip.toast.CommonToastView
 import com.materip.matetrip.toast.ErrorView
 
@@ -83,7 +84,7 @@ fun SendApplicationScreen(
 ){
     when(uiState){
         SendApplicationDescUiState.Loading -> {
-            CircularProgressIndicator()
+            DefaultLoadingComponent()
         }
         SendApplicationDescUiState.Error -> {
             ErrorView(

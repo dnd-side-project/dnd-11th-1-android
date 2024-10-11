@@ -21,6 +21,7 @@ import com.materip.core_designsystem.component.TravelPostItem
 import com.materip.core_model.accompany_board.all.BoardItem
 import com.materip.feature_mypage.view_models.MyPage.TravelPostUiState
 import com.materip.feature_mypage.view_models.MyPage.TravelPostViewModel
+import com.materip.matetrip.component.DefaultLoadingComponent
 import com.materip.matetrip.toast.ErrorView
 
 @Composable
@@ -33,7 +34,7 @@ fun TravelPostContent(
     val posts = viewModel.applicationPagingSource().collectAsLazyPagingItems()
     when(uiState.value){
         TravelPostUiState.Loading -> {
-            CircularProgressIndicator()
+            DefaultLoadingComponent()
         }
         TravelPostUiState.Error -> {
             ErrorView(
