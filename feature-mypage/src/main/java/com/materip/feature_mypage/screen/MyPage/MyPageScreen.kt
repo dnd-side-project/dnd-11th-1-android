@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -110,7 +111,7 @@ fun CustomPager(
     ){
         Column(
             modifier = Modifier
-                .width(60.dp)
+                .width(80.dp)
                 .height(30.dp)
                 .clickable {
                     if (selectedTab != MyPageTab.Profile) {
@@ -126,13 +127,13 @@ fun CustomPager(
                 color = if(selectedTab == MyPageTab.Profile) MateTripColors.Primary else MateTripColors.Gray_06
             )
             if(selectedTab == MyPageTab.Profile) {
-                HorizontalDivider(modifier = Modifier.fillMaxWidth().padding(horizontal = 5.dp), thickness = 3.dp, color = MateTripColors.Primary)
+                HorizontalDivider(modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp), thickness = 3.dp, color = MateTripColors.Primary)
             }
         }
         Spacer(Modifier.width(20.dp))
         Column(
             modifier = Modifier
-                .width(60.dp)
+                .width(80.dp)
                 .height(30.dp)
                 .clickable {
                     if (selectedTab != MyPageTab.TravelPost) {
@@ -154,7 +155,7 @@ fun CustomPager(
         Spacer(Modifier.width(20.dp))
         Column(
             modifier = Modifier
-                .width(60.dp)
+                .width(80.dp)
                 .height(30.dp)
                 .clickable {
                     if (selectedTab != MyPageTab.TravelHistory) {
