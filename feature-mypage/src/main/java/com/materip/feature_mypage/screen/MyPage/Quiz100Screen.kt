@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -105,6 +106,7 @@ private fun Quiz100Content(
 ){
     var isEditable by remember{mutableStateOf(false)}
     val quizs = remember{mutableStateListOf(*quizs.toTypedArray())}
+    val size by remember{derivedStateOf{quizs.size}}
     val removeQuiz = remember{ mutableStateListOf<Int?>() }
 
     BackHandler(
@@ -126,7 +128,6 @@ private fun Quiz100Content(
             menuText = if(isEditable) "삭제" else "편집",
             menuTextColor = if(isEditable && removeQuiz.isNotEmpty()) Color.Black else MateTripColors.Gray_06,
             titleFontWeight = FontWeight(700),
-            onBackClick = navBack,
             onClick = {
                 if(isEditable){
                     quizs.filter{it.id !in removeQuiz}
@@ -134,18 +135,24 @@ private fun Quiz100Content(
                     removeQuiz.clear()
                 }
                 isEditable = !isEditable
+            },
+            onBackClick = {
+                onPostQuizs(quizs)
+                navBack()
             }
         )
         Spacer(Modifier.height(10.dp))
         if (isEditable){
             EditableQuiz(
                 quizs = quizs,
+                size = size,
                 removeQuiz = removeQuiz,
                 addAll = {removeQuiz.addAll(quizs.map{it.id})}
             )
         } else {
             ReadOnlyQuiz(
                 quizs = quizs,
+                size = size,
                 addQuiz = {quizs.add(it)}
             )
         }
@@ -155,10 +162,10 @@ private fun Quiz100Content(
 @Composable
 private fun EditableQuiz(
     quizs: SnapshotStateList<QnARequestItem>,
+    size: Int,
     removeQuiz: SnapshotStateList<Int?>,
     addAll: () -> Unit,
 ){
-    val size by remember{mutableStateOf(quizs.size)}
     Column(
         modifier = Modifier.fillMaxWidth()
     ){
@@ -235,9 +242,9 @@ private fun EditableQuiz(
 @Composable
 private fun ReadOnlyQuiz(
     quizs: List<QnARequestItem>,
+    size: Int,
     addQuiz: (QnARequestItem) -> Unit,
 ){
-    val size by remember{ mutableStateOf(quizs.size) }
     Column(
         modifier = Modifier.fillMaxWidth()
     ){
