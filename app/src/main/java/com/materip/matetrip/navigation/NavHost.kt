@@ -52,7 +52,7 @@ import com.materip.feature_onboarding.navigation.selectTripStyle
 fun SetUpNavGraph(
     navController: NavHostController,
     startDestination: String,
-    postBoardViewModel: PostBoardViewModel
+    postBoardViewModel: PostBoardViewModel,
 ) {
     NavHost(
         navController = navController,

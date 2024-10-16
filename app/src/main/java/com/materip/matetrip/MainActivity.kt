@@ -17,7 +17,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -76,7 +80,7 @@ class MainActivity : AppCompatActivity() {
                         GetTopBar(
                             currentRoute = currentRoute,
                             navController = navController,
-                            postBoardViewModel = postBoardViewModel
+                            postBoardViewModel = postBoardViewModel,
                         )
                     },
                     floatingActionButton = {
@@ -178,13 +182,15 @@ fun GetTopBar(
 
         // 타이틀, action이 필요한 상단바
         currentRoute == Screen.Post.route -> {
+            val isFormValid by postBoardViewModel.isFormValid.collectAsState()
             BackButtonWithTitleTopAppBar(
                 screenTitle = "동행 모집하기",
                 onNavigateUp = { navController.navigateUp() },
                 onPostClick = {
                     postBoardViewModel.handleIntent(PostBoardIntent.CreatePost)
                     navController.navigate(Screen.Home.route)
-                }
+                },
+                isPostButtonEnabled = isFormValid
             )
 
             LaunchedEffect(postBoardViewModel.createdBoardIds) {

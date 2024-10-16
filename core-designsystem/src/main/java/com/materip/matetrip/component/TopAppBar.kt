@@ -61,6 +61,7 @@ fun BackButtonWithTitleTopAppBar(
     screenTitle: String,
     onNavigateUp: () -> Unit,
     onPostClick: () -> Unit,
+    isPostButtonEnabled: Boolean
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -85,15 +86,18 @@ fun BackButtonWithTitleTopAppBar(
             ) {
                 Button(
                     onClick = onPostClick,
+                    enabled = isPostButtonEnabled,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent,
-                        contentColor = Color.Transparent
-                    )
+                        contentColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent,
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(0.dp)
                 ) {
                     Text(
                         text = "게시",
                         style = MateTripTypographySet.body04,
-                        color = Color.Black
+                        color = if (isPostButtonEnabled) Color.Black else Color.Gray
                     )
                 }
             }

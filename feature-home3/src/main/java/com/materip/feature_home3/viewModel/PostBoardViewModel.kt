@@ -40,7 +40,11 @@ class PostBoardViewModel @Inject constructor(
     private val _imageUploadState = MutableStateFlow<ImageUploadState>(ImageUploadState.Idle)
     val imageUploadState: StateFlow<ImageUploadState> = _imageUploadState
 
+    private val _isFormValid = MutableStateFlow(false)
+    val isFormValid: StateFlow<Boolean> = _isFormValid
+
     private val _generalError = MutableStateFlow(Pair(false, ""))
+    val generalError: StateFlow<Pair<Boolean, String>> = _generalError
 
     private var boardRequest: BoardRequestDto? = null
 
@@ -65,8 +69,11 @@ class PostBoardViewModel @Inject constructor(
             is PostBoardIntent.UploadImage -> uploadImage(intent.context, intent.uri)
             is PostBoardIntent.DeleteImage -> deleteImage(intent.imagePath)
             is PostBoardIntent.TransformToFile -> transformToFile(intent.context, intent.uri)
+            is PostBoardIntent.ResetGeneralError -> resetGeneralError()
         }
     }
+
+    private fun resetGeneralError() { _generalError.value = Pair(false, "") }
 
     private fun updateField(update: (BoardFormState) -> BoardFormState) {
         _formState.update(update)
@@ -87,6 +94,7 @@ class PostBoardViewModel @Inject constructor(
             tagNames = currentFormState.tagNames
         )
         Log.d("PostBoardViewModel", "updateField DTO created: $boardRequest")
+        _isFormValid.value = isFormValid()
     }
 
     private fun uploadImage(context: Context, uri: Uri?) {
@@ -145,6 +153,17 @@ class PostBoardViewModel @Inject constructor(
         _serverImageUrls.value = _serverImageUrls.value.filter { it != path }
         updateField { it.copy(imageUris = _serverImageUrls.value) }
         Log.d("PostBoardViewModel", "Image deleted: $path")
+    }
+
+    private fun isFormValid(): Boolean {
+        val form = _formState.value
+        return form.title.isNotBlank() &&
+                form.content.isNotBlank() &&
+                form.tagNames.isNotEmpty() &&
+                form.region != null &&
+                form.startDate != null &&
+                form.endDate != null &&
+                form.category.isNotEmpty()
     }
 
     private fun createPost() {
