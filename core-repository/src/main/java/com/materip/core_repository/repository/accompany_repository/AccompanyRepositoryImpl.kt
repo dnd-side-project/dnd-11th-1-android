@@ -8,7 +8,7 @@ import com.materip.core_model.request.PagingRequestDto
 import com.materip.core_model.response.AccompanyReceivedItem
 import com.materip.core_model.response.BoardItemWithRequestId
 import com.materip.core_model.response.BoardItemWithReviewId
-import com.materip.core_model.response.DefaultGetAccompanyResponseDto
+import com.materip.core_model.response.DefaultPagingResponseDto
 import javax.inject.Inject
 
 class AccompanyRepositoryImpl @Inject constructor(
@@ -24,19 +24,19 @@ class AccompanyRepositoryImpl @Inject constructor(
         return accompanyDataStore.postCancel(id)
     }
 
-    override suspend fun getAccompanySend(requestDto: PagingRequestDto): ResultResponse<DefaultGetAccompanyResponseDto<BoardItemWithRequestId>> {
+    override suspend fun getAccompanySend(requestDto: PagingRequestDto): ResultResponse<DefaultPagingResponseDto<BoardItemWithRequestId>> {
         return accompanyDataStore.getAccompanySend(requestDto)
     }
 
-    override suspend fun getAccompanyReceived(requestDto: PagingRequestDto): ResultResponse<DefaultGetAccompanyResponseDto<AccompanyReceivedItem>> {
+    override suspend fun getAccompanyReceived(requestDto: PagingRequestDto): ResultResponse<DefaultPagingResponseDto<AccompanyReceivedItem>> {
         return accompanyDataStore.getAccompanyReceived(requestDto)
     }
 
-    override suspend fun getAccompanyRecords(requestDto: PagingRequestDto): ResultResponse<DefaultGetAccompanyResponseDto<BoardItemWithReviewId>> {
+    override suspend fun getAccompanyRecords(requestDto: PagingRequestDto): ResultResponse<DefaultPagingResponseDto<BoardItemWithReviewId>> {
         return accompanyDataStore.getAccompanyRecords(requestDto)
     }
 
-    override suspend fun getAccompanyMyPost(requestDto: PagingRequestDto): ResultResponse<DefaultGetAccompanyResponseDto<BoardItem>> {
+    override suspend fun getAccompanyMyPost(requestDto: PagingRequestDto): ResultResponse<DefaultPagingResponseDto<BoardItem>> {
         return accompanyDataStore.getAccompanyMyPost(requestDto)
     }
 
