@@ -11,6 +11,7 @@ import com.materip.core_network.service.home.BoardService
 import com.materip.core_network.service.login.LoginService
 import com.materip.core_network.service.onboarding.OnboardingService
 import com.materip.core_network.service.profile.ProfileService
+import com.materip.core_network.service.qna.QnA100Service
 import com.materip.core_network.service.review.ReviewService
 import com.materip.core_network.service.test.TestService
 import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
@@ -104,5 +105,11 @@ object NetworkModule {
     @Singleton
     fun provideReviewService(retrofit: Retrofit): ReviewService {
         return retrofit.create(ReviewService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideQnAService(retrofit: Retrofit): QnA100Service{
+        return retrofit.create(QnA100Service::class.java)
     }
 }
