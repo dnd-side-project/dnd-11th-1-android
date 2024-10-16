@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class QnARequestItem(
-    val id: Int,
-    val questions: String,
-    val answers: String
+    val id: Int?,
+    var questions: String,
+    var answers: String
 )
