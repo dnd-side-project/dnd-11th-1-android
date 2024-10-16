@@ -6,7 +6,7 @@ import com.materip.core_model.request.PagingRequestDto
 import com.materip.core_model.response.AccompanyReceivedItem
 import com.materip.core_model.response.BoardItemWithRequestId
 import com.materip.core_model.response.BoardItemWithReviewId
-import com.materip.core_model.response.DefaultGetAccompanyResponseDto
+import com.materip.core_model.response.DefaultPagingResponseDto
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -26,22 +26,22 @@ interface AccompanyService {
     @GET("/api/v1/accompany/requests/sended")
     suspend fun getAccompanySend(
         @Body requestDto: PagingRequestDto
-    ): ApiResponse<DefaultGetAccompanyResponseDto<BoardItemWithRequestId>>
+    ): ApiResponse<DefaultPagingResponseDto<BoardItemWithRequestId>>
 
     @GET("/api/v1/accompany/requests/received")
     suspend fun getAccompanyReceived(
         @Body requestDto: PagingRequestDto
-    ): ApiResponse<DefaultGetAccompanyResponseDto<AccompanyReceivedItem>>
+    ): ApiResponse<DefaultPagingResponseDto<AccompanyReceivedItem>>
 
     @GET("/api/v1/accompany/boards/records")
     suspend fun getAccompanyRecords(
         @Body requestDto: PagingRequestDto
-    ): ApiResponse<DefaultGetAccompanyResponseDto<BoardItemWithReviewId>>
+    ): ApiResponse<DefaultPagingResponseDto<BoardItemWithReviewId>>
 
     @POST("/api/v1/accompany/boards/mine")
     suspend fun getAccompanyMyPost(
         @Body requestDto: PagingRequestDto
-    ): ApiResponse<DefaultGetAccompanyResponseDto<BoardItem>>
+    ): ApiResponse<DefaultPagingResponseDto<BoardItem>>
 
     @POST("/api/v1/accompany/requests/decline/{id}")
     suspend fun postReject(
