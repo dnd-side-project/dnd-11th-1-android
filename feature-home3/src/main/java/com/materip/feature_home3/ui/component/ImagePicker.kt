@@ -3,6 +3,8 @@
 package com.materip.feature_home3.ui.component
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -44,6 +46,9 @@ import com.materip.core_designsystem.icon.Icons.dismiss_icon
 import com.materip.core_designsystem.theme.MateTripColors.Blue_04
 import com.materip.core_designsystem.theme.MateTripColors.Gray_11
 import com.materip.core_designsystem.theme.MateTripTypographySet
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 
 @Composable
 fun ImagePicker(
@@ -60,10 +65,13 @@ fun ImagePicker(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         if (uri != null && imageCount < 5) {
-            imageUri = uri
-            onUploadImage(context, uri)
-            onImageUrisChange(imageUris + uri.toString())
-            imageCount++
+            val compressedImageFile = compressImage(context, uri)
+            if (compressedImageFile != null) {
+                imageUri = uri
+                onUploadImage(context, Uri.fromFile(compressedImageFile))
+                onImageUrisChange(imageUris + Uri.fromFile(compressedImageFile).toString())
+                imageCount++
+            }
         }
     }
 
@@ -141,4 +149,20 @@ fun ImagePicker(
             }
         }
     }
+}
+
+fun compressImage(context: Context, uri: Uri): File? {
+    val contentResolver = context.contentResolver
+    val inputStream = contentResolver.openInputStream(uri) ?: return null
+    val bitmap = BitmapFactory.decodeStream(inputStream)
+    val outputStream = ByteArrayOutputStream()
+    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream) // 50% 품질로 압축
+
+    val compressedFile = File(context.cacheDir, "compressed_${System.currentTimeMillis()}.jpg")
+    val fileOutputStream = FileOutputStream(compressedFile)
+    fileOutputStream.write(outputStream.toByteArray())
+    fileOutputStream.flush()
+    fileOutputStream.close()
+
+    return compressedFile
 }
