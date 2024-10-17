@@ -204,4 +204,15 @@ class PostBoardViewModel @Inject constructor(
             }
         }
     }
+
+    fun resetState() {
+        _uiState.value = PostBoardUiState.Initial
+        _formState.value = BoardFormState()
+        _createdBoardIds.value = emptyList()
+        _imageUploadState.value = ImageUploadState.Idle
+        _isFormValid.value = false
+        _generalError.value = Pair(false, "")
+        boardRequest = null
+        _serverImageUrls.value = emptyList()
+    }
 }

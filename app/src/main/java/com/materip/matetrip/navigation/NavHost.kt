@@ -1,7 +1,10 @@
 package com.materip.matetrip.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -127,7 +130,19 @@ fun SetUpNavGraph(
         }
 
         // 홈_게시글 작성_디폴트
-        composable(Screen.Post.route) {
+        composable(Screen.Post.route) { backStackEntry ->
+            val lifecycle = backStackEntry.lifecycle
+            DisposableEffect(lifecycle) {
+                val observer = LifecycleEventObserver { _, event ->
+                    if (event == Lifecycle.Event.ON_CREATE) {
+                        postBoardViewModel.resetState()
+                    }
+                }
+                lifecycle.addObserver(observer)
+                onDispose {
+                    lifecycle.removeObserver(observer)
+                }
+            }
             PostBoardScreen(
                 viewModel = postBoardViewModel
             )
