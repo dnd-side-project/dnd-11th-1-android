@@ -1,5 +1,6 @@
 package com.materip.feature_mypage.screen.MyPage
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -224,8 +225,10 @@ private fun SendTravelApplication(
     navBack: () -> Unit,
     viewModel: SendTravelApplicationViewModel = hiltViewModel()
 ){
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
-    val errState = viewModel.errorState.collectAsStateWithLifecycle().value
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val errState by viewModel.errorState.collectAsStateWithLifecycle()
+    val applications = viewModel.applicationPagingSource().collectAsLazyPagingItems()
+    Log.d("TAG TEST", "uiState : ${uiState}")
     when(uiState){
         SendTravelApplicationUiState.Loading -> {
             DefaultLoadingComponent()
@@ -236,8 +239,7 @@ private fun SendTravelApplication(
                 navBack = navBack
             )
         }
-        is SendTravelApplicationUiState.Success -> {
-            val applications = viewModel.applicationPagingSource().collectAsLazyPagingItems()
+        SendTravelApplicationUiState.Success -> {
             SendTravelApplicationContent(
                 applications = applications,
                 navSendApplication = navSendApplication
