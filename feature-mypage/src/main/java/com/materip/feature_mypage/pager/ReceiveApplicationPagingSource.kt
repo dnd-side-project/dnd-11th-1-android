@@ -16,7 +16,7 @@ class ReceiveApplicationPagingSource (
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AccompanyReceivedItem> {
         val pageNumber = params.key ?: 0
         try{
-            val response = accompanyRepository.getAccompanyReceived(
+            val response = accompanyRepository.postAccompanyReceived(
                     PagingRequestDto(cursor)
                 )
             if(response.error != null){
