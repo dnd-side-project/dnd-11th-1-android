@@ -202,9 +202,7 @@ fun CustomPagerContent(
                     navBack = navBack
                 )
             }
-            MyPageTab.TravelPost -> TravelPostContent(
-                navBack = navBack
-            )
+            MyPageTab.TravelPost -> TravelPostContent(navBack = navBack)
             MyPageTab.TravelHistory -> TravelHistoryContent(
                 navSendApplication = navSendApplication,
                 navReviewWrite = navReviewWrite,
