@@ -64,6 +64,7 @@ import com.materip.core_model.ui_model.Region
 import com.materip.core_model.ui_model.TravelStyle
 import com.materip.feature_mypage.view_models.MyPage.ReceivedApplicationUiState
 import com.materip.feature_mypage.view_models.MyPage.ReceivedApplicationViewModel
+import com.materip.matetrip.component.DefaultLoadingComponent
 import com.materip.matetrip.toast.CommonToastView
 import com.materip.matetrip.toast.ErrorView
 import kotlinx.coroutines.Dispatchers
@@ -111,7 +112,7 @@ fun ReceivedApplicationScreen(
 ){
     when(uiState){
         ReceivedApplicationUiState.Loading -> {
-            CircularProgressIndicator()
+            DefaultLoadingComponent()
         }
         ReceivedApplicationUiState.Error -> {
             ErrorView(

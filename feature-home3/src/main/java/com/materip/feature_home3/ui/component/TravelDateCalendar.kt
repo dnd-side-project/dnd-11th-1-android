@@ -71,7 +71,7 @@ fun TravelDateCalendar(
             Text(
                 text = "여행 일정",
                 color = Gray_11,
-                modifier = Modifier.size(320.dp, 20.dp),
+                modifier = Modifier.size(300.dp, 20.dp),
                 style = MateTripTypographySet.title04
             )
             IconButton(
@@ -82,7 +82,7 @@ fun TravelDateCalendar(
                 },
                 modifier = Modifier.size(21.dp)
             ) {
-                Icon(Icons.Outlined.Refresh, contentDescription = "Reset date")
+                Icon(Icons.Outlined.Refresh, contentDescription = "Reset date",)
             }
         }
         Box(

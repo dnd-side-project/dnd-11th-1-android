@@ -26,4 +26,5 @@ sealed class PostBoardIntent {
     data class UploadImage(val context: Context, val uri: Uri?) : PostBoardIntent()
     data class DeleteImage(val imagePath: String) : PostBoardIntent()
     data class TransformToFile(val context: Context, val uri: Uri) : PostBoardIntent()
+    data object ResetGeneralError : PostBoardIntent()
 }

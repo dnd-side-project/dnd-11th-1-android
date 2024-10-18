@@ -1,6 +1,5 @@
 package com.materip.feature_mypage.view_models.MyPage
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -8,8 +7,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.materip.core_common.ErrorState
-import com.materip.core_common.Result
-import com.materip.core_common.asResult
 import com.materip.core_model.response.BoardItemWithRequestId
 import com.materip.core_repository.repository.accompany_repository.AccompanyRepository
 import com.materip.feature_mypage.pager.SendApplicationPagingSource
@@ -18,9 +15,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,23 +41,15 @@ class SendTravelApplicationViewModel @Inject constructor(
         initialValue = ErrorState.Loading
     )
 
-    val uiState: StateFlow<SendTravelApplicationUiState> = errorState.map{
-        if (it is ErrorState.AuthError && it.isInvalid()) {throw Exception("Error")}
-    }.asResult().map{ result ->
-        when(result){
-            Result.Loading -> SendTravelApplicationUiState.Loading
-            is Result.Success -> SendTravelApplicationUiState.Success
-            is Result.Error -> SendTravelApplicationUiState.Error
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = SendTravelApplicationUiState.Loading
-    )
+    private val _uiState = MutableStateFlow<SendTravelApplicationUiState>(SendTravelApplicationUiState.Loading)
+    val uiState get() = _uiState.asStateFlow()
 
     fun applicationPagingSource(): Flow<PagingData<BoardItemWithRequestId>> = Pager(
         config = PagingConfig(pageSize = 10),
-        pagingSourceFactory = {getSendApplication()},
+        pagingSourceFactory = {
+            _uiState.update{SendTravelApplicationUiState.Success}
+            getSendApplication()
+        },
     ).flow.cachedIn(viewModelScope)
 
     private fun getSendApplication() = SendApplicationPagingSource(accompanyRepository = accompanyRepository)

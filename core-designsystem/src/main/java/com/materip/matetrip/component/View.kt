@@ -83,7 +83,6 @@ fun ImageLoadView(
         modifier = Modifier
             .size(size)
             .background(color = backgroundColor, shape = shape)
-            .border(width = 0.1.dp, color = MateTripColors.Gray_08, shape = shape)
     ){
         AsyncImage(
             modifier = Modifier

@@ -18,6 +18,7 @@ import com.materip.feature_home3.ui.profile_content.ReviewContent
 import com.materip.feature_home3.viewModel.ProfileViewModel
 import com.materip.feature_mypage.view_models.MyPage.ReviewEvaluationViewModel
 import com.materip.feature_mypage.view_models.MyPage.ReviewListViewModel
+import com.materip.matetrip.component.DefaultLoadingComponent
 
 
 @Composable
@@ -55,7 +56,7 @@ fun ProfileScreen(
 
     when (uiState) {
         is ProfileUiState.Loading -> {
-            CircularProgressIndicator()
+            DefaultLoadingComponent()
         }
 
         is ProfileUiState.Success, ProfileUiState.Initial -> {

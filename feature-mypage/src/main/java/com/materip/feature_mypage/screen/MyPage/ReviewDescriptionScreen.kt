@@ -51,6 +51,7 @@ import com.materip.core_model.response.GetReviewDescriptionResponseDto
 import com.materip.core_model.ui_model.Region
 import com.materip.feature_mypage.view_models.MyPage.ReviewDescriptionUiState
 import com.materip.feature_mypage.view_models.MyPage.ReviewDescriptionViewModel
+import com.materip.matetrip.component.DefaultLoadingComponent
 import com.materip.matetrip.toast.ErrorView
 
 @Composable
@@ -78,7 +79,7 @@ fun ReviewDescriptionScreen(
 ){
     when(uiState){
         ReviewDescriptionUiState.Loading -> {
-            CircularProgressIndicator()
+            DefaultLoadingComponent()
         }
         ReviewDescriptionUiState.Error -> {
             ErrorView(

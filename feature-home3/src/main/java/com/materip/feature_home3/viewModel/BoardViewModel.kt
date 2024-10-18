@@ -53,7 +53,7 @@ class BoardViewModel @Inject constructor(
                 )
 
                 val currentData = _boardList.value?.data ?: emptyList()
-                val newData = currentData + (boardListResponse?.data ?: emptyList())
+                val newData = (currentData + (boardListResponse?.data ?: emptyList())).distinctBy { it.boardId }
 
                 _boardList.value = updatedBoardList?.copy(
                     data = newData,

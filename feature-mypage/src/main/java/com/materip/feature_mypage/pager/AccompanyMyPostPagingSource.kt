@@ -12,7 +12,7 @@ class AccompanyMyPostPagingSource (
     private var total = 0
     private var cursor: String? = null
 
-    override suspend fun load(params: PagingSource.LoadParams<Int>): PagingSource.LoadResult<Int, BoardItem> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, BoardItem> {
         val pageNumber = params.key ?: 0
         try{
             val response =

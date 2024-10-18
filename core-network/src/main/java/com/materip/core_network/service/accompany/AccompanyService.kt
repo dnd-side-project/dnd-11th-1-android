@@ -3,10 +3,11 @@ package com.materip.core_network.service.accompany
 import com.materip.core_model.accompany_board.all.BoardItem
 import com.materip.core_model.request.AccompanyApplicationResponseDto
 import com.materip.core_model.request.PagingRequestDto
+import com.materip.core_model.request.PagingRequestIntDto
 import com.materip.core_model.response.AccompanyReceivedItem
 import com.materip.core_model.response.BoardItemWithRequestId
 import com.materip.core_model.response.BoardItemWithReviewId
-import com.materip.core_model.response.DefaultGetAccompanyResponseDto
+import com.materip.core_model.response.DefaultPagingResponseDto
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -23,25 +24,25 @@ interface AccompanyService {
     suspend fun postCancel(
         @Path("id") id: Int
     ): ApiResponse<Any>
-    @GET("/api/v1/accompany/requests/sended")
-    suspend fun getAccompanySend(
+    @POST("/api/v1/accompany/requests/sended")
+    suspend fun postAccompanySend(
         @Body requestDto: PagingRequestDto
-    ): ApiResponse<DefaultGetAccompanyResponseDto<BoardItemWithRequestId>>
+    ): ApiResponse<DefaultPagingResponseDto<BoardItemWithRequestId>>
 
-    @GET("/api/v1/accompany/requests/received")
-    suspend fun getAccompanyReceived(
+    @POST("/api/v1/accompany/requests/received")
+    suspend fun postAccompanyReceived(
         @Body requestDto: PagingRequestDto
-    ): ApiResponse<DefaultGetAccompanyResponseDto<AccompanyReceivedItem>>
+    ): ApiResponse<DefaultPagingResponseDto<AccompanyReceivedItem>>
 
-    @GET("/api/v1/accompany/boards/records")
-    suspend fun getAccompanyRecords(
+    @POST("/api/v1/accompany/boards/records")
+    suspend fun postAccompanyRecords(
         @Body requestDto: PagingRequestDto
-    ): ApiResponse<DefaultGetAccompanyResponseDto<BoardItemWithReviewId>>
+    ): ApiResponse<DefaultPagingResponseDto<BoardItemWithReviewId>>
 
     @POST("/api/v1/accompany/boards/mine")
     suspend fun getAccompanyMyPost(
         @Body requestDto: PagingRequestDto
-    ): ApiResponse<DefaultGetAccompanyResponseDto<BoardItem>>
+    ): ApiResponse<DefaultPagingResponseDto<BoardItem>>
 
     @POST("/api/v1/accompany/requests/decline/{id}")
     suspend fun postReject(

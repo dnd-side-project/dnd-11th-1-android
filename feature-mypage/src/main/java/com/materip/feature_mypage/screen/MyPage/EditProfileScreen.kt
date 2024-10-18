@@ -79,6 +79,7 @@ import com.materip.core_model.ui_model.TravelInterest
 import com.materip.core_model.ui_model.TravelStyle
 import com.materip.feature_mypage.view_models.MyPage.EditProfileUiState
 import com.materip.feature_mypage.view_models.MyPage.EditProfileViewModel
+import com.materip.matetrip.component.DefaultLoadingComponent
 import com.materip.matetrip.toast.CommonToastView
 import com.materip.matetrip.toast.ErrorView
 import kotlinx.coroutines.Dispatchers
@@ -149,7 +150,7 @@ fun EditProfileScreen(
 ){
     when(uiState){
         EditProfileUiState.Loading -> {
-            CircularProgressIndicator()
+            DefaultLoadingComponent()
         }
         is EditProfileUiState.Success -> {
             EditProfileMainContent(
@@ -570,7 +571,7 @@ private fun TravelPreferencesEdit(travelPreferences: SnapshotStateList<String>){
             modifier = Modifier
                 .fillMaxWidth()
                 .height(40.dp)
-                .clickable{isOpen = !isOpen},
+                .clickable { isOpen = !isOpen },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ){
@@ -582,8 +583,7 @@ private fun TravelPreferencesEdit(travelPreferences: SnapshotStateList<String>){
                 color = MateTripColors.Gray_11
             )
             Icon(
-                modifier = Modifier.size(16.dp),
-                painter = painterResource(if(isOpen) Icons.fold_icon else Icons.enter_16_icon),
+                painter = painterResource(if(isOpen) Icons.fold_icon else Icons.enter_24_icon),
                 contentDescription = "Navigation Icon"
             )
         }
@@ -1209,7 +1209,7 @@ private fun SNSEdit(
                         shape = RoundedCornerShape(size = 10.dp)
                     )
                     .padding(horizontal = 12.dp, vertical = 13.dp),
-                value = snsLink,
+                value = "www.instagram.com/${snsLink}",
                 onValueChange = onUpdateSnsLink,
                 textStyle = TextStyle(
                     fontSize = 14.sp,

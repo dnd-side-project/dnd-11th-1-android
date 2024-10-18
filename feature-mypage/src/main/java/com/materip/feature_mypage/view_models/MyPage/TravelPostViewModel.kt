@@ -17,15 +17,20 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
 class TravelPostViewModel @Inject constructor(
     private val accompanyRepository: AccompanyRepository
 ): ViewModel() {
+
+    private val _uiState = MutableStateFlow<TravelPostUiState>(TravelPostUiState.Loading)
+    val uiState get() = _uiState.asStateFlow()
 
     private val invalidTokenError = MutableStateFlow<Boolean>(false)
     private val notFoundTokenError = MutableStateFlow<Boolean>(false)
@@ -42,23 +47,12 @@ class TravelPostViewModel @Inject constructor(
         initialValue = ErrorState.Loading
     )
 
-    val uiState: StateFlow<TravelPostUiState> = errorState.map{
-        if (it is ErrorState.AuthError && it.isInvalid()) {throw Exception("Error")}
-    }.asResult().map{ result ->
-        when(result){
-            Result.Loading -> TravelPostUiState.Loading
-            is Result.Success -> TravelPostUiState.Success
-            is Result.Error -> TravelPostUiState.Error
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = TravelPostUiState.Loading
-    )
-
     fun applicationPagingSource(): Flow<PagingData<BoardItem>> = Pager(
         config = PagingConfig(pageSize = 10),
-        pagingSourceFactory = {getAccompanyMyPost()},
+        pagingSourceFactory = {
+            _uiState.update{TravelPostUiState.Success}
+            getAccompanyMyPost()
+        },
     ).flow.cachedIn(viewModelScope)
 
     private fun getAccompanyMyPost() = AccompanyMyPostPagingSource(accompanyRepository = accompanyRepository)

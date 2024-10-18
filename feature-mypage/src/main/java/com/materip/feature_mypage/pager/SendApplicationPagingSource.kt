@@ -17,7 +17,7 @@ class SendApplicationPagingSource(
         val pageNumber = params.key ?: 0
         try{
             val response =
-                accompanyRepository.getAccompanySend(
+                accompanyRepository.postAccompanySend(
                     PagingRequestDto(cursor)
                 )
             if(response.error != null){
