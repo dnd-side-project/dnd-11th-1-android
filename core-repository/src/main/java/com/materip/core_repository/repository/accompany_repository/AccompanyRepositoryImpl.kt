@@ -5,6 +5,7 @@ import com.materip.core_datastore.accompany_datastore.AccompanyDataStore
 import com.materip.core_model.accompany_board.all.BoardItem
 import com.materip.core_model.request.AccompanyApplicationResponseDto
 import com.materip.core_model.request.PagingRequestDto
+import com.materip.core_model.request.PagingRequestIntDto
 import com.materip.core_model.response.AccompanyReceivedItem
 import com.materip.core_model.response.BoardItemWithRequestId
 import com.materip.core_model.response.BoardItemWithReviewId
@@ -24,8 +25,8 @@ class AccompanyRepositoryImpl @Inject constructor(
         return accompanyDataStore.postCancel(id)
     }
 
-    override suspend fun getAccompanySend(requestDto: PagingRequestDto): ResultResponse<DefaultPagingResponseDto<BoardItemWithRequestId>> {
-        return accompanyDataStore.getAccompanySend(requestDto)
+    override suspend fun postAccompanySend(requestDto: PagingRequestDto): ResultResponse<DefaultPagingResponseDto<BoardItemWithRequestId>> {
+        return accompanyDataStore.postAccompanySend(requestDto)
     }
 
     override suspend fun getAccompanyReceived(requestDto: PagingRequestDto): ResultResponse<DefaultPagingResponseDto<AccompanyReceivedItem>> {

@@ -3,6 +3,7 @@ package com.materip.core_network.service.accompany
 import com.materip.core_model.accompany_board.all.BoardItem
 import com.materip.core_model.request.AccompanyApplicationResponseDto
 import com.materip.core_model.request.PagingRequestDto
+import com.materip.core_model.request.PagingRequestIntDto
 import com.materip.core_model.response.AccompanyReceivedItem
 import com.materip.core_model.response.BoardItemWithRequestId
 import com.materip.core_model.response.BoardItemWithReviewId
@@ -23,8 +24,8 @@ interface AccompanyService {
     suspend fun postCancel(
         @Path("id") id: Int
     ): ApiResponse<Any>
-    @GET("/api/v1/accompany/requests/sended")
-    suspend fun getAccompanySend(
+    @POST("/api/v1/accompany/requests/sended")
+    suspend fun postAccompanySend(
         @Body requestDto: PagingRequestDto
     ): ApiResponse<DefaultPagingResponseDto<BoardItemWithRequestId>>
 

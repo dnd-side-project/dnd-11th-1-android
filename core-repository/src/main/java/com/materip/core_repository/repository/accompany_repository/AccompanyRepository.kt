@@ -12,7 +12,7 @@ import com.materip.core_model.response.DefaultPagingResponseDto
 interface AccompanyRepository {
     suspend fun getAccompanyApplication(id: Int): ResultResponse<AccompanyApplicationResponseDto>
     suspend fun postCancel(id: Int): ResultResponse<Any>
-    suspend fun getAccompanySend(requestDto: PagingRequestDto): ResultResponse<DefaultPagingResponseDto<BoardItemWithRequestId>>
+    suspend fun postAccompanySend(requestDto: PagingRequestDto): ResultResponse<DefaultPagingResponseDto<BoardItemWithRequestId>>
     suspend fun getAccompanyReceived(requestDto: PagingRequestDto): ResultResponse<DefaultPagingResponseDto<AccompanyReceivedItem>>
     suspend fun getAccompanyRecords(requestDto: PagingRequestDto): ResultResponse<DefaultPagingResponseDto<BoardItemWithReviewId>>
     suspend fun getAccompanyMyPost(requestDto: PagingRequestDto): ResultResponse<DefaultPagingResponseDto<BoardItem>>
