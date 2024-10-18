@@ -4,16 +4,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.paging.ItemSnapshotList
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.component.NoDataContent
@@ -29,31 +26,31 @@ fun TravelPostContent(
     navBack: () -> Unit,
     viewModel: TravelPostViewModel = hiltViewModel()
 ){
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-    val errState = viewModel.errorState.collectAsStateWithLifecycle()
+    val errState by viewModel.errorState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val posts = viewModel.applicationPagingSource().collectAsLazyPagingItems()
-    when(uiState.value){
+    TravelPostMainContent(posts = posts)
+    when(uiState){
         TravelPostUiState.Loading -> {
             DefaultLoadingComponent()
         }
         TravelPostUiState.Error -> {
             ErrorView(
-                errState = errState.value,
+                errState = errState,
                 navBack = navBack
             )
         }
-        TravelPostUiState.Success -> {
-            TravelPostMainContent(
-                posts = posts.itemSnapshotList
-            )
+        is TravelPostUiState.Success -> {
+            TravelPostMainContent(posts = posts)
         }
     }
 }
 
 @Composable
 private fun TravelPostMainContent(
-    posts: ItemSnapshotList<BoardItem>
+    posts: LazyPagingItems<BoardItem>
 ){
+    val posts = posts.itemSnapshotList
     if (posts.isEmpty()){
         NoDataContent(message = "첫 동행글을 작성해보세요.")
     } else {
@@ -69,7 +66,7 @@ private fun TravelPostMainContent(
                         title = post.title,
                         startDate = post.getStartDateText(),
                         endDate = post.getEndDateText(),
-                        postImage = post.imageUrls[0],
+                        postImage = if(post.imageUrls.isNotEmpty()) post.imageUrls[0] else null,
                         onClick = { /** 동행글 description으로 이동? */ }
                     )
                 }
