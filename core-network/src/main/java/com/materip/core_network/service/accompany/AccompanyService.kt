@@ -34,8 +34,8 @@ interface AccompanyService {
         @Body requestDto: PagingRequestDto
     ): ApiResponse<DefaultPagingResponseDto<AccompanyReceivedItem>>
 
-    @GET("/api/v1/accompany/boards/records")
-    suspend fun getAccompanyRecords(
+    @POST("/api/v1/accompany/boards/records")
+    suspend fun postAccompanyRecords(
         @Body requestDto: PagingRequestDto
     ): ApiResponse<DefaultPagingResponseDto<BoardItemWithReviewId>>
 
