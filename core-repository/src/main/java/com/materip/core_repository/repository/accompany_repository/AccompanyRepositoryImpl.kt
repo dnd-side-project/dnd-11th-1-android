@@ -29,8 +29,8 @@ class AccompanyRepositoryImpl @Inject constructor(
         return accompanyDataStore.postAccompanySend(requestDto)
     }
 
-    override suspend fun getAccompanyReceived(requestDto: PagingRequestDto): ResultResponse<DefaultPagingResponseDto<AccompanyReceivedItem>> {
-        return accompanyDataStore.getAccompanyReceived(requestDto)
+    override suspend fun postAccompanyReceived(requestDto: PagingRequestDto): ResultResponse<DefaultPagingResponseDto<AccompanyReceivedItem>> {
+        return accompanyDataStore.postAccompanyReceived(requestDto)
     }
 
     override suspend fun getAccompanyRecords(requestDto: PagingRequestDto): ResultResponse<DefaultPagingResponseDto<BoardItemWithReviewId>> {

@@ -51,9 +51,9 @@ class AccompanyDataStoreImpl @Inject constructor(
         return result
     }
 
-    override suspend fun getAccompanyReceived(requestDto: PagingRequestDto): ResultResponse<DefaultPagingResponseDto<AccompanyReceivedItem>> {
+    override suspend fun postAccompanyReceived(requestDto: PagingRequestDto): ResultResponse<DefaultPagingResponseDto<AccompanyReceivedItem>> {
         val result = ResultResponse<DefaultPagingResponseDto<AccompanyReceivedItem>>()
-        accompanyService.getAccompanyReceived(requestDto).suspendOnError{
+        accompanyService.postAccompanyReceived(requestDto).suspendOnError{
             result.error = Json.decodeFromString("${this.apiMessage}")
         }.suspendOnSuccess{
             result.data = this.data
