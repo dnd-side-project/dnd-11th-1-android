@@ -29,7 +29,6 @@ fun TravelPostContent(
     val errState by viewModel.errorState.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val posts = viewModel.applicationPagingSource().collectAsLazyPagingItems()
-    TravelPostMainContent(posts = posts)
     when(uiState){
         TravelPostUiState.Loading -> {
             DefaultLoadingComponent()
