@@ -2,6 +2,7 @@ package com.materip.matetrip.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -57,6 +58,7 @@ fun SetUpNavGraph(
     startDestination: String,
     postBoardViewModel: PostBoardViewModel,
 ) {
+    val navPost = remember<(Int) -> Unit>{ { navController.navigate("${Screen.NavigateToPost.route}/${it}") }}
     NavHost(
         navController = navController,
         startDestination = startDestination
@@ -112,7 +114,7 @@ fun SetUpNavGraph(
             navReviewDescription = navController::navigateToReviewDescription,
             navReviewWrite = navController::navigateToWriteReview,
             navReceivedApplication = navController::navigateToReceivedApplication,
-            navPostBoard = { navController.navigate("${Screen.NavigateToPost.route}/${it}") }
+            navPostBoard = navPost
         )
 
         // 홈
