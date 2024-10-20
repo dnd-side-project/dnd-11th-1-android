@@ -11,5 +11,5 @@ import com.materip.core_model.response.QnAResponseDto
 interface QnADataStore {
     suspend fun postQnA(requestDto: QnARequestDto): ResultResponse<Any>
     suspend fun getQnA(requestDto: PagingRequestIntDto): ResultResponse<DefaultPagingResponseDto<QnAResponseDto>>
-    suspend fun deleteQnA(requestDto: DefaultIdsRequestDto): ResultResponse<Any>
+    suspend fun deleteQnA(ids: Array<Int>): ResultResponse<Any>
 }

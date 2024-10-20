@@ -21,7 +21,7 @@ class QnARepositoryImpl @Inject constructor(
         return qnADataStore.getQnA(requestDto)
     }
 
-    override suspend fun deleteQnA(requestDto: DefaultIdsRequestDto): ResultResponse<Any> {
-        return qnADataStore.deleteQnA(requestDto)
+    override suspend fun deleteQnA(ids: Array<Int>): ResultResponse<Any> {
+        return qnADataStore.deleteQnA(ids)
     }
 }

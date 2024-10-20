@@ -39,9 +39,9 @@ class QnADataStoreImpl @Inject constructor(
         return result
     }
 
-    override suspend fun deleteQnA(requestDto: DefaultIdsRequestDto): ResultResponse<Any> {
+    override suspend fun deleteQnA(ids: Array<Int>): ResultResponse<Any> {
         val result = ResultResponse<Any>()
-        qnA100Service.deleteQnA(requestDto).suspendOnError{
+        qnA100Service.deleteQnA(ids).suspendOnError{
             result.error = Json.decodeFromString(this.message())
         }.suspendOnSuccess{
             result.data = this.data

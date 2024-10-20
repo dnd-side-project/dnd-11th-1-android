@@ -98,7 +98,7 @@ class QnAViewModel @Inject constructor(
     //qna 삭제
     fun deleteQna(ids: List<Int?>){
         viewModelScope.launch{
-            val result = qnARepository.deleteQnA(DefaultIdsRequestDto(ids.filterNotNull()))
+            val result = qnARepository.deleteQnA(ids.filterNotNull().toTypedArray())
             if (result.error != null){
                 when(result.error!!.status){
                     401 -> invalidTokenError.update{true}

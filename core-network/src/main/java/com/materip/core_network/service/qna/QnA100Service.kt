@@ -11,6 +11,7 @@ import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface QnA100Service {
     @POST("/api/v1/qna100s/create-update")
@@ -23,6 +24,6 @@ interface QnA100Service {
     ): ApiResponse<DefaultPagingResponseDto<QnAResponseDto>>
     @DELETE("/api/v1/qna100s")
     suspend fun deleteQnA(
-        @Body requestDto: DefaultIdsRequestDto
+        @Query("ids") ids: Array<Int>
     ): ApiResponse<Any>
 }
