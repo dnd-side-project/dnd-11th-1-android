@@ -19,7 +19,7 @@ fun ErrorView(
             } else if (errState.notFoundTokenError){
                 "존재하지 않는 사용자입니다."
             } else {
-                errState.generalError.second!!
+                errState.generalError.second ?: "인지되지 않은 오류 입니다."
             }
         }
         is ErrorState.NoAuthError -> errState.generalError.second!!
