@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class QnARequestDto(
-    val qnas: List<QnARequestItem>
+    val qnas: List<QnAItemDto>
 )
