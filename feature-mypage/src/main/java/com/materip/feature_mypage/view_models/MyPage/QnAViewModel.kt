@@ -1,15 +1,12 @@
 package com.materip.feature_mypage.view_models.MyPage
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.materip.core_common.ErrorState
 import com.materip.core_common.Result
 import com.materip.core_common.asResult
-import com.materip.core_model.request.DefaultIdsRequestDto
-import com.materip.core_model.request.PagingRequestIntDto
 import com.materip.core_model.request.QnARequestDto
-import com.materip.core_model.request.QnARequestItem
+import com.materip.core_model.request.QnAItemDto
 import com.materip.core_repository.repository.qna_repository.QnARepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,9 +42,7 @@ class QnAViewModel @Inject constructor(
 
     val uiState = combine(errorState, flag){errState, flag ->
         if (errState is ErrorState.AuthError && errState.isInvalid()) throw Exception("")
-        val requestDto = PagingRequestIntDto(cursor = null, size = 10)
-        val result = qnARepository.getQnA(requestDto)
-        Log.d("TAG TEST", "result : ${result}")
+        val result = qnARepository.getQnA()
         if (result.error != null){
             when(result.error!!.status){
                 401 -> invalidTokenError.update{true}
@@ -61,10 +56,7 @@ class QnAViewModel @Inject constructor(
         when(result){
             Result.Loading -> QnAUiState.Loading
             is Result.Error -> QnAUiState.Error
-            is Result.Success -> {
-                val data = result.data!!.data.map{QnARequestItem(id = it.id, questions = it.question, answers = it.answer)}
-                QnAUiState.Success(data)
-            }
+            is Result.Success -> QnAUiState.Success(result.data!!.qnas)
         }
     }.stateIn(
         scope = viewModelScope,
@@ -73,13 +65,13 @@ class QnAViewModel @Inject constructor(
     )
 
     // qna 등록
-    fun postQnA(quizs: List<QnARequestItem>){
+    fun postQnA(quizs: List<QnAItemDto>){
         viewModelScope.launch{
             val qnas = quizs.map{ quiz ->
-                QnARequestItem(
+                QnAItemDto(
                     id = quiz.id,
-                    questions = quiz.questions,
-                    answers = quiz.answers
+                    question = quiz.question,
+                    answer = quiz.answer
                 )
             }
             val result = qnARepository.postQnA(QnARequestDto(qnas))
@@ -96,18 +88,21 @@ class QnAViewModel @Inject constructor(
     }
 
     //qna 삭제
-    fun deleteQna(ids: List<Int?>){
+    fun deleteQna(qnas: List<QnAItemDto>){
         viewModelScope.launch{
-            val result = qnARepository.deleteQnA(ids.filterNotNull().toTypedArray())
-            if (result.error != null){
-                when(result.error!!.status){
-                    401 -> invalidTokenError.update{true}
-                    404 -> notFoundTokenError.update{true}
-                    else -> generalError.update{Pair(true, result.error!!.message)}
+            val deleteIds = qnas.map{it.id}.filterNotNull().toTypedArray()
+            if (deleteIds.isNotEmpty()){
+                val result = qnARepository.deleteQnA(deleteIds)
+                if (result.error != null){
+                    when(result.error!!.status){
+                        401 -> invalidTokenError.update{true}
+                        404 -> notFoundTokenError.update{true}
+                        else -> generalError.update{Pair(true, result.error!!.message)}
+                    }
+                    return@launch
                 }
-                return@launch
+                flag.update{!flag.value}
             }
-            flag.update{!flag.value}
         }
     }
 }
@@ -116,6 +111,6 @@ sealed interface QnAUiState{
     data object Loading: QnAUiState
     data object Error: QnAUiState
     data class Success(
-        val data: List<QnARequestItem>
+        val data: List<QnAItemDto>
     ): QnAUiState
 }
