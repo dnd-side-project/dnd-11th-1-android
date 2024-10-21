@@ -3,8 +3,8 @@ package com.materip.core_model.request
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class QnARequestItem(
+data class QnAItemDto(
     val id: Int?,
-    var questions: String,
-    var answers: String
+    var question: String,
+    var answer: String
 )
