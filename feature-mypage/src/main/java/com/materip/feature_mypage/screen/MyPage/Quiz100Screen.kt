@@ -4,7 +4,6 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -47,11 +46,7 @@ import com.materip.core_designsystem.component.QuizEditItem
 import com.materip.core_designsystem.component.QuizItem
 import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.theme.MateTripColors
-import com.materip.core_model.request.QnARequestDto
-import com.materip.core_model.request.QnARequestItem
-import com.materip.core_model.response.QnAResponseDto
-import com.materip.core_model.ui_model.QuizClass
-import com.materip.feature_mypage.R
+import com.materip.core_model.request.QnAItemDto
 import com.materip.feature_mypage.view_models.MyPage.QnAUiState
 import com.materip.feature_mypage.view_models.MyPage.QnAViewModel
 import com.materip.matetrip.component.DefaultLoadingComponent
@@ -77,8 +72,8 @@ fun Quiz100Route(
 fun Quiz100Screen(
     uiState: QnAUiState,
     errState: ErrorState,
-    deleteQuiz: (ids: List<Int?>) -> Unit,
-    postQuiz: (List<QnARequestItem>) -> Unit,
+    deleteQuiz: (qnas: List<QnAItemDto>) -> Unit,
+    postQuiz: (List<QnAItemDto>) -> Unit,
     navBack: () -> Unit
 ){
     when(uiState){
@@ -99,15 +94,15 @@ fun Quiz100Screen(
 
 @Composable
 private fun Quiz100Content(
-    quizs: List<QnARequestItem>,
-    onDeleteClick: (ids: List<Int?>) -> Unit,
-    onPostQuizs: (List<QnARequestItem>) -> Unit,
+    quizs: List<QnAItemDto>,
+    onDeleteClick: (qnas: List<QnAItemDto>) -> Unit,
+    onPostQuizs: (newQnas: List<QnAItemDto>) -> Unit,
     navBack: () -> Unit,
 ){
     var isEditable by remember{mutableStateOf(false)}
     val quizs = remember{mutableStateListOf(*quizs.toTypedArray())}
     val size by remember{derivedStateOf{quizs.size}}
-    val removeQuiz = remember{ mutableStateListOf<Int?>() }
+    val removeQuiz = remember{ mutableStateListOf<QnAItemDto>() }
 
     BackHandler(
         enabled = true,
@@ -130,7 +125,7 @@ private fun Quiz100Content(
             titleFontWeight = FontWeight(700),
             onClick = {
                 if(isEditable){
-                    quizs.filter{it.id !in removeQuiz}
+                    quizs.removeIf { it in removeQuiz }
                     onDeleteClick(removeQuiz)
                     removeQuiz.clear()
                 }
@@ -147,7 +142,7 @@ private fun Quiz100Content(
                 quizs = quizs,
                 size = size,
                 removeQuiz = removeQuiz,
-                addAll = {removeQuiz.addAll(quizs.map{it.id})}
+                addAll = {removeQuiz.addAll(quizs)}
             )
         } else {
             ReadOnlyQuiz(
@@ -161,9 +156,9 @@ private fun Quiz100Content(
 
 @Composable
 private fun EditableQuiz(
-    quizs: SnapshotStateList<QnARequestItem>,
+    quizs: SnapshotStateList<QnAItemDto>,
     size: Int,
-    removeQuiz: SnapshotStateList<Int?>,
+    removeQuiz: SnapshotStateList<QnAItemDto>,
     addAll: () -> Unit,
 ){
     Column(
@@ -195,14 +190,14 @@ private fun EditableQuiz(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ){
                 itemsIndexed(quizs){idx, quiz ->
-                    val isClicked = quiz.id in removeQuiz
+                    val isClicked = quiz in removeQuiz
                     QuizEditItem(
                         indexNumber = idx + 1,
-                        title = quiz.questions,
+                        title = quiz.question,
                         isClicked = isClicked,
                         onClick = {
-                            if(isClicked){removeQuiz.remove(quiz.id)}
-                            else { if(quiz.id != null) {removeQuiz.add(quiz.id!!)} }
+                            if(isClicked){removeQuiz.remove(quiz)}
+                            else removeQuiz.add(quiz)
                         }
                     )
                 }
@@ -241,9 +236,9 @@ private fun EditableQuiz(
 
 @Composable
 private fun ReadOnlyQuiz(
-    quizs: List<QnARequestItem>,
+    quizs: List<QnAItemDto>,
     size: Int,
-    addQuiz: (QnARequestItem) -> Unit,
+    addQuiz: (QnAItemDto) -> Unit,
 ){
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -261,7 +256,7 @@ private fun ReadOnlyQuiz(
             )
             IconButton(
                 modifier = Modifier.size(24.dp),
-                onClick = { addQuiz(QnARequestItem(id = null, questions = "", answers = "")) }
+                onClick = { addQuiz(QnAItemDto(id = null, question = "", answer = "")) }
             ){
                 Icon(
                     modifier = Modifier.fillMaxSize(),
@@ -278,10 +273,10 @@ private fun ReadOnlyQuiz(
                 itemsIndexed(quizs){idx, quiz ->
                     QuizItem(
                         indexNumber = idx + 1,
-                        title = quiz.questions,
-                        onUpdateTitle = { quiz.questions = it },
-                        answer = quiz.answers,
-                        onUpdateAnswer = {quiz.answers = it}
+                        title = quiz.question,
+                        onUpdateTitle = { quiz.question = it },
+                        answer = quiz.answer,
+                        onUpdateAnswer = {quiz.answer = it}
                     )
                 }
             }
@@ -321,19 +316,19 @@ private fun ReadOnlyQuiz(
 @Composable
 private fun Quiz100UITest(){
     val quizs = listOf(
-        QnARequestItem(
-            questions = "고기 vs 해물",
-            answers = "",
+        QnAItemDto(
+            question = "고기 vs 해물",
+            answer = "",
             id = null,
         ),
-        QnARequestItem(
-            questions = "액티비티 vs 힐링",
-            answers = "",
+        QnAItemDto(
+            question = "액티비티 vs 힐링",
+            answer = "",
             id = null,
         ),
-        QnARequestItem(
-            questions = "낮 vs 밤 활동성이 많은 시간",
-            answers = "",
+        QnAItemDto(
+            question = "낮 vs 밤 활동성이 많은 시간",
+            answer = "",
             id = null,
         )
     )
