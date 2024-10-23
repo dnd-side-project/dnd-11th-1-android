@@ -37,6 +37,9 @@ class ProfileViewModel @Inject constructor(
     private val _loggedInUserId = MutableStateFlow<Int?>(null)
     val loggedInUserId: StateFlow<Int?> = _loggedInUserId.asStateFlow()
 
+    private val _isApplicationCompleted = MutableStateFlow(false)
+    val isApplicationCompleted: StateFlow<Boolean> = _isApplicationCompleted.asStateFlow()
+
     init {
         viewModelScope.launch {
             val nickname = getNicknameFromBoard(boardId)
@@ -76,5 +79,9 @@ class ProfileViewModel @Inject constructor(
     private suspend fun getUserIdFromBoard(boardId: Int): Int {
         val result = boardRepository.getBoardDetail(boardId)
         return result.data?.profileThumbnail?.userId ?: 0
+    }
+
+    fun completeApplication() {
+        _isApplicationCompleted.value = true
     }
 }

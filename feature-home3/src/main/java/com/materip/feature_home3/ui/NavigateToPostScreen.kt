@@ -1,5 +1,6 @@
 package com.materip.feature_home3.ui
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -60,7 +61,7 @@ fun NavigateToPostScreen(
     boardId: Int,
     viewModel: HomeViewModel = hiltViewModel(),
     profileViewModel: ProfileViewModel = hiltViewModel(),
-    onNavigateToForm: () -> Unit,
+    onNavigateToForm: (Int) -> Unit,
     onNavigateToUserProfile: (Int) -> Unit,
     onNavigateUp: () -> Unit
 ) {
@@ -145,8 +146,12 @@ fun NavigateToPostScreen(
                 ) {
                     MateTripHomeButton(
                         buttonText = "동행 신청",
-                        enabled = loggedInUserId != null && loggedInUserId != profileInfo.userId,
-                        onClick = { onNavigateToForm() },
+                        enabled = loggedInUserId != null && loggedInUserId != profileInfo.userId && !profileViewModel.isApplicationCompleted.collectAsState().value,
+                        onClick = {
+                            Log.d("MateTripHomeButton", "boardId: $boardId")
+                            onNavigateToForm(boardId)
+                            profileViewModel.completeApplication()
+                        },
                         modifier = Modifier
                             .width(370.dp)
                             .height(54.dp)
@@ -155,11 +160,13 @@ fun NavigateToPostScreen(
                 }
             }
         }
+
         is HomeUiState.SuccessDelete -> {
             LaunchedEffect(Unit) {
                 onNavigateUp()
             }
         }
+
         is HomeUiState.Error -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -168,6 +175,7 @@ fun NavigateToPostScreen(
                 Text("오류: ${(uiState as HomeUiState.Error).message}")
             }
         }
+
         else -> {}
     }
 

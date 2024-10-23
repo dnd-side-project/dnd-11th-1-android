@@ -1,5 +1,6 @@
 package com.materip.matetrip.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
@@ -158,16 +159,20 @@ fun SetUpNavGraph(
             val boardId = backStackEntry.arguments?.getInt("boardId") ?: 0
             NavigateToPostScreen(
                 boardId = boardId,
-                onNavigateToForm = { navController.navigate(Screen.Form.route + "/$boardId") },
+                onNavigateToForm = { id -> navController.navigate(Screen.Form.route + "/$id") },
                 onNavigateToUserProfile = { navController.navigate(Screen.Profile.route + "/$boardId") },
                 onNavigateUp = navController::navigateToBack
             )
         }
 
         // 게시글_동행 신청
-        composable(Screen.Form.route + "/{boardId}") {
+        composable(
+            route = Screen.Form.route + "/{boardId}",
+            arguments = listOf(navArgument("boardId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val boardId = backStackEntry.arguments?.getInt("boardId") ?: 0
             FormScreen(
-                boardId = it.arguments?.getInt("boardId") ?: 0,
+                boardId = boardId,
                 onNavigateUp = { navController.navigateUp() }
             )
         }
