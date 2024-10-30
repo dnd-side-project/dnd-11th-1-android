@@ -268,7 +268,7 @@ private fun SendTravelApplicationContent(
                         title = application.title,
                         startDate = application.startDate.toDisplayDateString(),
                         endDate = application.endDate.toDisplayDateString(),
-                        postImage = application.imageUrls[0],
+                        postImage = if(application.imageUrls.isNotEmpty()) application.imageUrls[0] else null,
                         /** 여기에는 application에서 받아온 board id 를 기반으로 navigation 해야 함 */
                         onClick = {/** 해당 글 navigation */}
                     )
