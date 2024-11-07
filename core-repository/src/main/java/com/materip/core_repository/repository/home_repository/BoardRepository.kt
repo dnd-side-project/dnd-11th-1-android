@@ -23,8 +23,8 @@ interface BoardRepository {
     suspend fun postCompanionRequest(companionRequest: CompanionRequest): ResultResponse<Unit>
     // 동행글 삭제
     suspend fun deleteBoard(id: Int): ResultResponse<Unit>
-    // 프로필 조회
-    suspend fun getUserProfile(): ResultResponse<GetUserProfile>
+    // 유저 프로필 상세 조회
+    suspend fun getUserProfile(userId: Int): ResultResponse<GetUserProfile>
     // 동행글 검색
     suspend fun searchBoardList(query: QueryRequestDto): ResultResponse<BoardListResponse>
     // 내가 쓴 동행글 목록 조회

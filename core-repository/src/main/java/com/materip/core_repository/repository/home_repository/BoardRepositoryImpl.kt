@@ -38,8 +38,8 @@ class BoardRepositoryImpl @Inject constructor(
         return boardDataStore.deleteBoard(id)
     }
 
-    override suspend fun getUserProfile(): ResultResponse<GetUserProfile> {
-        return boardDataStore.getUserProfile()
+    override suspend fun getUserProfile(userId: Int): ResultResponse<GetUserProfile> {
+        return boardDataStore.getUserProfile(userId)
     }
 
     override suspend fun searchBoardList(query: QueryRequestDto): ResultResponse<BoardListResponse> {

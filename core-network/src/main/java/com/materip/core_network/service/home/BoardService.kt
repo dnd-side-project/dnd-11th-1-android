@@ -36,9 +36,9 @@ interface BoardService {
     @POST("/api/v1/accompany/boards/request")
     suspend fun postCompanionRequest(@Body companionRequest: CompanionRequest): ApiResponse<Unit>
 
-    // 프로필 조회
-    @GET("/api/v1/profiles")
-    suspend fun getProfile(): ApiResponse<GetUserProfile>
+    // 유저 프로필 상세 조회
+    @GET("/api/v1/profiles/{userId}")
+    suspend fun getProfile(@Path("userId") userId: Int): ApiResponse<GetUserProfile>
 
     // 동행글 삭제
     @POST("/api/v1/accompany/boards/remove/{id}")

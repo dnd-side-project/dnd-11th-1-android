@@ -75,9 +75,9 @@ class BoardDataStoreImpl @Inject constructor(
         return result
     }
 
-    override suspend fun getUserProfile(): ResultResponse<GetUserProfile> {
+    override suspend fun getUserProfile(userId: Int): ResultResponse<GetUserProfile> {
         val result = ResultResponse<GetUserProfile>()
-        boardService.getProfile().suspendOnSuccess {
+        boardService.getProfile(userId).suspendOnSuccess {
             result.data = this.data
         }.suspendOnError {
             result.error = Json.decodeFromString<ResponseError>("${this.apiMessage}")
