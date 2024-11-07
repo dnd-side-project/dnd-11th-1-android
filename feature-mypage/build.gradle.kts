@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.kapt)
 }
 val localProperties = Properties().apply{
-    load(project.file("local.properties").inputStream())
+    load(project.rootProject.file("local.properties").inputStream())
 }
 android {
     namespace = "com.materip.feature_mypage"
