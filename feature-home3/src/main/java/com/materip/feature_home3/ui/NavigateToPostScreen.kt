@@ -112,7 +112,7 @@ fun NavigateToPostScreen(
                     birthYear = profileInfo.birthYear,
                     gender = profileInfo.gender.toDisplayString(),
                     profileImageUrl = profileInfo.profileImageUrl,
-                    onNavigateToProfile = { onNavigateToUserProfile(profileInfo.userId) }
+                    onNavigateToProfile = { onNavigateToUserProfile(boardId) }
                 )
 
                 ShowUserBoardInfo(

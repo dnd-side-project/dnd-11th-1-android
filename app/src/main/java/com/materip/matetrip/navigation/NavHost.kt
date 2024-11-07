@@ -1,6 +1,5 @@
 package com.materip.matetrip.navigation
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
@@ -160,7 +159,7 @@ fun SetUpNavGraph(
             NavigateToPostScreen(
                 boardId = boardId,
                 onNavigateToForm = { id -> navController.navigate(Screen.Form.route + "/$id") },
-                onNavigateToUserProfile = { navController.navigate(Screen.Profile.route + "/$boardId") },
+                onNavigateToUserProfile = { id -> navController.navigate(Screen.Profile.route + "/$id") },
                 onNavigateUp = navController::navigateToBack
             )
         }
