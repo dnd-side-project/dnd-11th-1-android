@@ -33,4 +33,5 @@ object Icons {
     val camera_icon = R.drawable.camera
     val dismiss_icon = R.drawable.dismiss
     val notification_none_icon = R.drawable.notification_none
+    val filter_icon = R.drawable.filter
 }
