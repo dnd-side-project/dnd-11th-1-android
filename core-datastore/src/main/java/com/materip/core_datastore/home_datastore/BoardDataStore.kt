@@ -22,4 +22,5 @@ interface BoardDataStore {
     suspend fun getUserProfile(userId: Int): ResultResponse<GetUserProfile>
     suspend fun searchBoardList(query: QueryRequestDto): ResultResponse<BoardListResponse>
     suspend fun getMyBoardList(boardRequest: GetAccompanyBoard): ResultResponse<AccompanyBoardList>
+    suspend fun getBoardListByStarted(region: String?, started: Boolean): ResultResponse<BoardListResponse>
 }

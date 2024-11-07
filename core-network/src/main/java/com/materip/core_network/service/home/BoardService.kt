@@ -16,6 +16,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface BoardService {
     // 동행글 목록 조회
@@ -51,4 +52,11 @@ interface BoardService {
     // 내가 쓴 동행글 목록 조회
     @POST("/api/v1/accompany/boards/mine")
     suspend fun getMyBoardList(@Body requestDto: GetAccompanyBoard): ApiResponse<AccompanyBoardList>
+
+    // 동행 시작 여부에 따른 동행글 목록 조회
+    @POST("/api/v1/accompany/boards/all/by-started")
+    suspend fun getBoardListByStarted(
+        @Query("region") region: String? = null,
+        @Query("started") started: Boolean
+    ): ApiResponse<BoardListResponse>
 }

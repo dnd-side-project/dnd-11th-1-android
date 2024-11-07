@@ -93,6 +93,11 @@ class BoardViewModel @Inject constructor(
         }
     }
 
+    // 동행 시작 여부에 따른 동행글 목록 조회
+    private fun filteredBoardList() {
+
+    }
+
     fun handleIntent(intent: BoardListIntent) {
         when (intent) {
             is BoardListIntent.LoadBoardList -> {

@@ -29,4 +29,6 @@ interface BoardRepository {
     suspend fun searchBoardList(query: QueryRequestDto): ResultResponse<BoardListResponse>
     // 내가 쓴 동행글 목록 조회
     suspend fun getMyBoardList(request: GetAccompanyBoard): ResultResponse<AccompanyBoardList>
+    // 동행 시작 여부에 따른 동행글 목록 조회
+    suspend fun getBoardListByStarted(region: String?, started: Boolean): ResultResponse<BoardListResponse>
 }

@@ -37,9 +37,9 @@ class BoardDataStoreImpl @Inject constructor(
 
     override suspend fun postBoard(board: BoardRequestDto): ResultResponse<BoardIdDto> {
         val result = ResultResponse<BoardIdDto>()
-        boardService.postBoard(board).suspendOnSuccess{
+        boardService.postBoard(board).suspendOnSuccess {
             result.data = this.data
-        }.suspendOnError{
+        }.suspendOnError {
             result.error = Json.decodeFromString<ResponseError>("${this.apiMessage}")
         }
         return result
@@ -98,6 +98,19 @@ class BoardDataStoreImpl @Inject constructor(
     override suspend fun getMyBoardList(boardRequest: GetAccompanyBoard): ResultResponse<AccompanyBoardList> {
         val result = ResultResponse<AccompanyBoardList>()
         boardService.getMyBoardList(boardRequest).suspendOnSuccess {
+            result.data = this.data
+        }.suspendOnError {
+            result.error = Json.decodeFromString<ResponseError>("${this.apiMessage}")
+        }
+        return result
+    }
+
+    override suspend fun getBoardListByStarted(
+        region: String?,
+        started: Boolean
+    ): ResultResponse<BoardListResponse> {
+        val result = ResultResponse<BoardListResponse>()
+        boardService.getBoardListByStarted(region, started).suspendOnSuccess {
             result.data = this.data
         }.suspendOnError {
             result.error = Json.decodeFromString<ResponseError>("${this.apiMessage}")

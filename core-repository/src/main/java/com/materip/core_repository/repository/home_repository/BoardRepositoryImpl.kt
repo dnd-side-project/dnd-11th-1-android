@@ -49,4 +49,8 @@ class BoardRepositoryImpl @Inject constructor(
     override suspend fun getMyBoardList(request: GetAccompanyBoard): ResultResponse<AccompanyBoardList> {
         return boardDataStore.getMyBoardList(request)
     }
+
+    override suspend fun getBoardListByStarted(region: String?, started: Boolean): ResultResponse<BoardListResponse> {
+        return boardDataStore.getBoardListByStarted(region, started)
+    }
 }

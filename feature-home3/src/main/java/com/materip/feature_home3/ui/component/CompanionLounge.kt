@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -26,22 +27,23 @@ fun CompanionLounge(
         horizontalAlignment = Alignment.Start,
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = "동행 라운지",
                 style = MateTripTypographySet.headline06,
-                modifier = Modifier.padding(start = 20.dp, bottom = 12.dp)
             )
             IconButton(
                 onClick = { /*TODO: 게시글이 오늘 날짜를 기준으로 유효한지 안한지에 대해 필터링할 수 있는 아이콘*/ },
-                modifier = Modifier.padding(end = 20.dp, bottom = 12.dp)
             ) {
                 Icon(
                     painter = painterResource(id = filter_icon),
-                    contentDescription = "filter icon"
+                    contentDescription = "filter icon",
+                    modifier = Modifier.size(18.dp)
                 )
             }
         }
