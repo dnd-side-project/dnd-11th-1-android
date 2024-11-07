@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_common.ErrorState
+import com.materip.core_common.toDisplayDateString
 import com.materip.core_common.toDisplayString
 import com.materip.core_designsystem.component.ConfirmationDialog
 import com.materip.core_designsystem.component.CustomButton
@@ -163,9 +164,9 @@ private fun SendApplicationContent(
                 destination = boardInfo.region.toDisplayString(),
                 period = boardInfo.getDuration(),
                 title = boardInfo.title,
-                startDate = boardInfo.startDate,
-                endDate = boardInfo.endDate,
-                postImage = boardInfo.imageUrls[0],
+                startDate = boardInfo.startDate.toDisplayDateString(),
+                endDate = boardInfo.endDate.toDisplayDateString(),
+                postImage = if(boardInfo.imageUrls.isNotEmpty()) boardInfo.imageUrls[0] else null,
                 onClick = {navPostBoard(boardInfo.boardId)}
             )
             Spacer(Modifier.height(30.dp))
