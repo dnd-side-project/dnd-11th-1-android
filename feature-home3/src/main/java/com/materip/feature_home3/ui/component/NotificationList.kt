@@ -43,7 +43,7 @@ fun NotificationList(
                         .size(38.dp)
                         .background(shape = CircleShape, color = Blue_04)
                 ) {
-                    if (user.profileImageUrl.isEmpty()) {
+                    if (user.profileImageUrl!!.isEmpty()) {
                         Image(
                             painter = painterResource(id = profile_default_badge),
                             contentDescription = "프로필 기본 이미지",

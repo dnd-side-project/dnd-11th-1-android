@@ -43,9 +43,10 @@ fun NotificationScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    LaunchedEffect(Unit) {
-        viewModel.handleIntent(NotificationIntent.FetchNotifications)
-    }
+    // 추후 알림 기능 추가 시 userid 매개변수 적용하기
+//    LaunchedEffect(Unit) {
+//        viewModel.handleIntent(NotificationIntent.FetchNotifications)
+//    }
 
     when (uiState) {
         is NotificationUiState.Initial -> DefaultNotification()
