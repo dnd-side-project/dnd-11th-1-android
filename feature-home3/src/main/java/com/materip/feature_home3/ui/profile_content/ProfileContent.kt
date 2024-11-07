@@ -26,6 +26,7 @@ import com.materip.feature_home3.ui.component.UserCommentInfo
 import com.materip.feature_home3.ui.component.calculateAgeCategory
 import com.materip.feature_home3.viewModel.ProfileViewModel
 
+
 @Composable
 fun ProfileContent(
     viewModel: ProfileViewModel = hiltViewModel()
