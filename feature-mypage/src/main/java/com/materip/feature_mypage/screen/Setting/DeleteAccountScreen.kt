@@ -48,24 +48,21 @@ import com.materip.feature_mypage.view_models.Setting.DeleteAccountViewModel
 @Composable
 fun DeleteAccountRoute(
     navHome: () -> Unit,
-    navAccountDeletionNotice: ()-> Unit,
+    navAccountDeletionNotice: (reason: String)-> Unit,
     navBack: () -> Unit,
-    viewModel: DeleteAccountViewModel = hiltViewModel()
 ){
     DeleteAccountScreen(
         navHome = navHome,
         navAccountDeletionNotice = navAccountDeletionNotice,
         navBack = navBack,
-        onDeleteAccountClick = {viewModel.deleteAccount(it)}
     )
 }
 
 @Composable
 fun DeleteAccountScreen(
     navHome: () -> Unit,
-    navAccountDeletionNotice: () -> Unit,
+    navAccountDeletionNotice: (reason: String) -> Unit,
     navBack: () -> Unit,
-    onDeleteAccountClick: (String) -> Unit,
 ){
     var selectedOptionIdx by remember{mutableStateOf<Int?>(null)}
     var optionDetail by remember{mutableStateOf("")}
@@ -300,8 +297,7 @@ fun DeleteAccountScreen(
                             4 -> "앱을 잘 사용하지 않아요"
                             else -> "기타"
                         }
-                        onDeleteAccountClick(reason)
-                        navAccountDeletionNotice()
+                        navAccountDeletionNotice(reason)
                     },
                     enabled = isGoneEnabled.value,
                     buttonText = "떠날래요"
@@ -317,7 +313,6 @@ private fun DeleteAccountUITest(){
     DeleteAccountScreen(
         navHome = {},
         navAccountDeletionNotice = {},
-        navBack = {},
-        onDeleteAccountClick = {}
+        navBack = {}
     )
 }

@@ -28,6 +28,7 @@ import com.materip.feature_mypage.navigation.navigateToAccountDeletionNotice
 import com.materip.feature_mypage.navigation.navigateToAccountInfo
 import com.materip.feature_mypage.navigation.navigateToAlarmSetting
 import com.materip.feature_mypage.navigation.navigateToDeleteAccount
+import com.materip.feature_mypage.navigation.navigateToDeleteAccountDone
 import com.materip.feature_mypage.navigation.navigateToEditProfile
 import com.materip.feature_mypage.navigation.navigateToGetAuthCode
 import com.materip.feature_mypage.navigation.navigateToLogout
@@ -98,6 +99,7 @@ fun SetUpNavGraph(
             navLogout = navController::navigateToLogout,
             navDeleteAccount = navController::navigateToDeleteAccount,
             navAccountDeletionNotice = navController::navigateToAccountDeletionNotice,
+            navDeleteAccountDone = navController::navigateToDeleteAccountDone,
             navBack = navController::navigateToBack,
         )
 

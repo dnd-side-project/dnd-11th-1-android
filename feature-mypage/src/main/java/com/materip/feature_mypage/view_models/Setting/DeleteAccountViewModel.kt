@@ -35,8 +35,12 @@ class DeleteAccountViewModel @Inject constructor(
         initialValue = ErrorState.Loading
     )
 
-    fun deleteAccount(reason: String) {
+    fun deleteAccount(reason: String?, onSuccess: () -> Unit) {
         viewModelScope.launch{
+            if (reason == null) {
+                generalError.update{Pair(true, "탈퇴 이유를 찾을 수 없습니다.")}
+                return@launch
+            }
             val requestDto = DeleteAccountRequestDto(reason)
             val result = loginRepository.deleteAccount(requestDto)
             if(result.error != null){
@@ -47,7 +51,7 @@ class DeleteAccountViewModel @Inject constructor(
                 }
                 return@launch
             }
-            isDone.update{true}
+            onSuccess()
         }
     }
 
