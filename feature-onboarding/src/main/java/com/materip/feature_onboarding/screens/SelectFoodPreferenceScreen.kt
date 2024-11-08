@@ -157,7 +157,7 @@ private fun SelectFoodPreferenceMainContent(
                         .weight(1f)
                         .aspectRatio(1f),
                     text = "해산물",
-                    icon = Badges.unplanned_badge,
+                    icon = Badges.seafood_badge,
                     iconSize = 48.dp,
                     isSelected = FoodPreference.SEAFOOD in foodStyles,
                     tint = if(FoodPreference.SEAFOOD in foodStyles) Color.White else Blue_01,
