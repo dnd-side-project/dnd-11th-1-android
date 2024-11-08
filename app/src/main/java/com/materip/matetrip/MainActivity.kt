@@ -164,6 +164,8 @@ fun GetTopBar(
         SettingRoute.AccountInfoRoute.name,
         SettingRoute.SMSVerificationRoute.name,
         SettingRoute.GetAuthCodeRoute.name,
+        SettingRoute.DeleteAccountRoute.name,
+        SettingRoute.DeleteAccountDoneRoute.name
     )
 
     val currentRoute = currentBackStack?.destination?.route
