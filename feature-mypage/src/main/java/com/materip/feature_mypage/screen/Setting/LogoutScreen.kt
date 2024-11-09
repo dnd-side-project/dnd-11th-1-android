@@ -25,11 +25,7 @@ import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.R
 
 @Composable
-fun LogoutRoute(
-    navLogin: () -> Unit
-){
-    LogoutScreen(navLogin = navLogin)
-}
+fun LogoutRoute(navLogin: () -> Unit){ LogoutScreen(navLogin = navLogin) }
 
 @Composable
 fun LogoutScreen(
