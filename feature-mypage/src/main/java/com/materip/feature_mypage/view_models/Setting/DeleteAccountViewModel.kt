@@ -51,8 +51,9 @@ class DeleteAccountViewModel @Inject constructor(
                 }
                 return@launch
             }
+            loginRepository.deleteAuthToken()
+            loginRepository.deleteRefreshToken()
             onSuccess()
         }
     }
-
 }
