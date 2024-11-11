@@ -155,7 +155,13 @@ fun SelectTripStyleScreen(
                     iconSize = 48.dp,
                     isSelected = TravelStyle.LIFE_SHOT in styles,
                     tint = if(TravelStyle.LIFE_SHOT in styles) Color.White else MateTripColors.Blue_01,
-                    onClick = {styles.add(TravelStyle.LIFE_SHOT)}
+                    onClick = {
+                        if(TravelStyle.LIFE_SHOT in styles){
+                            styles.remove(TravelStyle.LIFE_SHOT)
+                        } else {
+                            styles.add(TravelStyle.LIFE_SHOT)
+                        }
+                    }
                 )
                 Spacer(Modifier.width(10.dp))
                 OnboardingElevatedCard(
