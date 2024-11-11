@@ -11,7 +11,6 @@ import com.materip.core_model.accompany_board.mine.GetAccompanyBoard
 import com.materip.core_model.accompany_board.profile.GetUserProfile
 import com.materip.core_model.accompany_board.request.CompanionRequest
 import com.materip.core_model.accompany_board.search.QueryRequestDto
-import com.materip.core_model.accompany_board.search.SearchListResponse
 import com.materip.core_model.request.PagingRequestDto
 import javax.inject.Inject
 
@@ -50,7 +49,12 @@ class BoardRepositoryImpl @Inject constructor(
         return boardDataStore.getMyBoardList(request)
     }
 
-    override suspend fun getBoardListByStarted(region: String?, started: Boolean): ResultResponse<BoardListResponse> {
-        return boardDataStore.getBoardListByStarted(region, started)
+    override suspend fun getBoardListByCondition(
+        region: String?,
+        started: Boolean,
+        recruited: Boolean,
+        boardRequest: PagingRequestDto
+    ): ResultResponse<BoardListResponse> {
+        return boardDataStore.getBoardListByCondition(region, started, recruited, boardRequest)
     }
 }

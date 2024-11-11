@@ -9,7 +9,6 @@ import com.materip.core_model.accompany_board.mine.GetAccompanyBoard
 import com.materip.core_model.accompany_board.profile.GetUserProfile
 import com.materip.core_model.accompany_board.request.CompanionRequest
 import com.materip.core_model.accompany_board.search.QueryRequestDto
-import com.materip.core_model.accompany_board.search.SearchListResponse
 import com.materip.core_model.request.PagingRequestDto
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.Body
@@ -54,9 +53,11 @@ interface BoardService {
     suspend fun getMyBoardList(@Body requestDto: GetAccompanyBoard): ApiResponse<AccompanyBoardList>
 
     // 동행 시작 여부에 따른 동행글 목록 조회
-    @POST("/api/v1/accompany/boards/all/by-started")
-    suspend fun getBoardListByStarted(
+    @POST("/api/v1/accompany/boards/all/by-condition")
+    suspend fun getBoardListByCondition(
         @Query("region") region: String? = null,
-        @Query("started") started: Boolean
+        @Query("started") started: Boolean,
+        @Query("recruited") recruited: Boolean,
+        @Body requestDto: PagingRequestDto
     ): ApiResponse<BoardListResponse>
 }
