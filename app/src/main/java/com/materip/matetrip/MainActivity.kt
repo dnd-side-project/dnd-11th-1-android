@@ -19,9 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -85,11 +83,13 @@ class MainActivity : AppCompatActivity() {
                         )
                     },
                     floatingActionButton = {
-                        FabButton(
-                            currentBackStack = currentBackStack,
-                            onPostClick = onPostClick,
-                            modifier = Modifier.padding(end = 10.dp, bottom = 15.dp)
-                        )
+                        if (currentBackStack?.destination?.route == Screen.Home.route) {
+                            FabButton(
+                                currentBackStack = currentBackStack,
+                                onPostClick = onPostClick,
+                                modifier = Modifier.padding(end = 15.dp, bottom = 15.dp)
+                            )
+                        }
                     },
                     bottomBar = {
                         MateTripBottomBar(
