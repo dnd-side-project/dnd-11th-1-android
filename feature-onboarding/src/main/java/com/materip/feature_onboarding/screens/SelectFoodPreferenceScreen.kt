@@ -197,7 +197,7 @@ private fun SelectFoodPreferenceMainContent(
                         .weight(1f)
                         .aspectRatio(1f),
                     text = "채소",
-                    icon = Badges.dutch_pay_badge,
+                    icon = Badges.vegetarian_badge,
                     iconSize = 48.dp,
                     isSelected = FoodPreference.VEGETABLES in foodStyles,
                     tint = if(FoodPreference.VEGETABLES in foodStyles) Color.White else Blue_01,
