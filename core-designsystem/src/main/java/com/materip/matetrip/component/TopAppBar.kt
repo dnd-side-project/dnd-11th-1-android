@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.icon.Icons.notification_icon
 import com.materip.core_designsystem.icon.Logo.splash_icon_02
-import com.materip.core_designsystem.theme.MateTripColors.Primary
+import com.materip.core_designsystem.theme.MateTripColors.Blue_02
 import com.materip.core_designsystem.theme.MateTripTypographySet
 
 
@@ -46,7 +46,8 @@ fun MateTripTopAppBar(
                 Icon(
                     painter = painterResource(id = notification_icon),
                     contentDescription = "Notifications",
-                    tint = Primary
+                    tint = Blue_02
+
                 )
             }
         },
