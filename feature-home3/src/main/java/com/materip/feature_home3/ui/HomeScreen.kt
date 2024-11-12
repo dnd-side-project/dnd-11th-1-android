@@ -43,6 +43,7 @@ fun HomeScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val boardListState = viewModel.boardList.collectAsStateWithLifecycle()
+    val selectedOption by viewModel.selectedOption.collectAsStateWithLifecycle()
 
     var query by remember { mutableStateOf("") }
     var isSearching by remember { mutableStateOf(false) }
@@ -72,20 +73,19 @@ fun HomeScreen(
         viewModel.handleIntent(BoardListIntent.LoadBoardList(initialRequest))
     }
 
-    val filteredBoardItems = remember(boardListState.value, selectedRegion, isSearching) {
-        val allItems = boardListState.value?.data ?: emptyList()
-        if (isSearching) {
-            allItems
-        } else {
-            if (selectedRegion == null) {
-                allItems
-            } else {
-                allItems.filter { regionItem ->
-                    selectedRegion?.contains(regionItem.region) ?: true
-                }
-            }
+    val filteredBoardItems = remember(boardListState.value, selectedRegion, isSearching, selectedOption) {
+    val allItems = boardListState.value?.data ?: emptyList()
+    if (isSearching) {
+        allItems
+    } else {
+        allItems.filter { item ->
+            (selectedRegion == null || selectedRegion!!.contains(item.region)) &&
+            (selectedOption == "전체" ||
+             (selectedOption == "동행 모집 중" && item.isRecruiting()) ||
+             (selectedOption == "동행 모집 완료" && item.isRecruited()))
         }
     }
+}
 
     Column(
         modifier = Modifier

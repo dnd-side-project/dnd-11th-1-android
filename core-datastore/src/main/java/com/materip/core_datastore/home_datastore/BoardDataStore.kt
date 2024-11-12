@@ -10,7 +10,6 @@ import com.materip.core_model.accompany_board.mine.GetAccompanyBoard
 import com.materip.core_model.accompany_board.profile.GetUserProfile
 import com.materip.core_model.accompany_board.request.CompanionRequest
 import com.materip.core_model.accompany_board.search.QueryRequestDto
-import com.materip.core_model.accompany_board.search.SearchListResponse
 import com.materip.core_model.request.PagingRequestDto
 
 interface BoardDataStore {
@@ -22,4 +21,10 @@ interface BoardDataStore {
     suspend fun getUserProfile(userId: Int): ResultResponse<GetUserProfile>
     suspend fun searchBoardList(query: QueryRequestDto): ResultResponse<BoardListResponse>
     suspend fun getMyBoardList(boardRequest: GetAccompanyBoard): ResultResponse<AccompanyBoardList>
+    suspend fun getBoardListByCondition(
+        region: String?,
+        started: Boolean,
+        recruited: Boolean,
+        boardRequest: PagingRequestDto
+    ): ResultResponse<BoardListResponse>
 }

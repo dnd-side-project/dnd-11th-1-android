@@ -13,6 +13,7 @@ import com.materip.feature_home3.state.BoardListUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,6 +29,12 @@ class BoardViewModel @Inject constructor(
     val boardList: StateFlow<BoardListResponse?> = _boardList
 
     private val serverBaseUrl = BuildConfig.SERVER_BASE_URL
+
+    private val _selectedOption = MutableStateFlow("전체")
+    val selectedOption: StateFlow<String> = _selectedOption
+
+    private val _filterState = MutableStateFlow(FilterState())
+    val filterState: StateFlow<FilterState> = _filterState.asStateFlow()
 
     private fun loadBoardList(pagingRequestDto: PagingRequestDto) {
         viewModelScope.launch {
@@ -93,6 +100,38 @@ class BoardViewModel @Inject constructor(
         }
     }
 
+    // 동행 시작 여부에 따른 동행글 목록 조회
+    private fun filteredBoardList(region: String? = null, started: Boolean, recruited: Boolean) {
+        viewModelScope.launch {
+            _uiState.value = BoardListUiState.Loading
+
+            try {
+                val result = boardRepository.getBoardListByCondition(
+                    region = region,
+                    started = started,
+                    recruited = recruited,
+                    boardRequest = PagingRequestDto(cursor = null, size = 8)
+                )
+                val boardListResponse = result.data
+                _boardList.value = boardListResponse
+                _filterState.value = FilterState(region, started, recruited)
+                _uiState.value = BoardListUiState.Success(boardListResponse)
+            } catch (e: Exception) {
+                _uiState.value = BoardListUiState.Error(e.message ?: "동행글 모집 여부에 따른 필터링 실패")
+            }
+        }
+    }
+
+    fun updateFilter(region: String? = null, started: Boolean, recruited: Boolean) {
+        filteredBoardList(region, started, recruited)
+    }
+
+    fun updateSelectedOption(option: String) {
+        viewModelScope.launch {
+            _selectedOption.value = option
+        }
+    }
+
     fun handleIntent(intent: BoardListIntent) {
         when (intent) {
             is BoardListIntent.LoadBoardList -> {
@@ -107,6 +146,30 @@ class BoardViewModel @Inject constructor(
 
                 searchBoardList(intent.query)
             }
+            is BoardListIntent.FilterBoardList -> {
+                Log.d("BoardViewModel",
+                    "Filtering board list with region: ${intent.region}, started: ${intent.started}, recruited: ${intent.recruited}")
+
+                filteredBoardList(intent.region, intent.started, intent.recruited)
+            }
+            is BoardListIntent.UpdateFilter -> {
+                Log.d("BoardViewModel",
+                    "Updating filter with region: ${intent.region}, started: ${intent.started}, recruited: ${intent.recruited}")
+
+                updateFilter(intent.region, intent.started, intent.recruited)
+            }
+            is BoardListIntent.UpdateSelectedOption -> {
+                Log.d("BoardViewModel",
+                    "Updating selected option: ${intent.option}")
+
+                updateSelectedOption(intent.option)
+            }
         }
     }
 }
+
+data class FilterState(
+    val region: String? = null,
+    val started: Boolean = true,
+    val recruited: Boolean = false
+)
