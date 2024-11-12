@@ -118,7 +118,7 @@ private fun TagList(
             notSelectedTextColor = MateTripColors.Gray_06,
             isSelected = selectedTag == TravelHistoryTag.RECORD,
             selectedColor = MateTripColors.ActivatedColor,
-            notSelectedColor = MateTripColors.Gray_03,
+            notSelectedColor = MateTripColors.InactiveColor,
             onClick = {onTagChange(TravelHistoryTag.RECORD)}
         )
         Spacer(Modifier.width(8.dp))
