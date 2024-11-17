@@ -52,6 +52,7 @@ import com.materip.core_model.ui_model.AccountInfoClass
 import com.materip.feature_mypage.view_models.Setting.AccountInfoUiState
 import com.materip.feature_mypage.view_models.Setting.AccountInfoViewModel
 import com.materip.matetrip.component.DefaultLoadingComponent
+import com.materip.matetrip.toast.ErrorView
 
 @Composable
 fun AccountInfoRoute(
@@ -63,14 +64,15 @@ fun AccountInfoRoute(
 ){
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     val errState = viewModel.errorState.collectAsStateWithLifecycle()
+    val logout = remember{{viewModel.logout(onSuccess = navLogout)}}
 
     AccountInfoScreen(
         uiState = uiState.value,
         errState = errState.value,
-        navLogout = navLogout,
         navDeleteAccount = navDeleteAccount,
         navSmsVerification = navSmsVerification,
-        navBack = navBack
+        navBack = navBack,
+        logout = logout
     )
 }
 
@@ -78,25 +80,19 @@ fun AccountInfoRoute(
 fun AccountInfoScreen(
     uiState: AccountInfoUiState,
     errState: ErrorState,
-    navLogout: () -> Unit,
     navDeleteAccount: () -> Unit,
     navSmsVerification: () -> Unit,
     navBack: () -> Unit,
+    logout: () -> Unit,
 ){
     when(uiState){
         AccountInfoUiState.Loading -> {
             DefaultLoadingComponent()
         }
-        AccountInfoUiState.Error -> {
-            Text(
-                text = "Error",
-                fontSize = 100.sp,
-                color = Color.Red
-            )
-        }
+        AccountInfoUiState.Error -> ErrorView(errState = errState, navBack = navBack)
         is AccountInfoUiState.Success -> {
             AccountInfoMainContent(
-                navLogout = navLogout,
+                logout = logout,
                 navSmsVerification = navSmsVerification,
                 navDeleteAccount = navDeleteAccount,
                 navBack = navBack
@@ -109,8 +105,8 @@ fun AccountInfoScreen(
 private fun AccountInfoMainContent(
     navSmsVerification: () -> Unit,
     navDeleteAccount: () -> Unit,
-    navLogout: () -> Unit,
-    navBack: () -> Unit
+    navBack: () -> Unit,
+    logout: () -> Unit
 ){
     val dummyData = AccountInfoClass(
         kakaoAccount = "asdfasdf@kakao.com",
@@ -125,7 +121,7 @@ private fun AccountInfoMainContent(
     if (showLogoutDialog){
         ConfirmationDialog(
             dialogMsg = "정말 로그아웃 하시나요?",
-            onOkClick = { navLogout() },
+            onOkClick = logout,
             onDismissRequest = {showLogoutDialog = false}
         )
     }
@@ -401,7 +397,7 @@ private fun LinkSNSView(
 @Composable
 private fun AccountInfoUITest(){
     AccountInfoScreen(
-        navLogout = {},
+        logout = {},
         navDeleteAccount = {},
         navSmsVerification = {},
         navBack = {},

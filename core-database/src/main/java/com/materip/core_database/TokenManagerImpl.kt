@@ -46,10 +46,7 @@ class TokenManagerImpl @Inject constructor(
         return authToken
     }
 
-    override suspend fun getAuthToken(): Flow<String?> = dataStore.data.map{
-        Log.d("TAG TEST", "auth token : ${it[AUTH_TOKEN_KEY]}")
-        it[AUTH_TOKEN_KEY]
-    }
+    override suspend fun getAuthToken(): Flow<String?> = dataStore.data.map{it[AUTH_TOKEN_KEY]}
     override suspend fun getRefreshToken(): Flow<String?> = dataStore.data.map{it[REFRESH_TOKEN_KEY]}
     override suspend fun getKakaoAccessToken(): Flow<String?> = dataStore.data.map{it[KAKAO_ACCESS_TOKEN_KEY]}
     override suspend fun saveAuthToken(token: String) {

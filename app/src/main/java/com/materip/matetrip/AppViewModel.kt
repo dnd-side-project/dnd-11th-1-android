@@ -1,5 +1,6 @@
 package com.materip.matetrip
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.materip.core_model.navigation.LoginRoute
 import com.materip.core_model.navigation.MyPageRoute
@@ -25,6 +26,7 @@ class AppViewModel @Inject constructor(
     init{
         runBlocking{
             authToken.update { loginRepository.getAuthToken().firstOrNull() }
+            Log.d("TAG TEST", "auth token : ${authToken.value}")
             isOnboardingCompleted.update{
                 val result = onboardingRepository.isOnboardingCompleted()
                 if (result.error != null) {
