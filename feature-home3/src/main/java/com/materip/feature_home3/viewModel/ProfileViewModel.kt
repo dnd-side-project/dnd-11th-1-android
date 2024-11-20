@@ -32,7 +32,6 @@ class ProfileViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<ProfileUiState>(ProfileUiState.Loading)
     val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
 
-    // ProfileContent에서 사용하는 데이터, userId에 맞는 정보를 가져와야 함
     private val _profileDetails = MutableStateFlow<GetUserProfile?>(null)
     val profileDetails: StateFlow<GetUserProfile?> = _profileDetails.asStateFlow()
 
@@ -62,7 +61,6 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    // userId에 해당하는 유저의 상제 정보를 가져옴
     private suspend fun getProfileDetails(userId: Int) {
         _uiState.value = ProfileUiState.Loading
         try {
@@ -95,10 +93,6 @@ class ProfileViewModel @Inject constructor(
     private suspend fun getLoggedInUserDetails() {
         val profileDetailsResult = profileRepository.getProfileDetails()
         _loggedInUserId.value = profileDetailsResult.data?.userId
-    }
-
-    fun completeApplication() {
-        _isApplicationCompleted.value = true
     }
 
     fun isApplicationCompleted(boardId: Int): Boolean {
