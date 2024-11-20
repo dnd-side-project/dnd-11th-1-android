@@ -66,6 +66,7 @@ fun NavigateToPostScreen(
     onNavigateUp: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val isApplicationCompleted = profileViewModel.isApplicationCompleted(boardId)
 
     LaunchedEffect(boardId) {
         viewModel.onHomeIntent(HomeIntent.LoadBoardDetail(boardId))
@@ -146,11 +147,11 @@ fun NavigateToPostScreen(
                 ) {
                     MateTripHomeButton(
                         buttonText = "동행 신청",
-                        enabled = loggedInUserId != null && loggedInUserId != profileInfo.userId && !profileViewModel.isApplicationCompleted.collectAsState().value,
+                        enabled = loggedInUserId != null && loggedInUserId != profileInfo.userId && !isApplicationCompleted,
                         onClick = {
                             Log.d("MateTripHomeButton", "boardId: $boardId")
                             onNavigateToForm(boardId)
-                            profileViewModel.completeApplication()
+                            profileViewModel.completeApplication(boardId)
                         },
                         modifier = Modifier
                             .width(370.dp)

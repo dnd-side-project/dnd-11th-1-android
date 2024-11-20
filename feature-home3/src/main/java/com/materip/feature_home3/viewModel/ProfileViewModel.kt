@@ -1,5 +1,7 @@
 package com.materip.feature_home3.viewModel
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import com.materip.core_repository.repository.profile_repository.ProfileRepository
@@ -11,6 +13,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.ViewModel
 import com.materip.core_model.accompany_board.profile.GetUserProfile
 import com.materip.core_repository.repository.home_repository.BoardRepository
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,8 +22,11 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val profileRepository: ProfileRepository,
     private val boardRepository: BoardRepository,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    @ApplicationContext context: Context
 ) : ViewModel() {
+    private val sharedPreferences: SharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+
     private val boardId: Int = savedStateHandle["boardId"] ?: 0
 
     private val _uiState = MutableStateFlow<ProfileUiState>(ProfileUiState.Loading)
@@ -93,5 +99,13 @@ class ProfileViewModel @Inject constructor(
 
     fun completeApplication() {
         _isApplicationCompleted.value = true
+    }
+
+    fun isApplicationCompleted(boardId: Int): Boolean {
+        return sharedPreferences.getBoolean("application_completed_$boardId", false)
+    }
+
+    fun completeApplication(boardId: Int) {
+        sharedPreferences.edit().putBoolean("application_completed_$boardId", true).apply()
     }
 }
