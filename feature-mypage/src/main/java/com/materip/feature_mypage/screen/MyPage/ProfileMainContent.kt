@@ -5,7 +5,9 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -46,6 +48,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_common.ErrorState
@@ -63,6 +66,7 @@ import com.materip.core_model.ui_model.Grade
 import com.materip.core_model.ui_model.GradeTag
 import com.materip.feature_mypage.view_models.MyPage.ProfileMainUiState
 import com.materip.feature_mypage.view_models.MyPage.ProfileMainViewModel
+import com.materip.matetrip.component.DefaultLoadingComponent
 import com.materip.matetrip.toast.ErrorView
 
 @Composable
@@ -99,7 +103,7 @@ fun ProfileMainTab(
 ){
     when(uiState){
         ProfileMainUiState.Loading -> {
-            CircularProgressIndicator()
+            DefaultLoadingComponent()
         }
         is ProfileMainUiState.Success -> {
             val user = uiState.user
@@ -351,19 +355,15 @@ private fun ProfileMainContent(
             )
         }
         Spacer(Modifier.height(20.dp))
-        Button(
+        Image(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(110.dp),
-            onClick = navQuiz100,
-            shape = RoundedCornerShape(size = 10.dp),
-        ) {
-            Image(
-                modifier = Modifier.fillMaxSize(),
-                painter = painterResource(Badges.challenge_badge),
-                contentDescription = "100 Quiz"
-            )
-        }
+                .height(110.dp)
+                .background(color = Color.Transparent, shape = RoundedCornerShape(size = 10.dp))
+                .clickable { navQuiz100() },
+            painter = painterResource(Badges.challenge_badge),
+            contentDescription = "100 Quiz"
+        )
         Spacer(Modifier.height(20.dp))
         Row(
             modifier = Modifier
@@ -416,5 +416,24 @@ private fun ProfileMainContent(
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun UITEST(){
+    Box(
+        modifier = Modifier.fillMaxSize().background(color = Color.White),
+        contentAlignment = Alignment.Center
+    ){
+        Image(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(110.dp)
+                .background(color = Color.Transparent, shape = RoundedCornerShape(size = 10.dp))
+                .clickable {  },
+            painter = painterResource(Badges.challenge_badge),
+            contentDescription = "100 Quiz"
+        )
     }
 }

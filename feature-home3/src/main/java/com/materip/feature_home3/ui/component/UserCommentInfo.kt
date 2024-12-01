@@ -14,10 +14,11 @@ import androidx.compose.ui.unit.dp
 import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_designsystem.theme.MateTripTypographySet
 import com.materip.core_designsystem.theme.userCommentBoldStyle
-import com.materip.core_model.response.GetProfileDetailsResponseDto
+import com.materip.core_model.accompany_board.profile.GetUserProfile
+
 
 @Composable
-fun UserCommentInfo(userInfo: GetProfileDetailsResponseDto) {
+fun UserCommentInfo(userInfo: GetUserProfile) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

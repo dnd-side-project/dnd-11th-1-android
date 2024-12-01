@@ -37,6 +37,7 @@ import com.materip.core_model.response.EvaluationItem
 import com.materip.core_model.response.ReviewItem
 import com.materip.feature_mypage.view_models.MyPage.ReviewEvaluationUiState
 import com.materip.feature_mypage.view_models.MyPage.ReviewListUiState
+import com.materip.matetrip.component.DefaultLoadingComponent
 import com.materip.matetrip.toast.ErrorView
 
 @Composable
@@ -59,7 +60,7 @@ fun ReviewContent(
         // 받은 동행 평가, 상세화면은 nav로 해결
         when (reviewEvalState) {
             is ReviewEvaluationUiState.Loading -> {
-                CircularProgressIndicator()
+                DefaultLoadingComponent()
             }
 
             is ReviewEvaluationUiState.Success -> {

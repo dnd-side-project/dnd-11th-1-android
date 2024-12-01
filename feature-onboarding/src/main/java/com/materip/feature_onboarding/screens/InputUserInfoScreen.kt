@@ -78,7 +78,8 @@ fun InputUserInfoScreen(
             fontSize = MateTripTypographySet.onboardingTitle.fontSize,
             fontFamily = MateTripTypographySet.onboardingTitle.fontFamily,
             fontWeight = MateTripTypographySet.onboardingTitle.fontWeight,
-            color = MateTripTypographySet.onboardingTitle.color
+            color = MateTripTypographySet.onboardingTitle.color,
+            lineHeight = 40.sp
         )
         Spacer(Modifier.height(10.dp))
         Text(

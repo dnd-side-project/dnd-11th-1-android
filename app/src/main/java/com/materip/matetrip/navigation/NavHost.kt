@@ -1,7 +1,11 @@
 package com.materip.matetrip.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -24,6 +28,7 @@ import com.materip.feature_mypage.navigation.navigateToAccountDeletionNotice
 import com.materip.feature_mypage.navigation.navigateToAccountInfo
 import com.materip.feature_mypage.navigation.navigateToAlarmSetting
 import com.materip.feature_mypage.navigation.navigateToDeleteAccount
+import com.materip.feature_mypage.navigation.navigateToDeleteAccountDone
 import com.materip.feature_mypage.navigation.navigateToEditProfile
 import com.materip.feature_mypage.navigation.navigateToGetAuthCode
 import com.materip.feature_mypage.navigation.navigateToLogout
@@ -52,8 +57,9 @@ import com.materip.feature_onboarding.navigation.selectTripStyle
 fun SetUpNavGraph(
     navController: NavHostController,
     startDestination: String,
-    postBoardViewModel: PostBoardViewModel
+    postBoardViewModel: PostBoardViewModel,
 ) {
+    val navPost = remember<(Int) -> Unit>{ { navController.navigate("${Screen.NavigateToPost.route}/${it}") }}
     NavHost(
         navController = navController,
         startDestination = startDestination
@@ -93,6 +99,7 @@ fun SetUpNavGraph(
             navLogout = navController::navigateToLogout,
             navDeleteAccount = navController::navigateToDeleteAccount,
             navAccountDeletionNotice = navController::navigateToAccountDeletionNotice,
+            navDeleteAccountDone = navController::navigateToDeleteAccountDone,
             navBack = navController::navigateToBack,
         )
 
@@ -109,7 +116,7 @@ fun SetUpNavGraph(
             navReviewDescription = navController::navigateToReviewDescription,
             navReviewWrite = navController::navigateToWriteReview,
             navReceivedApplication = navController::navigateToReceivedApplication,
-            navPostBoard = { navController.navigate("${Screen.NavigateToPost.route}/${it}") }
+            navPostBoard = navPost
         )
 
         // 홈
@@ -127,7 +134,19 @@ fun SetUpNavGraph(
         }
 
         // 홈_게시글 작성_디폴트
-        composable(Screen.Post.route) {
+        composable(Screen.Post.route) { backStackEntry ->
+            val lifecycle = backStackEntry.lifecycle
+            DisposableEffect(lifecycle) {
+                val observer = LifecycleEventObserver { _, event ->
+                    if (event == Lifecycle.Event.ON_CREATE) {
+                        postBoardViewModel.resetState()
+                    }
+                }
+                lifecycle.addObserver(observer)
+                onDispose {
+                    lifecycle.removeObserver(observer)
+                }
+            }
             PostBoardScreen(
                 viewModel = postBoardViewModel
             )
@@ -141,16 +160,20 @@ fun SetUpNavGraph(
             val boardId = backStackEntry.arguments?.getInt("boardId") ?: 0
             NavigateToPostScreen(
                 boardId = boardId,
-                onNavigateToForm = { navController.navigate(Screen.Form.route + "/$boardId") },
-                onNavigateToUserProfile = { navController.navigate(Screen.Profile.route + "/$boardId") },
+                onNavigateToForm = { id -> navController.navigate(Screen.Form.route + "/$id") },
+                onNavigateToUserProfile = { id -> navController.navigate(Screen.Profile.route + "/$id") },
                 onNavigateUp = navController::navigateToBack
             )
         }
 
         // 게시글_동행 신청
-        composable(Screen.Form.route + "/{boardId}") {
+        composable(
+            route = Screen.Form.route + "/{boardId}",
+            arguments = listOf(navArgument("boardId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val boardId = backStackEntry.arguments?.getInt("boardId") ?: 0
             FormScreen(
-                boardId = it.arguments?.getInt("boardId") ?: 0,
+                boardId = boardId,
                 onNavigateUp = { navController.navigateUp() }
             )
         }

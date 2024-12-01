@@ -52,6 +52,7 @@ import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.feature_mypage.view_models.MyPage.ProfileDescriptionUiState
 import com.materip.feature_mypage.view_models.MyPage.ProfileDescriptionViewModel
+import com.materip.matetrip.component.DefaultLoadingComponent
 import com.materip.matetrip.toast.ErrorView
 
 @Composable
@@ -76,7 +77,7 @@ fun ProfileDescriptionScreen(
 ){
     when(uiState){
         ProfileDescriptionUiState.Loading -> {
-            CircularProgressIndicator()
+            DefaultLoadingComponent()
         }
         is ProfileDescriptionUiState.Success -> {
             val user = uiState.user

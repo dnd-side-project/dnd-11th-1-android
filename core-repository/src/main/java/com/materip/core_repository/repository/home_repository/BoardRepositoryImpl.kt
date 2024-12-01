@@ -11,7 +11,6 @@ import com.materip.core_model.accompany_board.mine.GetAccompanyBoard
 import com.materip.core_model.accompany_board.profile.GetUserProfile
 import com.materip.core_model.accompany_board.request.CompanionRequest
 import com.materip.core_model.accompany_board.search.QueryRequestDto
-import com.materip.core_model.accompany_board.search.SearchListResponse
 import com.materip.core_model.request.PagingRequestDto
 import javax.inject.Inject
 
@@ -38,8 +37,8 @@ class BoardRepositoryImpl @Inject constructor(
         return boardDataStore.deleteBoard(id)
     }
 
-    override suspend fun getUserProfile(): ResultResponse<GetUserProfile> {
-        return boardDataStore.getUserProfile()
+    override suspend fun getUserProfile(userId: Int): ResultResponse<GetUserProfile> {
+        return boardDataStore.getUserProfile(userId)
     }
 
     override suspend fun searchBoardList(query: QueryRequestDto): ResultResponse<BoardListResponse> {
@@ -48,5 +47,14 @@ class BoardRepositoryImpl @Inject constructor(
 
     override suspend fun getMyBoardList(request: GetAccompanyBoard): ResultResponse<AccompanyBoardList> {
         return boardDataStore.getMyBoardList(request)
+    }
+
+    override suspend fun getBoardListByCondition(
+        region: String?,
+        started: Boolean,
+        recruited: Boolean,
+        boardRequest: PagingRequestDto
+    ): ResultResponse<BoardListResponse> {
+        return boardDataStore.getBoardListByCondition(region, started, recruited, boardRequest)
     }
 }

@@ -17,12 +17,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -49,7 +52,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val postBoardViewModel: PostBoardViewModel by viewModels()
     private val viewModel: AppViewModel by viewModels()
-    private val useBottomNavScreen = listOf(Screen.Home.route, MyPageRoute.MyPageRoute.name, SettingRoute.SettingRoute.name)
     private val requestMultiplePermissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){permission ->
         permission.entries.forEach{entry ->
             val permissionName = entry.key
@@ -69,33 +71,33 @@ class MainActivity : AppCompatActivity() {
             MatetripTheme {
                 val navController = rememberNavController()
                 val currentBackStack by navController.currentBackStackEntryAsState()
-                val currentRoute = currentBackStack?.destination?.route
                 val startDestination = viewModel.getDestination()
+                val navHome = remember<() -> Unit>{ { navController.navigate(Screen.Home.route) }}
+                val onPostClick = remember<() -> Unit>{{navController.navigate(Screen.Post.route)}}
                 Scaffold(
                     topBar = {
                         GetTopBar(
-                            currentRoute = currentRoute,
+                            currentBackStack = currentBackStack,
                             navController = navController,
-                            postBoardViewModel = postBoardViewModel
+                            postBoardViewModel = postBoardViewModel,
                         )
                     },
                     floatingActionButton = {
-                        if (currentRoute == Screen.Home.route) {
+                        if (currentBackStack?.destination?.route == Screen.Home.route) {
                             FabButton(
-                                onPostClick = { navController.navigate(Screen.Post.route) },
-                                modifier = Modifier.padding(end = 10.dp, bottom = 15.dp)
+                                currentBackStack = currentBackStack,
+                                onPostClick = onPostClick,
+                                modifier = Modifier.padding(end = 15.dp, bottom = 15.dp)
                             )
                         }
                     },
                     bottomBar = {
-                        if (currentRoute in useBottomNavScreen) {
-                            MateTripBottomBar(
-                                currentRoute = currentRoute ?: "home",
-                                onHomeClick = { navController.navigate(Screen.Home.route) },
-                                onMyPageClick = navController::navigateToMyPageGraph,
-                                onSettingClick = navController::navigateToSettingGraph
-                            )
-                        }
+                        MateTripBottomBar(
+                            currentBackStack = currentBackStack,
+                            onHomeClick = navHome,
+                            onMyPageClick = navController::navigateToMyPageGraph,
+                            onSettingClick = navController::navigateToSettingGraph
+                        )
                     },
                     content = { paddingValues ->
                         Box(
@@ -137,7 +139,7 @@ class MainActivity : AppCompatActivity() {
 
 @Composable
 fun GetTopBar(
-    currentRoute: String?,
+    currentBackStack: NavBackStackEntry?,
     navController: NavHostController,
     postBoardViewModel: PostBoardViewModel
 ) {
@@ -162,7 +164,11 @@ fun GetTopBar(
         SettingRoute.AccountInfoRoute.name,
         SettingRoute.SMSVerificationRoute.name,
         SettingRoute.GetAuthCodeRoute.name,
+        SettingRoute.DeleteAccountRoute.name,
+        SettingRoute.DeleteAccountDoneRoute.name
     )
+
+    val currentRoute = currentBackStack?.destination?.route
 
     when {
         // currentRoute가 null이 아니고, notHaveTopBar에 포함된 경로로 시작하는 경우
@@ -178,13 +184,15 @@ fun GetTopBar(
 
         // 타이틀, action이 필요한 상단바
         currentRoute == Screen.Post.route -> {
+            val isFormValid by postBoardViewModel.isFormValid.collectAsState()
             BackButtonWithTitleTopAppBar(
                 screenTitle = "동행 모집하기",
                 onNavigateUp = { navController.navigateUp() },
                 onPostClick = {
                     postBoardViewModel.handleIntent(PostBoardIntent.CreatePost)
                     navController.navigate(Screen.Home.route)
-                }
+                },
+                isPostButtonEnabled = isFormValid
             )
 
             LaunchedEffect(postBoardViewModel.createdBoardIds) {

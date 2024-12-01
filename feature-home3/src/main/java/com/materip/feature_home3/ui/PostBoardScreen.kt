@@ -12,6 +12,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,7 +37,6 @@ import com.materip.feature_home3.ui.component.ImagePicker
 import com.materip.feature_home3.ui.component.SetCapacity
 import com.materip.feature_home3.ui.component.TravelDateCalendar
 import com.materip.feature_home3.viewModel.PostBoardViewModel
-import java.time.format.DateTimeFormatter
 
 // 동행글 작성 화면
 @Composable

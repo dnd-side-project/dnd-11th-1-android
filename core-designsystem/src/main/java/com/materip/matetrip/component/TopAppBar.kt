@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.materip.core_designsystem.icon.Icons
 import com.materip.core_designsystem.icon.Icons.notification_icon
 import com.materip.core_designsystem.icon.Logo.splash_icon_02
-import com.materip.core_designsystem.theme.MateTripColors.Primary
+import com.materip.core_designsystem.theme.MateTripColors.Blue_02
 import com.materip.core_designsystem.theme.MateTripTypographySet
 
 
@@ -46,7 +46,8 @@ fun MateTripTopAppBar(
                 Icon(
                     painter = painterResource(id = notification_icon),
                     contentDescription = "Notifications",
-                    tint = Primary
+                    tint = Blue_02
+
                 )
             }
         },
@@ -61,6 +62,7 @@ fun BackButtonWithTitleTopAppBar(
     screenTitle: String,
     onNavigateUp: () -> Unit,
     onPostClick: () -> Unit,
+    isPostButtonEnabled: Boolean
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -85,15 +87,18 @@ fun BackButtonWithTitleTopAppBar(
             ) {
                 Button(
                     onClick = onPostClick,
+                    enabled = isPostButtonEnabled,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent,
-                        contentColor = Color.Transparent
-                    )
+                        contentColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent,
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(0.dp)
                 ) {
                     Text(
                         text = "게시",
                         style = MateTripTypographySet.body04,
-                        color = Color.Black
+                        color = if (isPostButtonEnabled) Color.Black else Color.Gray
                     )
                 }
             }
@@ -103,6 +108,7 @@ fun BackButtonWithTitleTopAppBar(
         )
     )
 }
+
 
 // 뒤로가기 버튼만 있는 상단바
 @Composable

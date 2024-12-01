@@ -16,7 +16,7 @@ class ReceiveApplicationPagingSource (
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AccompanyReceivedItem> {
         val pageNumber = params.key ?: 0
         try{
-            val response = accompanyRepository.getAccompanyReceived(
+            val response = accompanyRepository.postAccompanyReceived(
                     PagingRequestDto(cursor)
                 )
             if(response.error != null){
@@ -26,7 +26,7 @@ class ReceiveApplicationPagingSource (
             total = result.data.size
             cursor = result.cursor
             val prevKey = if(pageNumber > 0) pageNumber - 1 else null
-            val nextKey = if(result.hasNext) null else pageNumber + 1
+            val nextKey = if(result.hasNext) pageNumber + 1 else null
             return LoadResult.Page(
                 data = result.data,
                 prevKey = prevKey,

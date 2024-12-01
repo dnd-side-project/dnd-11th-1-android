@@ -20,12 +20,13 @@ import com.materip.core_designsystem.component.CircleImageView
 import com.materip.core_designsystem.theme.MateTripColors
 import com.materip.core_designsystem.theme.MateTripTypographySet
 import com.materip.core_designsystem.theme.gradeStyle
-import com.materip.core_model.response.GetProfileDetailsResponseDto
+import com.materip.core_model.accompany_board.profile.GetUserProfile
 import com.materip.core_model.ui_model.Grade
+
 
 @Composable
 fun OverviewInfo(
-    userInfo: GetProfileDetailsResponseDto,
+    userInfo: GetUserProfile,
     levelInfo: Grade,
     ageCategory: String
 ) {

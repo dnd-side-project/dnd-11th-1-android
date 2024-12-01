@@ -19,17 +19,17 @@ class NotificationViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<NotificationUiState>(NotificationUiState.Initial)
     val uiState: StateFlow<NotificationUiState> = _uiState
 
-    fun handleIntent(intent: NotificationIntent) {
+    fun handleIntent(intent: NotificationIntent, userId: Int) {
         when (intent) {
-            is NotificationIntent.FetchNotifications -> fetchNotifications()
+            is NotificationIntent.FetchNotifications -> fetchNotifications(userId)
         }
     }
 
-    private fun fetchNotifications() {
+    private fun fetchNotifications(userId: Int) {
         viewModelScope.launch {
             _uiState.value = NotificationUiState.Loading
             try {
-                val userResult = boardRepository.getUserProfile()
+                val userResult = boardRepository.getUserProfile(userId)
                 if (userResult.data != null) {
                     _uiState.value = NotificationUiState.Success(userResult.data!!)
                 } else {

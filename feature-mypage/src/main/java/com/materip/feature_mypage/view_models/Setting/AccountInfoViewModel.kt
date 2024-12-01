@@ -6,6 +6,7 @@ import com.materip.core_common.ErrorState
 import com.materip.core_common.Result
 import com.materip.core_common.asResult
 import com.materip.core_model.response.GetProfileResponseDto
+import com.materip.core_repository.repository.login_repository.LoginRepository
 import com.materip.core_repository.repository.profile_repository.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,11 +16,13 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AccountInfoViewModel @Inject constructor(
-    private val profileRepository: ProfileRepository
+    private val profileRepository: ProfileRepository,
+    private val loginRepository: LoginRepository
 ): ViewModel() {
 
     private val invalidTokenError = MutableStateFlow<Boolean>(false)
@@ -40,18 +43,20 @@ class AccountInfoViewModel @Inject constructor(
     val uiState: StateFlow<AccountInfoUiState> = errorState.map{
         if(it is ErrorState.AuthError && it.isInvalid()) throw Exception("Error")
         val result = profileRepository.getProfile()
-        if (result.error != null){
-            when(result.error!!.status){
-                401 -> invalidTokenError.update{true}
-                404 -> notFoundTokenError.update{true}
-                else -> generalError.update{Pair(true, result.error!!.message)}
-            }
-        }
+        if (result.error != null){ throw Exception("${result.error!!.status}:${result.error!!.message}") }
         result.data!!
     }.asResult().map{ result ->
         when(result){
             Result.Loading -> AccountInfoUiState.Loading
-            is Result.Error -> AccountInfoUiState.Error
+            is Result.Error -> {
+                val (status, message) = result.exception.message!!.split(":")
+                when(status){
+                    "401" -> invalidTokenError.update{true}
+                    "404" -> notFoundTokenError.update{true}
+                    else -> generalError.update{Pair(true, message)}
+                }
+                AccountInfoUiState.Error
+            }
             is Result.Success -> AccountInfoUiState.Success(result.data)
         }
     }.stateIn(
@@ -59,6 +64,14 @@ class AccountInfoViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = AccountInfoUiState.Loading
     )
+
+    fun logout(onSuccess: () -> Unit){
+        viewModelScope.launch{
+            loginRepository.deleteAuthToken()
+            loginRepository.deleteRefreshToken()
+            onSuccess()
+        }
+    }
 }
 
 sealed interface AccountInfoUiState{

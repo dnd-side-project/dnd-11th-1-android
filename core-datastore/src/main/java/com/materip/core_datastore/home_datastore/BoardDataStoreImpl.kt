@@ -11,7 +11,6 @@ import com.materip.core_model.accompany_board.mine.GetAccompanyBoard
 import com.materip.core_model.accompany_board.profile.GetUserProfile
 import com.materip.core_model.accompany_board.request.CompanionRequest
 import com.materip.core_model.accompany_board.search.QueryRequestDto
-import com.materip.core_model.accompany_board.search.SearchListResponse
 import com.materip.core_model.request.PagingRequestDto
 import com.materip.core_network.service.home.BoardService
 import com.skydoves.sandwich.message
@@ -37,9 +36,9 @@ class BoardDataStoreImpl @Inject constructor(
 
     override suspend fun postBoard(board: BoardRequestDto): ResultResponse<BoardIdDto> {
         val result = ResultResponse<BoardIdDto>()
-        boardService.postBoard(board).suspendOnSuccess{
+        boardService.postBoard(board).suspendOnSuccess {
             result.data = this.data
-        }.suspendOnError{
+        }.suspendOnError {
             result.error = Json.decodeFromString<ResponseError>("${this.apiMessage}")
         }
         return result
@@ -75,9 +74,9 @@ class BoardDataStoreImpl @Inject constructor(
         return result
     }
 
-    override suspend fun getUserProfile(): ResultResponse<GetUserProfile> {
+    override suspend fun getUserProfile(userId: Int): ResultResponse<GetUserProfile> {
         val result = ResultResponse<GetUserProfile>()
-        boardService.getProfile().suspendOnSuccess {
+        boardService.getProfile(userId).suspendOnSuccess {
             result.data = this.data
         }.suspendOnError {
             result.error = Json.decodeFromString<ResponseError>("${this.apiMessage}")
@@ -100,6 +99,22 @@ class BoardDataStoreImpl @Inject constructor(
         boardService.getMyBoardList(boardRequest).suspendOnSuccess {
             result.data = this.data
         }.suspendOnError {
+            result.error = Json.decodeFromString<ResponseError>("${this.apiMessage}")
+        }
+        return result
+    }
+
+    override suspend fun getBoardListByCondition(
+        region: String?,
+        started: Boolean,
+        recruited: Boolean,
+        boardRequest: PagingRequestDto
+    ): ResultResponse<BoardListResponse> {
+        val result = ResultResponse<BoardListResponse>()
+        boardService.getBoardListByCondition(region, started, recruited, boardRequest)
+            .suspendOnSuccess {
+                result.data = this.data
+            }.suspendOnError {
             result.error = Json.decodeFromString<ResponseError>("${this.apiMessage}")
         }
         return result
