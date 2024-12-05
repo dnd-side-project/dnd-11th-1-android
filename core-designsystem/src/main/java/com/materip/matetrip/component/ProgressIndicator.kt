@@ -1,27 +1,16 @@
-package com.materip.matetrip.component
+package com.materip.core_designsystem.component
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.materip.matetrip.theme.Primary
-import com.materip.matetrip.theme.Blue_04
-import kotlinx.coroutines.launch
+import com.materip.core_designsystem.theme.MateTripColors.Blue_04
+import com.materip.core_designsystem.theme.MateTripColors.Primary
 
 /**
  * ProgressIndicator
@@ -29,40 +18,26 @@ import kotlinx.coroutines.launch
  */
 
 @Composable
-fun ProgressIndicator() {
-    var currentProgress by remember { mutableFloatStateOf(0.25f) }
-    val scope = rememberCoroutineScope()
-
-    Column(
-        modifier = Modifier
-            .background(color = Color.White)
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        LinearProgressIndicator(
-            progress = { currentProgress },
-            modifier = Modifier.size(width = 300.dp, height = 8.dp),
-            color = Primary,
-            trackColor = Blue_04,
-            strokeCap = StrokeCap.Round,
-        )
-        Spacer(modifier = Modifier.height(40.dp))
-        MateTripButton(
-            onClick = {
-                scope.launch {
-                    if (currentProgress < 1f) {
-                        currentProgress += 0.25f
-                    }
-                }
-            },
-            enabled = true,
-            buttonText = "다음"
-        )
-    }
+fun ProgressIndicator(
+    modifier: Modifier = Modifier,
+    currentProgress: Float
+) {
+    LinearProgressIndicator(
+        progress = { currentProgress },
+        modifier = modifier.height(8.dp),
+        color = Primary,
+        trackColor = Blue_04,
+        strokeCap = StrokeCap.Round,
+    )
 }
 
 @Preview
 @Composable
 fun ProgressIndicatorPreview() {
-    ProgressIndicator()
+    Column(modifier = Modifier.fillMaxWidth()){
+        ProgressIndicator(modifier = Modifier.fillMaxWidth(),currentProgress = 0.25f)
+        ProgressIndicator(modifier = Modifier.fillMaxWidth(),currentProgress = 0.5f)
+        ProgressIndicator(modifier = Modifier.fillMaxWidth(),currentProgress = 0.75f)
+        ProgressIndicator(modifier = Modifier.fillMaxWidth(),currentProgress = 1f)
+    }
 }

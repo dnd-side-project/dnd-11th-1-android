@@ -1,3 +1,17 @@
 <resources>
-    <string name="app_name">testProject</string>
+    <string name="app_name">Matetrip</string>
+
+    <!-- 네비게이션 경로 이름 -->
+    <string name="sign_in">SignIn</string>">
+    <string name="onboarding">Onboarding</string>">
+    <string name="home">Home</string>
+    <string name="navigate_to_post">NavigateToPost</string>
+    <string name="post">Post</string>
+    <string name="form">Form</string>
+    <string name="profile">Profile</string>">
+    <string name="notification">Notification</string>">
+    <string name="review">Review</string>">
+    <string name="setting">Setting</string>">
+    <string name="my_page">MyPage</string>">
+
 </resources>

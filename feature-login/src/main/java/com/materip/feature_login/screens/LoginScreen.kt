@@ -1,4 +1,4 @@
-package com.materip.feature_login
+package com.materip.feature_login.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,12 +29,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materip.core_common.ErrorState
 import com.materip.core_designsystem.R
+import com.materip.core_designsystem.component.KakaoButton
 import com.materip.feature_login.view_models.LoginViewModel
-import com.materip.matetrip.component.KakaoButton
 
 @Composable
 fun LoginRoute(
     navOnBoarding: () -> Unit,
+    navHome: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
 ){
     val context = LocalContext.current
@@ -42,22 +43,30 @@ fun LoginRoute(
 
     LoginScreen(
         isLogin = viewModel.isLogin.collectAsStateWithLifecycle().value,
+        isOnboardingCompleted = viewModel.isOnboardingCompleted.collectAsStateWithLifecycle().value,
         errState = errState.value,
         doLogin = {viewModel.doLogin(context)},
-        navOnBoarding = navOnBoarding
+        navOnBoarding = navOnBoarding,
+        navHome = navHome
     )
 }
 
 @Composable
 fun LoginScreen(
     isLogin: Boolean,
+    isOnboardingCompleted: Boolean,
     errState: ErrorState,
     doLogin: () -> Unit,
     navOnBoarding: () -> Unit,
+    navHome: () -> Unit,
 ){
-    LaunchedEffect(isLogin){
+    LaunchedEffect(isLogin, isOnboardingCompleted){
         if (isLogin){
-            navOnBoarding()
+            if(isOnboardingCompleted){
+                navHome()
+            } else {
+                navOnBoarding()
+            }
         }
     }
     if (errState is ErrorState.NoAuthError && errState.generalError.first){
@@ -124,6 +133,8 @@ private fun LoginUITest(){
         doLogin = {},
         errState = ErrorState.Loading,
         isLogin = false,
-        navOnBoarding = {}
+        isOnboardingCompleted = false,
+        navOnBoarding = {},
+        navHome = {}
     )
 }

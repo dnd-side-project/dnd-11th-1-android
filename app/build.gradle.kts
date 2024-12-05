@@ -5,10 +5,11 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.kapt)
+    id("com.google.android.gms.oss-licenses-plugin")
 }
 
-val localProperties = Properties().apply{
-    load(project.rootProject.file("local.properties").inputStream())
+val localProperties = Properties().apply {
+    load(project.file("local.properties").inputStream())
 }
 
 android {
@@ -28,7 +29,7 @@ android {
         }
         buildConfigField("String", "NATIVE_APP_KEY", localProperties["NATIVE_APP_KEY"] as String)
         manifestPlaceholders["REDIRECTION_PATH"] = localProperties["REDIRECTION_PATH"] as String
-    }
+        buildConfigField("String", "SERVER_BASE_URL", "\"${localProperties.getProperty("SERVER_BASE_URL")}\"")    }
 
     buildTypes {
         release {
@@ -55,34 +56,39 @@ android {
     }
     packaging {
         resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
             excludes += "/META-INF/gradle/incremental.annotation.processors"
         }
     }
-    kapt{
+    kapt {
         correctErrorTypes = true
     }
-    java{
-        toolchain{
+    java {
+        toolchain {
             languageVersion.set(JavaLanguageVersion.of(17))
         }
     }
 }
 
 dependencies {
+    implementation(project(":core-common"))
     implementation(project(":core-model"))
+    implementation(project(":core-network"))
+    implementation(project(":core-datastore"))
     implementation(project(":core-designsystem"))
     implementation(project(":core-repository"))
     implementation(project(":feature-login"))
-    implementation(project(":feature-home"))
+    implementation(project(":feature-home3"))
     implementation(project(":feature-mypage"))
     implementation(project(":feature-onboarding"))
 
     implementation(libs.navigation) //navigation
     implementation(libs.bundles.kakao) //kakao
-
-    //hilt
-    implementation(libs.bundles.hilt.impl)
+    implementation(libs.bundles.hilt.impl) //hilt
     kapt(libs.bundles.hilt.kapt)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt.android)
+    implementation(libs.open.licenses) //open licence
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

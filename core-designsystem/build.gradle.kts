@@ -29,20 +29,31 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
+        jvmTarget = "17"
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.2"
     }
-    buildFeatures{
+    buildFeatures {
         compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.2"
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/gradle/incremental.annotation.processors"
+        }
     }
 }
 
 dependencies {
     implementation(project(":core-model"))
+    implementation(project(":core-common"))
 
-    //coil
-    implementation(libs.bundles.coil)
+    implementation(libs.navigation) //navigation
+    implementation(libs.bundles.coil) // coil
+    implementation(libs.bundles.ui) // ui
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -51,6 +62,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

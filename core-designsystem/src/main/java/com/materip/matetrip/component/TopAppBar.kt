@@ -1,107 +1,140 @@
-package com.materip.matetrip.component
+@file:OptIn(ExperimentalMaterial3Api::class)
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+package com.materip.core_designsystem.component
+
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.materip.matetrip.icon.Icons.notification_icon
-import com.materip.matetrip.theme.MateTripTypographySet
+import com.materip.core_designsystem.icon.Icons
+import com.materip.core_designsystem.icon.Icons.notification_icon
+import com.materip.core_designsystem.icon.Logo.splash_icon_02
+import com.materip.core_designsystem.theme.MateTripColors.Blue_02
+import com.materip.core_designsystem.theme.MateTripTypographySet
 
 
-/**
- * 상단바가 스크롤될 때 고정되는 동작을 설정하고, 이를 Modifier에 적용하여 상단바의 스크롤 동작을 정의
- * pinnedScrollBehavior: 상단바가 스크롤될 때 고정되는 동작
- * rememberTopAppBarState: 상단바의 상태를 기억하는 상태 객체
- * nestedScrollConnection: 상단바의 스크롤 동작을 제어하는 객체
- */
+// 홈 화면의 상단바
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MateTripTopAppBar() {
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-
-    Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-
-        topBar = {
-            TopAppBar(
-                title = {
-                    Row(
-                        modifier = Modifier
-                            .padding(top = 20.dp, start = 0.dp, bottom = 20.dp),
-                        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
-                    ) {
-                        Text(
-                            "MATE",
-                            style = MateTripTypographySet.topBarTitle
-                        )
-                        // 이미지 추가
-                        Icon(
-                            imageVector = Icons.Filled.Face, // 원하는 이미지로 변경
-                            contentDescription = "Logo"
-                        )
-                        Text(
-                            "TRIP",
-                            style = MateTripTypographySet.topBarTitle
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { /* 알림 설정 시 알림을 표시하기 */ }) {
-                        Icon(
-                            painter = painterResource(id = notification_icon),
-                            contentDescription = "Localized description",
-                            tint = Color.Unspecified // 드로어블의 원래 색상을 사용
-                        )
-                    }
-                },
-                scrollBehavior = scrollBehavior,
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White
-                )
+fun MateTripTopAppBar(
+    onNotificationClick: () -> Unit
+) {
+    TopAppBar(
+        title = {
+            Icon(
+                painter = painterResource(id = splash_icon_02),
+                contentDescription = "Home Icon",
+                modifier = Modifier.size(122.dp, 36.dp),
+                tint = Color.Unspecified
             )
         },
-    ) { innerPadding ->
-        ScrollContent(innerPadding)
-    }
+        actions = {
+            IconButton(onClick = onNotificationClick) {
+                Icon(
+                    painter = painterResource(id = notification_icon),
+                    contentDescription = "Notifications",
+                    tint = Blue_02
+
+                )
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = Color.White
+        )
+    )
 }
 
 @Composable
-fun ScrollContent(innerPadding: PaddingValues) {
-    Column(
-        modifier = Modifier
-            .padding(innerPadding)
-            .fillMaxSize()
-            .background(Color.White),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
-    ) {
-        // 여기에 스크롤 가능한 컨텐츠를 추가
-    }
+fun BackButtonWithTitleTopAppBar(
+    screenTitle: String,
+    onNavigateUp: () -> Unit,
+    onPostClick: () -> Unit,
+    isPostButtonEnabled: Boolean
+) {
+    CenterAlignedTopAppBar(
+        title = {
+            Text(
+                text = screenTitle,
+                style = MateTripTypographySet.headline06
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = onNavigateUp) {
+                Icon(
+                    painter = painterResource(id = Icons.arrow_back_icon),
+                    contentDescription = "뒤로 가기 아이콘",
+                    modifier = Modifier.size(24.dp),
+                    tint = Color.Black
+                )
+            }
+        },
+        actions = {
+            Row(
+                modifier = Modifier.padding(end = 10.dp),
+            ) {
+                Button(
+                    onClick = onPostClick,
+                    enabled = isPostButtonEnabled,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Transparent,
+                        contentColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent,
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(0.dp)
+                ) {
+                    Text(
+                        text = "게시",
+                        style = MateTripTypographySet.body04,
+                        color = if (isPostButtonEnabled) Color.Black else Color.Gray
+                    )
+                }
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = Color.White
+        )
+    )
 }
 
-@Preview(showBackground = true)
+
+// 뒤로가기 버튼만 있는 상단바
 @Composable
-fun PreviewMateTripTopAppBar() {
-    MateTripTopAppBar()
+fun BackButtonTopAppBar(
+    screenTitle: String,
+    onNavigateUp: () -> Unit
+) {
+    CenterAlignedTopAppBar(
+        title = {
+            Text(
+                text = screenTitle,
+                style = MateTripTypographySet.headline06
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = onNavigateUp) {
+                Icon(
+                    painter = painterResource(id = Icons.arrow_back_icon),
+                    contentDescription = "Back",
+                    modifier = Modifier.size(24.dp),
+                    tint = Color.Black
+                )
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = Color.White
+        )
+    )
 }

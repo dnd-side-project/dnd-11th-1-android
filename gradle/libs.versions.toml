@@ -5,6 +5,8 @@ coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
+kotlinxCoroutinesAndroid = "1.9.0-RC"
+kotlinxCoroutinesBom = "1.9.0-RC"
 lifecycleRuntimeKtx = "2.8.3"
 lifecycleCompose = "2.6.0"
 activityCompose = "1.9.0"
@@ -13,11 +15,13 @@ appcompat = "1.7.0"
 androidUI = "1.6.8"
 material = "1.12.0"
 material3 = "1.2.1"
+mockkAndroid = "1.13.0"
+mockkVersion = "1.13.0"
 serializationPlugin = "1.8.10"
 serialization = "1.5.1"
 retrofit = "2.9.0"
 sandwich = "2.0.8"
-coroutine = "1.8.0"
+coroutine = "1.9.0-RC"
 coil = "2.7.0"
 navigation = "2.7.7"
 hilt = "2.48.1"
@@ -25,6 +29,9 @@ hiltNavCompose = "1.2.0"
 kakao = "2.20.0"
 datastore = "1.1.1"
 kapt = "1.8.10"
+paging = "3.3.2"
+openLicenses = "17.1.0"
+openLicensesPlugin = "0.10.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,7 +49,11 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref="androidUI" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref="material3"}
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+kotlinx-coroutines-bom = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-bom", version.ref = "kotlinxCoroutinesBom" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockkVersion" }
+mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockkAndroid" }
 retrofit = { group = "com.squareup.retrofit2", name="retrofit", version.ref = "retrofit"}
 retrofit-converter = { group = "com.squareup.retrofit2", name="converter-gson",version.ref = "retrofit"}
 sandwich = { group = "com.github.skydoves", name="sandwich", version.ref = "sandwich"}
@@ -62,6 +73,10 @@ kakao-share= { group = "com.kakao.sdk", name="v2-share", version.ref="kakao"}
 kakao-freind = { group = "com.kakao.sdk", name="v2-friend", version.ref="kakao"}
 kakao-cert = { group = "com.kakao.sdk", name="v2-cert", version.ref="kakao"}
 datastore = { group = "androidx.datastore", name="datastore-preferences", version.ref="datastore"}
+androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "androidUI" }
+paging = {group = "androidx.paging", name="paging-runtime", version.ref="paging"}
+paging-compose = {group="androidx.paging", name="paging-compose", version.ref="paging"}
+open-licenses = {group="com.google.android.gms", name="play-services-oss-licenses",version.ref="openLicenses"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -71,6 +86,7 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-serialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serializationPlugin"}
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt"}
 kotlin-kapt = {id="org.jetbrains.kotlin.kapt", version.ref="kapt"}
+open-licenses = {id="com.google.android.gms.oss-licenses-plugin", version.ref="openLicensesPlugin"}
 
 [bundles]
 retrofit = ["retrofit", "retrofit-converter", "serialization"]
@@ -80,3 +96,4 @@ hilt-impl = ["hilt-android", "hilt-navigation"]
 hilt-kapt = ["hilt-android-compiler"]
 kakao = ["kakao-all","kakao-cert","kakao-freind","kakao-share","kakao-talk","kakao-user"]
 ui = ["androidx-ui", "androidx-ui-graphics", "androidx-ui-tooling", "androidx-ui-tooling-preview", "androidx-material3", "material"]
+paging = ["paging", "paging-compose"]
