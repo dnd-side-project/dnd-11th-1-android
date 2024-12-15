@@ -18,10 +18,10 @@ android {
 
     defaultConfig {
         applicationId = "com.materip.matetrip"
-        minSdk = 26
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = 26 // 지원할 최소 Android 버전
+        targetSdk = 34 // 목표 Android 버전
+        versionCode = 1 // 빌드 버전 코드 (업데이트 시 증가 필요)
+        versionName = "1.0.0"  // 빌드 버전 이름
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -29,7 +29,12 @@ android {
         }
         buildConfigField("String", "NATIVE_APP_KEY", localProperties["NATIVE_APP_KEY"] as String)
         manifestPlaceholders["REDIRECTION_PATH"] = localProperties["REDIRECTION_PATH"] as String
-        buildConfigField("String", "SERVER_BASE_URL", "\"${localProperties.getProperty("SERVER_BASE_URL")}\"")    }
+        buildConfigField(
+            "String",
+            "SERVER_BASE_URL",
+            "\"${localProperties.getProperty("SERVER_BASE_URL")}\""
+        )
+    }
 
     buildTypes {
         release {

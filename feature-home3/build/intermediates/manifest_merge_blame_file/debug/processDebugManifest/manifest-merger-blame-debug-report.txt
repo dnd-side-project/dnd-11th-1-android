@@ -1,29 +1,7 @@
 1<?xml version="1.0" encoding="utf-8"?>
 2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-3    xmlns:tools="http://schemas.android.com/tools"
-4    package="com.materip.feature_home" >
-5
-6    <uses-sdk android:minSdkVersion="26" />
-7
-8    <uses-permission android:name="android.permission.CAMERA" />
-8-->/Users/MorinBeck/StudioProjects/dnd-11th-1-android/feature-home3/src/main/AndroidManifest.xml:3:5-65
-8-->/Users/MorinBeck/StudioProjects/dnd-11th-1-android/feature-home3/src/main/AndroidManifest.xml:3:22-62
-9
-10    <application>
-10-->/Users/MorinBeck/StudioProjects/dnd-11th-1-android/feature-home3/src/main/AndroidManifest.xml:4:5-12:19
-11        <provider
-11-->/Users/MorinBeck/StudioProjects/dnd-11th-1-android/feature-home3/src/main/AndroidManifest.xml:5:9-11:20
-12            android:name="androidx.core.content.FileProvider"
-12-->/Users/MorinBeck/StudioProjects/dnd-11th-1-android/feature-home3/src/main/AndroidManifest.xml:6:13-62
-13            android:authorities="${applicationId}.provider"
-13-->/Users/MorinBeck/StudioProjects/dnd-11th-1-android/feature-home3/src/main/AndroidManifest.xml:7:13-60
-14            android:exported="false"
-14-->/Users/MorinBeck/StudioProjects/dnd-11th-1-android/feature-home3/src/main/AndroidManifest.xml:8:13-37
-15            android:grantUriPermissions="true"
-15-->/Users/MorinBeck/StudioProjects/dnd-11th-1-android/feature-home3/src/main/AndroidManifest.xml:9:13-47
-16            tools:ignore="WrongManifestParent" >
-16-->/Users/MorinBeck/StudioProjects/dnd-11th-1-android/feature-home3/src/main/AndroidManifest.xml:10:13-47
-17        </provider>
-18    </application>
-19
-20</manifest>
+3    package="com.materip.feature_home3" >
+4
+5    <uses-sdk android:minSdkVersion="26" />
+6
+7</manifest>
