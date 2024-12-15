@@ -13,3 +13,4 @@ local.properties
 /app/debug/output-metadata.json
 *.aab
 *.apk
+/app/release/*.aab
