@@ -1,4 +1,5 @@
-import java.util.*
+import java.util.Properties
+import java.io.FileInputStream
 
 plugins {
     alias(libs.plugins.android.application)
@@ -12,6 +13,10 @@ val localProperties = Properties().apply {
     load(project.file("local.properties").inputStream())
 }
 
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
 android {
     namespace = "com.materip.matetrip"
     compileSdk = 34
@@ -20,8 +25,8 @@ android {
         applicationId = "com.materip.matetrip"
         minSdk = 26 // 지원할 최소 Android 버전
         targetSdk = 34 // 목표 Android 버전
-        versionCode = 1 // 빌드 버전 코드 (업데이트 시 증가 필요)
-        versionName = "1.0.0"  // 빌드 버전 이름
+        versionCode = 2 // 빌드 버전 코드 (업데이트 시 증가 필요)
+        versionName = "1.0.1"  // 빌드 버전 이름
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -29,11 +34,16 @@ android {
         }
         buildConfigField("String", "NATIVE_APP_KEY", localProperties["NATIVE_APP_KEY"] as String)
         manifestPlaceholders["REDIRECTION_PATH"] = localProperties["REDIRECTION_PATH"] as String
-        buildConfigField(
-            "String",
-            "SERVER_BASE_URL",
-            "\"${localProperties.getProperty("SERVER_BASE_URL")}\""
-        )
+        buildConfigField("String", "SERVER_BASE_URL", "\"${localProperties.getProperty("SERVER_BASE_URL")}\"")
+    }
+
+    signingConfigs {
+        create("release") {
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
+            storeFile = file(keystoreProperties["storeFile"] as String)
+            storePassword = keystoreProperties["storePassword"] as String
+        }
     }
 
     buildTypes {
@@ -43,8 +53,14 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs["release"]
+        }
+        debug {
+            isMinifyEnabled = false
         }
     }
+
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

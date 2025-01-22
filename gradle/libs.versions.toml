@@ -17,8 +17,6 @@ appcompat = "1.7.0"
 androidUI = "1.6.8"
 material = "1.12.0"
 material3 = "1.2.1"
-mockkAndroid = "1.13.0"
-mockkVersion = "1.13.0"
 serializationPlugin = "1.8.10"
 serialization = "1.5.1"
 retrofit = "2.9.0"
@@ -56,8 +54,6 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 kotlinx-coroutines-bom = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-bom", version.ref = "kotlinxCoroutinesBom" }
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanaryAndroid" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-mockk = { module = "io.mockk:mockk", version.ref = "mockkVersion" }
-mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockkAndroid" }
 retrofit = { group = "com.squareup.retrofit2", name="retrofit", version.ref = "retrofit"}
 retrofit-converter = { group = "com.squareup.retrofit2", name="converter-gson",version.ref = "retrofit"}
 sandwich = { group = "com.github.skydoves", name="sandwich", version.ref = "sandwich"}
