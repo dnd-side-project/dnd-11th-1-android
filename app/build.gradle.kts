@@ -25,7 +25,7 @@ android {
         applicationId = "com.materip.matetrip"
         minSdk = 26 // 지원할 최소 Android 버전
         targetSdk = 34 // 목표 Android 버전
-        versionCode = 2 // 빌드 버전 코드 (업데이트 시 증가 필요)
+        versionCode = 3 // 빌드 버전 코드 (업데이트 시 증가 필요)
         versionName = "1.0.1"  // 빌드 버전 이름
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
