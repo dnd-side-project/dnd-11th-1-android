@@ -20,7 +20,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-        buildConfigField("String", "SERVER_BASE_URL", "\"${localProperties.getProperty("SERVER_BASE_URL")}\"")
+        buildConfigField("String", "SERVER_BASE_URL", localProperties.getProperty("SERVER_BASE_URL") as String)
     }
 
     buildTypes {
