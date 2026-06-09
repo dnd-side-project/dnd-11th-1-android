@@ -73,19 +73,20 @@ fun HomeScreen(
         viewModel.handleIntent(BoardListIntent.LoadBoardList(initialRequest))
     }
 
-    val filteredBoardItems = remember(boardListState.value, selectedRegion, isSearching, selectedOption) {
-    val allItems = boardListState.value?.data ?: emptyList()
-    if (isSearching) {
-        allItems
-    } else {
-        allItems.filter { item ->
-            (selectedRegion == null || selectedRegion!!.contains(item.region)) &&
-            (selectedOption == "전체" ||
-             (selectedOption == "동행 모집 중" && item.isRecruiting()) ||
-             (selectedOption == "동행 모집 완료" && item.isRecruited()))
+    val filteredBoardItems =
+        remember(boardListState.value, selectedRegion, isSearching, selectedOption) {
+            val allItems = boardListState.value?.data ?: emptyList()
+            if (isSearching) {
+                allItems
+            } else {
+                allItems.filter { item ->
+                    (selectedRegion == null || selectedRegion!!.contains(item.region)) &&
+                            (selectedOption == "전체" ||
+                                    (selectedOption == "동행 모집 중" && item.isRecruiting()) ||
+                                    (selectedOption == "동행 모집 완료" && item.isRecruited()))
+                }
+            }
         }
-    }
-}
 
     Column(
         modifier = Modifier
