@@ -2,11 +2,9 @@ import java.util.Properties
 import java.io.FileInputStream
 
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.kapt)
-    id("com.google.android.gms.oss-licenses-plugin")
+    id("matetrip.android.application")
 }
 
 val localProperties = Properties().apply {
@@ -19,14 +17,9 @@ keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
 android {
     namespace = "com.materip.matetrip"
-    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.materip.matetrip"
-        minSdk = 26 // 지원할 최소 Android 버전
-        targetSdk = 34 // 목표 Android 버전
-        versionCode = 3 // 빌드 버전 코드 (업데이트 시 증가 필요)
-        versionName = "1.0.1"  // 빌드 버전 이름
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -58,12 +51,6 @@ android {
         debug {
             isMinifyEnabled = false
         }
-    }
-
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
         jvmTarget = "17"

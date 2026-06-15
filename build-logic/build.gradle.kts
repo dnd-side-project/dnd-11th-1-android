@@ -23,5 +23,10 @@ gradlePlugin {
             id = "matetrip.android.library"
             implementationClass = "com.matetrip.build_logic.AndroidLibraryPlugin"
         }
+
+        register("androidApplication") {
+            id = "matetrip.android.application"
+            implementationClass = "com.matetrip.build_logic.AndroidApplicationPlugin"
+        }
     }
 }
