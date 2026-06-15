@@ -1,21 +1,18 @@
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.kapt)
+    id("matetrip.android.library")
 }
-val localProperties = Properties().apply{
+val localProperties = Properties().apply {
     load(project.rootProject.file("local.properties").inputStream())
 }
+
 android {
     namespace = "com.materip.feature_mypage"
-    compileSdk = 34
 
     defaultConfig {
-        minSdk = 26
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
         buildConfigField("String", "PRIVACY_URL", localProperties.getProperty("PRIVACY_URL"))
@@ -30,10 +27,6 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
     kotlinOptions {
         jvmTarget = "17"
     }
@@ -42,10 +35,10 @@ android {
             excludes += "/META-INF/gradle/incremental.annotation.processors"
         }
     }
-    composeOptions{
+    composeOptions {
         kotlinCompilerExtensionVersion = "1.5.14"
     }
-    buildFeatures{
+    buildFeatures {
         compose = true
         buildConfig = true
     }
