@@ -38,7 +38,7 @@ gradlePlugin {
 
         register("androidCompose") {
             id = "matetrip.android.compose"
-            implementationClass = "com.matetrip.build_logic.ComposeAndroidPlugin"
+            implementationClass = "com.matetrip.build_logic.AndroidComposePlugin"
         }
     }
 }

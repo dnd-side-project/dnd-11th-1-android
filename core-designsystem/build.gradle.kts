@@ -1,5 +1,6 @@
 plugins {
     id("matetrip.android.library")
+    id("matetrip.android.compose")
 }
 
 android {
@@ -18,12 +19,6 @@ android {
                 "proguard-rules.pro"
             )
         }
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
-    }
-    buildFeatures {
-        compose = true
     }
     packaging {
         resources {

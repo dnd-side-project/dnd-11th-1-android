@@ -3,6 +3,7 @@ import java.util.Properties
 plugins {
     id("matetrip.android.hilt")
     id("matetrip.android.library")
+    id("matetrip.android.compose")
 }
 val localProperties = Properties().apply {
     load(project.rootProject.file("local.properties").inputStream())
@@ -31,11 +32,7 @@ android {
             excludes += "/META-INF/gradle/incremental.annotation.processors"
         }
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
-    }
     buildFeatures {
-        compose = true
         buildConfig = true
     }
 }

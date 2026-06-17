@@ -26,9 +26,6 @@ android {
             excludes += "/META-INF/gradle/incremental.annotation.processors"
         }
     }
-    composeOptions{
-        kotlinCompilerExtensionVersion="1.5.2"
-    }
 }
 
 dependencies {

@@ -1,7 +1,8 @@
 plugins {
     id("matetrip.android.hilt")
-    alias(libs.plugins.kotlin.serialization)
     id("matetrip.android.library")
+    id("matetrip.android.compose")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -24,12 +25,6 @@ android {
         resources {
             excludes += "/META-INF/gradle/incremental.annotation.processors"
         }
-    }
-    composeOptions{
-        kotlinCompilerExtensionVersion = "1.5.14"
-    }
-    buildFeatures{
-        compose = true
     }
 }
 

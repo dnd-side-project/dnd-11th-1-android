@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.kapt)
     id("matetrip.android.application")
+    id("matetrip.android.compose")
 }
 
 val localProperties = Properties().apply {
@@ -53,11 +54,7 @@ android {
         }
     }
     buildFeatures {
-        compose = true
         buildConfig = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {

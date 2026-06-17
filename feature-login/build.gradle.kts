@@ -3,6 +3,7 @@ import java.util.*
 plugins {
     id("matetrip.android.hilt")
     id("matetrip.android.library")
+    id("matetrip.android.compose")
 }
 
 val localProperties = Properties().apply{
@@ -33,11 +34,7 @@ android {
         }
     }
     buildFeatures{
-        compose = true
         buildConfig = true
-    }
-    composeOptions{
-        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {
