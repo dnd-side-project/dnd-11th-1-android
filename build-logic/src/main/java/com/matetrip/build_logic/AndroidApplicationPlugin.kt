@@ -5,8 +5,6 @@ import com.matetrip.build_logic.extensions.configureAndroid
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByType
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 
 class AndroidApplicationPlugin : Plugin<Project> {
     override fun apply(target: Project) {
