@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.implementation
+
 plugins {
     `kotlin-dsl`
 }
@@ -27,6 +29,11 @@ gradlePlugin {
         register("androidApplication") {
             id = "matetrip.android.application"
             implementationClass = "com.matetrip.build_logic.AndroidApplicationPlugin"
+        }
+
+        register("hiltAndroid") {
+            id = "matetrip.android.hilt"
+            implementationClass = "com.matetrip.build_logic.HiltAndroidPlugin"
         }
     }
 }

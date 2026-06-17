@@ -1,7 +1,6 @@
 plugins {
     id("matetrip.android.library")
-    alias(libs.plugins.hilt.android)
-    kotlin("kapt")
+    id("matetrip.android.hilt")
 }
 
 android {

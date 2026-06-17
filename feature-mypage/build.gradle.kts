@@ -1,8 +1,7 @@
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.hilt.android)
-    alias(libs.plugins.kotlin.kapt)
+    id("matetrip.android.hilt")
     id("matetrip.android.library")
 }
 val localProperties = Properties().apply {

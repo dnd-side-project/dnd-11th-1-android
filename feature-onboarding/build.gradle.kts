@@ -1,6 +1,5 @@
 plugins {
-    alias(libs.plugins.hilt.android)
-    alias(libs.plugins.kotlin.kapt)
+    id("matetrip.android.hilt")
     alias(libs.plugins.kotlin.serialization)
     id("matetrip.android.library")
 }
