@@ -35,5 +35,10 @@ gradlePlugin {
             id = "matetrip.android.hilt"
             implementationClass = "com.matetrip.build_logic.HiltAndroidPlugin"
         }
+
+        register("androidCompose") {
+            id = "matetrip.android.compose"
+            implementationClass = "com.matetrip.build_logic.ComposeAndroidPlugin"
+        }
     }
 }

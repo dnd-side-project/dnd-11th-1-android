@@ -21,9 +21,6 @@ android {
             )
         }
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
     packaging {
         resources {
             excludes += "/META-INF/gradle/incremental.annotation.processors"
