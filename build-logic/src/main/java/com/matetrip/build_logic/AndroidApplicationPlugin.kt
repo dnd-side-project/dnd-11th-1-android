@@ -2,6 +2,7 @@ package com.matetrip.build_logic
 
 import com.android.build.api.dsl.ApplicationExtension
 import com.matetrip.build_logic.extensions.configureAndroid
+import com.matetrip.build_logic.extensions.configureKotlin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByType
@@ -11,7 +12,7 @@ class AndroidApplicationPlugin : Plugin<Project> {
         with(target) {
             pluginManager.apply("com.android.application")
             pluginManager.apply("org.jetbrains.kotlin.android")
-
+            
             extensions.getByType<ApplicationExtension>().run {
                 configureAndroid()
 
@@ -21,6 +22,8 @@ class AndroidApplicationPlugin : Plugin<Project> {
                     versionName = "1.0.1"
                 }
             }
+
+            configureKotlin()
         }
     }
 }
