@@ -1,9 +1,7 @@
 import java.util.Properties
 
 plugins {
-    id("matetrip.android.hilt")
-    id("matetrip.android.library")
-    id("matetrip.android.compose")
+    id("matetrip.feature")
 }
 val localProperties = Properties().apply {
     load(project.rootProject.file("local.properties").inputStream())

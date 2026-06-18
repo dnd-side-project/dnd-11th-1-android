@@ -1,9 +1,7 @@
 import java.util.*
 
 plugins {
-    id("matetrip.android.hilt")
-    id("matetrip.android.library")
-    id("matetrip.android.compose")
+    id("matetrip.feature")
 }
 
 val localProperties = Properties().apply{

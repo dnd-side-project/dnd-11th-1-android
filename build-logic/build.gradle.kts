@@ -40,5 +40,10 @@ gradlePlugin {
             id = "matetrip.android.compose"
             implementationClass = "com.matetrip.build_logic.AndroidComposePlugin"
         }
+
+        register("feature") {
+            id = "matetrip.feature"
+            implementationClass = "com.matetrip.build_logic.FeaturePlugin"
+        }
     }
 }

@@ -1,7 +1,5 @@
 plugins {
-    id("matetrip.android.hilt")
-    id("matetrip.android.library")
-    id("matetrip.android.compose")
+    id("matetrip.feature")
     alias(libs.plugins.kotlin.serialization)
 }
 
