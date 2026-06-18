@@ -26,11 +26,6 @@ android {
             )
         }
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/gradle/incremental.annotation.processors"
-        }
-    }
     buildFeatures{
         buildConfig = true
     }
