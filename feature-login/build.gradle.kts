@@ -5,7 +5,7 @@ plugins {
 }
 
 val localProperties = Properties().apply{
-    load(project.file("local.properties").inputStream())
+    load(rootProject.file("local.properties").inputStream())
 }
 
 android {

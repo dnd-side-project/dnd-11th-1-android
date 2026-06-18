@@ -4,7 +4,7 @@ plugins {
     id("matetrip.feature")
 }
 val localProperties = Properties().apply {
-    load(project.rootProject.file("local.properties").inputStream())
+    load(rootProject.file("local.properties").inputStream())
 }
 
 android {

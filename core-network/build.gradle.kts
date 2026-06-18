@@ -7,7 +7,7 @@ plugins {
 }
 
 val localProperties = Properties().apply{
-    load(project.rootProject.file("./core-network/local.properties").inputStream())
+    load(rootProject.file("local.properties").inputStream())
 }
 
 android {
@@ -16,7 +16,7 @@ android {
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-        buildConfigField("String", "BASE_URL", localProperties.getProperty("BASE_URL"))
+        buildConfigField("String", "BASE_URL", localProperties.getProperty("SERVER_BASE_URL"))
     }
 
     buildTypes {
