@@ -16,11 +16,14 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url = java.net.URI("https://devrepo.kakao.com/nexus/content/groups/public/")}
+        maven { url = java.net.URI("https://devrepo.kakao.com/nexus/content/groups/public/") }
     }
 }
 
 rootProject.name = "Matetrip"
+
+includeBuild("build-logic")
+
 include(":app")
 include(":core-model")
 include(":core-network")

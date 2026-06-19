@@ -1,27 +1,22 @@
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.jetbrains.kotlin.android)
+    id("matetrip.android.library")
+    id("matetrip.android.hilt")
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.hilt.android)
-    alias(libs.plugins.kotlin.kapt)
 }
 
 val localProperties = Properties().apply{
-    load(project.rootProject.file("./core-network/local.properties").inputStream())
+    load(rootProject.file("local.properties").inputStream())
 }
 
 android {
     namespace = "com.materip.core_network"
-    compileSdk = 34
 
     defaultConfig {
-        minSdk = 26
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-        buildConfigField("String", "BASE_URL", localProperties.getProperty("BASE_URL"))
+        buildConfigField("String", "BASE_URL", localProperties.getProperty("SERVER_BASE_URL"))
     }
 
     buildTypes {
@@ -33,20 +28,8 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
     buildFeatures{
         buildConfig = true
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/gradle/incremental.annotation.processors"
-        }
     }
 }
 

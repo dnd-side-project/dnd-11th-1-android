@@ -1,17 +1,12 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.hilt.android)
-    kotlin("kapt")
+    id("matetrip.android.hilt")
+    id("matetrip.android.library")
 }
 
 android {
     namespace = "com.materip.core_repository"
-    compileSdk = 34
 
     defaultConfig {
-        minSdk = 26
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -23,18 +18,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/gradle/incremental.annotation.processors"
         }
     }
 }

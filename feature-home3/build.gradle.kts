@@ -1,26 +1,20 @@
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.hilt.android)
-    alias(libs.plugins.kotlin.kapt)
+    id("matetrip.feature")
 }
 
 val localProperties = Properties().apply {
-    load(project.file("local.properties").inputStream())
+    load(rootProject.file("local.properties").inputStream())
 }
 
 android {
     namespace = "com.materip.feature_home3"
-    compileSdk = 34
 
     defaultConfig {
-        minSdk = 26
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-        buildConfigField("String", "SERVER_BASE_URL", "\"${localProperties.getProperty("SERVER_BASE_URL")}\"")
+        buildConfigField("String", "SERVER_BASE_URL", localProperties.getProperty("SERVER_BASE_URL") as String)
     }
 
     buildTypes {
@@ -32,25 +26,8 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
     buildFeatures {
         buildConfig = true
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-            excludes += "META-INF/gradle/incremental.annotation.processors"
-        }
     }
 }
 

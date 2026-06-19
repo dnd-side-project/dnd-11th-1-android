@@ -1,18 +1,13 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.jetbrains.kotlin.android)
+    id("matetrip.android.hilt")
+    id("matetrip.android.library")
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.hilt.android)
-    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
     namespace = "com.materip.core_datastore"
-    compileSdk = 34
 
     defaultConfig {
-        minSdk = 26
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -25,21 +20,6 @@ android {
                 "proguard-rules.pro"
             )
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/gradle/incremental.annotation.processors"
-        }
-    }
-    composeOptions{
-        kotlinCompilerExtensionVersion="1.5.2"
     }
 }
 

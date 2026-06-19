@@ -1,18 +1,12 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.hilt.android)
-    alias(libs.plugins.kotlin.kapt)
+    id("matetrip.feature")
     alias(libs.plugins.kotlin.serialization)
 }
 
 android {
     namespace = "com.materip.feature_onboarding"
-    compileSdk = 34
 
     defaultConfig {
-        minSdk = 26
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -24,24 +18,6 @@ android {
                 "proguard-rules.pro"
             )
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/gradle/incremental.annotation.processors"
-        }
-    }
-    composeOptions{
-        kotlinCompilerExtensionVersion = "1.5.14"
-    }
-    buildFeatures{
-        compose = true
     }
 }
 

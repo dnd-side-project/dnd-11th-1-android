@@ -2,15 +2,14 @@ import java.util.Properties
 import java.io.FileInputStream
 
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.kapt)
-    id("com.google.android.gms.oss-licenses-plugin")
+    id("matetrip.android.application")
+    id("matetrip.android.compose")
 }
 
 val localProperties = Properties().apply {
-    load(project.file("local.properties").inputStream())
+    load(rootProject.file("local.properties").inputStream())
 }
 
 val keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -19,14 +18,9 @@ keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
 android {
     namespace = "com.materip.matetrip"
-    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.materip.matetrip"
-        minSdk = 26 // 지원할 최소 Android 버전
-        targetSdk = 34 // 목표 Android 버전
-        versionCode = 3 // 빌드 버전 코드 (업데이트 시 증가 필요)
-        versionName = "1.0.1"  // 빌드 버전 이름
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -34,7 +28,7 @@ android {
         }
         buildConfigField("String", "NATIVE_APP_KEY", localProperties["NATIVE_APP_KEY"] as String)
         manifestPlaceholders["REDIRECTION_PATH"] = localProperties["REDIRECTION_PATH"] as String
-        buildConfigField("String", "SERVER_BASE_URL", "\"${localProperties.getProperty("SERVER_BASE_URL")}\"")
+        buildConfigField("String", "SERVER_BASE_URL", localProperties.getProperty("SERVER_BASE_URL") as String)
     }
 
     signingConfigs {
@@ -59,26 +53,12 @@ android {
             isMinifyEnabled = false
         }
     }
-
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
     buildFeatures {
-        compose = true
         buildConfig = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
-            excludes += "/META-INF/gradle/incremental.annotation.processors"
         }
     }
     kapt {

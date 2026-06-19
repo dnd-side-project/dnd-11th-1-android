@@ -77,6 +77,9 @@ androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "u
 paging = {group = "androidx.paging", name="paging-runtime", version.ref="paging"}
 paging-compose = {group="androidx.paging", name="paging-compose", version.ref="paging"}
 open-licenses = {group="com.google.android.gms", name="play-services-oss-licenses",version.ref="openLicenses"}
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -86,7 +89,6 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-serialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serializationPlugin"}
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt"}
 kotlin-kapt = {id="org.jetbrains.kotlin.kapt", version.ref="kapt"}
-open-licenses = {id="com.google.android.gms.oss-licenses-plugin", version.ref="openLicensesPlugin"}
 
 [bundles]
 retrofit = ["retrofit", "retrofit-converter", "serialization"]

@@ -31,9 +31,9 @@ class LoginViewModel @Inject constructor(
     private val onboardingRepository: OnboardingRepository
 ) : ViewModel() {
     private val _isLogin = MutableStateFlow<Boolean>(false)
-    val isLogin get() = _isLogin.asStateFlow()
+    val isLogin = _isLogin.asStateFlow()
     private val _isOnboardingCompleted = MutableStateFlow<Boolean>(false)
-    val isOnboardingCompleted get() = _isOnboardingCompleted.asStateFlow()
+    val isOnboardingCompleted = _isOnboardingCompleted.asStateFlow()
 
     private val generalErrorState = MutableStateFlow<Pair<Boolean, String>>(Pair(false, ""))
     val errorState : StateFlow<ErrorState> = generalErrorState.mapLatest{
